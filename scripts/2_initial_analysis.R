@@ -19,8 +19,9 @@ library(dplyr)
 library(RColorBrewer)
 
 ## Load data
-brach <- readRDS("data/brach.Rds")
-biv <- readRDS("data/biv.Rds")
+genera <- readRDS("data/PBDB_BB_genera.Rds")
+families <- readRDS("data/PBDB_BB_families.Rds")
+orders <- readRDS("data/PBDB_BB_orders.Rds")
 
 #### Example analysis - 1 time bin ####
 # initialise Equal Earth projected coordinates
@@ -34,32 +35,29 @@ xyCartes <- c('paleolng','paleolat')
 xyCell   <- c('cellX','cellY')
 
 # extract cell number and centroid coordinates associated with each occurrence
-llOccs_brach <- vect(brach, geom = xyCartes, crs = 'epsg:4326')
-llOccs_biv <- vect(biv, geom = xyCartes, crs = 'epsg:4326')
-prjOccs_brach <- project(llOccs_brach, prj)
-prjOccs_biv <- project(llOccs_biv, prj)
+llOccs_genera <- vect(genera, geom = xyCartes, crs = 'epsg:4326')
+llOccs_families <- vect(families, geom = xyCartes, crs = 'epsg:4326')
+llOccs_orders <- vect(orders, geom = xyCartes, crs = 'epsg:4326')
+prjOccs_genera <- project(llOccs_genera, prj)
+prjOccs_families <- project(llOccs_families, prj)
+prjOccs_orders <- project(llOccs_orders, prj)
+
 
 # add cell number and coordinate for each occurrence
-brach$cell <- cells(rPrj, prjOccs_brach)[,'cell']
-brach[, xyCell] <- xyFromCell(rPrj, brach$cell)
-biv$cell <- cells(rPrj, prjOccs_biv)[,'cell']
-biv[, xyCell] <- xyFromCell(rPrj, biv$cell)
+genera$cell <- cells(rPrj, prjOccs_genera)[,'cell']
+genera[, xyCell] <- xyFromCell(rPrj, genera$cell)
+
+families$cell <- cells(rPrj, prjOccs_families)[,'cell']
+families[, xyCell] <- xyFromCell(rPrj, families$cell)
+
+orders$cell <- cells(rPrj, prjOccs_orders)[,'cell']
+orders[, xyCell] <- xyFromCell(rPrj, orders$cell)
 
 # Get Permian and Triassic data in 10ma time bins (from 300 to 200)
-# By default, function will include occurrences dated to MA.start but not MA.end
-# Will add ability to flip/change later.
-extract.time.bin <- function(data, MA.start, MA.end){
-  # get all occurrences that originate in interval
-  orig <- data[which(between(data[,"newFAD"], MA.end, MA.start)),]
-  # get all occurrences that terminate in interval
-  term <- data[which(between(data[,"newLAD"], MA.end, MA.start)),]
-  # get all occurrences that span interval
-  raw <- c(which(data[,"newFAD"] > MA.start),which(data[,"newLAD"] < MA.end))
-  span <- data[raw[duplicated(raw)],]
-  # concatenate
-  output <- rbind(orig, term, span)
-  return(output)
-}
+# Function samples occurrences that fit within bins (won't include those that exist before or after)
+source("functions/extract.time.bin.R")
+
+#### Start here! ####
 
 # set time intervals
 bins <- list(c(300,290.01),
@@ -74,42 +72,19 @@ bins <- list(c(300,290.01),
              c(210,200.01))
 
 # apply function to get subsets and get unique occurrences
-binned.biv <- lapply(1:length(bins), function(x){
-  out <- uniqify(extract.time.bin(data = biv, MA.start = bins[[x]][1], MA.end = bins[[x]][2]), taxVar = "genus", xy = xyCell)
+binned.genera <- lapply(1:length(bins), function(x){
+  out <- uniqify(extract.time.bin(data = genera, MA.start = bins[[x]][1], MA.end = bins[[x]][2]), taxVar = "genus", xy = xyCell)
 })
 
-binned.brach <- lapply(1:length(bins), function(x){
-  out <- uniqify(extract.time.bin(data = brach, MA.start = bins[[x]][1], MA.end = bins[[x]][2]), taxVar = "genus", xy = xyCell)
-})
 
-#### using cookies  - sample brachiopods and bivalves separately ####
-reps <- 500
-siteQuota <- 15
-r <- 1000
 
-## Sample each time bin
-set.seed(8)
-samp.biv <- lapply(1:length(binned.biv), function(x){
-  samp <- cookies(dat = binned.biv[[x]],
-                  xy = xyCell, iter = reps,
-                  nSite = siteQuota,
-                  r = r, weight = TRUE,
-                  crs = prj, output = 'full')
-})
 
-set.seed(10)
-samp.brach <- lapply(1:length(binned.brach), function(x){
-  samp <- cookies(dat = binned.brach[[x]],
-                  xy = xyCell, iter = reps,
-                  nSite = siteQuota,
-                  r = r, weight = TRUE,
-                  crs = prj, output = 'full')
-})
+
+
+
+
 
 #### Cookies - sampling brachiopods and bivalves together, plot richness against one another ####
-## First, combine time bins
-binned.all <- lapply(1:length(bins), function(x) rbind(binned.biv[[x]],binned.brach[[x]]))
-
 ## Same parameters
 reps <- 1000
 siteQuota <- 15
@@ -151,6 +126,7 @@ biv.rich <- lapply(1:length(samp.all.biv), function(x){
   })
 })
 
+#### NEED TO FINISH THIS FUNCTION - SHOULD ONLY DROP REPs IF BOTH TAXA ARE ABSENT
 input1 <- brach.rich
 input2 <- biv.rich
 threshold = 1
