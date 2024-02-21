@@ -1,4 +1,4 @@
-## Initial data processing
+## 1. Initial data processing
 ## Started by TJS on 08/01/2024
 
 ## Clean directory
