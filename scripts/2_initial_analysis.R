@@ -5,7 +5,7 @@
 rm(list = ls())
 
 ## If packages aren't installed, install them, then load them
-packages <- c("divvy", "terra", "rnaturalearth", "rnaturalearthdata", "ggplot2", "sf", "dplyr", "plyr", "RColorBrewer", "velociraptr")
+packages <- c("divvy", "terra", "rnaturalearth", "rnaturalearthdata", "ggplot2", "sf", "dplyr", "plyr", "RColorBrewer", "velociraptr", "lwgeom")
 if(length(packages[!packages %in% installed.packages()[,"Package"]]) > 0){
   install.packages(packages[!packages %in% installed.packages()[,"Package"]])
 }
@@ -19,8 +19,10 @@ library(dplyr)
 library(RColorBrewer)
 library(velociraptr)
 library(plyr)
+library(lwgeom)
 
 ## Load data
+setwd("~/R_packages/R_projects/bivbrach")
 genera <- readRDS("data/PBDB_BB_genera.Rds")
 families <- readRDS("data/PBDB_BB_families.Rds")
 orders <- readRDS("data/PBDB_BB_orders.Rds")
@@ -120,12 +122,13 @@ for (group in 1:length(groupings)){
 ## Bin data by stage for genera, families, and orders
 source("functions/extract.stage.bin.R")
 source("functions/extract.time.bin.R")
+source("functions/get.bins.R")
 source("functions/bin.data.R")
 
 ## Uniqifying by default
 stages.genera <- bin.data(occs = genera, trunc.stages = stages_trunc, complete.stages = stages)
-stages.family <- bin.data(occs = families, trunc.stages = stages_trunc, complete.stages = stages, uniqify.taxVar = "family")
-stages.order <- bin.data(occs = orders, trunc.stages = stages_trunc, complete.stages = stages, uniqify.taxVar = "order")
+stages.families <- bin.data(occs = families, trunc.stages = stages_trunc, complete.stages = stages, uniqify.taxVar = "family")
+stages.orders <- bin.data(occs = orders, trunc.stages = stages_trunc, complete.stages = stages, uniqify.taxVar = "order")
 
 ## Get min/max for datasets
 source("functions/get.min.max.R")
@@ -138,69 +141,54 @@ bin10.genera <- bin.data(occs = genera, max_time = genera.mm[1], min_time = gene
 bin10.families <- bin.data(occs = families, max_time = families.mm[1], min_time = families.mm[2], bin_size = 10)
 bin10.orders <- bin.data(occs = orders, max_time = orders.mm[1], min_time = orders.mm[2], bin_size = 10)
 
-## Build wrapper function for cookie cutting, dropping cookies with less than 2 points, partioning by a) level and b) taxa, and calculating richness
+## Get richness values
+source("functions/findPool2.R")
+source("functions/findSeeds2.R")
+source("functions/getOverlap.R")
+source("functions/cookie.R")
+source("functions/cut.cookies.R")
+
+
+stages.g.rich <- cut.cookies(data = stages.genera, reps = 10, siteQuota = 15, r = 1000, c.crs = prj, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+stages.f.rich <- cut.cookies(data = stages.families, reps = 10, siteQuota = 15, r = 1000, c.crs = prj, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+stages.o.rich <- cut.cookies(data = stages.orders, reps = 10, siteQuota = 15, r = 1000, c.crs = prj, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+
+bin10.g.rich <- cut.cookies(data = bin10.genera, reps = 10, siteQuota = 15, r = 1000, c.crs = prj, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+bin10.f.rich <- cut.cookies(data = bin10.families, reps = 10, siteQuota = 15, r = 1000, c.crs = prj, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+bin10.o.rich <- cut.cookies(data = bin10.orders, reps = 10, siteQuota = 15, r = 1000, c.crs = prj, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+
+## Get bins as data frames
+genera.bins <- t(data.frame(get.bins(max.t = genera.mm[1], min.t = genera.mm[2], bin.s = 10)))
+families.bins <- t(data.frame(get.bins(max.t = families.mm[1], min.t = families.mm[2], bin.s = 10)))
+orders.bins <- t(data.frame(get.bins(max.t = orders.mm[1], min.t = orders.mm[2], bin.s = 10)))
+
+## isolate stage times as a data frame
+stage.bins <- data.frame(stages_trunc$b_round, stages_trunc$t_round)
+
+## get midpoints
+source("functions/get.midpoints.R")
+
+data = stages.g.rich
+midpoints = get.midpoints(stage.bins)
+taxa = c("Brachiopoda","Bivalvia")
+
+## Function for re-formatting data into data frame with three columns: time (midpoint Ma of interval), brachiopod richness, bivalve richness
+format.cookies <- function(data, midpoints, taxa = NULL){
+  ## if box of cookies is partitioned
+  if(!is.null(taxa)){
+
+
+  }
+
+}
+
+
 
 ## Then, small function for getting correlating during each bin
 
 ## Then plot correlation coefficients for each bin, highlighting significant ones
 
-#### Cookies - sampling brachiopods and bivalves together, plot richness against one another ####
-## Same parameters
-reps <- 1000
-siteQuota <- 15
-r <- 1000
 
-## Run subsampling
-set.seed(2)
-samp.all <- lapply(1:length(binned.all), function(x){
-  samp <- cookies(dat = binned.all[[x]],
-                  xy = xyCell, iter = reps,
-                  nSite = siteQuota,
-                  r = r, weight = TRUE,
-                  crs = prj, output = 'full')
-})
-
-## Partition into Brachiopods and Bivalves
-samp.all.brach <- lapply(1:length(samp.all), function(x){
-  time.bin <- lapply(1:length(samp.all[[1]]), function(y){
-    rep <- samp.all[[x]][[y]][which(samp.all[[x]][[y]][,12] %in% "Brachiopoda"),]
-  })
-})
-
-samp.all.biv <- lapply(1:length(samp.all), function(x){
-  time.bin <- lapply(1:length(samp.all[[1]]), function(y){
-    rep <- samp.all[[x]][[y]][which(samp.all[[x]][[y]][,13] %in% "Bivalvia"),]
-  })
-})
-
-## Get richness data for each time bin
-brach.rich <- lapply(1:length(samp.all.brach), function(x){
-  time.bin <- sapply(1:length(samp.all.brach[[x]]), function(y){
-    richness <- length(unique(samp.all.brach[[x]][[y]][["genus"]]))
-  })
-})
-
-biv.rich <- lapply(1:length(samp.all.biv), function(x){
-  time.bin <- sapply(1:length(samp.all.biv[[x]]), function(y){
-    richness <- length(unique(samp.all.biv[[x]][[y]][["genus"]]))
-  })
-})
-
-#### NEED TO FINISH THIS FUNCTION - SHOULD ONLY DROP REPs IF BOTH TAXA ARE ABSENT
-input1 <- brach.rich
-input2 <- biv.rich
-threshold = 1
-
-## OPTIONAL - clean out reps in which either taxon is 0 or 1
-clean.reps <- function(input1, input2, threshold = 1)
-  ## if row in input 1 = 0, drop from both inputs
-  input1.index <- lapply(1:length(input), function(x){
-    index <- which()
-  })
-
-for (i in 1:length(brach.rich)){
-which(brach.rich[[i]] == 0)
-}
 
 ## Plotting ####
 ## Get axes and color palette

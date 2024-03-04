@@ -1,9 +1,7 @@
 bin.data <- function(occs, trunc.stages = NULL, complete.stages = NULL, max_time, min_time, bin_size, uniqify.data = T, uniqify.taxVar = "genus", uniqify.xy = c("cellX", "cellY")){
   if(is.null(trunc.stages)){
-    ## set bins
-    bins <- seq(max_time, min_time, -bin_size)
-    ## convert to list of vectors
-    bins <- lapply(2:length(bins), function(x) out <- c(bins[x-1],bins[x]))
+    ## get bins
+    bins <- get.bins(max.t = max_time, min.t = min_time, bin.s = bin_size)
     ## get data
     if(uniqify.data){
       binned <- lapply(1:length(bins), function(x){
