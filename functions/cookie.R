@@ -1,4 +1,4 @@
-cookie <- function(seed) {
+cookie <- function(dat, seed, xy, allPools, weight, coords, crs, output) {
   pool <- allPools[seed][[1]]
   if (weight) {
     datSf <- sf::st_as_sf(coords, coords = xy, crs = crs)
