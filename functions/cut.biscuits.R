@@ -1,12 +1,12 @@
-cut.biscuits <- function(data, reps, siteQuota, r, biscuitSeeding = NULL, iterateBiscuits = T, biscuitThreshold = 1, returnBiscuitSeeds = F, b.crs, biscuitWeight = F, b.xy = c("cellX", "cellY"), taxa = NULL, taxa.level = NULL, min.row = 2, richness = T){
+cut.biscuits <- function(data, reps, siteQuota, r, biscuitThreshold = 1, b.crs, biscuitWeight = F, b.xy = c("cellX", "cellY"), taxa = NULL, taxa.level = NULL, min.row = 2, richness = T){
   ## Derive a box of cookies
   box <- lapply(1:length(data), function(x){
     ## Return the error message
     attempt <- tryCatch(biscuits(dat = data[[x]],
-                                xy = b.xy, seeding = biscuitSeeding, iterate = iterateBiscuits, rep = reps,
+                                xy = b.xy, seeding = NULL, standardiseSiteN = T, rep = reps,
                                 nSite = siteQuota, threshold = biscuitThreshold,
                                 r = r, weight = biscuitWeight,
-                                crs = b.crs, returnSeeds = returnBiscuitSeeds, output = 'full'), error = function(e){})
+                                crs = b.crs, returnSeeds = F, output = 'full'), error = function(e){})
     ## If it works, keep output, if not, return NA
     if(!is.null(attempt)){
       pack <- attempt

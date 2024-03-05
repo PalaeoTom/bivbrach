@@ -36,21 +36,23 @@ findSeeds2 <- function(dat, siteId, xy, r, nSite, crs = "epsg:4326", threshold =
       OCs <- apply(overlap > threshold, 1, function(x) length(which(x)))
     }
     keepers <- 1:length(OCs)
-    while(T){
-      max.o <- which(OCs == max(OCs))
-      if(length(max.o) > 1){
-        ta <- apply(overlap[max.o,], 1, function(x) sum(x))
-        max.o <- max.o[which(ta == max(ta))]
-      }
-      overlap <- overlap[-max.o,-max.o]
-      if(threshold > 0) {
-        OCs <- apply(overlap >= threshold, 1, function(x) length(which(x)))
-      } else {
-        OCs <- apply(overlap > threshold, 1, function(x) length(which(x)))
-      }
-      keepers <- keepers[-max.o]
-      if(sum(OCs) == 0){
-        break
+    if(sum(OCs) > 0){
+      while(T){
+        max.o <- which(OCs == max(OCs))
+        if(length(max.o) > 1){
+          ta <- apply(overlap[max.o,], 1, function(x) sum(x))
+          max.o <- max.o[which(ta == max(ta))]
+        }
+        overlap <- overlap[-max.o,-max.o]
+        if(threshold > 0) {
+          OCs <- apply(overlap >= threshold, 1, function(x) length(which(x)))
+        } else {
+          OCs <- apply(overlap > threshold, 1, function(x) length(which(x)))
+        }
+        keepers <- keepers[-max.o]
+        if(sum(OCs) == 0){
+          break
+        }
       }
     }
     finalPools <- posPools[keepers]

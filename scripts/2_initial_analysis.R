@@ -149,7 +149,31 @@ source("functions/cookie.R")
 source("functions/biscuits.R")
 source("functions/cut.biscuits.R")
 
-stages.g.rich <- cut.biscuits(data = stages.genera, iterateBiscuits = T, biscuitThreshold = 0.5, reps = 10, siteQuota = 15, r = 1000, b.crs = prj, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+test.data <- stages.genera[[10]]
+
+dat = test.data
+xy = c("cellX", "cellY")
+r = 1000
+seeding = NULL
+iterate = T
+rep = 10
+nSite = 3
+threshold = 0.75
+returnSeeds = F
+crs = prj
+output = "full"
+weight = F
+
+test.biscuits <- biscuits(dat = test.data, xy = c("cellX", "cellY"), r = 1000, seeding = NULL, iterate = T,
+                          rep = 10, nSite = 3, threshold = 0.75, weight = F, returnSeeds = F, crs = prj, output = "full")
+
+
+stages.g.rich <- cut.biscuits(data = stages.genera, iterateBiscuits = T,
+                              biscuitThreshold = 0.5, returnBiscuitSeeds = F,
+                              reps = 10, siteQuota = 3, r = 1000,
+                              b.crs = prj, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+
+
 stages.f.rich <- cut.biscuits(data = stages.families, reps = 10, siteQuota = 15, r = 1000, b.crs = prj, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
 stages.o.rich <- cut.biscuits(data = stages.orders, reps = 10, siteQuota = 15, r = 1000, b.crs = prj, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
 
