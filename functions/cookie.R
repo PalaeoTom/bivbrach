@@ -1,4 +1,9 @@
-cookie <- function(dat, seed, xy, allPools, weight, coords, crs, output) {
+cookie <- function(dat, seeds, xy, allPools, weight, coords, crs, output, nSite) {
+  if(length(seeds) > 1) {
+    seed <- sample(sample(seeds), 1)
+  } else {
+    seed <- seeds
+  }
   pool <- allPools[seed][[1]]
   if (weight) {
     datSf <- sf::st_as_sf(coords, coords = xy, crs = crs)

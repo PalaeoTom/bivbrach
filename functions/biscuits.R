@@ -11,12 +11,7 @@ biscuits <- function(dat, xy, r, seeding = NULL, iterate = T, rep = 100, nSite =
   }
   seeds <- names(allPools)
   if(iterate){
-    if(length(seeds) > 1) {
-      seed <- sample(sample(seeds), 1)
-    } else {
-      seed <- seeds
-    }
-    subsamples <- replicate(rep, cookie(dat, seed, xy, allPools, weight, coords, crs, output), simplify = FALSE)
+    subsamples <- replicate(rep, cookie(dat, seeds, xy, nSite, allPools, weight, coords, crs, output), simplify = FALSE)
     if(returnSeeds){
       seed_out <- coords[which(coords$id %in% seeds),]
       return(list("seeds" = seed_out, "subsamples" = subsamples))

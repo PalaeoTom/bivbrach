@@ -147,15 +147,15 @@ source("functions/findSeeds2.R")
 source("functions/getOverlap.R")
 source("functions/cookie.R")
 source("functions/biscuits.R")
-source("functions/cut.cookies.R")
+source("functions/cut.biscuits.R")
 
-stages.g.rich <- cut.cookies(data = stages.genera, iterateBiscuits = T, biscuitThreshold = 0.5, reps = 10, siteQuota = 15, r = 1000, b.crs = prj, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
-stages.f.rich <- cut.cookies(data = stages.families, reps = 10, siteQuota = 15, r = 1000, b.crs = prj, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
-stages.o.rich <- cut.cookies(data = stages.orders, reps = 10, siteQuota = 15, r = 1000, b.crs = prj, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+stages.g.rich <- cut.biscuits(data = stages.genera, iterateBiscuits = T, biscuitThreshold = 0.5, reps = 10, siteQuota = 15, r = 1000, b.crs = prj, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+stages.f.rich <- cut.biscuits(data = stages.families, reps = 10, siteQuota = 15, r = 1000, b.crs = prj, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+stages.o.rich <- cut.biscuits(data = stages.orders, reps = 10, siteQuota = 15, r = 1000, b.crs = prj, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
 
-bin10.g.rich <- cut.cookies(data = bin10.genera, reps = 10, siteQuota = 15, r = 1000, b.crs = prj, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
-bin10.f.rich <- cut.cookies(data = bin10.families, reps = 10, siteQuota = 15, r = 1000, b.crs = prj, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
-bin10.o.rich <- cut.cookies(data = bin10.orders, reps = 10, siteQuota = 15, r = 1000, b.crs = prj, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+bin10.g.rich <- cut.biscuits(data = bin10.genera, reps = 10, siteQuota = 15, r = 1000, b.crs = prj, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+bin10.f.rich <- cut.biscuits(data = bin10.families, reps = 10, siteQuota = 15, r = 1000, b.crs = prj, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+bin10.o.rich <- cut.biscuits(data = bin10.orders, reps = 10, siteQuota = 15, r = 1000, b.crs = prj, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
 
 ## Get bins as data frames
 genera.bins <- t(data.frame(get.bins(max.t = genera.mm[1], min.t = genera.mm[2], bin.s = 10)))
