@@ -24,43 +24,12 @@ library(lwgeom)
 ## Load data
 setwd("~/R_packages/R_projects/bivbrach")
 genera <- readRDS("data/PBDB_BB_genera.Rds")
-families <- readRDS("data/PBDB_BB_families.Rds")
-orders <- readRDS("data/PBDB_BB_orders.Rds")
+species <- readRDS("data/PBDB_BB_species.Rds")
 
-#### Example analysis - 1 time bin ####
-# initialise Equal Earth projected coordinates
-rWorld <- rast()
-prj <- 'EPSG:8857'
-rPrj <- project(rWorld, prj, res = 200000) # 200,000m is approximately 2 degrees
-values(rPrj) <- 1:ncell(rPrj)
-
-# coordinate column names for the current and target coordinate reference system
-xyCartes <- c('paleolng','paleolat')
-xyCell   <- c('cellX','cellY')
-
-# extract cell number and centroid coordinates associated with each occurrence
-llOccs_genera <- vect(genera, geom = xyCartes, crs = 'epsg:4326')
-llOccs_families <- vect(families, geom = xyCartes, crs = 'epsg:4326')
-llOccs_orders <- vect(orders, geom = xyCartes, crs = 'epsg:4326')
-prjOccs_genera <- project(llOccs_genera, prj)
-prjOccs_families <- project(llOccs_families, prj)
-prjOccs_orders <- project(llOccs_orders, prj)
-
-# add cell number and coordinate for each occurrence
-genera$cell <- cells(rPrj, prjOccs_genera)[,'cell']
-genera[, xyCell] <- xyFromCell(rPrj, genera$cell)
-
-families$cell <- cells(rPrj, prjOccs_families)[,'cell']
-families[, xyCell] <- xyFromCell(rPrj, families$cell)
-
-orders$cell <- cells(rPrj, prjOccs_orders)[,'cell']
-orders[, xyCell] <- xyFromCell(rPrj, orders$cell)
-
-# Get Permian and Triassic data in 10ma time bins (from 300 to 200)
+#### Get time bins ####
 # Function samples occurrences that fit within bins (won't include those that exist before or after)
 source("functions/extract.time.bin.R")
 
-#### Start here! ####
 ## First, derive Antell binning scheme
 ## Download raw stage data and create names column
 stages <- downloadTime('international ages')
@@ -119,7 +88,6 @@ for (group in 1:length(groupings)){
   }
 }
 
-## Bin data by stage for genera, families, and orders
 source("functions/extract.stage.bin.R")
 source("functions/extract.time.bin.R")
 source("functions/get.bins.R")
@@ -127,21 +95,15 @@ source("functions/bin.data.R")
 
 ## Uniqifying by default
 stages.genera <- bin.data(occs = genera, trunc.stages = stages_trunc, complete.stages = stages)
-stages.families <- bin.data(occs = families, trunc.stages = stages_trunc, complete.stages = stages, uniqify.taxVar = "family")
-stages.orders <- bin.data(occs = orders, trunc.stages = stages_trunc, complete.stages = stages, uniqify.taxVar = "order")
 
 ## Get min/max for datasets
 source("functions/get.min.max.R")
 genera.mm <- get.min.max(data = genera)
-families.mm <- get.min.max(data = families)
-orders.mm <- get.min.max(data = orders)
 
 ## Get 10Ma time bins
 bin10.genera <- bin.data(occs = genera, max_time = genera.mm[1], min_time = genera.mm[2], bin_size = 10)
-bin10.families <- bin.data(occs = families, max_time = families.mm[1], min_time = families.mm[2], bin_size = 10)
-bin10.orders <- bin.data(occs = orders, max_time = orders.mm[1], min_time = orders.mm[2], bin_size = 10)
 
-## Get richness values
+#### Correct for spatial sampling biases ####
 source("functions/findPool2.R")
 source("functions/findSeeds2.R")
 source("functions/getOverlap.R")
@@ -149,42 +111,20 @@ source("functions/cookie.R")
 source("functions/biscuits.R")
 source("functions/cut.biscuits.R")
 
-test.data <- stages.genera[[10]]
+test.biscuits <- biscuits(dat = stages.genera[[1]], xy = c("cellX", "cellY"), r = 1000, seeding = c(5,22,45), standardiseSiteN = F,
+                          rep = 10, nSite = 3, threshold = 0.75, weight = F, returnSeeds = T, crs = prj, output = "full")
 
-dat = test.data
-xy = c("cellX", "cellY")
-r = 1000
-seeding = NULL
-iterate = T
-rep = 10
-nSite = 3
-threshold = 0.75
-returnSeeds = F
-crs = prj
-output = "full"
-weight = F
-
-test.biscuits <- biscuits(dat = test.data, xy = c("cellX", "cellY"), r = 1000, seeding = NULL, iterate = T,
-                          rep = 10, nSite = 3, threshold = 0.75, weight = F, returnSeeds = F, crs = prj, output = "full")
-
-
-stages.g.rich <- cut.biscuits(data = stages.genera, iterateBiscuits = T,
-                              biscuitThreshold = 0.5, returnBiscuitSeeds = F,
+stages.g.rich <- cut.biscuits(data = stages.genera,
+                              biscuitThreshold = 0.5,
                               reps = 10, siteQuota = 3, r = 1000,
                               b.crs = prj, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
 
 
-stages.f.rich <- cut.biscuits(data = stages.families, reps = 10, siteQuota = 15, r = 1000, b.crs = prj, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
-stages.o.rich <- cut.biscuits(data = stages.orders, reps = 10, siteQuota = 15, r = 1000, b.crs = prj, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
 
 bin10.g.rich <- cut.biscuits(data = bin10.genera, reps = 10, siteQuota = 15, r = 1000, b.crs = prj, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
-bin10.f.rich <- cut.biscuits(data = bin10.families, reps = 10, siteQuota = 15, r = 1000, b.crs = prj, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
-bin10.o.rich <- cut.biscuits(data = bin10.orders, reps = 10, siteQuota = 15, r = 1000, b.crs = prj, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
 
 ## Get bins as data frames
 genera.bins <- t(data.frame(get.bins(max.t = genera.mm[1], min.t = genera.mm[2], bin.s = 10)))
-families.bins <- t(data.frame(get.bins(max.t = families.mm[1], min.t = families.mm[2], bin.s = 10)))
-orders.bins <- t(data.frame(get.bins(max.t = orders.mm[1], min.t = orders.mm[2], bin.s = 10)))
 
 ## isolate stage times as a data frame
 stage.bins <- data.frame(stages_trunc$b_round, stages_trunc$t_round)
