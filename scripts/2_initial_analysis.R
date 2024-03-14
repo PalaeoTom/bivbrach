@@ -5,21 +5,14 @@
 rm(list = ls())
 
 ## If packages aren't installed, install them, then load them
-packages <- c("divvy", "terra", "rnaturalearth", "rnaturalearthdata", "ggplot2", "sf", "dplyr", "plyr", "RColorBrewer", "velociraptr", "lwgeom")
+packages <- c("divvy", "velociraptr", "dplyr", "plyr")
 if(length(packages[!packages %in% installed.packages()[,"Package"]]) > 0){
   install.packages(packages[!packages %in% installed.packages()[,"Package"]])
 }
 library(divvy)
-library(terra)
-library(rnaturalearth)
-library(rnaturalearthdata)
-library(ggplot2)
-library(sf)
-library(dplyr)
-library(RColorBrewer)
 library(velociraptr)
+library(dplyr)
 library(plyr)
-library(lwgeom)
 
 ## Load data
 setwd("~/R_packages/R_projects/bivbrach")
@@ -93,15 +86,18 @@ source("functions/extract.time.bin.R")
 source("functions/get.bins.R")
 source("functions/bin.data.R")
 
-## Uniqifying by default
-stages.genera <- bin.data(occs = genera, trunc.stages = stages_trunc, complete.stages = stages)
+## Not uniqifying by default
+stages.genera <- bin.data(occs = genera, trunc.stages = stages_trunc, complete.stages = stages, uniqify.data = F)
+stages.species <- bin.data(occs = species, trunc.stages = stages_trunc, complete.stages = stages, uniqify.data = F, uniqify.taxVar = "species")
 
 ## Get min/max for datasets
 source("functions/get.min.max.R")
 genera.mm <- get.min.max(data = genera)
+species.mm <- get.min.max(data = species)
 
 ## Get 10Ma time bins
-bin10.genera <- bin.data(occs = genera, max_time = genera.mm[1], min_time = genera.mm[2], bin_size = 10)
+bin10.genera <- bin.data(occs = genera, max_time = genera.mm[1], min_time = genera.mm[2], bin_size = 10, uniqify.data = F)
+bin10.species <- bin.data(occs = species, max_time = species.mm[1], min_time = species.mm[2], bin_size = 10, uniqify.data = F, uniqify.taxVar = "species")
 
 #### Correct for spatial sampling biases ####
 source("functions/findPool2.R")
@@ -111,70 +107,30 @@ source("functions/cookie.R")
 source("functions/biscuits.R")
 source("functions/cut.biscuits.R")
 
-test.biscuits <- biscuits(dat = stages.genera[[1]], xy = c("cellX", "cellY"), r = 1000, seeding = c(5,22,45), standardiseSiteN = F,
-                          rep = 10, nSite = 3, threshold = 0.75, weight = F, returnSeeds = T, crs = prj, output = "full")
-
-stages.g.rich <- cut.biscuits(data = stages.genera,
+#### Correct for each time bin
+stages.gen.correct <- cut.biscuits(data = stages.genera,
                               biscuitThreshold = 0.5,
-                              reps = 10, siteQuota = 3, r = 1000,
-                              b.crs = prj, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+                              reps = 10, siteQuota = 3, r = 1000, biscuitWeight = F,
+                              b.crs = 'EPSG:8857', taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+
+stages.spec.correct <- cut.biscuits(data = stages.species,
+                                   biscuitThreshold = 0.5,
+                                   reps = 10, siteQuota = 3, r = 1000, biscuitWeight = F,
+                                   b.crs = 'EPSG:8857', taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+
+bin10.gen.correct <- cut.biscuits(data = bin10.genera,
+                                   biscuitThreshold = 0.5,
+                                   reps = 10, siteQuota = 3, r = 1000, biscuitWeight = F,
+                                   b.crs = 'EPSG:8857', taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+
+bin10.spec.correct <- cut.biscuits(data = bin10.species,
+                                    biscuitThreshold = 0.5,
+                                    reps = 10, siteQuota = 3, r = 1000, biscuitWeight = F,
+                                    b.crs = 'EPSG:8857', taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+
+#### Use SQS to derive diversity estimate for each rep ####
+## Test impact of double rarefaction ##
 
 
 
-bin10.g.rich <- cut.biscuits(data = bin10.genera, reps = 10, siteQuota = 15, r = 1000, b.crs = prj, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
-
-## Get bins as data frames
-genera.bins <- t(data.frame(get.bins(max.t = genera.mm[1], min.t = genera.mm[2], bin.s = 10)))
-
-## isolate stage times as a data frame
-stage.bins <- data.frame(stages_trunc$b_round, stages_trunc$t_round)
-
-## get midpoints
-source("functions/get.midpoints.R")
-
-data = stages.g.rich
-midpoints = get.midpoints(stage.bins)
-taxa = c("Brachiopoda","Bivalvia")
-
-## Function for re-formatting data into data frame with three columns: time (midpoint Ma of interval), brachiopod richness, bivalve richness
-format.cookies <- function(data, midpoints, taxa = NULL){
-  ## if box of cookies is partitioned
-  if(!is.null(taxa)){
-
-
-  }
-
-}
-
-
-
-## Then, small function for getting correlating during each bin
-
-## Then plot correlation coefficients for each bin, highlighting significant ones
-
-
-
-## Plotting ####
-## Get axes and color palette
-axes <- c(0, max(c(unlist(brach.rich),unlist(biv.rich))))
-pal <- colorRampPalette(brewer.pal(9, "PRGn"))(10)
-
-## Plot figure
-par(family = "Verdana")
-pdf(paste0("biv_brach_richness.pdf"))
-par(xpd = F)
-plot(x = NULL, y = NULL, xlim = axes, ylim = axes, axes = F, xaxs ="i", yaxs = "i", ylab = "Bivalve generic richness", xlab = "Brachiopod generic richness")
-## Points for each time bin
-for (i in 1:length(brach.rich)){
-  points(x = brach.rich[[i]], y = biv.rich[[i]], col = pal[i])
-}
-## Plot axes
-axis(side = 2, las = 2, seq(axes[1], axes[2], 50))
-axis(side = 1, las = 1, seq(axes[1], axes[2], 50))
-## Plot legend
-legend("topright", legend = c("300-290Ma", "290-280Ma", "280-270Ma", "270-260Ma", "260-250Ma",
-                              "250-240Ma", "240-230Ma", "230-220Ma", "220-210Ma", "210-200Ma"),
-       fill = pal)
-mtext(text = "Cookies: 1000 reps, 1000km radius, 15 sites")
-dev.off()
 

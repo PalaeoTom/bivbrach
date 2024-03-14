@@ -208,9 +208,6 @@ multiton.min <- 0.3
 PBDB_genera_s <- standardiseCells(PBDB_genera, collMinimum = coll.min, refMinimum = ref.min, multitonRatioMin = multiton.min, level = "genera")
 PBDB_species_s <- standardiseCells(PBDB_species, collMinimum = coll.min, refMinimum = ref.min, multitonRatioMin = multiton.min, level = "species")
 
-#### Standaredise to equal coverage of the taxon occurrence-frequency distribution (quorum of 9) ###
-## Need to speak with Erin
-
 ## Export polished files
 saveRDS(PBDB_genera_s, file = "data/PBDB_BB_genera.Rds")
 saveRDS(PBDB_species_s, file = "data/PBDB_BB_species.Rds")
