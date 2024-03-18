@@ -5,7 +5,7 @@
 rm(list = ls())
 
 ## If packages aren't installed, install them, then load them
-packages <- c("divvy", "velociraptr", "dplyr", "plyr")
+packages <- c("divvy", "velociraptr", "dplyr", "plyr", "iNEXT", "parallel")
 if(length(packages[!packages %in% installed.packages()[,"Package"]]) > 0){
   install.packages(packages[!packages %in% installed.packages()[,"Package"]])
 }
@@ -13,6 +13,8 @@ library(divvy)
 library(velociraptr)
 library(dplyr)
 library(plyr)
+library(iNEXT)
+library(parallel)
 
 ## Load data
 setwd("~/R_packages/R_projects/bivbrach")
@@ -86,9 +88,9 @@ source("functions/extract.time.bin.R")
 source("functions/get.bins.R")
 source("functions/bin.data.R")
 
-## Not uniqifying by default
+## Function uniqifies data by default
 stages.genera <- bin.data(occs = genera, trunc.stages = stages_trunc, complete.stages = stages, uniqify.data = F)
-stages.species <- bin.data(occs = species, trunc.stages = stages_trunc, complete.stages = stages, uniqify.data = F, uniqify.taxVar = "species")
+stages.species <- bin.data(occs = species, trunc.stages = stages_trunc, complete.stages = stages, uniqify.data = F, uniqify.taxVar = "unique_name")
 
 ## Get min/max for datasets
 source("functions/get.min.max.R")
@@ -97,7 +99,7 @@ species.mm <- get.min.max(data = species)
 
 ## Get 10Ma time bins
 bin10.genera <- bin.data(occs = genera, max_time = genera.mm[1], min_time = genera.mm[2], bin_size = 10, uniqify.data = F)
-bin10.species <- bin.data(occs = species, max_time = species.mm[1], min_time = species.mm[2], bin_size = 10, uniqify.data = F, uniqify.taxVar = "species")
+bin10.species <- bin.data(occs = species, max_time = species.mm[1], min_time = species.mm[2], bin_size = 10, uniqify.data = F, uniqify.taxVar = "unique_name")
 
 #### Correct for spatial sampling biases ####
 source("functions/findPool2.R")
@@ -109,28 +111,72 @@ source("functions/cut.biscuits.R")
 
 #### Correct for each time bin
 stages.gen.correct <- cut.biscuits(data = stages.genera,
-                              biscuitThreshold = 0.5,
-                              reps = 10, siteQuota = 3, r = 1000, biscuitWeight = F,
-                              b.crs = 'EPSG:8857', taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+                                   biscuitThreshold = 0.5,
+                                   reps = 10, siteQuota = 3, r = 1000, biscuitWeight = F,
+                                   b.crs = 'EPSG:8857', taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
 
 stages.spec.correct <- cut.biscuits(data = stages.species,
-                                   biscuitThreshold = 0.5,
-                                   reps = 10, siteQuota = 3, r = 1000, biscuitWeight = F,
-                                   b.crs = 'EPSG:8857', taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
-
-bin10.gen.correct <- cut.biscuits(data = bin10.genera,
-                                   biscuitThreshold = 0.5,
-                                   reps = 10, siteQuota = 3, r = 1000, biscuitWeight = F,
-                                   b.crs = 'EPSG:8857', taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
-
-bin10.spec.correct <- cut.biscuits(data = bin10.species,
                                     biscuitThreshold = 0.5,
                                     reps = 10, siteQuota = 3, r = 1000, biscuitWeight = F,
                                     b.crs = 'EPSG:8857', taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
 
+bin10.gen.correct <- cut.biscuits(data = bin10.genera,
+                                  biscuitThreshold = 0.5,
+                                  reps = 10, siteQuota = 3, r = 1000, biscuitWeight = F,
+                                  b.crs = 'EPSG:8857', taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+
+bin10.spec.correct <- cut.biscuits(data = bin10.species,
+                                   biscuitThreshold = 0.5,
+                                   reps = 10, siteQuota = 3, r = 1000, biscuitWeight = F,
+                                   b.crs = 'EPSG:8857', taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+
+#### get midpoints of ages, then remove non-viable bins ####
+source("functions/get.midpoints.R")
+source("functions/label.and.drop.R")
+
+## Truncated stages vector
+stage.times <- stages_trunc[,c("t_round","b_round")]
+
+## last entry has an NA. Change to 0
+stage.times[66,1] <- 0
+
+## get midpoints
+stage.midpoints <- get.midpoints(stage.times[-66,])
+
+## label both stage data objects and drop NAs
+stages.gen.correct <- label.and.drop(stages.gen.correct, stage.midpoints)
+stages.spec.correct <- label.and.drop(stages.spec.correct, stage.midpoints)
+
+## update midpoints vector for later
+stage.midpoints <- stage.midpoints[stage.midpoints %in% as.numeric(names(stages.gen.correct[[1]]))]
+
+## now to do the same for time bins
+species.mm
+genera.mm
+
+## both have same start and end
+bin.times <- t(data.frame(get.bins(species.mm[1], species.mm[2], 10)))
+
+## get midpoints
+bin.midpoints <- get.midpoints(bin.times)
+
+## label and drop
+bin10.gen.correct <- label.and.drop(bin10.gen.correct, bin.midpoints)
+bin10.spec.correct <- label.and.drop(bin10.spec.correct, bin.midpoints)
+
+## update midpoints (for plotting later)
+bin.midpoints <- bin.midpoints[bin.midpoints %in% as.numeric(names(bin10.gen.correct[[1]]))]
+
 #### Use SQS to derive diversity estimate for each rep ####
-## Test impact of double rarefaction ##
+source("functions/get.richness.R")
+gen.stages <- get.richness(stages.gen.correct)
+gen.bins <- get.richness(bin10.gen.correct)
 
+spec.stages <- get.richness(stages.spec.correct, taxVar = "unique_name")
+spec.bins <- get.richness(bin10.spec.correct, taxVar = "unique_name")
 
+#### Drop time bins with all NA, then drop reps with NAs ####
 
+#### Get correlation values ####
+## Should be left with time bins of cookies (possibly variable number).
 

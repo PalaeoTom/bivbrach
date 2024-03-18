@@ -26,7 +26,7 @@ findSeeds2 <- function(dat, siteId, xy, r, nSite, crs = "epsg:4326", threshold =
   posPools <- Filter(Negate(is.null), posPools)
   if(length(posPools) > 1) {
     datSfSub <- sf::st_as_sf(dat[dat[,siteId] %in% names(posPools),], coords = xy, crs = crs)
-    posPoolsDM <- units:::set_units(st_distance(datSfSub, datSfSub), "km")
+    posPoolsDM <- units:::set_units(sf:::st_distance(datSfSub, datSfSub), "km")
     a <- pi*(r^2)
     overlap <- apply(posPoolsDM, c(1,2), function(x) getOverlap(d = x, r = r, a = a))
     diag(overlap) <- 0
