@@ -1,22 +1,20 @@
 findSeeds2 <- function(dat, siteId, xy, r, nSite, crs = "epsg:4326", threshold = 1, seeding = NULL){
   if(is.null(seeding)){
     sites <- dat[, siteId]
-    datSf <- sf::st_as_sf(dat, coords = xy, crs = crs)
-    rad <- units::set_units(r, "km")
+    datSV <- terra::vect(dat, geom = xy, crs = crs)
     posPools <- lapply(sites, function(s) {
       seedRow <- which(dat[, siteId] == s)[1]
-      sPool <- findPool2(seedRow, datSf, sites, xy, rad, crs)
+      sPool <- findPool2(seedRow, datSV, sites, xy, r, crs)
       n <- length(sPool)
       if (n >= nSite)
         sPool
     })
   } else {
     sites <- dat[seeding, siteId]
-    datSf <- sf::st_as_sf(dat, coords = xy, crs = crs)
-    rad <- units::set_units(r, "km")
+    datSV <- terra::vect(dat, geom = xy, crs = crs)
     posPools <- lapply(sites, function(s) {
       seedRow <- which(dat[, siteId] == s)[1]
-      sPool <- findPool2(seedRow, datSf, dat[,siteId], xy, rad, crs)
+      sPool <- findPool2(seedRow, datSV, dat[,siteId], xy, r, crs)
       n <- length(sPool)
       if (n >= nSite)
         sPool
@@ -25,8 +23,8 @@ findSeeds2 <- function(dat, siteId, xy, r, nSite, crs = "epsg:4326", threshold =
   names(posPools) <- sites
   posPools <- Filter(Negate(is.null), posPools)
   if(length(posPools) > 1) {
-    datSfSub <- sf::st_as_sf(dat[dat[,siteId] %in% names(posPools),], coords = xy, crs = crs)
-    posPoolsDM <- units:::set_units(sf:::st_distance(datSfSub, datSfSub), "km")
+    datSVSub <- terra::vect(dat[dat[,siteId] %in% names(posPools),], geom = xy, crs = crs)
+    posPoolsDM <- terra::distance(datSVSub, datSVSub)
     a <- pi*(r^2)
     overlap <- apply(posPoolsDM, c(1,2), function(x) getOverlap(d = x, r = r, a = a))
     diag(overlap) <- 0

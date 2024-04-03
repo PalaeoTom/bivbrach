@@ -1,12 +1,11 @@
-findPool2 <- function (seedRow, datSf, sites, xy, r, crs = "epsg:4326"){
-  seedpt <- datSf[seedRow, ]
-  buf <- sf::st_buffer(seedpt, dist = r)
+findPool2 <- function (seedRow, datSV, sites, xy, r, crs = "epsg:4326"){
+  seedpt <- datSV[seedRow, ]
+  buf <- terra::buffer(seedpt, width = r)
   if (crs != "epsg:4326") {
-    buf <- sf::st_transform(buf, crs = "epsg:4326")
-    datSf <- sf::st_transform(datSf, crs = "epsg:4326")
+    buf <- terra::project(buf, y = "epsg:4326")
+    datSV <- terra::project(datSV, y = "epsg:4326")
   }
-  bufWrap <- sf::st_wrap_dateline(buf, options = c("WRAPDATELINE=YES"))
-  poolBool <- sf::st_intersects(datSf, bufWrap, sparse = FALSE)
-  pool <- sites[poolBool]
+  poolBool <- terra::extract(buf, datSV)
+  pool <- sites[which(!is.na(poolBool[, 2]))]
   return(pool)
 }

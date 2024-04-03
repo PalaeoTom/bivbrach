@@ -7,13 +7,13 @@ cookie <- function(dat, seeds, xy, nSite, allPools, weight, coords, crs, output,
     }
     pool <- allPools[seed][[1]]
     if (weight) {
-      datSf <- sf::st_as_sf(coords, coords = xy, crs = crs)
+      datSV <- terra::vect(coords, geom = xy, crs = crs)
       pool <- pool[!pool == seed]
       poolBool <- coords[, "id"] %in% pool
-      poolPts <- datSf[poolBool, ]
+      poolPts <- datSV[poolBool, ]
       seedRow <- which(coords[, "id"] == seed)[1]
-      seedPt <- datSf[seedRow, ]
-      gcdists <- sf::st_distance(poolPts, seedPt)
+      seedPt <- datSV[seedRow, ]
+      gcdists <- terra::distance(poolPts, seedPt)
       wts <- sapply(gcdists, function(x) x^(-2))
       samplIds <- c(seed, sample(sample(pool), nSite -
                                    1, prob = wts, replace = FALSE))

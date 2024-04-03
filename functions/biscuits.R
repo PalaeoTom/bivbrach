@@ -1,4 +1,6 @@
-biscuits <- function(dat, xy, r, seeding = NULL, standardiseSiteN = T, rep = 100, nSite = 3, threshold = 1, weight = FALSE, returnSeeds = F, crs = "epsg:4326", output = "locs"){
+biscuits <- function(dat, xy, r, seeding = NULL, standardiseSiteN = T, rep = 100, nSite = 3,
+                     threshold = 1, weight = FALSE,
+                     returnSeeds = F, crs = "epsg:4326", output = "locs"){
   coords <- as.data.frame(divvy::uniqify(dat, xy))
   coords$id <- paste0("loc", 1:nrow(coords))
   if(is.null(seeding)){
