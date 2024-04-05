@@ -1,4 +1,4 @@
-findSeeds2 <- function(dat, siteId, xy, r, nSite, crs = "epsg:4326", threshold = 1, seeding = NULL){
+findSeeds2 <- function(dat, siteId, xy, r, nSite, crs = "epsg:4326", threshold = 1, oType = "area", seeding = NULL){
   if(is.null(seeding)){
     sites <- dat[, siteId]
     datSV <- terra::vect(dat, geom = xy, crs = crs)
@@ -23,6 +23,7 @@ findSeeds2 <- function(dat, siteId, xy, r, nSite, crs = "epsg:4326", threshold =
   names(posPools) <- sites
   posPools <- Filter(Negate(is.null), posPools)
   if(length(posPools) > 1) {
+    if(oType = "area"){
     datSVSub <- terra::vect(dat[dat[,siteId] %in% names(posPools),], geom = xy, crs = crs)
     posPoolsDM <- terra::distance(datSVSub, datSVSub)
     a <- pi*(r^2)
@@ -33,8 +34,28 @@ findSeeds2 <- function(dat, siteId, xy, r, nSite, crs = "epsg:4326", threshold =
     } else {
       OCs <- apply(overlap > threshold, 1, function(x) length(which(x)))
     }
-    keepers <- 1:length(OCs)
+    } else {
+      if(oType = "cells"){
+        index <- expand.grid(seq(1,length(posPools),1),seq(1,length(posPools),1))
+        ShaSi <- matrix(0, length(posPools), length(posPools))
+        AllSi <- matrix(0, length(posPools), length(posPools))
+        for (i in 1:nrow(index)){
+          ShaSi[index[i,1],index[i,2]] <- length(intersect(posPools[[index[i,1]]],posPools[[index[i,2]]]))
+          AllSi[index[i,1],index[i,2]] <- length(union(posPools[[index[i,1]]],posPools[[index[i,2]]]))
+        }
+        overlap <- ShaSi/AllSi
+        diag(overlap) <- 0
+        if(threshold > 0) {
+          OCs <- apply(overlap >= threshold, 1, function(x) length(which(x)))
+        } else {
+          OCs <- apply(overlap > threshold, 1, function(x) length(which(x)))
+        }
+      } else {
+        stop("Argument oType needs to be 'area' or 'cells'")
+      }
+    }
     if(sum(OCs) > 0){
+      keepers <- 1:length(OCs)
       while(T){
         max.o <- which(OCs == max(OCs))
         if(length(max.o) > 1){
