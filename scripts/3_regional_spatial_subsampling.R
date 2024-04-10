@@ -48,36 +48,36 @@ weightStandardisation_2 <- c(T,F)
 
 #### Generate spatial subsamples ####
 ## Not standardised for occupancy (will standardise using SQS)
-cut.biscuits(data = genera.10ma, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "/Users/tjs/R_packages/R_projects/bivbrach/data/raw_spaSub",
+cut.biscuits(data = genera.10ma, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub",
              overlapThreshold = overlapThresholds, overlapType = overlapTypes, standardiseSiteNumber = F, weightedStandardisation = weightStandardisation_1,
              taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"), name.output = "BB_gen_10ma_raw", n.cores = 4)
 
-cut.biscuits(data = genera.stages, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "/Users/tjs/R_packages/R_projects/bivbrach/data/raw_spaSub",
+cut.biscuits(data = genera.stages, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub",
              overlapThreshold = overlapThresholds, overlapType = overlapTypes, standardiseSiteNumber = F, weightedStandardisation = weightStandardisation_1,
              taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"), name.output = "BB_gen_stag_raw", n.cores = 4)
 
-cut.biscuits(data = species.10ma, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "/Users/tjs/R_packages/R_projects/bivbrach/data/raw_spaSub",
+cut.biscuits(data = species.10ma, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub",
              overlapThreshold = overlapThresholds, overlapType = overlapTypes, standardiseSiteNumber = F, weightedStandardisation = weightStandardisation_1,
              taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"), name.output = "BB_spec_10ma_raw", n.cores = 4)
 
-cut.biscuits(data = species.stages, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "/Users/tjs/R_packages/R_projects/bivbrach/data/raw_spaSub",
+cut.biscuits(data = species.stages, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub",
              overlapThreshold = overlapThresholds, overlapType = overlapTypes, standardiseSiteNumber = F, weightedStandardisation = weightStandardisation_1,
              taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"), name.output = "BB_spec_stag_raw", n.cores = 4)
 
 ## Standardised for occupancy (weighted and unweighted) <- this needs running on a cluster
-cut.biscuits(data = genera.10ma, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "/Users/tjs/R_packages/R_projects/bivbrach/data/st_spaSub",
+cut.biscuits(data = genera.10ma, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_stSub",
              overlapThreshold = overlapThresholds, overlapType = overlapTypes, standardiseSiteNumber = F, weightedStandardisation = weightStandardisation_2,
              taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"), name.output = "BB_gen_10ma_stan", n.cores = 4)
 
-cut.biscuits(data = genera.stages, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "/Users/tjs/R_packages/R_projects/bivbrach/data/st_spaSub",
+cut.biscuits(data = genera.stages, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_stSub",
              overlapThreshold = overlapThresholds, overlapType = overlapTypes, standardiseSiteNumber = F, weightedStandardisation = weightStandardisation_2,
              taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"), name.output = "BB_gen_stag_stan", n.cores = 4)
 
-cut.biscuits(data = species.10ma, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "/Users/tjs/R_packages/R_projects/bivbrach/data/st_spaSub",
+cut.biscuits(data = species.10ma, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_stSub",
              overlapThreshold = overlapThresholds, overlapType = overlapTypes, standardiseSiteNumber = F, weightedStandardisation = weightStandardisation_2,
              taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"), name.output = "BB_spec_10ma_stan", n.cores = 4)
 
-cut.biscuits(data = species.stages, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "/Users/tjs/R_packages/R_projects/bivbrach/data/st_spaSub",
+cut.biscuits(data = species.stages, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_stSub",
              overlapThreshold = overlapThresholds, overlapType = overlapTypes, standardiseSiteNumber = F, weightedStandardisation = weightStandardisation_2,
              taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"), name.output = "BB_spec_stag_stan", n.cores = 4)
 
