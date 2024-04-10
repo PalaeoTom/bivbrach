@@ -35,64 +35,59 @@ source("functions/biscuits.R")
 source("functions/cut.biscuits.R")
 
 ## Get midpoints of bins and stages
-stage.midpoints <- names(genera.stages)
-bin.midpoints <- names(genera.10ma)
-
-data = genera.stages
-siteQuota = c(3, 6, 9, 12, 15)
-r = c(100, 500, 1000, 2000)
-b.crs = 'EPSG:8857'
-b.xy = c("cellX", "cellY")
-overlapThreshold = c(0, 0.25, 0.5, 0.75, 1)
-overlapType = c("area", "sites")
-reps = 100
-biscuitWeight = F
-standardiseSiteNumber = T
-taxa = NULL
-taxa.level = NULL
-name.output <- "BB"
+#stage.midpoints <- names(genera.stages)
+#bin.midpoints <- names(genera.10ma)
 
 ## Define variables
-radii <- c(100, 500, 1000, 2000)
+radii <- c(100000, 500000, 1000000, 2000000)
 siteQuotas <- c(3, 6, 9, 12, 15)
 overlapThresholds <- c(0, 0.25, 0.5, 0.75, 1)
 overlapTypes <- c("area", "sites")
-weightedStandardisation <- F
-standardiseSiteNumber <- F
+weightStandardisation_1 <- F
+weightStandardisation_2 <- c(T,F)
 
-#### Controlling for proportion of overlapping area ####
-gen.st.ar <- cut.biscuits(data = stages.genera,
-                                        biscuitThreshold = 0.5, overlapType = "area", siteQuota = 3, r = 1000000, biscuitWeight = F, standardiseSiteNumber = F,
-                                        b.crs = 'EPSG:8857', taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+#### Generate spatial subsamples ####
+## Not standardised for occupancy (will standardise using SQS)
+cut.biscuits(data = genera.10ma, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "/Users/tjs/R_packages/R_projects/bivbrach/data/raw_spaSub",
+             overlapThreshold = overlapThresholds, overlapType = overlapTypes, standardiseSiteNumber = F, weightedStandardisation = weightStandardisation_1,
+             taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"), name.output = "BB_gen_10ma_raw", n.cores = 4)
 
-stages.spec.regions.area <- cut.biscuits(data = stages.species,
-                                         biscuitThreshold = 0.5, overlapType = "area", siteQuota = 3, r = 1000000, biscuitWeight = F, standardiseSiteNumber = F,
-                                         b.crs = 'EPSG:8857', taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+cut.biscuits(data = genera.stages, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "/Users/tjs/R_packages/R_projects/bivbrach/data/raw_spaSub",
+             overlapThreshold = overlapThresholds, overlapType = overlapTypes, standardiseSiteNumber = F, weightedStandardisation = weightStandardisation_1,
+             taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"), name.output = "BB_gen_stag_raw", n.cores = 4)
 
-bin10.gen.regions.area <- cut.biscuits(data = bin10.genera,
-                                       biscuitThreshold = 0.5, overlapType = "area", siteQuota = 3, r = 1000000, biscuitWeight = F, standardiseSiteNumber = F,
-                                       b.crs = 'EPSG:8857', taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+cut.biscuits(data = species.10ma, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "/Users/tjs/R_packages/R_projects/bivbrach/data/raw_spaSub",
+             overlapThreshold = overlapThresholds, overlapType = overlapTypes, standardiseSiteNumber = F, weightedStandardisation = weightStandardisation_1,
+             taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"), name.output = "BB_spec_10ma_raw", n.cores = 4)
 
-bin10.spec.regions.area <- cut.biscuits(data = bin10.species,
-                                        biscuitThreshold = 0.5, overlapType = "area", siteQuota = 3, r = 1000000, biscuitWeight = F, standardiseSiteNumber = F,
-                                        b.crs = 'EPSG:8857', taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+cut.biscuits(data = species.stages, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "/Users/tjs/R_packages/R_projects/bivbrach/data/raw_spaSub",
+             overlapThreshold = overlapThresholds, overlapType = overlapTypes, standardiseSiteNumber = F, weightedStandardisation = weightStandardisation_1,
+             taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"), name.output = "BB_spec_stag_raw", n.cores = 4)
 
-#### Controlling for proportion of sites matching between subsamples ####
-stages.gen.regions.sites <- cut.biscuits(data = stages.genera,
-                                         biscuitThreshold = 0.5, overlapType = "cells", siteQuota = 3, r = 1000000, biscuitWeight = F, standardiseSiteNumber = F,
-                                         b.crs = 'EPSG:8857', taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+## Standardised for occupancy (weighted and unweighted) <- this needs running on a cluster
+cut.biscuits(data = genera.10ma, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "/Users/tjs/R_packages/R_projects/bivbrach/data/st_spaSub",
+             overlapThreshold = overlapThresholds, overlapType = overlapTypes, standardiseSiteNumber = F, weightedStandardisation = weightStandardisation_2,
+             taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"), name.output = "BB_gen_10ma_stan", n.cores = 4)
 
-stages.spec.regions.sites <- cut.biscuits(data = stages.species,
-                                          biscuitThreshold = 0.5, overlapType = "cells", siteQuota = 3, r = 1000000, biscuitWeight = F, standardiseSiteNumber = F,
-                                          b.crs = 'EPSG:8857', taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+cut.biscuits(data = genera.stages, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "/Users/tjs/R_packages/R_projects/bivbrach/data/st_spaSub",
+             overlapThreshold = overlapThresholds, overlapType = overlapTypes, standardiseSiteNumber = F, weightedStandardisation = weightStandardisation_2,
+             taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"), name.output = "BB_gen_stag_stan", n.cores = 4)
 
-bin10.gen.regions.sites <- cut.biscuits(data = bin10.genera,
-                                        biscuitThreshold = 0.5, overlapType = "cells", siteQuota = 3, r = 1000000, biscuitWeight = F, standardiseSiteNumber = F,
-                                        b.crs = 'EPSG:8857', taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+cut.biscuits(data = species.10ma, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "/Users/tjs/R_packages/R_projects/bivbrach/data/st_spaSub",
+             overlapThreshold = overlapThresholds, overlapType = overlapTypes, standardiseSiteNumber = F, weightedStandardisation = weightStandardisation_2,
+             taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"), name.output = "BB_spec_10ma_stan", n.cores = 4)
 
-bin10.spec.regions.sites <- cut.biscuits(data = bin10.species,
-                                         biscuitThreshold = 0.5, overlapType = "cells", siteQuota = 3, r = 1000000, biscuitWeight = F, standardiseSiteNumber = F,
-                                         b.crs = 'EPSG:8857', taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+cut.biscuits(data = species.stages, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "/Users/tjs/R_packages/R_projects/bivbrach/data/st_spaSub",
+             overlapThreshold = overlapThresholds, overlapType = overlapTypes, standardiseSiteNumber = F, weightedStandardisation = weightStandardisation_2,
+             taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"), name.output = "BB_spec_stag_stan", n.cores = 4)
+
+#### Step 1 - get performance data on different settings. Number of viable spatial subsamples under all configurations for all datasets through time.
+
+#### Step 2 - drop non-viable time bins from each dataset ####
+
+#### Step 3 - calculate richness in different ways ####
+
+#### Step 4 - correlation tests ####
 
 #### get midpoints of ages, then remove non-viable bins ####
 source("functions/label.and.drop.R")
@@ -113,6 +108,10 @@ bin10.spec.regions.area <- label.and.drop(bin10.spec.regions.area, bin.midpoints
 ## update midpoints (for plotting later)
 bin.midpoints <- bin.midpoints[bin.midpoints %in% as.numeric(names(bin10.gen.regions.area[[1]]))]
 
+
+
+
+#### Richness function something for another script ####
 #### Use SQS to derive diversity estimate for each rep ####
 source("functions/get.richness.R")
 gen.stages <- get.richness(stages.gen.correct)
@@ -120,9 +119,4 @@ gen.bins <- get.richness(bin10.gen.correct)
 
 spec.stages <- get.richness(stages.spec.correct, taxVar = "unique_name")
 spec.bins <- get.richness(bin10.spec.correct, taxVar = "unique_name")
-
-#### Drop time bins with all NA, then drop reps with NAs ####
-
-#### Get correlation values ####
-## Should be left with time bins of cookies (possibly variable number).
 

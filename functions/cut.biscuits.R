@@ -10,7 +10,7 @@ cut.biscuits <- function(data, siteQuota, r, b.crs, output.dir,
   settings <- expand.grid(siteQuota, r, overlapThreshold, overlapType, weightedStandardisation)
   ## define identifiers for different settings and create list of settings for labelling
   params <- list(siteQuota, r, overlapThreshold, overlapType, weightedStandardisation)
-  labs <- list(paste0("sQ.",siteQuota), paste0("r.",r), paste0("oTh.",overlapThreshold), paste0("oTy.",overlapType), paste0("wS.",weightedStandardisation))
+  labs <- list(paste0("sQ",seq(1,length(siteQuota),1)), paste0("r",seq(1,length(r),1)), paste0("oTh",seq(1,length(overlapThreshold),1)), paste0("oTy",seq(1,length(overlapType),1)), paste0("wS",seq(1,length(weightedStandardisation),1)))
   ## identify invariant elements to clean up labels
   vary <- apply(settings, 2, function(x) length(unique(x))) > 1
   ## label params with labs
@@ -22,7 +22,7 @@ cut.biscuits <- function(data, siteQuota, r, b.crs, output.dir,
       ## Return the error message
       attempt <- tryCatch(biscuits(dat = data[[x]],
                                   xy = b.xy, seeding = NULL, standardiseSiteN = standardiseSiteNumber, rep = reps,
-                                  nSite = settings[i,1], threshold = settings[i,3], oType = as.character(settings[i,4]),
+                                  nSite = settings[i,1], oThreshold = settings[i,3], oType = as.character(settings[i,4]),
                                   r = settings[i,2], weight = settings[i,5],
                                   crs = b.crs, returnSeeds = F, output = 'full'), error = function(e){})
       ## If it works, keep output, if not, return NA
