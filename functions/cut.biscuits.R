@@ -1,4 +1,4 @@
-cut.biscuits <- function(data, siteQuota, r, b.crs, output.dir,
+cut.biscuits <- function(dataList, siteQuota, r, b.crs, output.dir,
                          b.xy = c("cellX", "cellY"),
                          overlapThreshold = 1, overlapType = "area",
                          reps = 100,
@@ -18,9 +18,9 @@ cut.biscuits <- function(data, siteQuota, r, b.crs, output.dir,
   ## for each row in settings, run an analysis and export
   for(i in 1:nrow(settings)){
     ## Derive a box of cookies
-    box <- mclapply(1:length(data), mc.cores = n.cores, function(x){
+    box <- mclapply(1:length(dataList), mc.cores = n.cores, function(x){
       ## Return the error message
-      attempt <- tryCatch(biscuits(dat = data[[x]],
+      attempt <- tryCatch(biscuits(dat = dataList[[x]],
                                   xy = b.xy, seeding = NULL, standardiseSiteN = standardiseSiteNumber, rep = reps,
                                   nSite = settings[i,1], oThreshold = settings[i,3], oType = as.character(settings[i,4]),
                                   r = settings[i,2], weight = settings[i,5],

@@ -72,8 +72,8 @@ findSeeds2 <- function(dat, siteId, xy, r, nSite, crs = "epsg:4326", oThreshold 
           break
         }
       }
+      finalPools <- posPools[keepers]
     }
-    finalPools <- posPools[keepers]
   } else {
     finalPools <- posPools
   }

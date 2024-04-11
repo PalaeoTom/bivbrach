@@ -39,7 +39,7 @@ source("functions/cut.biscuits.R")
 #bin.midpoints <- names(genera.10ma)
 
 ## Define variables
-radii <- c(100000, 500000, 1000000, 2000000)
+radii <- as.integer(c(100000, 500000, 1000000, 2000000))
 siteQuotas <- c(3, 6, 9, 12, 15)
 overlapThresholds <- c(0, 0.25, 0.5, 0.75, 1)
 overlapTypes <- c("area", "sites")
@@ -65,24 +65,25 @@ cut.biscuits(data = species.stages, siteQuota = siteQuotas, r = radii, b.crs = '
              taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"), name.output = "BB_spec_stag_raw", n.cores = 4)
 
 ## Standardised for occupancy (weighted and unweighted) <- this needs running on a cluster
-cut.biscuits(data = genera.10ma, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_stSub",
+cut.biscuits(data = genera.10ma, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/st_spaSub",
              overlapThreshold = overlapThresholds, overlapType = overlapTypes, standardiseSiteNumber = F, weightedStandardisation = weightStandardisation_2,
              taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"), name.output = "BB_gen_10ma_stan", n.cores = 4)
 
-cut.biscuits(data = genera.stages, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_stSub",
+cut.biscuits(data = genera.stages, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/st_spaSub",
              overlapThreshold = overlapThresholds, overlapType = overlapTypes, standardiseSiteNumber = F, weightedStandardisation = weightStandardisation_2,
              taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"), name.output = "BB_gen_stag_stan", n.cores = 4)
 
-cut.biscuits(data = species.10ma, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_stSub",
+cut.biscuits(data = species.10ma, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/st_spaSub",
              overlapThreshold = overlapThresholds, overlapType = overlapTypes, standardiseSiteNumber = F, weightedStandardisation = weightStandardisation_2,
              taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"), name.output = "BB_spec_10ma_stan", n.cores = 4)
 
-cut.biscuits(data = species.stages, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_stSub",
+cut.biscuits(data = species.stages, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/st_spaSub",
              overlapThreshold = overlapThresholds, overlapType = overlapTypes, standardiseSiteNumber = F, weightedStandardisation = weightStandardisation_2,
              taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"), name.output = "BB_spec_stag_stan", n.cores = 4)
 
 #### Step 1 - get performance data on different settings. Number of viable spatial subsamples under all configurations for all datasets through time.
-
+## This is i = 96
+test <- readRDS("~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub/BB_gen_10ma_raw_sQ1_r4_oTh5_oTy1.Rds")
 #### Step 2 - drop non-viable time bins from each dataset ####
 
 #### Step 3 - calculate richness in different ways ####
