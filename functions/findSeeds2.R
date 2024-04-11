@@ -53,8 +53,8 @@ findSeeds2 <- function(dat, siteId, xy, r, nSite, crs = "epsg:4326", oThreshold 
         stop("Argument oType needs to be 'area' or 'sites'")
       }
     }
+    keepers <- 1:length(OCs)
     if(sum(OCs) > 0){
-      keepers <- 1:length(OCs)
       while(T){
         max.o <- which(OCs == max(OCs))
         if(length(max.o) > 1){
@@ -72,8 +72,8 @@ findSeeds2 <- function(dat, siteId, xy, r, nSite, crs = "epsg:4326", oThreshold 
           break
         }
       }
-      finalPools <- posPools[keepers]
     }
+    finalPools <- posPools[keepers]
   } else {
     finalPools <- posPools
   }
