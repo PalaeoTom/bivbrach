@@ -5,7 +5,7 @@
 rm(list = ls())
 
 ## If packages aren't installed, install them, then load them
-packages <- c("divvy", "velociraptr", "dplyr", "plyr", "iNEXT", "parallel", "RColorbrewer")
+packages <- c("divvy", "velociraptr", "dplyr", "plyr", "iNEXT", "parallel", "RColorbrewer", "plyr")
 if(length(packages[!packages %in% installed.packages()[,"Package"]]) > 0){
   install.packages(packages[!packages %in% installed.packages()[,"Package"]])
 }
@@ -16,6 +16,7 @@ library(plyr)
 library(iNEXT)
 library(parallel)
 library(RColorBrewer)
+library(plyr)
 
 ## Load data
 setwd("~/R_packages/R_projects/bivbrach")
@@ -134,9 +135,9 @@ source("functions/wrap.countUsable.R")
 varGrid <- expand.grid(siteQuotas, radii/1000, overlapThresholds, overlapTypes, weightStandardisation_1)
 threshold.VC <- 15
 gen_10ma_UTBs <- wrap.countUsable(VC = BB_gen_10ma_raw_VCs, threshold.VC, varGrid, c("siteQuota", "radius", "overlapThreshold", "overlapType", "weightedStandardisation"))
-spec_10ma_UTBs <- wrap.countUsable(VC = BB_gen_10ma_raw_VCs, threshold.VC, varGrid, c("siteQuota", "radius", "overlapThreshold", "overlapType", "weightedStandardisation"))
-gen_stag_UTBs <- wrap.countUsable(VC = BB_gen_10ma_raw_VCs, threshold.VC, varGrid, c("siteQuota", "radius", "overlapThreshold", "overlapType", "weightedStandardisation"))
-spec_stag_UTBs <- wrap.countUsable(VC = BB_gen_10ma_raw_VCs, threshold.VC, varGrid, c("siteQuota", "radius", "overlapThreshold", "overlapType", "weightedStandardisation"))
+spec_10ma_UTBs <- wrap.countUsable(VC = BB_spec_10ma_raw_VCs, threshold.VC, varGrid, c("siteQuota", "radius", "overlapThreshold", "overlapType", "weightedStandardisation"))
+gen_stag_UTBs <- wrap.countUsable(VC = BB_gen_stag_raw_VCs, threshold.VC, varGrid, c("siteQuota", "radius", "overlapThreshold", "overlapType", "weightedStandardisation"))
+spec_stag_UTBs <- wrap.countUsable(VC = BB_gen_stag_raw_VCs, threshold.VC, varGrid, c("siteQuota", "radius", "overlapThreshold", "overlapType", "weightedStandardisation"))
 
 ## get combination of siteQuotas and radii
 split.vars <- expand.grid(radii/1000, siteQuotas)
@@ -150,17 +151,115 @@ gen_stag_barData <- get.VC.plot.data(UTB = gen_stag_UTBs, split.vars = split.var
 spec_stag_barData <- get.VC.plot.data(UTB = spec_stag_UTBs, split.vars = split.vars)
 
 ## plot bar charts
-View(gen_10ma_barData[[1]])
+output.dir <- "/Users/tjs/R_packages/R_projects/bivbrach/figures"
 
-labels <- c(paste0("area_", overlapThresholds),paste0("sites_", overlapThresholds))
-palette <- c(brewer.pal(5, "Blues"), brewer.pal(5, "Greens"))
+plot.UTBs <- function(data, xlab.inc = 5, output.dir, output.name){
+  home <- getwd()
+  ylim <- c(0,round_any(max(sapply(1:length(data), function(r) max(data[[r]][,"usableTimeBins"]))), 10, ceiling))
+  ylabels <- seq(0, ylim[2], xlab.inc)
+  ylabels <- ylabels[-length(ylabels)]
+  xlabels <- c(paste0("Area ", overlapThresholds*100, "%"), paste0("Sites ", overlapThresholds*100, "%"))
+  palette <- c(brewer.pal(5, "Blues"), brewer.pal(5, "Greens"))
+  setwd(output.dir)
+  ## make figure
+  par(family = "Verdana")
+  pdf(paste0(output.name, "_usableTimeBins.pdf"))
+  layout(matrix(1:20, ncol = 5), widths = c(1.6, 1, 1, 1, 1.25), heights = c(1.5, 1, 1, 1.5))
+  ## Column 1
+  par(mar = c(0, 5, 2, 0), oma = c(0,2,0,0), lwd = 1, cex.axis = 0.75, xpd = T)
+  barplot(height = data[[1]][,"usableTimeBins"], xlim = ylim, horiz = T, xaxs = "i", yaxs = "i", axes = F, names.arg = xlabels, las = 2, space = 0,
+          xlab = "", width = 0.2, col = palette, border = palette)
+  box()
+  text(x = 0, y = -5, "Radius 100km")
+  par(mar = c(0, 5, 0, 0))
+  barplot(height = data[[2]][,"usableTimeBins"], xlim = ylim, horiz = T, xaxs = "i", yaxs = "i", axes = F, names.arg = xlabels, las = 2, space = 0,
+          xlab = "", width = 0.2, col = palette, border = palette)
+  box()
+  barplot(height = data[[3]][,"usableTimeBins"], xlim = ylim, horiz = T, xaxs = "i", yaxs = "i", axes = F, names.arg = xlabels, las = 2, space = 0,
+          xlab = "", width = 0.2, col = palette, border = palette)
+  box()
+  par(mar = c(2,5,0,0))
+  barplot(height = data[[4]][,"usableTimeBins"], xlim = ylim, horiz = T, xaxs = "i", yaxs = "i", axes = F, names.arg = xlabels, las = 2, space = 0,
+          xlab = "", width = 0.2, col = palette, border = palette)
+  box()
+  axis(side = 1, las = 1, at = ylabels, cex = 0.5)
+  ## Column 2
+  par(mar = c(0, 0, 2, 0))
+  barplot(height = data[[5]][,"usableTimeBins"], xlim = ylim, horiz = T, xaxs = "i", yaxs = "i", axes = F, names.arg = NULL, las = 2, space = 0,
+          xlab = "", width = 0.2, col = palette, border = palette)
+  box()
+  par(mar = c(0, 0, 0, 0))
+  barplot(height = data[[6]][,"usableTimeBins"], xlim = ylim, horiz = T, xaxs = "i", yaxs = "i", axes = F, names.arg = NULL, las = 2, space = 0,
+          xlab = "", width = 0.2, col = palette, border = palette)
+  box()
+  barplot(height = data[[7]][,"usableTimeBins"], xlim = ylim, horiz = T, xaxs = "i", yaxs = "i", axes = F, names.arg = NULL, las = 2, space = 0,
+          xlab = "", width = 0.2, col = palette, border = palette)
+  box()
+  par(mar = c(2,0,0,0))
+  barplot(height = data[[8]][,"usableTimeBins"], xlim = ylim, horiz = T, xaxs = "i", yaxs = "i", axes = F, names.arg = NULL, las = 2, space = 0,
+          xlab = "", width = 0.2, col = palette, border = palette)
+  box()
+  axis(side = 1, las = 1, at = ylabels, cex = 0.5)
+  ## Column 3
+  par(mar = c(0, 0, 2, 0))
+  barplot(height = data[[9]][,"usableTimeBins"], xlim = ylim, horiz = T, xaxs = "i", yaxs = "i", axes = F, names.arg = NULL, las = 2, space = 0,
+          xlab = "", width = 0.2, col = palette, border = palette)
+  box()
+  par(mar = c(0, 0, 0, 0))
+  barplot(height = data[[10]][,"usableTimeBins"], xlim = ylim, horiz = T, xaxs = "i", yaxs = "i", axes = F, names.arg = NULL, las = 2, space = 0,
+          xlab = "", width = 0.2, col = palette, border = palette)
+  box()
+  barplot(height = data[[11]][,"usableTimeBins"], xlim = ylim, horiz = T, xaxs = "i", yaxs = "i", axes = F, names.arg = NULL, las = 2, space = 0,
+          xlab = "", width = 0.2, col = palette, border = palette)
+  box()
+  par(mar = c(2,0,0,0))
+  barplot(height = data[[12]][,"usableTimeBins"], xlim = ylim, horiz = T, xaxs = "i", yaxs = "i", axes = F, names.arg = NULL, las = 2, space = 0,
+          xlab = "", width = 0.2, col = palette, border = palette)
+  box()
+  axis(side = 1, las = 1, at = ylabels, cex = 0.5)
+  ## Column 4
+  par(mar = c(0, 0, 2, 0))
+  barplot(height = data[[13]][,"usableTimeBins"], xlim = ylim, horiz = T, xaxs = "i", yaxs = "i", axes = F, names.arg = NULL, las = 2, space = 0,
+          xlab = "", width = 0.2, col = palette, border = palette)
+  box()
+  par(mar = c(0, 0, 0, 0))
+  barplot(height = data[[14]][,"usableTimeBins"], xlim = ylim, horiz = T, xaxs = "i", yaxs = "i", axes = F, names.arg = NULL, las = 2, space = 0,
+          xlab = "", width = 0.2, col = palette, border = palette)
+  box()
+  barplot(height = data[[15]][,"usableTimeBins"], xlim = ylim, horiz = T, xaxs = "i", yaxs = "i", axes = F, names.arg = NULL, las = 2, space = 0,
+          xlab = "", width = 0.2, col = palette, border = palette)
+  box()
+  par(mar = c(2,0,0,0))
+  barplot(height = data[[16]][,"usableTimeBins"], xlim = ylim, horiz = T, xaxs = "i", yaxs = "i", axes = F, names.arg = NULL, las = 2, space = 0,
+          xlab = "", width = 0.2, col = palette, border = palette)
+  box()
+  axis(side = 1, las = 1, at = ylabels, cex = 0.5)
+  ## Column 5
+  par(mar = c(0, 0, 2, 2))
+  barplot(height = data[[17]][,"usableTimeBins"], xlim = ylim, horiz = T, xaxs = "i", yaxs = "i", axes = F, names.arg = NULL, las = 2, space = 0,
+          xlab = "", width = 0.2, col = palette, border = palette)
+  box()
+  par(mar = c(0, 0, 0, 2))
+  barplot(height = data[[18]][,"usableTimeBins"], xlim = ylim, horiz = T, xaxs = "i", yaxs = "i", axes = F, names.arg = NULL, las = 2, space = 0,
+          xlab = "", width = 0.2, col = palette, border = palette)
+  box()
+  barplot(height = data[[19]][,"usableTimeBins"], xlim = ylim, horiz = T, xaxs = "i", yaxs = "i", axes = F, names.arg = NULL, las = 2, space = 0,
+          xlab = "", width = 0.2, col = palette, border = palette)
+  box()
+  par(mar = c(2,0,0,2))
+  barplot(height = data[[20]][,"usableTimeBins"], xlim = ylim, horiz = T, xaxs = "i", yaxs = "i", axes = F, names.arg = NULL, las = 2, space = 0,
+          xlab = "", width = 0.2, col = palette, border = palette)
+  box()
+  axis(side = 1, las = 1, at = ylabels, cex = 0.5)
+  dev.off()
+  setwd(home)
+}
 
-title <- paste0("Radius ", split.vars[1,1], " ", "siteQuota ", split.vars[1,2])
-
-## function for getting plotting data for bar charts for combinations of two variables
-
-
-
+## Plot figures - add labels in post
+plot.UTBs(data = gen_stag_barData, output.dir = output.dir, output.name = "genera_stages", xlab.inc = 10)
+plot.UTBs(data = spec_stag_barData, output.dir = output.dir, output.name = "species_stages", xlab.inc = 10)
+plot.UTBs(data = gen_10ma_barData, output.dir = output.dir, output.name = "genera_10ma")
+plot.UTBs(data = spec_10ma_barData, output.dir = output.dir, output.name = "species_10ma")
 
 
 #### Step 2 - drop non-viable time bins from each dataset ####
