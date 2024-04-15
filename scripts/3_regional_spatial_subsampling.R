@@ -63,25 +63,25 @@ cut.biscuits(data = species.stages, siteQuota = siteQuotas, r = radii, b.crs = '
 
 ## Standardised for occupancy (weighted and unweighted) <- this needs running on a cluster
 ## Try subsampling with and without weighting of cells
-weightStandardisation_2 <- c(T,F)
+#weightStandardisation_2 <- c(T,F)
 
-cut.biscuits(data = genera.10ma, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/st_spaSub",
-             overlapThreshold = overlapThresholds, overlapType = overlapTypes, standardiseSiteNumber = F, weightedStandardisation = weightStandardisation_2,
-             taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"), name.output = "BB_gen_10ma_stan", n.cores = 4)
+#cut.biscuits(data = genera.10ma, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/st_spaSub",
+#             overlapThreshold = overlapThresholds, overlapType = overlapTypes, standardiseSiteNumber = F, weightedStandardisation = weightStandardisation_2,
+#             taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"), name.output = "BB_gen_10ma_stan", n.cores = 4)
 
-cut.biscuits(data = genera.stages, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/st_spaSub",
-             overlapThreshold = overlapThresholds, overlapType = overlapTypes, standardiseSiteNumber = F, weightedStandardisation = weightStandardisation_2,
-             taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"), name.output = "BB_gen_stag_stan", n.cores = 4)
+#cut.biscuits(data = genera.stages, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/st_spaSub",
+#             overlapThreshold = overlapThresholds, overlapType = overlapTypes, standardiseSiteNumber = F, weightedStandardisation = weightStandardisation_2,
+#             taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"), name.output = "BB_gen_stag_stan", n.cores = 4)
 
-cut.biscuits(data = species.10ma, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/st_spaSub",
-             overlapThreshold = overlapThresholds, overlapType = overlapTypes, standardiseSiteNumber = F, weightedStandardisation = weightStandardisation_2,
-             taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"), name.output = "BB_spec_10ma_stan", n.cores = 4)
+#cut.biscuits(data = species.10ma, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/st_spaSub",
+#             overlapThreshold = overlapThresholds, overlapType = overlapTypes, standardiseSiteNumber = F, weightedStandardisation = weightStandardisation_2,
+#             taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"), name.output = "BB_spec_10ma_stan", n.cores = 4)
 
-cut.biscuits(data = species.stages, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/st_spaSub",
-             overlapThreshold = overlapThresholds, overlapType = overlapTypes, standardiseSiteNumber = F, weightedStandardisation = weightStandardisation_2,
-             taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"), name.output = "BB_spec_stag_stan", n.cores = 4)
+#cut.biscuits(data = species.stages, siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/st_spaSub",
+#             overlapThreshold = overlapThresholds, overlapType = overlapTypes, standardiseSiteNumber = F, weightedStandardisation = weightStandardisation_2,
+#             taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"), name.output = "BB_spec_stag_stan", n.cores = 4)
 
-#### Step 1 - get performance data on different settings. Number of viable spatial subsamples under all configurations for all datasets through time.
+#### Step 1 - get performance data on different settings. Number of viable spatial subsamples under all configurations for all datasets through time ####
 source("functions/count.viable.samples.R")
 dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub"
 vars <- list(paste0("sQ",seq(1,length(siteQuotas),1)), paste0("r",seq(1,length(radii),1)), paste0("oTh",seq(1,length(overlapThresholds),1)), paste0("oTy",seq(1,length(overlapTypes),1)))
@@ -160,50 +160,21 @@ plot.UTBs(data = spec_stag_barData, output.dir = output.dir, output.name = "spec
 plot.UTBs(data = gen_10ma_barData, output.dir = output.dir, output.name = "genera_10ma")
 plot.UTBs(data = spec_10ma_barData, output.dir = output.dir, output.name = "species_10ma")
 
-
 #### Step 2 - drop non-viable time bins from each dataset ####
+## Load function and static arguments
+source("functions/drop.unusable.bins.R")
+input.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub"
+output.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub"
+vars <- list(paste0("sQ",seq(1,length(siteQuotas),1)), paste0("r",seq(1,length(radii),1)), paste0("oTh",seq(1,length(overlapThresholds),1)), paste0("oTy",seq(1,length(overlapTypes),1)))
+taxa <- T
+threshold = threshold.VC = 15
 
-## get time data for stage and 10ma midpoints
-## Get midpoints of bins and stages
-stage.midpoints <- as.numeric(names(genera.stages))
-bin.midpoints <- as.numeric(names(genera.10ma))
-
-## which time bins have no data
-gen.10ma.EBs <- bin.midpoints[which(colSums(BB_gen_10ma_raw_VCs) == 0)]
-spec.10ma.EBs <- bin.midpoints[which(colSums(BB_spec_10ma_raw_VCs) == 0)]
-gen.stag.EBs <- stage.midpoints[which(colSums(BB_gen_stag_raw_VCs) == 0)]
-spec.stag.EBs <- stage.midpoints[which(colSums(BB_spec_stag_raw_VCs) == 0)]
-
-#### get midpoints of ages, then remove non-viable bins ####
-source("functions/label.and.drop.R")
-
-### First, let's do samples where amount of area overlapping is controlled
-## label both stage data objects and drop NAs
-stages.gen.regions.area <- label.and.drop(stages.gen.regions.area, stage.midpoints)
-stages.spec.regions.area <- label.and.drop(stages.spec.regions.area, stage.midpoints)
-
-## update midpoints vector for later
-stage.midpoints <- stage.midpoints[stage.midpoints %in% as.numeric(names(stages.gen.regions.area[[1]]))]
-
-## now to do the same for 10ma time bins
-## label and drop
-bin10.gen.regions.area <- label.and.drop(bin10.gen.regions.area, bin.midpoints)
-bin10.spec.regions.area <- label.and.drop(bin10.spec.regions.area, bin.midpoints)
-
-## update midpoints (for plotting later)
-bin.midpoints <- bin.midpoints[bin.midpoints %in% as.numeric(names(bin10.gen.regions.area[[1]]))]
-
-#### Step 3 - calculate richness in different ways ####
-
-#### Step 4 - correlation tests ####
-
-
-#### Richness function something for another script ####
-#### Use SQS to derive diversity estimate for each rep ####
-source("functions/get.richness.R")
-gen.stages <- get.richness(stages.gen.correct)
-gen.bins <- get.richness(bin10.gen.correct)
-
-spec.stages <- get.richness(stages.spec.correct, taxVar = "unique_name")
-spec.bins <- get.richness(bin10.spec.correct, taxVar = "unique_name")
-
+## Run functions
+drop.unusable.bins(input.dir = input.dir, input.pre = "BB_gen_stag_raw", output.dir = output.dir, output.pre = "BB_gen_stag_raw_viableTimeBins",
+                   vars = vars, sD = genera.stages, threshold = threshold.VC, taxa = T)
+drop.unusable.bins(input.dir = input.dir, input.pre = "BB_gen_10ma_raw", output.dir = output.dir, output.pre = "BB_gen_10ma_raw_viableTimeBins",
+                   vars = vars, sD = genera.10ma, threshold = threshold.VC, taxa = T)
+drop.unusable.bins(input.dir = input.dir, input.pre = "BB_spec_stag_raw", output.dir = output.dir, output.pre = "BB_spec_stag_raw_viableTimeBins",
+                   vars = vars, sD = species.stages, threshold = threshold.VC, taxa = T)
+drop.unusable.bins(input.dir = input.dir, input.pre = "BB_spec_10ma_raw", output.dir = output.dir, output.pre = "BB_spec_10ma_raw_viableTimeBins",
+                   vars = vars, sD = species.10ma, threshold = threshold.VC, taxa = T)
