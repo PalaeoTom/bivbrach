@@ -6,8 +6,6 @@ count.viable.samples <- function(dir, pre, vars, sD, n.cores, output.dir, output
   cLabs <- names(sD)
   rLabs <- sapply(1:nrow(combin), function(x) paste(unlist(combin[x,]), collapse = "_"))
   dirs <- sapply(1:length(rLabs), function(x) paste0(dir, "/", pre, "_", rLabs[x], ".Rds"))
-  ## create output object - ncol = number of time bins
-  #output <- matrix(0, ncol = length(cLabs), nrow = length(rLabs))
   ## populate output object
   output <- do.call(rbind,mclapply(1:length(rLabs), mc.cores = n.cores, function(r){
     data <- readRDS(dirs[r])

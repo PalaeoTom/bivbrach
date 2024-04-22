@@ -24,13 +24,10 @@ setwd("~/R_packages/R_projects/bivbrach")
 home <- getwd()
 genera.10ma <- readRDS("data/BB_genera_10maBins.Rds")
 genera.stages <- readRDS("data/BB_genera_stageBins.Rds")
-species.stages <- readRDS("data/BB_species_stageBins.Rds")
 times.10ma <- names(genera.10ma)
 times.stag <- names(genera.stages)
 
-## Set working directory, input, and output directories
-setwd("~/R_packages/R_projects/bivbrach")
-home <- getwd()
+## Set input, and output directories
 input.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub"
 output.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_regRich"
 source("functions/get.regional.richness.R")
@@ -51,8 +48,3 @@ get.regional.richness(input.dir = input.dir, input.pre = "BB_spec_stag_raw_viabl
 get.regional.richness(input.dir = input.dir, input.pre = "BB_spec_10ma_raw_viableTimeBins", output.dir = output.dir, output.pre = "BB_spec_10ma_raw_SQS",
                       vars = vars, times = times.stag, SQS = T, coverage = 0.9, taxa = T, n.cores = 4, taxVar = "unique_name", rareVar = "collection_no",
                       min.rareVar = 2, min.taxVar = 2, alt.value = "none")
-
-
-
-
-

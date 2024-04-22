@@ -9,7 +9,7 @@ plot.UTBs <- function(data, xlab.inc = 5, output.dir, output.name){
   ## make figure
   par(family = "Verdana")
   pdf(paste0(output.name, "_usableTimeBins.pdf"))
-  layout(matrix(1:20, ncol = 5), widths = c(1.6, 1, 1, 1, 1.25), heights = c(1.5, 1, 1, 1.5))
+  layout(matrix(1:20, ncol = 5), widths = c(1.6, 1, 1, 1, 1.25), heights = c(1, 1, 1, 1.3))
   ## Column 1
   par(mar = c(0, 5, 2, 0), oma = c(0,2,0,0), lwd = 1, cex.axis = 0.75, xpd = T)
   barplot(height = data[[1]][,"usableTimeBins"], xlim = ylim, horiz = T, xaxs = "i", yaxs = "i", axes = F, names.arg = xlabels, las = 2, space = 0,

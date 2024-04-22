@@ -9,12 +9,11 @@ setwd("~/R_packages/R_projects/bivbrach")
 home <- getwd()
 
 ## If packages aren't installed, install them, then load them
-packages <- c("fossilbrush", "velociraptr", "rnaturalearth", "rnaturalearthdata", "terra", "divDyn", "iNEXT", "divvy")
+packages <- c("fossilbrush", "rnaturalearth", "rnaturalearthdata", "terra", "divDyn", "iNEXT", "divvy")
 if(length(packages[!packages %in% installed.packages()[,"Package"]]) > 0){
   install.packages(packages[!packages %in% installed.packages()[,"Package"]])
 }
 library(fossilbrush)
-library(velociraptr)
 library(rnaturalearth)
 library(rnaturalearthdata)
 library(terra)
@@ -134,31 +133,6 @@ PBDB_species$unique_name <- paste(PBDB_species$phylum, PBDB_species$accepted_nam
 #unac <- which(!PBDB_species$accepted_rank %in% "species")
 #PBDB_species$unique_name[unac] <- paste(PBDB_species$phylum[unac], PBDB_species$short_name[unac])
 
-#### Rasterising data ####
-# initialise Equal Earth projected coordinates
-rWorld <- rast()
-prj <- 'EPSG:8857'
-rPrj <- project(rWorld, prj, res = 200000) # 200,000m is approximately 2 degrees
-values(rPrj) <- 1:ncell(rPrj)
-
-# coordinate column names for the current and target coordinate reference system
-xyCartes <- c('paleolng','paleolat')
-xyCell   <- c('cellX','cellY')
-
-# extract cell number and centroid coordinates associated with each occurrence
-llOccs_genera <- vect(PBDB_genera, geom = xyCartes, crs = 'epsg:4326')
-prjOccs_genera <- project(llOccs_genera, prj)
-
-llOccs_species <- vect(PBDB_species, geom = xyCartes, crs = 'epsg:4326')
-prjOccs_species <- project(llOccs_species, prj)
-
-# add cell number and coordinate for each occurrence
-PBDB_genera$cell <- cells(rPrj, prjOccs_genera)[,'cell']
-PBDB_genera[, xyCell] <- xyFromCell(rPrj, PBDB_genera$cell)
-
-PBDB_species$cell <- cells(rPrj, prjOccs_species)[,'cell']
-PBDB_species[, xyCell] <- xyFromCell(rPrj, PBDB_species$cell)
-
 #### Determine environment of each cell ####
 ## Doing this before standardising data in each cell (and losing more data)
 ## Define variables for search
@@ -196,19 +170,69 @@ b.species[PBDB_species$environment %in% deep] <- "d"
 env_axes <- 'bathnow'
 PBDB_species <- cbind(PBDB_species, data.frame('bathnow'=b.species, stringsAsFactors=TRUE))
 
-## Not able to fill in gaps without new environmental data. Need to run other function at some point.
+#### Rasterising data ####
+# initialise Equal Earth projected coordinates
+rWorld <- rast()
+prj <- 'EPSG:8857'
+## Try different size grid cells
+rPrj_200 <- project(rWorld, prj, res = 200000) # 200km is approximately 2 degrees
+values(rPrj_200) <- 1:ncell(rPrj_200)
 
-#### Standardise data
-source("functions/standardiseCells.R")
-coll.min <- 10
-ref.min <- 5
-multiton.min <- 0.3
+rPrj_100 <- project(rWorld, prj, res = 100000) # 100km is approximately 1 degrees
+values(rPrj_100) <- 1:ncell(rPrj_100)
 
-## Standardise for collection number, reference number, and multiton ratio ##
-PBDB_genera_s <- standardiseCells(PBDB_genera, collMinimum = coll.min, refMinimum = ref.min, multitonRatioMin = multiton.min, level = "genera")
-PBDB_species_s <- standardiseCells(PBDB_species, collMinimum = coll.min, refMinimum = ref.min, multitonRatioMin = multiton.min, level = "species")
+rPrj_50 <- project(rWorld, prj, res = 50000) # 50km is approximately 0.5 degrees
+values(rPrj_50) <- 1:ncell(rPrj_50)
+
+rPrj_25 <- project(rWorld, prj, res = 25000) # 25km is approximately 0.25 degrees
+values(rPrj_25) <- 1:ncell(rPrj_25)
+
+# coordinate column names for the current and target coordinate reference system
+xyCartes <- c('paleolng','paleolat')
+xyCell   <- c('cellX','cellY')
+
+# get centroid coordinates associated with each occurrence
+llOccs_genera <- vect(PBDB_genera, geom = xyCartes, crs = 'epsg:4326')
+prjOccs_genera <- project(llOccs_genera, prj)
+
+llOccs_species <- vect(PBDB_species, geom = xyCartes, crs = 'epsg:4326')
+prjOccs_species <- project(llOccs_species, prj)
+
+# add cell number and coordinate for each gridding system
+genera_200 <- genera_100 <- genera_50 <- genera_25 <- PBDB_genera
+species_200 <- species_100 <- species_50 <- species_25 <- PBDB_species
+
+genera_200$cell <- cells(rPrj_200, prjOccs_genera)[,'cell']
+genera_200[, xyCell] <- xyFromCell(rPrj_200, genera_200$cell)
+
+species_200$cell <- cells(rPrj_200, prjOccs_species)[,'cell']
+species_200[, xyCell] <- xyFromCell(rPrj_200, species_200$cell)
+
+genera_100$cell <- cells(rPrj_100, prjOccs_genera)[,'cell']
+genera_100[, xyCell] <- xyFromCell(rPrj_100, genera_100$cell)
+
+species_100$cell <- cells(rPrj_100, prjOccs_species)[,'cell']
+species_100[, xyCell] <- xyFromCell(rPrj_100, species_100$cell)
+
+genera_50$cell <- cells(rPrj_50, prjOccs_genera)[,'cell']
+genera_50[, xyCell] <- xyFromCell(rPrj_50, genera_50$cell)
+
+species_50$cell <- cells(rPrj_50, prjOccs_species)[,'cell']
+species_50[, xyCell] <- xyFromCell(rPrj_50, species_50$cell)
+
+genera_25$cell <- cells(rPrj_25, prjOccs_genera)[,'cell']
+genera_25[, xyCell] <- xyFromCell(rPrj_25, genera_25$cell)
+
+species_25$cell <- cells(rPrj_25, prjOccs_species)[,'cell']
+species_25[, xyCell] <- xyFromCell(rPrj_25, species_25$cell)
 
 ## Export polished files
-saveRDS(PBDB_genera_s, file = "data/PBDB_BB_genera.Rds")
-saveRDS(PBDB_species_s, file = "data/PBDB_BB_species.Rds")
+saveRDS(genera_200, file = "data/genera_200.Rds")
+saveRDS(species_200, file = "data/species_200.Rds")
+saveRDS(genera_100, file = "data/genera_100.Rds")
+saveRDS(species_100, file = "data/species_100.Rds")
+saveRDS(genera_50, file = "data/genera_50.Rds")
+saveRDS(species_50, file = "data/species_50.Rds")
+saveRDS(genera_25, file = "data/genera_25.Rds")
+saveRDS(species_25, file = "data/species_25.Rds")
 
