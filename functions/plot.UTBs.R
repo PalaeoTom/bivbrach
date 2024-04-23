@@ -1,6 +1,6 @@
-plot.UTBs <- function(data, xlab.inc = 5, output.dir, output.name){
+plot.UTBs <- function(data, xlab.inc = 1, output.dir, output.name){
   home <- getwd()
-  ylim <- c(0,round_any(max(sapply(1:length(data), function(r) max(data[[r]][,"usableTimeBins"]))), 10, ceiling))
+  ylim <- c(0,round_any(max(sapply(1:length(data), function(r) max(data[[r]][,"usableTimeBins"]))), 1, ceiling))
   ylabels <- seq(0, ylim[2], xlab.inc)
   ylabels <- ylabels[-length(ylabels)]
   xlabels <- c(paste0("Area ", overlapThresholds*100, "%"), paste0("Sites ", overlapThresholds*100, "%"))
@@ -9,9 +9,9 @@ plot.UTBs <- function(data, xlab.inc = 5, output.dir, output.name){
   ## make figure
   par(family = "Verdana")
   pdf(paste0(output.name, "_usableTimeBins.pdf"))
-  layout(matrix(1:20, ncol = 5), widths = c(1.6, 1, 1, 1, 1.25), heights = c(1, 1, 1, 1.3))
+  layout(matrix(1:20, ncol = 5), widths = c(1.6, 1, 1, 1, 1.25), heights = c(1.1, 1, 1, 1.1))
   ## Column 1
-  par(mar = c(0, 5, 2, 0), oma = c(0,2,0,0), lwd = 1, cex.axis = 0.75, xpd = T)
+  par(mar = c(0, 5, 2, 0), oma = c(0,0,0,0), lwd = 1, cex.axis = 0.75, xpd = T)
   barplot(height = data[[1]][,"usableTimeBins"], xlim = ylim, horiz = T, xaxs = "i", yaxs = "i", axes = F, names.arg = xlabels, las = 2, space = 0,
           xlab = "", width = 0.2, col = palette, border = palette)
   box()
