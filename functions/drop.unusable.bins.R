@@ -9,6 +9,13 @@ drop.unusable.bins <- function(input.dir, input.pre, output.dir, output.pre, var
     data <- readRDS(input.dirs[x])
     ## Prune out missing bits
     if(taxa){
+      ## if all time bins NA for both taxa, skip
+      check <- sapply(1:length(data), function(x){
+        perTaxon <- sapply(1:length(data[[x]]), function(y) all(is.na(data[[x]][[y]])))
+      })
+      if(all(check)){
+        next
+      } else {
       ## initialise drop vector
       drop.list <- list()
       ## for each element in data, identify NAs and then drop all
@@ -16,9 +23,14 @@ drop.unusable.bins <- function(input.dir, input.pre, output.dir, output.pre, var
         names(data[[i]]) <- times
         drop.vector <- c()
         for(d in 1:length(data[[i]])){
-          ## if fewer viable spatial subsamples than threshold (2 minimum)
-          if(length(data[[i]][[d]]) < threshold){
+          if(all(is.na(data[[i]][[d]]))){
+            ## if na, add
             drop.vector <- c(drop.vector,d)
+          } else {
+            ## if fewer viable spatial subsamples than threshold (2 minimum)
+            if(length(data[[i]][[d]]) < threshold){
+              drop.vector <- c(drop.vector,d)
+            }
           }
         }
         drop.list[[i]] <- drop.vector
@@ -32,13 +44,22 @@ drop.unusable.bins <- function(input.dir, input.pre, output.dir, output.pre, var
         }
       }
       saveRDS(data, output.dirs[x])
+      }
     } else {
+      check <- sapply(1:length(data), function(y) all(is.na(data[[y]])))
+      if(all(check)){
+        next
+      } else {
       names(data) <- times
       TBD <- c()
       for(d in 1:length(data)){
         ## if fewer viable spatial subsamples than threshold
-        if(length(data[[d]]) < threshold){
+        if(all(is.na(data[[d]]))){
           TBD <- c(TBD,d)
+        } else {
+          if(length(data[[d]]) < threshold){
+            TBD <- c(TBD,d)
+          }
         }
       }
       ## if drop vector length exceeds 0, reduce to unique entries, then drop
@@ -46,6 +67,7 @@ drop.unusable.bins <- function(input.dir, input.pre, output.dir, output.pre, var
         data <- data[-TBD]
       }
       saveRDS(data, output.dirs[x])
+      }
     }
   }
 }

@@ -1,17 +1,15 @@
-get.regional.richness <- function(input.dir, input.pre, output.dir, output.pre, vars, times,
-                                  SQS = T, coverage = 0.9, taxa = T, n.cores = 1, taxVar = "genus", rareVar = "collection_no", min.rareVar = 2, min.taxVar = 2,
-                                  alt.value = "none"){
+get.regional.richness <- function(input.dir, input.pre, output.dir, output.pre, vars, SQS = T, coverage = 0.9, taxa = T, n.cores = 1, taxVar = "genus", rareVar = "collection_no", min.rareVar = 2, min.taxVar = 2, min.taxRareVar.alt = "none", noAbsence.alt = "none", exceedExtrap.alt = "none", omit.NAs = T){
   combin <- expand.grid(vars)
   varStrings <- sapply(1:nrow(combin), function(x) paste(unlist(combin[x,]), collapse = "_"))
   input.dirs <- paste0(input.dir, "/", input.pre, "_", varStrings, ".Rds")
-  output.dirs <- paste0(output.dir, "/", output.pre, "_", varStrings, ".Rds")
+  output.dirs <- paste0(output.dir, "/", output.pre, "_", varStrings, ".csv")
   if(taxa){
     ## for each input.dirs
     for(d in 1:length(input.dirs)){
       ## read in data
-      data <- readRDS(input.dirs[d])
-      ## if no viable time bins, skip to next generation
-      if(length(data[[1]]) < 1){
+      data <- suppressWarnings(tryCatch(readRDS(input.dirs[d]), error = function(e){}))
+      ## if data is NULL, skip to next
+      if(is.null(data)){
         next
       } else {
         taxa.labels <- names(data)
@@ -37,39 +35,39 @@ get.regional.richness <- function(input.dir, input.pre, output.dir, output.pre, 
                     if(any(pa == 0)){
                       ifpa <- as.incfreq(pa)
                       att <- suppressWarnings(estimateD(ifpa, q = 0, datatype = "incidence_freq", base = "coverage", level = coverage))
-                      ## if extrapolation beyond twice number of collections, defer to alt.value
+                      ## if extrapolation beyond twice number of collections, defer to exceedExtrap.alt
                       if(att$t > (ifpa[1]*2)){
-                        if(alt.value == "none"){
+                        if(exceedExtrap.alt == "none"){
                           out <- NA
                         } else {
-                          if(alt.value == "raw"){
+                          if(exceedExtrap.alt == "raw"){
                             out <- length(ut)
                           } else {
-                            stop("argument alt.value needs to be 'none' or 'raw'")
+                            stop("argument exceedExtrap.alt needs to be 'none' or 'raw'")
                           }
                         }
                       } else {
                         out <- att$qD
                       }
                     } else {
-                      if(alt.value == "none"){
+                      if(noAbsence.alt == "none"){
                         out <- NA
                       } else {
-                        if(alt.value == "raw"){
+                        if(noAbsence.alt == "raw"){
                           out <- length(ut)
                         } else {
-                          stop("argument alt.value needs to be 'none' or 'raw'")
+                          stop("argument noAbsence.alt needs to be 'none' or 'raw'")
                         }
                       }
                     }
                   } else {
-                    if(alt.value == "none"){
+                    if(min.taxRareVar.alt == "none"){
                       out <- NA
                     } else {
-                      if(alt.value == "raw"){
+                      if(min.taxRareVar.alt == "raw"){
                         out <- length(ut)
                       } else {
-                        stop("argument alt.value needs to be 'none' or 'raw'")
+                        stop("argument min.taxRareVar.alt needs to be 'none' or 'raw'")
                       }
                     }
                   }
@@ -79,7 +77,7 @@ get.regional.richness <- function(input.dir, input.pre, output.dir, output.pre, 
                 return(out)
               })
             })
-            colnames(per.taxon) <- taxa.labels
+            names(per.taxon) <- taxa.labels
             return(per.taxon)
           })
           names(output) <- time.labels
@@ -104,8 +102,29 @@ get.regional.richness <- function(input.dir, input.pre, output.dir, output.pre, 
           names(output) <- time.labels
         }
       }
+      ## get times column
+      times.out <- c()
+      for(i in 1:length(time.labels)){
+        if(length(output[[i]]) > 2){
+          times.out <- c(times.out,rep(time.labels[i],nrow(output[[i]])))
+        } else {
+          times.out <- c(times.out, time.labels[i])
+        }
+      }
+      ## reformat outputs
+      output.mat <- cbind(times.out, do.call(rbind, output))
+      colnames(output.mat) <- c("times", taxa.labels)
+      rownames(output.mat) <- NULL
+      ## if na.omit true, drop rows with NAs
+      if(omit.NAs){
+        output.mat <- output.mat[-which(apply(output.mat, 1, function(x) any(is.na(x)))),]
+        if(nrow(output.mat)>0){
+          write.csv(output.mat, output.dirs[d])
+        }
+      } else {
       ## Save output here
-      saveRDS(output, output.dirs[d])
+      write.csv(output.mat, output.dirs[d])
+      }
     }
   } else {
     stop("Tom has been lazy and hasn't written the version of this function that doesn't work over outputs split by Taxa. Bug him to do this.")

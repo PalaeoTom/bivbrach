@@ -201,7 +201,7 @@ source("functions/wrap.countUsable.R")
 
 ## get grid of variable combination
 varGrid <- expand.grid(siteQuotas, radii/1000, overlapThresholds, overlapTypes, weightStandardisation_1)
-threshold.VC <- 15
+threshold.VC <- 10
 
 ## count usable bins and format
 bin10.g200.UTBs <- wrap.countUsable(VC = bin10.g200.VCs, threshold.VC, varGrid, c("siteQuota", "radius", "overlapThreshold", "overlapType", "weightedStandardisation"))
@@ -267,7 +267,7 @@ bin10.input.strings <- c("bin10.g200.barData", "bin10.g100.barData", "bin10.g50.
 
 ## Plot stages data
 for(i in 1:length(stages.input.strings)){
-  plot.UTBs(data = eval(parse(text=stages.input.strings[i])), output.dir = output.dir, output.name = stages.output.name[i], xlab.inc = 10)
+  plot.UTBs(data = eval(parse(text=stages.input.strings[i])), output.dir = output.dir, output.name = stages.output.name[i])
 }
 
 ## Plot bin10 data
@@ -275,10 +275,7 @@ for(i in 1:length(bin10.input.strings)){
   plot.UTBs(data = eval(parse(text=bin10.input.strings[i])), output.dir = output.dir, output.name = bin10.output.name[i])
 }
 
-
 #### Carry on working from here!!! ####
-
-
 
 #### Step 2 - drop non-viable time bins from each dataset ####
 ## Load function and static arguments
@@ -287,14 +284,30 @@ input.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub"
 output.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub"
 vars <- list(paste0("sQ",seq(1,length(siteQuotas),1)), paste0("r",seq(1,length(radii),1)), paste0("oTh",seq(1,length(overlapThresholds),1)), paste0("oTy",seq(1,length(overlapTypes),1)))
 taxa <- T
-threshold = threshold.VC = 15
+threshold = threshold.VC = 1
+prefix.vector <- c("bin10_g200_raw","bin10_g100_raw","bin10_g50_raw","bin10_g25_raw","bin10_s200_raw","bin10_s100_raw","bin10_s50_raw","bin10_s25_raw",
+                                    "stages_g200_raw", "stages_g100_raw","stages_g50_raw","stages_g25_raw","stages_s200_raw","stages_s100_raw","stages_s50_raw","stages_s25_raw")
+out.pre.vector <- c("bin10_g200_raw_viableTimeBins","bin10_g100_raw_viableTimeBins","bin10_g50_raw_viableTimeBins","bin10_g25_raw_viableTimeBins","bin10_s200_raw_viableTimeBins","bin10_s100_raw_viableTimeBins","bin10_s50_raw_viableTimeBins","bin10_s25_raw_viableTimeBins",
+                                    "stages_g200_raw_viableTimeBins","stages_g100_raw_viableTimeBins","stages_g50_raw_viableTimeBins","stages_g25_raw_viableTimeBins","stages_s200_raw_viableTimeBins","stages_s100_raw_viableTimeBins","stages_s50_raw_viableTimeBins","stages_s25_raw_viableTimeBins")
+data.strings <- c("bin10.g200",
+                  "bin10.g100",
+                  "bin10.g50",
+                  "bin10.g25",
+                  "bin10.s200",
+                  "bin10.s100",
+                  "bin10.s50",
+                  "bin10.s25",
+                  "stages.g200",
+                  "stages.g100",
+                  "stages.g50",
+                  "stages.g25",
+                  "stages.s200",
+                  "stages.s100",
+                  "stages.s50",
+                  "stages.s25")
 
-## Run functions
-drop.unusable.bins(input.dir = input.dir, input.pre = "BB_gen_stag_raw", output.dir = output.dir, output.pre = "BB_gen_stag_raw_viableTimeBins",
-                   vars = vars, sD = genera.stages, threshold = threshold.VC, taxa = T)
-drop.unusable.bins(input.dir = input.dir, input.pre = "BB_gen_10ma_raw", output.dir = output.dir, output.pre = "BB_gen_10ma_raw_viableTimeBins",
-                   vars = vars, sD = genera.10ma, threshold = threshold.VC, taxa = T)
-drop.unusable.bins(input.dir = input.dir, input.pre = "BB_spec_stag_raw", output.dir = output.dir, output.pre = "BB_spec_stag_raw_viableTimeBins",
-                   vars = vars, sD = species.stages, threshold = threshold.VC, taxa = T)
-drop.unusable.bins(input.dir = input.dir, input.pre = "BB_spec_10ma_raw", output.dir = output.dir, output.pre = "BB_spec_10ma_raw_viableTimeBins",
-                   vars = vars, sD = species.10ma, threshold = threshold.VC, taxa = T)
+## Run function
+for(i in 1:length(out.pre.vector)){
+  drop.unusable.bins(input.dir = input.dir, input.pre = prefix.vector[i], output.dir = output.dir, output.pre = out.pre.vector[i],
+                     vars = vars, sD = eval(parse(text=data.strings[i])), threshold = threshold.VC, taxa = T)
+}
