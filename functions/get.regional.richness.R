@@ -118,7 +118,7 @@ get.regional.richness <- function(input.dir, input.pre, output.dir, output.pre, 
       ## if na.omit true, drop rows with NAs
       if(omit.NAs){
         output.mat <- output.mat[-which(apply(output.mat, 1, function(x) any(is.na(x)))),]
-        if(nrow(output.mat)>0){
+        if(length(output.mat)>=3){
           write.csv(output.mat, output.dirs[d])
         }
       } else {

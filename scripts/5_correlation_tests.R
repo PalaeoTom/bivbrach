@@ -1,78 +1,71 @@
-## 5. Correlation tests
+## 5. Mixed effect modelling
 ## Started by TJS on 08/01/2024
 
 ## Clean directory
 rm(list = ls())
 
 ## If packages aren't installed, install them, then load them
-packages <- c("")
+packages <- c("lmerTest")
 if(length(packages[!packages %in% installed.packages()[,"Package"]]) > 0){
   install.packages(packages[!packages %in% installed.packages()[,"Package"]])
 }
+library(lmerTest)
 
-## Load variable vectors to read in files
-radii <- as.integer(c(100000, 500000, 1000000, 2000000))
+## Load variable vectors - just looking at sites moving forward.
+radii <- as.integer(c(100000, 200000, 250000, 500000))
 siteQuotas <- c(3, 6, 9, 12, 15)
 overlapThresholds <- c(0, 0.25, 0.5, 0.75, 1)
-overlapTypes <- c("area", "sites")
-weightStandardisation_1 <- F
-vars <- list(paste0("sQ",seq(1,length(siteQuotas),1)), paste0("r",seq(1,length(radii),1)), paste0("oTh",seq(1,length(overlapThresholds),1)), paste0("oTy",seq(1,length(overlapTypes),1)))
+overlapTypes <- "sites"
+vars <- list(paste0("sQ",seq(1,length(siteQuotas),1)), paste0("r",seq(1,length(radii),1)), paste0("oTh",seq(1,length(overlapThresholds),1)), "oTy2")
+vars.values <- list(siteQuotas, radii, overlapThresholds, overlapTypes)
+names(vars.values) <- c("site_quota", "radius", "overlap_threshold", "overlap_type")
 
-## Get midpoints from original data
+## input strings
+input.strings <- c("bin10_g200_SQS_q0_9",
+                    "bin10_g100_SQS_q0_9",
+                    "bin10_g50_SQS_q0_9",
+                    "bin10_g25_SQS_q0_9",
+                    "bin10_s200_SQS_q0_9",
+                    "bin10_s100_SQS_q0_9",
+                    "bin10_s50_SQS_q0_9",
+                    "bin10_s25_SQS_q0_9",
+                    "stages_g200_SQS_q0_9",
+                    "stages_g100_SQS_q0_9",
+                    "stages_g50_SQS_q0_9",
+                    "stages_g25_SQS_q0_9",
+                    "stages_s200_SQS_q0_9",
+                    "stages_s100_SQS_q0_9",
+                    "stages_s50_SQS_q0_9",
+                    "stages_s25_SQS_q0_9")
+
+output.strings <- c("bin10_g200_SQS_q0_9_mlm",
+                   "bin10_g100_SQS_q0_9_mlm",
+                   "bin10_g50_SQS_q0_9_mlm",
+                   "bin10_g25_SQS_q0_9_mlm",
+                   "bin10_s200_SQS_q0_9_mlm",
+                   "bin10_s100_SQS_q0_9_mlm",
+                   "bin10_s50_SQS_q0_9_mlm",
+                   "bin10_s25_SQS_q0_9_mlm",
+                   "stages_g200_SQS_q0_9_mlm",
+                   "stages_g100_SQS_q0_9_mlm",
+                   "stages_g50_SQS_q0_9_mlm",
+                   "stages_g25_SQS_q0_9_mlm",
+                   "stages_s200_SQS_q0_9_mlm",
+                   "stages_s100_SQS_q0_9_mlm",
+                   "stages_s50_SQS_q0_9_mlm",
+                   "stages_s25_SQS_q0_9_mlm")
+
+## Set working directory
 setwd("~/R_packages/R_projects/bivbrach")
 home <- getwd()
-genera.10ma <- readRDS("data/BB_genera_10maBins.Rds")
-genera.stages <- readRDS("data/BB_genera_stageBins.Rds")
-times.10ma <- names(genera.10ma)
-times.stag <- names(genera.stages)
 
-## Set input and output directories
+## Set other parameters directories
 input.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_regRich"
 output.dir <- "~/R_packages/R_projects/bivbrach/data"
-input.pre <- "BB_gen_stag_raw_SQS"
-output.pre <- "BB_gen_stag_raw_SQS_SR"
-times = times.stag
-threshold = 15
+source("functions/mass.mlm.R")
 
-mass.correlation.test <- function(input.dir, input.pre, output.dir, output.pre, vars, times, n.cores = 1, threshold = 10, singleNAs = "correct", singleNAsValue = 0){
-  combin <- expand.grid(vars)
-  varStrings <- sapply(1:nrow(combin), function(x) paste(unlist(combin[x,]), collapse = "_"))
-  input.dirs <- paste0(input.dir, "/", input.pre, "_", varStrings, ".Rds")
-  output.dirs <- paste0(output.dir, "/", output.pre, "_", varStrings, ".Rds")
-  ## create output matrix
-  output <- matrix(NA, ncol = length(varStrings), nrow = length(times))
-  rownames(output) <- times
-  colnames(output) <- varStrings
-  ## populate output matrix
-  for(i in 1:length(input.dirs)){
-    data <- suppressWarnings(tryCatch(readRDS(input.dirs[i]), error = function(e){}))
-    if(is.null(data)){
-      next
-    } else {
-      ## get sampled time bins
-      samp.times <- names(data)
-      ## pass over list and prune out NAs
-      for(x in 1:length(data)){
-        data[[x]] <- data[[x]][!apply(data[[x]], 1, function(y) all(is.na(y))),]
-      }
-      ## deal with any remaining NAs
-      if(any(sapply(1:length(data), function(z) any(is.na(data[[z]]))))){
-        if(singleNAs == "correct"){
-          for(n in 1:length(data)){
-            data[[n]][which(is.na(data[[n]]))] <- singleNAsValue
-          }
-        } else {
-          if(singleNAs = "drop"){
-            for(n in 1:length(data)){
-              is.na(data[[n]])
-            }
-
-          } else {
-            stop("argument singleNAs needs to be 'correct' or 'drop'")
-          }
-        }
-      }
-
-    }
-  }
+## Run for each input
+for(i in 1:length(input.strings)){
+  mass.mlm(input.dir = input.dir, input.pre = input.strings[i], output.dir = output.dir,
+           output.pre = output.strings[i], vars = vars, vars.values = vars.values)
 }
