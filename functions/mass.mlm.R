@@ -4,7 +4,6 @@ mass.mlm <- function(input.dir, input.pre, output.dir, output.pre, vars, vars.va
   input.dirs <- paste0(input.dir, "/", input.pre, "_", varStrings, ".csv")
   output.dir <- paste0(output.dir, "/", output.pre, ".csv")
   output.mat <- expand.grid(vars.values)
-  var.names <- names(vars.values)
   ## create output vectors
   n.samples <- c()
   n.groups <- c()
@@ -48,7 +47,7 @@ mass.mlm <- function(input.dir, input.pre, output.dir, output.pre, vars, vars.va
       n.samples <- c(n.samples, nrow(data))
       n.groups <- c(n.groups, length(unique(data[,"times"])))
       avg.obs.per.group <- c(avg.obs.per.group, nrow(data)/(length(unique(data[,"times"]))))
-      ## run model
+      ## run model - not enough degrees of freedom for random slope, only random intercept
       #mlm <- suppressMessages(tryCatch(lmer(Brachiopoda ~ Bivalvia + (1 + Bivalvia|times), data = data), error = function(e){}))
       mlm <- suppressMessages(tryCatch(lmer(Brachiopoda ~ Bivalvia + (1|times), data = data), error = function(e){}))
       if(is.null(mlm)){

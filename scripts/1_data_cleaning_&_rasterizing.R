@@ -1,6 +1,9 @@
 ## 1. Initial data processing
 ## Started by TJS on 08/01/2024
 
+## GBIF access citation
+# GBIF.org (20 May 2024) GBIF Occurrence Download  https://doi.org/10.15468/dl.3xb65c
+
 ## Clean directory
 rm(list = ls())
 

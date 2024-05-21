@@ -96,7 +96,7 @@ get.regional.richness <- function(input.dir, input.pre, output.dir, output.pre, 
                 return(out)
               })
             })
-            colnames(per.taxon) <- taxa.labels
+            names(per.taxon) <- taxa.labels
             return(per.taxon)
           })
           names(output) <- time.labels
