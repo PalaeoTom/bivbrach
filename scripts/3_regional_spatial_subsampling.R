@@ -188,11 +188,11 @@ plot.spatSubThroughTime(input.strings, output.dir, output.strings, strat.data = 
 source("functions/drop.unusable.bins.R")
 input.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub"
 output.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub"
-vars <- list(paste0("sQ",seq(1,length(siteQuotas),1)), paste0("r",seq(1,length(radii),1)), paste0("oTh",seq(1,length(overlapThresholds),1)), paste0("oTy",seq(1,length(overlapTypes),1)))
+vars <- list(paste0("sQ",seq(1,length(siteQuotas),1)), paste0("r",seq(1,length(radii),1)))
 taxa <- T
-threshold = threshold.VC = 20
+threshold = threshold.VC = 1
 prefix.vector <- c("stages_g200", "stages_g100","stages_s200","stages_s100")
-out.pre.vector <- c("stages_g200_viableTimeBins","stages_g100_viableTimeBins","stages_s200_viableTimeBins","stages_s100_viableTimeBins")
+out.pre.vector <- c("stages_g200_viaTimBin","stages_g100_viaTimBin","stages_s200_viaTimBin","stages_s100_viaTimBin")
 data.strings <- c("stages.g200",
                   "stages.g100",
                   "stages.s200",
