@@ -131,10 +131,10 @@ raw.output.title <- c("Genera, 200km grid cells, raw",
                       "Species, 200km grid cells, raw",
                       "Species, 100km grid cells, raw")
 
-SR.input.pre <- c("stages_g200_SR",
-                   "stages_g100_SR",
-                   "stages_s200_SR",
-                   "stages_s100_SR")
+SR.input.pre <- c("stages_g200_SR_minSite",
+                  "stages_g100_SR_minSite",
+                  "stages_s200_SR_minSite",
+                  "stages_s100_SR_minSite")
 
 SR.output.pre <- c("stages_g200_SR",
                     "stages_g100_SR",
