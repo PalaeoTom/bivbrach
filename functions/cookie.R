@@ -1,5 +1,5 @@
-cookie <- function(dat, seeds, xy, nSite, allPools, weight, coords, crs, output, standardiseSiteN, returnSeeds) {
-  if(standardiseSiteN){
+cookie <- function(dat, seeds, xy, nSite, allPools, weight, coords, crs, output, divvyRarefaction, returnSeeds) {
+  if(divvyRarefaction){
     if(length(seeds) > 1) {
       seed <- sample(sample(seeds), 1)
     } else {

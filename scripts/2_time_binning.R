@@ -20,10 +20,6 @@ genera_200 <- readRDS("data/genera_200.Rds")
 species_200 <- readRDS("data/species_200.Rds")
 genera_100 <- readRDS("data/genera_100.Rds")
 species_100 <- readRDS("data/species_100.Rds")
-#genera_50 <- readRDS("data/genera_50.Rds")
-#species_50 <- readRDS("data/species_50.Rds")
-#genera_25 <- readRDS("data/genera_25.Rds")
-#species_25 <- readRDS("data/species_25.Rds")
 
 #### Get stage time bins ####
 # Function samples occurrences that fit within bins (won't include those that exist before or after)

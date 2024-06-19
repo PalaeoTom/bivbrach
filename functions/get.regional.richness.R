@@ -1,4 +1,7 @@
-get.regional.richness <- function(input.dir, input.pre, output.dir, output.pre, vars, mode = "SQS", SQS.coverage = 0.9, SR.rep = 100, SR.nSite = 3, taxa = T, n.cores = 1, taxVar = "genus", SQS.rareVar = "collection_no", SQS.min.rareVar = 2, SQS.min.taxVar = 2, SQS.min.taxRareVar.alt = "none", SQS.noAbsence.alt = "none", SQS.exceedExtrap.alt = "none", omit.NAs = T){
+get.regional.richness <- function(input.dir, input.pre, output.dir, output.pre, vars, mode = "SQS", SQS.coverage = 0.9,
+                                  SR.rep = 100, SR.nSite = 3, taxa = T, n.cores = 1, taxVar = "genus",
+                                  SQS.rareVar = "collection_no", SQS.min.rareVar = 2, SQS.min.taxVar = 2, SQS.min.taxRareVar.alt = "none", SQS.noAbsence.alt = "none", SQS.exceedExtrap.alt = "none",
+                                  omit.NAs = T){
   combin <- expand.grid(vars)
   varStrings <- sapply(1:nrow(combin), function(x) paste(unlist(combin[x,]), collapse = "_"))
   input.dirs <- paste0(input.dir, "/", input.pre, "_", varStrings, ".Rds")
