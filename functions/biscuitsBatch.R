@@ -1,9 +1,10 @@
 biscuitsBatch <- function(dataList, siteQuota, r, b.crs, output.dir,
                          b.xy = c("cellX", "cellY"),
-                         overlapThreshold = 1, overlapType = "area", overlapPruningMode = "maxOccs",
+                         overlapThreshold = 0, overlapType = "area", overlapPruningMode = "maxOccs",
                          reps = 100, nOccs = 100,
                          rarefaction = "sitesThenOccs",
-                         n.cores = 1, name.output = "new"){
+                         n.cores = 1, name.output = "new",
+                         taxa = NULL, taxa.level = NULL){
   ## Set home directory
   home <- getwd()
   ## Get all possible combinations of settings (siteQuota, radius, overlapThreshold, overlapType, weightedStandardisation)
@@ -50,14 +51,15 @@ biscuitsBatch <- function(dataList, siteQuota, r, b.crs, output.dir,
       } else {
         if(rarefaction == "sites" || rarefaction == "occs" || rarefaction == "sitesThenOccs"){
           #### START HERE. The below needs to take into account extra level of structure in box object when using these three methods of rarefaction.
-
-
-
           box <- lapply(1:length(taxa), function(t){
-            part <- lapply(1:length(box), function(b){
+            timeBin <- lapply(1:length(box), function(b){
+              #b = 15
               if(!any(is.na(box[[b]]))){
-                pack <- lapply(1:length(box[[b]]), function(p){
-                  cookie <- box[[b]][[p]][which(box[[b]][[p]][,taxa.level[t]] %in% taxa[t]),]
+                subsamples <- lapply(1:length(box[[b]]), function(s){
+                #s = 1
+                  pack <- lapply(1:length(box[[b]][[s]]), function(p){
+                      cookie <- box[[b]][[s]][[p]][which(box[[b]][[s]][[p]][,taxa.level[t]] %in% taxa[t]),]
+                  })
                 })
               } else {
                 pack <- NA
@@ -70,7 +72,6 @@ biscuitsBatch <- function(dataList, siteQuota, r, b.crs, output.dir,
         }
       }
     }
-
     ## Use sapply to pass over labs and params list to get output file names
     setwd(output.dir)
     saveRDS(box, file = paste0(name.output, "_", paste(sapply(1:ncol(settings[i,]), function(x) names(params[[x]][params[[x]] %in% settings[i,x]]))[vary], collapse = "_"), ".Rds"))
