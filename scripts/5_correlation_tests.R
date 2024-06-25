@@ -12,48 +12,23 @@ if(length(packages[!packages %in% installed.packages()[,"Package"]]) > 0){
 library(lmerTest)
 
 ## Load variable vectors - just looking at sites moving forward.
-radii <- as.integer(c(100000, 200000, 250000, 500000))
-siteQuotas <- c(3, 6, 9, 12, 15)
-overlapThresholds <- c(0, 0.25, 0.5, 0.75, 1)
-overlapTypes <- "sites"
-vars <- list(paste0("sQ",seq(1,length(siteQuotas),1)), paste0("r",seq(1,length(radii),1)), paste0("oTh",seq(1,length(overlapThresholds),1)), "oTy2")
-vars.values <- list(siteQuotas, radii, overlapThresholds, overlapTypes)
-names(vars.values) <- c("site_quota", "radius", "overlap_threshold", "overlap_type")
+radii <- as.integer(c(200000, 500000, 1000000))
+siteQuotas <- c(2, 3, 4, 5)
+vars <- list(paste0("sQ",seq(1,length(siteQuotas),1)), paste0("r",seq(1,length(radii),1)))
+vars.values <- list(siteQuotas, radii)
+names(vars.values) <- c("site_quota", "radius")
 
 ## input strings
-input.strings <- c("bin10_g200_SQS_q0_9",
-                    "bin10_g100_SQS_q0_9",
-                    "bin10_g50_SQS_q0_9",
-                    "bin10_g25_SQS_q0_9",
-                    "bin10_s200_SQS_q0_9",
-                    "bin10_s100_SQS_q0_9",
-                    "bin10_s50_SQS_q0_9",
-                    "bin10_s25_SQS_q0_9",
-                    "stages_g200_SQS_q0_9",
-                    "stages_g100_SQS_q0_9",
-                    "stages_g50_SQS_q0_9",
-                    "stages_g25_SQS_q0_9",
-                    "stages_s200_SQS_q0_9",
-                    "stages_s100_SQS_q0_9",
-                    "stages_s50_SQS_q0_9",
-                    "stages_s25_SQS_q0_9")
+## Set output strings
+input.strings <- c("stages_g200",
+                    "stages_g100",
+                    "stages_s200",
+                    "stages_s100")
 
-output.strings <- c("bin10_g200_SQS_q0_9_mlm",
-                   "bin10_g100_SQS_q0_9_mlm",
-                   "bin10_g50_SQS_q0_9_mlm",
-                   "bin10_g25_SQS_q0_9_mlm",
-                   "bin10_s200_SQS_q0_9_mlm",
-                   "bin10_s100_SQS_q0_9_mlm",
-                   "bin10_s50_SQS_q0_9_mlm",
-                   "bin10_s25_SQS_q0_9_mlm",
-                   "stages_g200_SQS_q0_9_mlm",
-                   "stages_g100_SQS_q0_9_mlm",
-                   "stages_g50_SQS_q0_9_mlm",
-                   "stages_g25_SQS_q0_9_mlm",
-                   "stages_s200_SQS_q0_9_mlm",
-                   "stages_s100_SQS_q0_9_mlm",
-                   "stages_s50_SQS_q0_9_mlm",
-                   "stages_s25_SQS_q0_9_mlm")
+output.strings <- c("stages_g200_mlm",
+                   "stages_g100_mlm",
+                   "stages_s200_mlm",
+                   "stages_s100_mlm")
 
 ## Set working directory
 setwd("~/R_packages/R_projects/bivbrach")
@@ -64,8 +39,17 @@ input.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_regRich"
 output.dir <- "~/R_packages/R_projects/bivbrach/data"
 source("functions/mass.mlm.R")
 
+## mass.mlm arguments
+m = 1
+input.dir = input.dir
+input.pre = input.strings[m]
+output.dir = output.dir
+output.pre = output.strings[m]
+vars = vars
+vars.values = vars.values
+
 ## Run for each input
-for(i in 1:length(input.strings)){
-  mass.mlm(input.dir = input.dir, input.pre = input.strings[i], output.dir = output.dir,
-           output.pre = output.strings[i], vars = vars, vars.values = vars.values)
+for(m in 1:length(input.strings)){
+  mass.mlm(input.dir = input.dir, input.pre = input.strings[m], output.dir = output.dir,
+           output.pre = output.strings[m], vars = vars, vars.values = vars.values)
 }

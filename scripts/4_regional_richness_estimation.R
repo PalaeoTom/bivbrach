@@ -85,38 +85,21 @@ plotting.col <- c("Bivalvia", "Brachiopoda")
 times.col <- "times"
 
 ## Define input and output strings
-input.pre <- c("stages_g200_SR_minSite",
-                  "stages_g100_SR_minSite",
-                  "stages_s200_SR_minSite",
-                  "stages_s100_SR_minSite")
+input.pre <- output.pre <- c("stages_g200",
+                  "stages_g100",
+                  "stages_s200",
+                  "stages_s100")
 
-output.pre <- c("stages_g200_SR",
-                    "stages_g100_SR",
-                    "stages_s200_SR",
-                    "stages_s100_SR")
-
-output.title <- c("Genera, 200km grid cells, SR (minima sampled)",
-                      "Genera, 100km grid cells, SR (minima sampled)",
-                      "Species, 200km grid cells, SR (minima sampled)",
-                      "Species, 100km grid cells, SR (minima sampled)")
+output.title <- c("Genera, 200km grid cells, STO rarefaction",
+                      "Genera, 100km grid cells, STO rarefaction",
+                      "Species, 200km grid cells, STO rarefaction",
+                      "Species, 100km grid cells, STO rarefaction")
 
 ## Read in function
 source("functions/plot.richness.R")
 
-## Run plotting function for SQS
-for(a in 1:length(SQS.input.pre)){
-  plot.richness(input.dir, input.pre = SQS.input.pre[a], output.dir, output.pre = SQS.output.pre[a], output.title = SQS.output.title[a],
-                vars, vars.label, plotting.col, times.col, geo.scale, legend.position = legend.position[a])
-}
-
-## Run plotting function for raw
-for(a in 1:length(raw.input.pre)){
-  plot.richness(input.dir, input.pre = raw.input.pre[a], output.dir, output.pre = raw.output.pre[a], output.title = raw.output.title[a],
-                vars, vars.label, plotting.col, times.col, geo.scale, legend.position = legend.position[a])
-}
-
-## Run plotting function for SR
-for(a in 1:length(SR.input.pre)){
-  plot.richness(input.dir, input.pre = SR.input.pre[a], output.dir, output.pre = SR.output.pre[a], output.title = SR.output.title[a],
+## Run plotting function
+for(a in 1:length(input.pre)){
+  plot.richness(input.dir, input.pre = input.pre[a], output.dir, output.pre = output.pre[a], output.title = output.title[a],
                 vars, vars.label, plotting.col, times.col, geo.scale, legend.position = legend.position[a])
 }

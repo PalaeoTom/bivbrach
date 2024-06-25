@@ -6,8 +6,10 @@ mass.mlm <- function(input.dir, input.pre, output.dir, output.pre, vars, vars.va
   output.mat <- expand.grid(vars.values)
   ## create output vectors
   n.samples <- c()
-  n.groups <- c()
-  avg.obs.per.group <- c()
+  n.timeBins <- c()
+  n.subregions <- c()
+  avg.obs.per.timeBin <- c()
+  avg.obs.per.subregion <- c()
   intercept <- c()
   intercept.std.Error <- c()
   intercept.df <- c()
@@ -25,8 +27,10 @@ mass.mlm <- function(input.dir, input.pre, output.dir, output.pre, vars, vars.va
     ## if null, log entries as NA
     if(is.null(data)){
       n.samples <- c(n.samples, NA)
-      n.groups <- c(n.groups, NA)
-      avg.obs.per.group <- c(avg.obs.per.group, NA)
+      n.timeBins <- c(n.timeBins, NA)
+      n.subregions <- c(n.subregions, NA)
+      avg.obs.per.timeBin <- c(avg.obs.per.timeBin, NA)
+      avg.obs.per.subregion <- c(avg.obs.per.subregion, NA)
       intercept <- c(intercept, NA)
       intercept.std.Error <- c(intercept.std.Error, NA)
       intercept.df <- c(intercept.df, NA)
@@ -42,14 +46,16 @@ mass.mlm <- function(input.dir, input.pre, output.dir, output.pre, vars, vars.va
       ## if data has just one column, transpose
       if(ncol(data) == 1){
         data <- t(data)
-        colnames(data) <- c("times", "Brachiopoda", "Bivalvia")
+        colnames(data) <- c("times", "source.subregion.ID", "Brachiopoda", "Bivalvia")
       }
       n.samples <- c(n.samples, nrow(data))
-      n.groups <- c(n.groups, length(unique(data[,"times"])))
-      avg.obs.per.group <- c(avg.obs.per.group, nrow(data)/(length(unique(data[,"times"]))))
+      n.timeBins <- c(n.timeBins, length(unique(data[,"times"])))
+      n.subregions <- c(n.subregions, length(unique(data[,"source.subregion.ID"])))
+      avg.obs.per.timeBin <- c(avg.obs.per.timeBin, nrow(data)/(length(unique(data[,"times"]))))
+      avg.obs.per.subregion <- c(avg.obs.per.subregion, nrow(data)/(length(unique(data[,"source.subregion.ID"]))))
       ## run model - not enough degrees of freedom for random slope, only random intercept
       #mlm <- suppressMessages(tryCatch(lmer(Brachiopoda ~ Bivalvia + (1 + Bivalvia|times), data = data), error = function(e){}))
-      mlm <- suppressMessages(tryCatch(lmer(Brachiopoda ~ Bivalvia + (1|times), data = data), error = function(e){}))
+      mlm <- suppressMessages(tryCatch(lmer(Brachiopoda ~ Bivalvia + (1|times/source.subregion.ID), data = data), error = function(e){}))
       if(is.null(mlm)){
         intercept <- c(intercept, NA)
         intercept.std.Error <- c(intercept.std.Error, NA)
@@ -77,7 +83,7 @@ mass.mlm <- function(input.dir, input.pre, output.dir, output.pre, vars, vars.va
       }
     }
   }
-  output.mat <- cbind(output.mat, n.samples, n.groups, avg.obs.per.group,  intercept, intercept.std.Error,
+  output.mat <- cbind(output.mat, n.samples, n.timeBins, n.subregions, avg.obs.per.timeBin, avg.obs.per.subregion, intercept, intercept.std.Error,
                       intercept.df, intercept.t.value, intercept.p.value, slope, slope.std.Error,
                       slope.df, slope.t.value, slope.p.value)
   output.mat <- output.mat[which(!apply(output.mat, 1, function(x) any(is.na(x)))),]
