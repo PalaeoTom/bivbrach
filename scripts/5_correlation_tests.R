@@ -40,13 +40,13 @@ output.dir <- "~/R_packages/R_projects/bivbrach/data"
 source("functions/mass.mlm.R")
 
 ## mass.mlm arguments
-m = 1
-input.dir = input.dir
-input.pre = input.strings[m]
-output.dir = output.dir
-output.pre = output.strings[m]
-vars = vars
-vars.values = vars.values
+#m = 1
+#input.dir = input.dir
+#input.pre = input.strings[m]
+#output.dir = output.dir
+#output.pre = output.strings[m]
+#vars = vars
+#vars.values = vars.values
 
 ## Run for each input
 for(m in 1:length(input.strings)){
