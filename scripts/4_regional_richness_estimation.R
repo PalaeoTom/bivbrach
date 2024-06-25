@@ -85,47 +85,17 @@ plotting.col <- c("Bivalvia", "Brachiopoda")
 times.col <- "times"
 
 ## Define input and output strings
-SQS.input.pre <- c("stages_g200_SQS_q0_9",
-               "stages_g100_SQS_q0_9",
-               "stages_s200_SQS_q0_9",
-               "stages_s100_SQS_q0_9")
-
-SQS.output.pre <- c("stages_g200_SQS_q0_9",
-                "stages_g100_SQS_q0_9",
-                "stages_s200_SQS_q0_9",
-                "stages_s100_SQS_q0_9")
-
-SQS.output.title <- c("Genera, 200km grid cells, SQS (q = 0.9)",
-                   "Genera, 100km grid cells, SQS (q = 0.9)",
-                   "Species, 200km grid cells, SQS (q = 0.9)",
-                   "Species, 100km grid cells, SQS (q = 0.9)")
-
-raw.input.pre <- c("stages_g200_raw",
-                   "stages_g100_raw",
-                   "stages_s200_raw",
-                   "stages_s100_raw")
-
-raw.output.pre <- c("stages_g200_raw",
-                    "stages_g100_raw",
-                    "stages_s200_raw",
-                    "stages_s100_raw")
-
-raw.output.title <- c("Genera, 200km grid cells, raw",
-                      "Genera, 100km grid cells, raw",
-                      "Species, 200km grid cells, raw",
-                      "Species, 100km grid cells, raw")
-
-SR.input.pre <- c("stages_g200_SR_minSite",
+input.pre <- c("stages_g200_SR_minSite",
                   "stages_g100_SR_minSite",
                   "stages_s200_SR_minSite",
                   "stages_s100_SR_minSite")
 
-SR.output.pre <- c("stages_g200_SR",
+output.pre <- c("stages_g200_SR",
                     "stages_g100_SR",
                     "stages_s200_SR",
                     "stages_s100_SR")
 
-SR.output.title <- c("Genera, 200km grid cells, SR (minima sampled)",
+output.title <- c("Genera, 200km grid cells, SR (minima sampled)",
                       "Genera, 100km grid cells, SR (minima sampled)",
                       "Species, 200km grid cells, SR (minima sampled)",
                       "Species, 100km grid cells, SR (minima sampled)")
