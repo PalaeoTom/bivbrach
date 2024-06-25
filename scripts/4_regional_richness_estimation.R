@@ -28,20 +28,10 @@ vars <- list(paste0("sQ",seq(1,length(siteQuotas),1)), paste0("r",seq(1,length(r
 input.strings <- c("stages_g200_viaTimBin","stages_g100_viaTimBin","stages_s200_viaTimBin","stages_s100_viaTimBin")
 
 ## Set output strings
-SQS.output.strings <- c("stages_g200_SQS_q0_9",
-                    "stages_g100_SQS_q0_9",
-                    "stages_s200_SQS_q0_9",
-                    "stages_s100_SQS_q0_9")
-
-raw.output.strings <- c("stages_g200_raw",
-                        "stages_g100_raw",
-                        "stages_s200_raw",
-                        "stages_s100_raw")
-
-SR.output.strings <- c("stages_g200_SR_minSite",
-                         "stages_g100_SR_minSite",
-                         "stages_s200_SR_minSite",
-                         "stages_s100_SR_minSite")
+output.strings <- c("stages_g200",
+                        "stages_g100",
+                        "stages_s200",
+                        "stages_s100")
 
 ## Set taxonomic variable string
 taxVar.strings <- c(rep("genus", 2), rep("unique_name", 2))
@@ -51,27 +41,21 @@ input.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub"
 output.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_regRich"
 source("functions/get.regional.richness.R")
 
-## Calculate richness using SQS
-for(a in 1:length(input.strings)){
-  get.regional.richness(input.dir = input.dir, input.pre = input.strings[a], output.dir = output.dir, output.pre = SQS.output.strings[a],
-                        vars = vars, mode = "SQS", SQS.coverage = 0.9, taxa = T, n.cores = 4, taxVar = taxVar.strings[a], SQS.rareVar = "collection_no",
-                        SQS.min.rareVar = 2, SQS.min.taxVar = 2, SQS.min.taxRareVar.alt = "none", SQS.noAbsence.alt = "none", SQS.exceedExtrap.alt = "none", omit.NAs = T)
-}
+## get regional richness arguments
+#a = 1
+#input.dir = input.dir
+#input.pre = input.strings[a]
+#output.dir = output.dir
+#output.pre = output.strings[a]
+#vars = vars
+#taxa = T
+#n.cores = 4
+#taxVar = taxVar.strings[a]
 
-## Calculate raw richness
+## Calculate richness (using site and occurrence rarefaction)
 for(a in 1:length(input.strings)){
-  get.regional.richness(input.dir = input.dir, input.pre = input.strings[a], output.dir = output.dir, output.pre = raw.output.strings[a],
-                        vars = vars, mode = "raw", taxa = T, n.cores = 4, taxVar = taxVar.strings[a], omit.NAs = T)
-}
-
-## Calculate richness using spatial subsample site rarefaction
-## Define sQKey input object
-sQKey <- c(2,3,4,5,2,3,4,5,2,3,4,5)
-
-## Calculate richness
-for(a in 1:length(input.strings)){
-  get.regional.richness(input.dir = input.dir, input.pre = input.strings[a], output.dir = output.dir, output.pre = SR.output.strings[a],
-                        vars = vars, mode = "SR", SR.rep = 100, SR.nSite = sQKey, taxa = T, n.cores = 4, taxVar = taxVar.strings[a], omit.NAs = T)
+  get.regional.richness(input.dir = input.dir, input.pre = input.strings[a], output.dir = output.dir, output.pre = output.strings[a],
+                        vars = vars, taxa = T, n.cores = 4, taxVar = taxVar.strings[a])
 }
 
 #### Plotting bivalve versus brachiopod richness ####

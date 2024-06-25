@@ -33,7 +33,7 @@ biscuitsBatch <- function(dataList, siteQuota, r, b.crs, output.dir,
         pack <- NA
       }
     })
-    ## If taxa is not null, split output into Bivalve and Brachiopods
+    ## If taxa is not null, split output into specified taxa
     if(!is.null(taxa)){
       if(rarefaction == "divvySites" || rarefaction == "weightedDivvySites" || rarefaction == "none"){
       box <- lapply(1:length(taxa), function(t){
