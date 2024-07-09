@@ -68,9 +68,9 @@ mass.mlm.median <- function(input.dir, input.pre, output.dir, output.pre, vars, 
           ## if length 0
           if(length(med.id) == 0){
             ## get samples either side of quantile, and pick one
-            quants <- quantile(diffs, probs = c(0.49,0.51))
+            quants <- diffs[c(length(diffs)/2,length(diffs)/2+1)]
             ## update med.id
-            med.id <- which(subregion[,median.value] == sample(quants,1))
+            med.id <- which(diffs == sample(quants,1))
           }
           ## if length is more than 1
           if(length(med.id) > 1){
@@ -92,7 +92,7 @@ mass.mlm.median <- function(input.dir, input.pre, output.dir, output.pre, vars, 
             ## if length 0
             if(length(med.id) == 0){
               ## get samples either side of quantile, and pick one
-              quants <- quantile(values, probs = c(0.49,0.51))
+              quants <- values[c(length(values)/2,length(values)/2+1)]
               ## update med.id
               med.id <- which(subregion[,median.value] == sample(quants,1))
             }

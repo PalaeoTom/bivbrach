@@ -68,25 +68,48 @@ input.strings <- c("stages_g200",
                    "stages_s200",
                    "stages_s100")
 
-output.strings.median <- c("stages_g200_mlm_median",
-                    "stages_g100_mlm_median",
-                    "stages_s200_mlm_median",
-                    "stages_s100_mlm_median")
+output.strings.med.diff <- c("stages_g200_mlm_med_diff",
+                    "stages_g100_mlm_med_diff",
+                    "stages_s200_mlm_med_diff",
+                    "stages_s100_mlm_med_diff")
+
+output.strings.med.brach <- c("stages_g200_mlm_med_brach",
+                             "stages_g100_mlm_med_brach",
+                             "stages_s200_mlm_med_brach",
+                             "stages_s100_mlm_med_brach")
+
+output.strings.med.biv <- c("stages_g200_mlm_med_biv",
+                             "stages_g100_mlm_med_biv",
+                             "stages_s200_mlm_med_biv",
+                             "stages_s100_mlm_med_biv")
 
 ## Set other parameters directories
 input.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_regRich"
 output.dir <- "~/R_packages/bivbrach/data"
 source("functions/mass.mlm.median.R")
+
 m = 1
 input.dir = input.dir
 input.pre = input.strings[m]
 output.dir = output.dir
-output.pre = output.strings.median[m]
+output.pre = output.strings.med.diff[m]
 vars = vars
 vars.values = vars.values
+median.value = "diff"
+data.columns = c("Brachiopoda", "Bivalvia")
 
-## Run for each input
+## Run for each input under each setting
 for(m in 1:length(input.strings)){
   mass.mlm.median(input.dir = input.dir, input.pre = input.strings[m], output.dir = output.dir,
-           output.pre = output.strings.median[m], vars = vars, vars.values = vars.values)
+           output.pre = output.strings.med.diff[m], vars = vars, vars.values = vars.values, median.value = "diff", data.columns = c("Brachiopoda", "Bivalvia"))
+}
+
+for(m in 1:length(input.strings)){
+  mass.mlm.median(input.dir = input.dir, input.pre = input.strings[m], output.dir = output.dir,
+                  output.pre = output.strings.med.brach[m], vars = vars, vars.values = vars.values, median.value = "Brachiopoda", data.columns = c("Brachiopoda", "Bivalvia"))
+}
+
+for(m in 1:length(input.strings)){
+  mass.mlm.median(input.dir = input.dir, input.pre = input.strings[m], output.dir = output.dir,
+                  output.pre = output.strings.med.biv[m], vars = vars, vars.values = vars.values, median.value = "Bivalvia", data.columns = c("Brachiopoda", "Bivalvia"))
 }
