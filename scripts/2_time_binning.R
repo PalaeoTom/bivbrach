@@ -15,7 +15,7 @@ library(plyr)
 library(parallel)
 
 ## Load data
-setwd("~/R_packages/R_projects/bivbrach")
+setwd("~/R_packages/bivbrach")
 genera_200 <- readRDS("data/genera_200.Rds")
 species_200 <- readRDS("data/species_200.Rds")
 genera_100 <- readRDS("data/genera_100.Rds")

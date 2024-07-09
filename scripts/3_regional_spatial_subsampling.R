@@ -1,6 +1,7 @@
 ## 3. Spatial subsampling using modified divvy
 ## Started by TJS on 08/01/2024
 
+#### Set up - run before any subsection ####
 ## Clean directory
 rm(list = ls())
 
@@ -17,21 +18,20 @@ library(parallel)
 library(RColorBrewer)
 library(plyr)
 
+## install divvyCompanion from github and load
+library(remotes)
+remotes::install_github("PalaeoTom/divvyCompanion")
+library(divvyCompanion)
+
 ## Load data
-setwd("~/R_packages/R_projects/bivbrach")
+setwd("~/R_packages/bivbrach")
 stages.g200 <- readRDS("data/stages_g200.Rds")
 stages.g100 <- readRDS("data/stages_g100.Rds")
 stages.s200 <- readRDS("data/stages_s200.Rds")
 stages.s100 <- readRDS("data/stages_s100.Rds")
 
-#### Identify viable cookies ####
 ## Load new functions
-source("functions/findPool2.R")
-source("functions/findSeeds2.R")
-source("functions/getOverlap.R")
-source("functions/cookie.R")
-source("functions/biscuits.R")
-source("functions/biscuitsBatch.R")
+source("functions/cookies2Batch.R")
 
 ## Define variables
 radii <- as.integer(c(200000, 500000, 1000000))
@@ -39,7 +39,71 @@ siteQuotas <- c(2, 3, 4, 5)
 overlapThresholds <- 0
 overlapTypes <- "sites"
 
+#### Get distribution of occurrence numbers for each subsample of sites ####
+## Generate spatial subsamples, returning all occurrences associate with subsamples of sites
+## Generate output vectors
+output.strings.sites <- c("stages_g200_sites",
+                          "stages_g100_sites",
+                          "stages_s200_sites",
+                          "stages_s100_sites")
+
+data.strings <- c("stages.g200",
+                  "stages.g100",
+                  "stages.s200",
+                  "stages.s100")
+
+## use biscuitsBatch to run all permutations
+for(z in 1:length(output.vector)){
+  cookies2Batch(dataList = eval(parse(text=data.strings[z])), siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub",
+                overlapThreshold = overlapThresholds, overlapType = overlapTypes, overlapPruningMode = "maxOccs", rarefaction = "sites",
+                name.output = output.strings.sites[z], n.cores = 4, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+}
+
+## now convert to viable bins
+source("functions/drop.unusable.bins.R")
+input.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub"
+output.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub"
+vars <- list(paste0("sQ",seq(1,length(siteQuotas),1)), paste0("r",seq(1,length(radii),1)))
+taxa <- T
+threshold = threshold.VC = 1
+prefix.vector <- output.strings.sites
+out.pre.vector <- c("stages_g200_sites_viaTimBin","stages_g100_sites_viaTimBin","stages_s200_sites_viaTimBin","stages_s100_sites_viaTimBin")
+
+## Run function
+for(z in 1:length(out.pre.vector)){
+  drop.unusable.bins(input.dir = input.dir, input.pre = prefix.vector[z], output.dir = output.dir, output.pre = out.pre.vector[z],
+                     vars = vars, sD = eval(parse(text=data.strings[z])), threshold = threshold.VC, taxa = T)
+}
+
+## Now to count up occurrences for each one
+source("functions/count.occurrences.R")
+input.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub"
+output.dir <- "~/R_packages/bivbrach/data"
+vars <- list(paste0("sQ",seq(1,length(siteQuotas),1)), paste0("r",seq(1,length(radii),1)))
+names(vars) <- c("siteQuota", "radius")
+taxa <- T
+input.strings <- out.pre.vector
+output.strings <- c("stages.g200.occ.count",
+                    "stages.g100.occ.count",
+                    "stages.s200.occ.count",
+                    "stages.s100.occ.count")
+
+## Run the function
+for(z in 1:length(output.strings)){
+  count.occurrences(input.dir = input.dir, input.pre = input.strings[z], output.dir = output.dir, output.pre = output.strings[z],
+                    vars = vars, method = "sites", n.cores = 4, taxa = T)
+}
+
 #### Generate spatial subsamples ####
+## Read in outputs of occurrence counting
+stages.s100.occs.count <- read.csv("data/stages.s100.occ.count.csv", row.names = 1)
+stages.s200.occs.count <- read.csv("data/stages.s200.occ.count.csv", row.names = 1)
+stages.g100.occs.count <- read.csv("data/stages.g100.occ.count.csv", row.names = 1)
+stages.g200.occs.count <- read.csv("data/stages.g200.occ.count.csv", row.names = 1)
+
+## Minimum around 40 occurrences, 0.25 quantile over 100 for all. Maxima are 4500-6500.
+## 100 subsamples of 100 occurrences = 10,000 draws. Should sample each occurrence twice.
+
 ## Generate output vectors
 output.vector <- c("stages_g200",
                    "stages_g100",
@@ -91,12 +155,12 @@ data.strings <- c("stages.g200",
 
 ## use biscuitsBatch to run all permutations
 for(z in 1:length(output.vector)){
-biscuitsBatch(dataList = eval(parse(text=data.strings[z])), siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub",
+cookies2Batch(dataList = eval(parse(text=data.strings[z])), siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub",
              overlapThreshold = overlapThresholds, overlapType = overlapTypes, overlapPruningMode = "maxOccs", rarefaction = "sitesThenOccs",
              name.output = output.vector[z], n.cores = 4, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
 }
 
-#### Drop non-viable time bins from each dataset ####
+#### Drop time bins with no data from each dataset ####
 ## Load function and static arguments
 source("functions/drop.unusable.bins.R")
 input.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub"
@@ -128,7 +192,7 @@ for(z in 1:length(out.pre.vector)){
                      vars = vars, sD = eval(parse(text=data.strings[z])), threshold = threshold.VC, taxa = T)
 }
 
-#### Count number of cookies in each time bin ####
+#### Count number of radially constrained regions in each time bin ####
 source("functions/count.viable.samples.R")
 dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub"
 vars <- list(paste0("sQ",seq(1,length(siteQuotas),1)), paste0("r",seq(1,length(radii),1)))
@@ -148,7 +212,7 @@ prefix.vector <- output.vector <- c("stages_g200", "stages_g100","stages_s200","
 #output.name = prefix.vector[z]
 
 for(z in 1:length(prefix.vector)){
-  count.viable.samples(dir = dir, pre = prefix.vector[z], vars = vars, sD = eval(parse(text=data.strings[z])), n.cores = cores, taxa = taxa.split, output.dir = "~/R_packages/R_projects/bivbrach/data", output.name = prefix.vector[z])
+  count.viable.samples(dir = dir, pre = prefix.vector[z], vars = vars, sD = eval(parse(text=data.strings[z])), n.cores = cores, taxa = taxa.split, output.dir = "~/R_packages/bivbrach/data", output.name = prefix.vector[z])
 }
 
 ## read in cookie counts
@@ -177,7 +241,7 @@ periods <- periods[periods$b_age <= periods[which(rownames(periods) == "Cambrian
 titles <- c("Genera, 200km grid cells", "Genera, 100km grid cells", "Species, 200km grid cells", "Species, 100km grid cells")
 
 # Set output directory
-output.dir <- "~/R_packages/R_projects/bivbrach/figures"
+output.dir <- "~/R_packages/bivbrach/figures"
 
 ## Output file name vector
 output.strings <- c("stages_g200", "stages_g100", "stages_s200", "stages_s100")

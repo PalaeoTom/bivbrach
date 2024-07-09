@@ -8,7 +8,7 @@
 rm(list = ls())
 
 ## Set working directory
-setwd("~/R_packages/R_projects/bivbrach")
+setwd("~/R_packages/bivbrach")
 home <- getwd()
 
 ## If packages aren't installed, install them, then load them
@@ -25,6 +25,11 @@ library(iNEXT)
 library(divvy)
 library(rgbif)
 library(bit64)
+
+## install divvyCompanion from github and load
+library(remotes)
+install_github("PalaeoTom/divvyCompanion")
+library(divvyCompanion)
 
 ## Load raw data
 raw_PBDB <- readRDS("data/PBDB_Nov23.Rds")
@@ -203,13 +208,11 @@ env_axes <- 'bathnow'
 PBDB_species <- cbind(PBDB_species, data.frame('bathnow'=b.species, stringsAsFactors=TRUE))
 
 #### Rasterising data ####
-source("functions/rasterOccData.R")
-
 ## Rasterise data using function
-genera_200 <- rasteriseOccData(occData = PBDB_genera, res = 200000)
-genera_100 <- rasteriseOccData(occData = PBDB_genera, res = 100000)
-species_200 <- rasteriseOccData(occData = PBDB_species, res = 200000)
-species_100 <- rasteriseOccData(occData = PBDB_species, res = 100000)
+genera_200 <- rasterOccData(occData = PBDB_genera, res = 200000)
+genera_100 <- rasterOccData(occData = PBDB_genera, res = 100000)
+species_200 <- rasterOccData(occData = PBDB_species, res = 200000)
+species_100 <- rasterOccData(occData = PBDB_species, res = 100000)
 
 ## Export polished files
 saveRDS(genera_200, file = "data/genera_200.Rds")

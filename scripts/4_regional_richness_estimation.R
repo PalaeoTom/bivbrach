@@ -5,18 +5,17 @@
 rm(list = ls())
 
 ## If packages aren't installed, install them, then load them
-packages <- c("iNEXT", "parallel", "velociraptr", "dplyr", "plyr")
+packages <- c("parallel", "velociraptr", "dplyr", "plyr")
 if(length(packages[!packages %in% installed.packages()[,"Package"]]) > 0){
   install.packages(packages[!packages %in% installed.packages()[,"Package"]])
 }
-library(iNEXT)
 library(parallel)
 library(velociraptr)
 library(dplyr)
 library(plyr)
 
 ## Set working directory
-setwd("~/R_packages/R_projects/bivbrach")
+setwd("~/R_packages/bivbrach")
 home <- getwd()
 
 ## Load variable vectors
@@ -52,7 +51,7 @@ source("functions/get.regional.richness.R")
 #n.cores = 4
 #taxVar = taxVar.strings[a]
 
-## Calculate richness (using site and occurrence rarefaction)
+## Calculate richness
 for(a in 1:length(input.strings)){
   get.regional.richness(input.dir = input.dir, input.pre = input.strings[a], output.dir = output.dir, output.pre = output.strings[a],
                         vars = vars, taxa = T, n.cores = 4, taxVar = taxVar.strings[a])
@@ -61,7 +60,7 @@ for(a in 1:length(input.strings)){
 #### Plotting bivalve versus brachiopod richness ####
 ## Define directories
 input.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_regRich"
-output.dir <- "/Users/tjs/R_packages/R_projects/bivbrach/figures"
+output.dir <- "/Users/tjs/R_packages/bivbrach/figures"
 
 ## Define variables and labels
 radii <- as.integer(c(200000, 500000, 1000000))

@@ -1,4 +1,4 @@
-biscuitsBatch <- function(dataList, siteQuota, r, b.crs, output.dir,
+cookies2Batch <- function(dataList, siteQuota, r, b.crs, output.dir,
                          b.xy = c("cellX", "cellY"),
                          overlapThreshold = 0, overlapType = "area", overlapPruningMode = "maxOccs",
                          reps = 100, nOccs = 100,
@@ -21,8 +21,8 @@ biscuitsBatch <- function(dataList, siteQuota, r, b.crs, output.dir,
     ## Derive a box of cookies
     box <- mclapply(1:length(dataList), mc.cores = n.cores, function(x){
       ## Return the error message
-      attempt <- tryCatch(biscuits(dataMat = dataList[[x]],
-                                  xy = b.xy, seeding = NULL, rarefaction = rarefaction, reps = reps,
+      attempt <- tryCatch(cookies2(dataMat = dataList[[x]],
+                                  xy = b.xy, uniqID = "cell", seeding = NULL, rarefaction = rarefaction, reps = reps,
                                   nSites = settings[i,1], nOccs = nOccs, oThreshold = settings[i,3], oType = as.character(settings[i,4]), oPruningMode = overlapPruningMode,
                                   r = settings[i,2],
                                   crs = b.crs, returnSeeds = F, output = 'full'), error = function(e){})
