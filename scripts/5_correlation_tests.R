@@ -93,16 +93,16 @@ input.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_regRich"
 output.dir <- "~/R_packages/bivbrach/data"
 source("functions/mass.mlm.on.summary.R")
 
-m = 1
-input.dir = input.dir
-input.pre = input.strings[m]
-output.dir = output.dir
-output.pre = output.strings.med.diff[m]
-vars = vars
-vars.values = vars.values
-mode = "median"
-unit = "diff"
-data.columns = c("Brachiopoda", "Bivalvia")
+#m = 1
+#input.dir = input.dir
+#input.pre = input.strings[m]
+#output.dir = output.dir
+#output.pre = output.strings.med.diff[m]
+#vars = vars
+#vars.values = vars.values
+#mode = "median"
+#unit = "diff"
+#data.columns = c("Brachiopoda", "Bivalvia")
 
 ## Run for each input under each setting
 for(m in 1:length(input.strings)){

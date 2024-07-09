@@ -1,6 +1,6 @@
-cookies2Batch <- function(dataList, siteQuota, r, b.crs, output.dir,
+cookies2Batch <- function(dataList, vars, b.crs, output.dir,
                          b.xy = c("cellX", "cellY"),
-                         overlapThreshold = 0, overlapType = "area", overlapPruningMode = "maxOccs",
+                         overlapThreshold = 0, overlapType = "sites", overlapPruningMode = "maxOccs",
                          reps = 100, nOccs = 100,
                          rarefaction = "sitesThenOccs",
                          n.cores = 1, name.output = "new",
@@ -8,22 +8,31 @@ cookies2Batch <- function(dataList, siteQuota, r, b.crs, output.dir,
   ## Set home directory
   home <- getwd()
   ## Get all possible combinations of settings (siteQuota, radius, overlapThreshold, overlapType, weightedStandardisation)
-  settings <- expand.grid(siteQuota, r, overlapThreshold, overlapType)
+  settings <- expand.grid(vars)
   ## define identifiers for different settings and create list of settings for labelling
-  params <- list(siteQuota, r, overlapThreshold, overlapType)
-  labs <- list(paste0("sQ",seq(1,length(siteQuota),1)), paste0("r",seq(1,length(r),1)), paste0("oTh",seq(1,length(overlapThreshold),1)), paste0("oTy",seq(1,length(overlapType),1)))
+  params <- vars
+  labs <- lapply(1:length(vars), function(x) paste0(names(vars)[x], seq(1, length(vars[[x]]), 1)))
   ## identify invariant elements to clean up labels
   vary <- apply(settings, 2, function(x) length(unique(x))) > 1
   ## label params with labs
   for (n in 1:length(params)) names(params[[n]]) <- labs[[n]]
   ## for each row in settings, run an analysis and export
   for(i in 1:nrow(settings)){
+    ## Get occurrence number
+    if(length(nOccs) > 1){
+      occs.n <- nOccs[i]
+      if(is.na(occs.n)){
+        occs.n <- 100
+      }
+    } else {
+      occs.n <- nOccs
+    }
     ## Derive a box of cookies
     box <- mclapply(1:length(dataList), mc.cores = n.cores, function(x){
       ## Return the error message
       attempt <- tryCatch(cookies2(dataMat = dataList[[x]],
                                   xy = b.xy, uniqID = "cell", seeding = NULL, rarefaction = rarefaction, reps = reps,
-                                  nSites = settings[i,1], nOccs = nOccs, oThreshold = settings[i,3], oType = as.character(settings[i,4]), oPruningMode = overlapPruningMode,
+                                  nSites = settings[i,1], nOccs = occs.n, oThreshold = overlapThreshold, oType = overlapType, oPruningMode = overlapPruningMode,
                                   r = settings[i,2],
                                   crs = b.crs, returnSeeds = F, output = 'full'), error = function(e){})
       ## If it works, keep output, if not, return NA

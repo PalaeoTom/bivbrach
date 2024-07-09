@@ -38,6 +38,9 @@ radii <- as.integer(c(200000, 500000, 1000000))
 siteQuotas <- c(2, 3, 4, 5)
 overlapThresholds <- 0
 overlapTypes <- "sites"
+vars <- list(siteQuotas, radii)
+names(vars) <- c("sQ","r")
+
 
 #### Get distribution of occurrence numbers for each subsample of sites ####
 ## Generate spatial subsamples, returning all occurrences associate with subsamples of sites
@@ -53,8 +56,8 @@ data.strings <- c("stages.g200",
                   "stages.s100")
 
 ## use biscuitsBatch to run all permutations
-for(z in 1:length(output.vector)){
-  cookies2Batch(dataList = eval(parse(text=data.strings[z])), siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub",
+for(z in 1:length(output.strings.sites)){
+  cookies2Batch(dataList = eval(parse(text=data.strings[z])), vars = vars, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub",
                 overlapThreshold = overlapThresholds, overlapType = overlapTypes, overlapPruningMode = "maxOccs", rarefaction = "sites",
                 name.output = output.strings.sites[z], n.cores = 4, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
 }
@@ -95,15 +98,6 @@ for(z in 1:length(output.strings)){
 }
 
 #### Generate spatial subsamples ####
-## Read in outputs of occurrence counting
-stages.s100.occs.count <- read.csv("data/stages.s100.occ.count.csv", row.names = 1)
-stages.s200.occs.count <- read.csv("data/stages.s200.occ.count.csv", row.names = 1)
-stages.g100.occs.count <- read.csv("data/stages.g100.occ.count.csv", row.names = 1)
-stages.g200.occs.count <- read.csv("data/stages.g200.occ.count.csv", row.names = 1)
-
-## Minimum around 40 occurrences, 0.25 quantile over 100 for all. Maxima are 4500-6500.
-## 100 subsamples of 100 occurrences = 10,000 draws. Should sample each occurrence twice.
-
 ## Generate output vectors
 output.vector <- c("stages_g200",
                    "stages_g100",
@@ -119,8 +113,7 @@ data.strings <- c("stages.g200",
 ## BiscuitBatch arguments
 #z = 1
 #dataList = eval(parse(text=data.strings[i]))
-#siteQuota = siteQuotas
-#r = radii
+#vars = vars
 #b.crs = 'EPSG:8857'
 #b.xy = c("cellX", "cellY")
 #output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub"
@@ -133,7 +126,7 @@ data.strings <- c("stages.g200",
 #taxa.level = c("phylum","class")
 #overlapPruningMode = "maxOccs"
 #reps = 100
-#nOccs = 100
+#nOccs = occ.vector[[z]]
 #i = 1
 #x = 16
 
@@ -153,10 +146,30 @@ data.strings <- c("stages.g200",
 #returnSeeds = F
 #output = 'full'
 
-## use biscuitsBatch to run all permutations
+## Read in outputs of occurrence counting
+stages.s100.occs.count <- read.csv("data/stages.s100.occ.count.csv", row.names = 1)
+stages.s200.occs.count <- read.csv("data/stages.s200.occ.count.csv", row.names = 1)
+stages.g100.occs.count <- read.csv("data/stages.g100.occ.count.csv", row.names = 1)
+stages.g200.occs.count <- read.csv("data/stages.g200.occ.count.csv", row.names = 1)
+
+## Get minima for different configurations
+stages.g200.occ.n <- stages.g200.occs.count[,"minimum"]
+stages.g100.occ.n <- stages.g100.occs.count[,"minimum"]
+stages.s200.occ.n <- stages.s200.occs.count[,"minimum"]
+stages.s100.occ.n <- stages.s100.occs.count[,"minimum"]
+occ.list <- list(stages.g200.occ.n,
+                   stages.g100.occ.n,
+                   stages.s200.occ.n,
+                   stages.s100.occ.n)
+
+## get vars
+vars <- list(siteQuotas, radii)
+names(vars) <- c("sQ","r")
+
+## use biscuitsBatch to run all permutations, using minimum occurrence number for each run as occs number
 for(z in 1:length(output.vector)){
-cookies2Batch(dataList = eval(parse(text=data.strings[z])), siteQuota = siteQuotas, r = radii, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub",
-             overlapThreshold = overlapThresholds, overlapType = overlapTypes, overlapPruningMode = "maxOccs", rarefaction = "sitesThenOccs",
+cookies2Batch(dataList = eval(parse(text=data.strings[z])), vars = vars, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub",
+             overlapThreshold = overlapThresholds, overlapType = overlapTypes, overlapPruningMode = "maxOccs", rarefaction = "sitesThenOccs", nOccs = occ.list[[z]],
              name.output = output.vector[z], n.cores = 4, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
 }
 
