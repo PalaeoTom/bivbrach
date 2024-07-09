@@ -1,4 +1,4 @@
-mass.mlm.median <- function(input.dir, input.pre, output.dir, output.pre, vars, vars.values, median.value = "diff", data.columns = c("Brachiopoda","Bivalvia")){
+mass.mlm.on.summary <- function(input.dir, input.pre, output.dir, output.pre, vars, vars.values, mode = "median", unit = "diff", data.columns = c("Brachiopoda","Bivalvia")){
   combin <- expand.grid(vars)
   varStrings <- sapply(1:nrow(combin), function(x) paste(unlist(combin[x,]), collapse = "_"))
   input.dirs <- paste0(input.dir, "/", input.pre, "_", varStrings, ".csv")
@@ -57,7 +57,8 @@ mass.mlm.median <- function(input.dir, input.pre, output.dir, output.pre, vars, 
       }
       medMat <- cbind(times, unique(data[,"source.subregion.ID"]),medMat)
       colnames(medMat) <- colnames(data)
-      if(median.value == "diff"){
+      if(mode == "median"){
+      if(unit == "diff"){
         for(t in 1:nrow(medMat)){
           ## get data
           subregion <- data[which(data[,"source.subregion.ID"] == medMat[t,"source.subregion.ID"]),data.columns]
@@ -68,7 +69,7 @@ mass.mlm.median <- function(input.dir, input.pre, output.dir, output.pre, vars, 
           ## if length 0
           if(length(med.id) == 0){
             ## get samples either side of quantile, and pick one
-            quants <- diffs[c(length(diffs)/2,length(diffs)/2+1)]
+            quants <- sort(diffs)[c(length(diffs)/2,length(diffs)/2+1)]
             ## update med.id
             med.id <- which(diffs == sample(quants,1))
           }
@@ -81,20 +82,20 @@ mass.mlm.median <- function(input.dir, input.pre, output.dir, output.pre, vars, 
           medMat[t,"Bivalvia"] <- subregion[med.id,"Bivalvia"]
         }
       } else {
-        if(any(median.value == data.columns)){
+        if(any(unit == data.columns)){
           for(t in 1:nrow(medMat)){
             ## get data
             subregion <- data[which(data[,"source.subregion.ID"] == medMat[t,"source.subregion.ID"]),data.columns]
             ## get data
-            values <- subregion[,median.value]
+            values <- subregion[,unit]
             ## get median.id
-            med.id <- which(subregion[,median.value] == median(subregion[,median.value]))
+            med.id <- which(subregion[,unit] == median(subregion[,unit]))
             ## if length 0
             if(length(med.id) == 0){
               ## get samples either side of quantile, and pick one
-              quants <- values[c(length(values)/2,length(values)/2+1)]
+              quants <- sort(values)[c(length(values)/2,length(values)/2+1)]
               ## update med.id
-              med.id <- which(subregion[,median.value] == sample(quants,1))
+              med.id <- which(subregion[,unit] == sample(quants,1))
             }
             ## if length is more than 1
             if(length(med.id) > 1){
@@ -105,7 +106,32 @@ mass.mlm.median <- function(input.dir, input.pre, output.dir, output.pre, vars, 
             medMat[t,"Bivalvia"] <- subregion[med.id,"Bivalvia"]
           }
         } else {
-          stop("check median.value is 'diff' or the name of one of the data columns")
+          stop("check unit is 'diff' or the name of one of the data columns")
+        }
+      }
+      } else {
+        if(mode == "min"){
+          if(unit == "diff"){
+            for(t in 1:nrow(medMat)){
+              ## get data
+              subregion <- data[which(data[,"source.subregion.ID"] == medMat[t,"source.subregion.ID"]),data.columns]
+              ## get differences
+              diffs <- apply(subregion, 1, function(x) diff(x))
+              ## get ID of min
+              min.id <- which(abs(diffs) == min(abs(diffs)))
+              ## if length is more than 1
+              if(length(min.id) > 1){
+                min.id <- sample(min.id, 1)
+              }
+              ## get row min.id
+              medMat[t,"Brachiopoda"] <- subregion[min.id,"Brachiopoda"]
+              medMat[t,"Bivalvia"] <- subregion[min.id,"Bivalvia"]
+            }
+          } else {
+            stop("change argument 'unit' to 'diff'")
+          }
+        } else {
+          stop("check argument 'mode' is 'median' or 'min'")
         }
       }
       #mlm <- suppressMessages(tryCatch(lmer(Brachiopoda ~ Bivalvia + (1 + Bivalvia|times), data = data), error = function(e){}))
