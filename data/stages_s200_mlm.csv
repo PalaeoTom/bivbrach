@@ -1,4 +1,4 @@
-"","site_quota","radius","n.samples","n.timeBins","n.subregions","avg.obs.per.timeBin","avg.obs.per.subregion","intercept","intercept.std.Error","intercept.df","intercept.t.value","intercept.p.value","slope","slope.std.Error","slope.df","slope.t.value","slope.p.value"
+"","site_quota","radius","n.samples","n.timeBins","n.subregions","avg.obs.per.timeBin","avg.obs.per.subregion","intercept","intercept.std.error","intercept.df","intercept.t.value","intercept.p.value","slope","slope.std.error","slope.df","slope.t.value","slope.p.value"
 "1",2,200000,4400,25,44,176,100,15.2863905748387,1.57705017169772,26.5735829422771,9.69302743132301,3.24252442423259e-10,-0.230216720765897,0.014544764551015,4393.15826618593,-15.8281503944889,6.3896801079603e-55
 "2",3,200000,1800,12,18,150,100,34.14299035816,4.24690763738635,13.5712502543825,8.03949444475615,1.59255809089061e-06,-0.360710442877259,0.028494370505678,1788.49694971586,-12.6590072521652,3.0844514810941e-35
 "3",4,200000,500,5,5,100,100,63.760379972339,24.6146599617529,4.0693226084701,2.59034169358472,0.0596381049624708,-0.119535905990883,0.0720196674672588,496.174710302547,-1.65976753565581,0.0975930696817922
