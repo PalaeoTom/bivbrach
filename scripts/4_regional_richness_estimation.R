@@ -60,7 +60,7 @@ for(a in 1:length(input.strings)){
 #### Plotting bivalve versus brachiopod richness ####
 ## Define directories
 input.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_regRich"
-output.dir <- "/Users/tjs/R_packages/bivbrach/figures"
+output.dir <- "/Users/tjs/R_packages/bivbrach/figures/richness"
 
 ## Define variables and labels
 radii <- as.integer(c(200000, 500000, 1000000))

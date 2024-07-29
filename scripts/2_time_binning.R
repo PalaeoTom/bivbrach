@@ -39,24 +39,38 @@ stages$b_round <- stages$t_round <- 0
 ## Read in function for defining rounded stage ages
 source("functions/round.age.R")
 
-## Define groupings for rounding
+## Define groupings for rounding - taken from Antell et al. (2020)
 groupings <- list(u10 <- which(stages$b_age < 10),
                   u150 <- which(stages$b_age < 150 & stages$b_age > 10),
                   old <- which(stages$b_age > 150))
 
-## Round ages to different digits depending on age classification
+## Round all to two digits
 for (group in 1:length(groupings)){
   bins <- groupings[[group]]
-  digits <- c(2, 1, 0)[group]
+  digits <- c(3, 3, 3)[group]
 
-  # round down younger boundary (terminus) and up older boundary (beginning) per stage
+  # round all up (so no 0-0 bins, and no overlap)
   for (i in bins){
     b <- stages$b_age[i]
     t <- stages$b_age[i+1]
-    stages$b_round[i] <- round.age(b, digits=digits, round_up=TRUE)
-    stages$t_round[i] <- round.age(t, digits=digits, round_up=FALSE)
+    stages$b_round[i] <- round.age(b, digits=digits, round_up=T)
+    stages$t_round[i] <- round.age(t, digits=digits, round_up=T)
   }
 }
+
+## Inspect time bins for overlap
+## First bin is always fine
+checker <- matrix(NA, nrow = length(2:nrow(stages)), ncol = 2)
+checker[,1] <- stages[,"name"][-1]
+for(i in 2:nrow(stages)){
+  if(stages$t_round[i-1] == stages$b_round[i]){
+    checker[i-1,2] <- "equal to previous"
+  } else {
+    checker[i-1,2] <- "unequal"
+  }
+}
+View(checker)
+## No overlap between bins. Can continue.
 
 source("functions/extract.stage.bin.R")
 source("functions/extract.time.bin.R")

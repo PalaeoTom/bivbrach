@@ -5,19 +5,23 @@
 rm(list = ls())
 
 ## If packages aren't installed, install them, then load them
-packages <- c("lmerTest", "velociraptr")
+packages <- c("lmerTest", "velociraptr", "sjPlot", "ggplot2", "velociraptr", "dplyr")
 if(length(packages[!packages %in% installed.packages()[,"Package"]]) > 0){
   install.packages(packages[!packages %in% installed.packages()[,"Package"]])
 }
 library(lmerTest)
 library(velociraptr)
+library(sjPlot)
+library(ggplot2)
+library(velociraptr)
+library(dplyr)
 
 ## Load variable vectors - just looking at sites moving forward.
 radii <- as.integer(c(200000, 500000, 1000000))
 siteQuotas <- c(2, 3, 4, 5)
 vars <- list(paste0("sQ",seq(1,length(siteQuotas),1)), paste0("r",seq(1,length(radii),1)))
 vars.values <- list(siteQuotas, radii)
-names(vars.values) <- c("site_quota", "radius")
+names(vars.values) <- names(vars) <- c("site_quota", "radius")
 
 ## input strings
 ## Set output strings
@@ -55,6 +59,126 @@ for(m in 1:length(input.strings)){
            output.pre = output.strings[m], vars = vars, vars.values = vars.values)
 }
 
+#### Plotting main results ####
+## Define plot title strings
+input.names <- c("sQ1_r1", "sQ2_r1", "sQ3_r1", "sQ4_r1",
+                 "sQ1_r2", "sQ2_r2", "sQ3_r2", "sQ4_r2",
+                 "sQ1_r3", "sQ2_r3", "sQ3_r3", "sQ4_r3")
+plot.names <- c("2 sites, 200km radius", "3 sites, 200km radius", "4 sites, 200km radius", "5 sites, 200km radius",
+                "2 sites, 500km radius", "3 sites, 500km radius", "4 sites, 500km radius", "5 sites, 500km radius",
+                "2 sites, 1000km radius", "3 sites, 1000km radius", "4 sites, 1000km radius", "5 sites, 1000km radius")
+title.strings <- cbind(input.names,plot.names)
+
+## Download period colour palettes
+periods <- downloadTime("international periods")
+periods <- periods[order(periods$b_age, decreasing=TRUE), ]
+periods <- periods[periods$b_age <= periods[which(rownames(periods) == "Cambrian"),"b_age"],c(2,4,5,8)]
+periods[,"shape"] <- c(rep(16, 6), rep(15, 3), rep(17, 3))
+
+## Download era shape palette
+eras <- downloadTime("international eras")[1:3,]
+eras <- eras[order(eras$b_age, decreasing = TRUE),c(2,4,5)]
+eras[,"shape"] <- c(16,15,17)
+
+## define input strings
+input.strings <- c("stages_g200",
+                   "stages_g100",
+                   "stages_s200",
+                   "stages_s100")
+
+## Function
+## Assemble plot title prefix
+mass.SJplot <- function(input.string, argument.strings, model.input.dir, rich.input.dir, output.dir, times.col, period.scale, era.scale, xy){
+  if(grepl("_g",input.string)){
+    taxon <- "Genera,"
+  } else {
+    taxon <- "Species,"
+  }
+  if(grepl("200",input.string)){
+    gCells <- "200km grid cells,"
+  } else {
+    gCells <- "100km grid cells,"
+  }
+  data.string <- paste(taxon, gCells)
+  ## Read in model
+  models <- readRDS(paste0(model.input.dir,"/",input.string,"_mlm_models.Rds"))
+  for(i in 1:length(models)){
+    ## Read in richness data
+    richness <- read.csv(paste0(rich.input.dir, "/", input.string, "_", names(models)[i], ".csv"))
+    ## Use period.scale to assign period information
+    period <- c()
+    for(t in 1:nrow(period.scale)){
+      count <- length(which(between(richness[,times.col], left = period.scale[,"t_age"][t], right = period.scale[,"b_age"][t])))
+      if(count > 0){
+        period <- c(period, rep(period.scale[,"name"][t], count))
+      }
+    }
+    era <- c()
+    for(t in 1:nrow(era.scale)){
+      count <- length(which(between(richness[,times.col], left = era.scale[,"t_age"][t], right = era.scale[,"b_age"][t])))
+      if(count > 0){
+        era <- c(era, rep(era.scale[,"name"][t], count))
+      }
+    }
+    richness <- cbind(richness, period, era)
+    ## Get colour vector
+    point.col <- period.scale[,"color"]
+    names(point.col) <- period.scale[,"name"]
+    ## Get shape vector
+    point.shape <- era.scale[,"shape"]
+    names(point.shape) <- era.scale[,"name"]
+    ## Get shape vector for data
+    era.legend <- period.scale[,"shape"]
+    era.legend <- era.legend[period.scale[,"name"] %in% unique(richness[,"period"])]
+    ## Get plot title
+    plot.title <- paste(data.string, argument.strings[which(argument.strings[,1] %in% names(models)[i]),2])
+    ## define plot data frame
+    line.df <- get_model_data(models[[i]], type = "pred", terms = xy[1])
+    ## basic scatter plot
+    scatter <- ggplot() +
+      xlab("Bivalve richness") +
+      ylab("Brachiopod richness") +
+      labs(color = "Period") +
+      ggtitle(plot.title) +
+      geom_point(data = richness, aes(x = Bivalvia, y = Brachiopoda, color = period, shape = era)) +
+      scale_color_manual(breaks = unique(richness[,"period"]), values = point.col) +
+      scale_shape_manual(values = point.shape) +
+      geom_line(data = line.df, aes(x = x, y = predicted)) +
+      geom_ribbon(data = line.df, aes(x = x, ymin = conf.low, ymax = conf.high), alpha = 0.1)+
+      scale_x_continuous(expand = c(0,1)) +
+      scale_y_continuous(expand = c(0,1)) +
+      geom_hline(yintercept = 0, colour = "grey", linetype = "dashed") +
+      geom_vline(xintercept = 0, colour = "grey", linetype = "dashed") +
+      guides(shape = "none",
+             color = guide_legend(override.aes = list(shape = era.legend))) +
+      theme(text = element_text(family = "Helvetica"),,
+            title = element_text(size = 12),
+            axis.text = element_text(size = 11),
+            axis.title = element_text(size = 12),
+            legend.title = element_text(size = 12),
+            panel.grid.major = element_blank(),
+            panel.grid.minor = element_blank(),
+            panel.background = element_blank(),
+            axis.line = element_line(colour = "black"),
+            legend.position = "bottom",
+            legend.text = element_text(size = 10),
+            legend.key.size = unit(10,"point"))
+    scatter
+    ## plot
+    pdf(file = paste0(output.dir, "/", plot.title, ".pdf"))
+    print(scatter)
+    dev.off()
+  }
+}
+
+## Run function for all
+model.input.dir <- "~/R_packages/bivbrach/data"
+rich.input.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_regRich"
+output.dir <- "~/R_packages/bivbrach/figures/sjPlot"
+
+for(r in 1:length(input.strings)){
+ mass.SJplot(input.strings[r], title.strings, model.input.dir, rich.input.dir, output.dir, times.col = "times", period.scale = periods, era.scale = eras, xy = c("Bivalvia", "Brachiopoda"))
+}
 
 #### Sensitivity testing - taking median richness for each radially constrained region and dropping random effect ####
 radii <- as.integer(c(200000, 500000, 1000000))

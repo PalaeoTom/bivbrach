@@ -41,7 +41,6 @@ overlapTypes <- "sites"
 vars <- list(siteQuotas, radii)
 names(vars) <- c("sQ","r")
 
-
 #### Get distribution of occurrence numbers for each subsample of sites ####
 ## Generate spatial subsamples, returning all occurrences associate with subsamples of sites
 ## Generate output vectors
@@ -96,6 +95,38 @@ for(z in 1:length(output.strings)){
   count.occurrences(input.dir = input.dir, input.pre = input.strings[z], output.dir = output.dir, output.pre = output.strings[z],
                     vars = vars, method = "sites", n.cores = 4, taxa = T)
 }
+
+#### Further testing occurrence numbers - get occurrences by cell for each dataset ####
+get.occs.per.cell <- function(data){
+  output <- lapply(1:length(data), function(x){
+    ## get unique cells
+    cells <- unique(data[[x]][,"cell"])
+    if(length(cells) > 0){
+      by.cell <- sapply(cells, function(y) out <- nrow(data[[x]][which(data[[x]][,"cell"] == y),]))
+    } else {
+      by.cell <- 0
+    }
+  })
+  ## create output
+  matOut <- matrix(NA, nrow = length(output), ncol = 5)
+  colnames(matOut) <- c("time.bin", "n.cells", "min.occs", "mean.occs", "max.occs")
+  matOut[,1] <- names(data)
+  for(i in 1:length(output)){
+    if(length(output[[i]])>0){
+      matOut[i,2] <- length(output[[i]])
+      matOut[i,3] <- min(output[[i]])
+      matOut[i,4] <- round(mean(output[[i]]), 0)
+      matOut[i,5] <- max(output[[i]])
+    }
+  }
+  return(matOut)
+}
+
+## Get occurrences per cell
+stages.g200.occs <- get.occs.per.cell(stages.g200)
+stages.g100.occs <- get.occs.per.cell(stages.g100)
+stages.s200.occs <- get.occs.per.cell(stages.s200)
+stages.s100.occs <- get.occs.per.cell(stages.s100)
 
 #### Generate spatial subsamples ####
 ## Generate output vectors

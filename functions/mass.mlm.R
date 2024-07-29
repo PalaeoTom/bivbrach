@@ -23,7 +23,8 @@ mass.mlm <- function(input.dir, input.pre, output.dir, output.pre, vars, vars.va
       data.mat[i,3] <- length(unique(data[,"source.subregion.ID"]))
       data.mat[i,4] <- nrow(data)/(length(unique(data[,"times"])))
       data.mat[i,5] <- nrow(data)/(length(unique(data[,"source.subregion.ID"])))
-      mlm <- suppressMessages(tryCatch(lmer(Brachiopoda ~ Bivalvia + (1|times/source.subregion.ID), data = data), error = function(e){}))
+      #mlm <- suppressMessages(tryCatch(lmer(Brachiopoda ~ Bivalvia + (1|times/source.subregion.ID), data = data), error = function(e){}))
+      mlm <- suppressMessages(tryCatch(lmer(Brachiopoda ~ Bivalvia + (Bivalvia|times/source.subregion.ID), data = data), error = function(e){}))
       if(is.null(mlm)){
         next
       } else {

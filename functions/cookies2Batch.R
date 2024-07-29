@@ -30,11 +30,11 @@ cookies2Batch <- function(dataList, vars, b.crs, output.dir,
     ## Derive a box of cookies
     box <- mclapply(1:length(dataList), mc.cores = n.cores, function(x){
       ## Return the error message
-      attempt <- tryCatch(cookies2(dataMat = dataList[[x]],
-                                  xy = b.xy, uniqID = "cell", seeding = NULL, rarefaction = rarefaction, reps = reps,
-                                  nSites = settings[i,1], nOccs = occs.n, oThreshold = overlapThreshold, oType = overlapType, oPruningMode = overlapPruningMode,
+      attempt <- tryCatch(cookies2(dat = dataList[[x]],
+                                  xy = b.xy, uniqID = "cell", seeding = NULL, rarefaction = rarefaction, iter = reps,
+                                  nSite = settings[i,1], nOcc = occs.n, oThreshold = overlapThreshold, oType = overlapType, oPruningMode = overlapPruningMode,
                                   r = settings[i,2],
-                                  crs = b.crs, returnSeeds = F, output = 'full'), error = function(e){})
+                                  crs = b.crs, output = 'full'), error = function(e){})
       ## If it works, keep output, if not, return NA
       if(!is.null(attempt)){
         pack <- attempt
