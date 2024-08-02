@@ -176,8 +176,6 @@ occ.list <- list(stages.g200.occ.n,
 vars <- list(siteQuotas, radii)
 names(vars) <- c("sQ","r")
 
-
-
 ## use biscuitsBatch to run all permutations, using minimum occurrence number for each run as occs number
 for(z in 1:length(output.vector)){
 cookies2Batch(dataList = eval(parse(text=data.strings[z])), vars = vars, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub",
@@ -237,14 +235,14 @@ prefix.vector <- output.vector <- c("stages_g200", "stages_g100","stages_s200","
 #output.name = prefix.vector[z]
 
 for(z in 1:length(prefix.vector)){
-  count.viable.samples(dir = dir, pre = prefix.vector[z], vars = vars, sD = eval(parse(text=data.strings[z])), n.cores = cores, taxa = taxa.split, output.dir = "~/R_packages/bivbrach/data", output.name = prefix.vector[z])
+  count.viable.samples(dir = dir, pre = prefix.vector[z], vars = vars, sD = eval(parse(text=data.strings[z])), n.cores = cores, taxa = taxa.split, output.dir = "~/R_packages/bivbrach/data/viable_subsample_count/", output.name = prefix.vector[z])
 }
 
 ## read in cookie counts
-stages.g200.VCs <- read.csv("data/stages_g200_viable_subsamples.csv", header = T, row.names = 1)
-stages.g100.VCs <- read.csv("data/stages_g100_viable_subsamples.csv", header = T, row.names = 1)
-stages.s200.VCs <- read.csv("data/stages_s200_viable_subsamples.csv", header = T, row.names = 1)
-stages.s100.VCs <- read.csv("data/stages_s100_viable_subsamples.csv", header = T, row.names = 1)
+stages.g200.VCs <- read.csv("data/viable_subsample_count/stages_g200_viable_subsamples.csv", header = T, row.names = 1)
+stages.g100.VCs <- read.csv("data/viable_subsample_count/stages_g100_viable_subsamples.csv", header = T, row.names = 1)
+stages.s200.VCs <- read.csv("data/viable_subsample_count/stages_s200_viable_subsamples.csv", header = T, row.names = 1)
+stages.s100.VCs <- read.csv("data/viable_subsample_count/stages_s100_viable_subsamples.csv", header = T, row.names = 1)
 
 ## Update colnames using stage data to make them more usable
 stages <- downloadTime('international ages')
@@ -266,7 +264,7 @@ periods <- periods[periods$b_age <= periods[which(rownames(periods) == "Cambrian
 titles <- c("Genera, 200km grid cells", "Genera, 100km grid cells", "Species, 200km grid cells", "Species, 100km grid cells")
 
 # Set output directory
-output.dir <- "~/R_packages/bivbrach/figures"
+output.dir <- "~/R_packages/bivbrach/figures/viable_RCR_through_time"
 
 ## Output file name vector
 output.strings <- c("stages_g200", "stages_g100", "stages_s200", "stages_s100")
