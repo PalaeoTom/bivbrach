@@ -70,7 +70,9 @@ for(i in 2:nrow(stages)){
   }
 }
 View(checker)
-## No overlap between bins. Can continue.
+
+## No overlap between bins. Can continue. First we explort
+write.csv(stages, file = "data/cleaned_stages.csv")
 
 source("functions/extract.stage.bin.R")
 source("functions/extract.time.bin.R")

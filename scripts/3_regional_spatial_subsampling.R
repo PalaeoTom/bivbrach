@@ -29,6 +29,7 @@ stages.g200 <- readRDS("data/stages_g200.Rds")
 stages.g100 <- readRDS("data/stages_g100.Rds")
 stages.s200 <- readRDS("data/stages_s200.Rds")
 stages.s100 <- readRDS("data/stages_s100.Rds")
+home <- getwd()
 
 ## Load new functions
 source("functions/cookies2Batch.R")
@@ -62,6 +63,7 @@ for(z in 1:length(output.strings.sites)){
 }
 
 ## now convert to viable bins
+setwd(home)
 source("functions/drop.unusable.bins.R")
 input.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub"
 output.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub"
@@ -80,7 +82,7 @@ for(z in 1:length(out.pre.vector)){
 ## Now to count up occurrences for each one
 source("functions/count.occurrences.R")
 input.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub"
-output.dir <- "~/R_packages/bivbrach/data"
+output.dir <- "~/R_packages/bivbrach/data/occurrence_count"
 vars <- list(paste0("sQ",seq(1,length(siteQuotas),1)), paste0("r",seq(1,length(radii),1)))
 names(vars) <- c("siteQuota", "radius")
 taxa <- T
@@ -97,30 +99,7 @@ for(z in 1:length(output.strings)){
 }
 
 #### Further testing occurrence numbers - get occurrences by cell for each dataset ####
-get.occs.per.cell <- function(data){
-  output <- lapply(1:length(data), function(x){
-    ## get unique cells
-    cells <- unique(data[[x]][,"cell"])
-    if(length(cells) > 0){
-      by.cell <- sapply(cells, function(y) out <- nrow(data[[x]][which(data[[x]][,"cell"] == y),]))
-    } else {
-      by.cell <- 0
-    }
-  })
-  ## create output
-  matOut <- matrix(NA, nrow = length(output), ncol = 5)
-  colnames(matOut) <- c("time.bin", "n.cells", "min.occs", "mean.occs", "max.occs")
-  matOut[,1] <- names(data)
-  for(i in 1:length(output)){
-    if(length(output[[i]])>0){
-      matOut[i,2] <- length(output[[i]])
-      matOut[i,3] <- min(output[[i]])
-      matOut[i,4] <- round(mean(output[[i]]), 0)
-      matOut[i,5] <- max(output[[i]])
-    }
-  }
-  return(matOut)
-}
+source("functions/get.occs.per.cell.R")
 
 ## Get occurrences per cell
 stages.g200.occs <- get.occs.per.cell(stages.g200)
@@ -151,37 +130,37 @@ data.strings <- c("stages.g200",
 #overlapThreshold = overlapThresholds
 #overlapType = overlapTypes
 #rarefaction = "sitesThenOccs"
-#name.output = output.vector[i]
+#name.output = output.vector[z]
 #n.cores = 4
 #taxa = c("Brachiopoda","Bivalvia")
 #taxa.level = c("phylum","class")
 #overlapPruningMode = "maxOccs"
+#nOccs = occ.list[[z]]
 #reps = 100
-#nOccs = occ.vector[[z]]
 #i = 1
 #x = 16
 
-## Biscuit arguments
-#dataMat = dataList[[x]]
+## cookies2 arguments
+#dat = dataList[[x]]
 #xy = b.xy
+#uniqID = "cell"
 #seeding = NULL
 #rarefaction = rarefaction
-#reps = reps
-#nSites = settings[i,1]
-#nOccs = nOccs
-#oThreshold = settings[i,3]
-#oType = as.character(settings[i,4])
+#iter = reps
+#nSite = settings[i,1]
+#nOcc = occs.n
+#oThreshold = overlapThreshold
+#oType = overlapType
 #oPruningMode = overlapPruningMode
 #r = settings[i,2]
 #crs = b.crs
-#returnSeeds = F
 #output = 'full'
 
 ## Read in outputs of occurrence counting
-stages.s100.occs.count <- read.csv("data/stages.s100.occ.count.csv", row.names = 1)
-stages.s200.occs.count <- read.csv("data/stages.s200.occ.count.csv", row.names = 1)
-stages.g100.occs.count <- read.csv("data/stages.g100.occ.count.csv", row.names = 1)
-stages.g200.occs.count <- read.csv("data/stages.g200.occ.count.csv", row.names = 1)
+stages.s100.occs.count <- read.csv("data/occurrence_count/stages.s100.occ.count.csv", row.names = 1)
+stages.s200.occs.count <- read.csv("data/occurrence_count/stages.s200.occ.count.csv", row.names = 1)
+stages.g100.occs.count <- read.csv("data/occurrence_count/stages.g100.occ.count.csv", row.names = 1)
+stages.g200.occs.count <- read.csv("data/occurrence_count/stages.g200.occ.count.csv", row.names = 1)
 
 ## Get minima for different configurations
 stages.g200.occ.n <- stages.g200.occs.count[,"minimum"]
@@ -196,6 +175,8 @@ occ.list <- list(stages.g200.occ.n,
 ## get vars
 vars <- list(siteQuotas, radii)
 names(vars) <- c("sQ","r")
+
+
 
 ## use biscuitsBatch to run all permutations, using minimum occurrence number for each run as occs number
 for(z in 1:length(output.vector)){

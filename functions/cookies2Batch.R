@@ -30,7 +30,7 @@ cookies2Batch <- function(dataList, vars, b.crs, output.dir,
     ## Derive a box of cookies
     box <- mclapply(1:length(dataList), mc.cores = n.cores, function(x){
       ## Return the error message
-      attempt <- tryCatch(cookies2(dat = dataList[[x]],
+      attempt <- tryCatch(divvyCompanion::cookies2(dat = dataList[[x]],
                                   xy = b.xy, uniqID = "cell", seeding = NULL, rarefaction = rarefaction, iter = reps,
                                   nSite = settings[i,1], nOcc = occs.n, oThreshold = overlapThreshold, oType = overlapType, oPruningMode = overlapPruningMode,
                                   r = settings[i,2],

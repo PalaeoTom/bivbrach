@@ -87,89 +87,7 @@ input.strings <- c("stages_g200",
                    "stages_s100")
 
 ## Function
-## Assemble plot title prefix
-mass.SJplot <- function(input.string, argument.strings, model.input.dir, rich.input.dir, output.dir, times.col, period.scale, era.scale, xy){
-  if(grepl("_g",input.string)){
-    taxon <- "Genera,"
-  } else {
-    taxon <- "Species,"
-  }
-  if(grepl("200",input.string)){
-    gCells <- "200km grid cells,"
-  } else {
-    gCells <- "100km grid cells,"
-  }
-  data.string <- paste(taxon, gCells)
-  ## Read in model
-  models <- readRDS(paste0(model.input.dir,"/",input.string,"_mlm_models.Rds"))
-  for(i in 1:length(models)){
-    ## Read in richness data
-    richness <- read.csv(paste0(rich.input.dir, "/", input.string, "_", names(models)[i], ".csv"))
-    ## Use period.scale to assign period information
-    period <- c()
-    for(t in 1:nrow(period.scale)){
-      count <- length(which(between(richness[,times.col], left = period.scale[,"t_age"][t], right = period.scale[,"b_age"][t])))
-      if(count > 0){
-        period <- c(period, rep(period.scale[,"name"][t], count))
-      }
-    }
-    era <- c()
-    for(t in 1:nrow(era.scale)){
-      count <- length(which(between(richness[,times.col], left = era.scale[,"t_age"][t], right = era.scale[,"b_age"][t])))
-      if(count > 0){
-        era <- c(era, rep(era.scale[,"name"][t], count))
-      }
-    }
-    richness <- cbind(richness, period, era)
-    ## Get colour vector
-    point.col <- period.scale[,"color"]
-    names(point.col) <- period.scale[,"name"]
-    ## Get shape vector
-    point.shape <- era.scale[,"shape"]
-    names(point.shape) <- era.scale[,"name"]
-    ## Get shape vector for data
-    era.legend <- period.scale[,"shape"]
-    era.legend <- era.legend[period.scale[,"name"] %in% unique(richness[,"period"])]
-    ## Get plot title
-    plot.title <- paste(data.string, argument.strings[which(argument.strings[,1] %in% names(models)[i]),2])
-    ## define plot data frame
-    line.df <- get_model_data(models[[i]], type = "pred", terms = xy[1])
-    ## basic scatter plot
-    scatter <- ggplot() +
-      xlab("Bivalve richness") +
-      ylab("Brachiopod richness") +
-      labs(color = "Period") +
-      ggtitle(plot.title) +
-      geom_point(data = richness, aes(x = Bivalvia, y = Brachiopoda, color = period, shape = era)) +
-      scale_color_manual(breaks = unique(richness[,"period"]), values = point.col) +
-      scale_shape_manual(values = point.shape) +
-      geom_line(data = line.df, aes(x = x, y = predicted)) +
-      geom_ribbon(data = line.df, aes(x = x, ymin = conf.low, ymax = conf.high), alpha = 0.1)+
-      scale_x_continuous(expand = c(0,1)) +
-      scale_y_continuous(expand = c(0,1)) +
-      geom_hline(yintercept = 0, colour = "grey", linetype = "dashed") +
-      geom_vline(xintercept = 0, colour = "grey", linetype = "dashed") +
-      guides(shape = "none",
-             color = guide_legend(override.aes = list(shape = era.legend))) +
-      theme(text = element_text(family = "Helvetica"),,
-            title = element_text(size = 12),
-            axis.text = element_text(size = 11),
-            axis.title = element_text(size = 12),
-            legend.title = element_text(size = 12),
-            panel.grid.major = element_blank(),
-            panel.grid.minor = element_blank(),
-            panel.background = element_blank(),
-            axis.line = element_line(colour = "black"),
-            legend.position = "bottom",
-            legend.text = element_text(size = 10),
-            legend.key.size = unit(10,"point"))
-    scatter
-    ## plot
-    pdf(file = paste0(output.dir, "/", plot.title, ".pdf"))
-    print(scatter)
-    dev.off()
-  }
-}
+source("functions/mass.SJplot.R")
 
 ## Run function for all
 model.input.dir <- "~/R_packages/bivbrach/data"
@@ -271,36 +189,7 @@ output.strings <- c("stages_g200_mlm",
                     "stages_s100_mlm")
 
 ## Get stage data with times used (columns t_round and b_round)
-stages <- downloadTime('international ages')
-stages$name <- row.names(stages)
-
-## Re-order stages by age, oldest first
-stages <- stages[order(stages$b_age, decreasing=TRUE), ]
-
-## Create columns for new rounded ages
-stages$b_round <- stages$t_round <- 0
-
-## Read in function for defining rounded stage ages
-source("functions/round.age.R")
-
-## Define groupings for rounding
-groupings <- list(u10 <- which(stages$b_age < 10),
-                  u150 <- which(stages$b_age < 150 & stages$b_age > 10),
-                  old <- which(stages$b_age > 150))
-
-## Round ages to different digits depending on age classification
-for (group in 1:length(groupings)){
-  bins <- groupings[[group]]
-  digits <- c(2, 1, 0)[group]
-
-  # round down younger boundary (terminus) and up older boundary (beginning) per stage
-  for (i in bins){
-    b <- stages$b_age[i]
-    t <- stages$b_age[i+1]
-    stages$b_round[i] <- round.age(b, digits=digits, round_up=TRUE)
-    stages$t_round[i] <- round.age(t, digits=digits, round_up=FALSE)
-  }
-}
+stages <- read.csv("data/cleaned_stages.csv", row.names = 1)
 
 ## Get time bins
 era.cutoffs <- matrix(c(stages["Fortunian","b_round"],stages["Induan","b_round"],stages["Danian","b_round"],stages["Induan","b_round"],stages["Maastrichtian","t_round"],0), ncol = 2, nrow = 3)
@@ -334,5 +223,127 @@ for(m in 1:length(input.strings)){
 for(m in 1:length(input.strings)){
   mass.mlm.intervals(input.dir = input.dir, input.pre = input.strings[m], output.dir = output.dir,
                      output.pre = output.strings[m], vars = vars, vars.values = vars.values, time.cutoffs = PTME.cutoffs)
+}
+
+#### Sensitivity test - modelling time periods as random effects ####
+radii <- as.integer(c(200000, 500000, 1000000))
+siteQuotas <- c(2, 3, 4, 5)
+vars <- list(paste0("sQ",seq(1,length(siteQuotas),1)), paste0("r",seq(1,length(radii),1)))
+vars.values <- list(siteQuotas, radii)
+names(vars.values) <- c("site_quota", "radius")
+
+## input strings
+## Set output strings
+input.strings <- c("stages_g200",
+                   "stages_g100",
+                   "stages_s200",
+                   "stages_s100")
+
+output.strings <- c("stages_g200_mlm",
+                    "stages_g100_mlm",
+                    "stages_s200_mlm",
+                    "stages_s100_mlm")
+
+## Get stage data with times used (columns t_round and b_round)
+stages <- read.csv("data/cleaned_stages.csv", row.names = 1)
+stages[102,10] <- 0
+
+## get midpoints that are used
+source("functions/get.midpoints.R")
+midpoints <- get.midpoints(stages[,10:11])
+
+## Get time bins
+era.cutoffs <- matrix(c(stages["Fortunian","b_round"],stages["Induan","b_round"],stages["Danian","b_round"],stages["Induan","b_round"],stages["Maastrichtian","t_round"],0), ncol = 2, nrow = 3)
+colnames(era.cutoffs) <- c("bottom","top")
+rownames(era.cutoffs) <- c("Paleozoic", "Mesozoic", "Cenozoic")
+
+PTME.cutoffs <- matrix(c(stages["Fortunian","b_round"],stages["Induan","b_round"],stages["Induan","b_round"],0), ncol = 2, nrow = 2)
+colnames(PTME.cutoffs) <- c("bottom","top")
+rownames(PTME.cutoffs) <- c("Pre-PTME", "Post-PTME")
+
+## Assign time values interval categories
+source("functions/get.interval.mat.R")
+era.interval <- get.interval.mat(midpoints, era.cutoffs)
+PTME.interval <- get.interval.mat(midpoints, PTME.cutoffs)
+
+## Set other parameters directories
+input.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_regRich"
+output.dir <- "~/R_packages/bivbrach/data/mlms_era_PTME_random_effects/"
+
+a = 1
+input.pre = input.strings[a]
+output.pre = output.strings[a]
+interval = era.interval
+i = 1
+
+mass.mlm.REinterval <- function(input.dir, input.pre, output.dir, output.pre, vars, vars.values, interval){
+  combin <- expand.grid(vars)
+  varStrings <- sapply(1:nrow(combin), function(x) paste(unlist(combin[x,]), collapse = "_"))
+  input.dirs <- paste0(input.dir, "/", input.pre, "_", varStrings, ".csv")
+  output.dir.mlm <- paste0(output.dir, "/", output.pre, "_models.Rds")
+  output.dir <- paste0(output.dir, "/", output.pre, ".csv")
+  output.mat <- expand.grid(vars.values)
+  ## create output matrix
+  data.mat <- matrix(NA, ncol = 15, nrow = nrow(output.mat))
+  colnames(data.mat) <- c("n.samples", "n.timeBins", "n.subregions", "avg.obs.per.timeBin", "avg.obs.per.subregion", "intercept", "intercept.std.error", "intercept.df", "intercept.t.value", "intercept.p.value", "slope", "slope.std.error", "slope.df", "slope.t.value", "slope.p.value")
+  ## create output list
+  output.list <- lapply(1:nrow(output.mat), function(all) NA)
+  ## populate output vectors
+  for(i in 1:nrow(output.mat)){
+    ## Read in data
+    data <- suppressWarnings(tryCatch(read.csv(input.dirs[i], row.names = 1), error = function(e){}))
+    ## if null, log entries as NA
+    if(is.null(data)){
+      next
+    } else {
+      ## use midpoint to assign time period a category
+      interval.cat <- data.frame(matrix(NA, nrow = nrow(data), ncol = 1))
+      colnames(interval.cat) <- "interval"
+      midpoints <- matrix(unique(data[,1]), ncol = 1)
+      cats <- rownames(interval)
+      sapply(1:nrow(interval), function(x){
+        bet <- between(as.vector(midpoints), interval[x,2], interval[x,1])
+        if(any(bet)){
+
+        }
+      })
+
+
+
+
+
+      data.mat[i,1] <- nrow(data)
+      data.mat[i,2] <- length(unique(data[,"times"]))
+      data.mat[i,3] <- length(unique(data[,"source.subregion.ID"]))
+      data.mat[i,4] <- nrow(data)/(length(unique(data[,"times"])))
+      data.mat[i,5] <- nrow(data)/(length(unique(data[,"source.subregion.ID"])))
+      #mlm <- suppressMessages(tryCatch(lmer(Brachiopoda ~ Bivalvia + (1|times/source.subregion.ID), data = data), error = function(e){}))
+      mlm <- suppressMessages(tryCatch(lmer(Brachiopoda ~ Bivalvia + (Bivalvia|times/source.subregion.ID), data = data), error = function(e){}))
+      if(is.null(mlm)){
+        next
+      } else {
+        ## Add MLM to list
+        output.list[[i]] <- mlm
+        ## get coefficients
+        coefficients <- coef(summary(mlm))
+        data.mat[i,6] <- coefficients[1,1]
+        data.mat[i,7] <- coefficients[1,2]
+        data.mat[i,8] <- coefficients[1,3]
+        data.mat[i,9] <- coefficients[1,4]
+        data.mat[i,10] <- coefficients[1,5]
+        data.mat[i,11] <- coefficients[2,1]
+        data.mat[i,12] <- coefficients[2,2]
+        data.mat[i,13] <- coefficients[2,3]
+        data.mat[i,14] <- coefficients[2,4]
+        data.mat[i,15] <- coefficients[2,5]
+      }
+    }
+  }
+  output.mat <- cbind(output.mat, data.mat)
+  output.mat <- output.mat[which(!apply(output.mat, 1, function(x) any(is.na(x)))),]
+  names(output.list) <- varStrings
+  output.list <- output.list[!is.na(output.list)]
+  write.csv(output.mat, output.dir)
+  saveRDS(output.list, output.dir.mlm)
 }
 
