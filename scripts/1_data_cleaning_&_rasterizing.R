@@ -34,6 +34,7 @@ library(divvyCompanion)
 ## Load raw data
 raw_PBDB <- readRDS("data/PBDB_Nov23.Rds")
 
+#### Load GBIF data ####
 ## Set GBIF username
 #library(usethis)
 #usethis::edit_r_environ()
@@ -44,27 +45,27 @@ raw_PBDB <- readRDS("data/PBDB_Nov23.Rds")
 #brachiopod_key <- as.integer(name_backbone("Brachiopoda")[,1])
 
 ## register download request
-raw_GBIF_bivalves <- occ_download(pred('taxonKey', bivalve_key))
-raw_GBIF_brachiopoda <- occ_download(pred('taxonKey', brachiopod_key))
+#raw_GBIF_bivalves <- occ_download(pred('taxonKey', bivalve_key))
+#raw_GBIF_brachiopoda <- occ_download(pred('taxonKey', brachiopod_key))
 
 ## check if complete
 #occ_download_wait(raw_GBIF_brachiopoda, status_ping = 5, curlopts = list(), quiet = FALSE)
 #occ_download_wait(raw_GBIF_bivalves, status_ping = 5, curlopts = list(), quiet = FALSE)
 
 ## download when complete
-brachiopod.download.path <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/GBIF/brachiopods"
-bivalve.download.path <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/GBIF/bivalves"
+#brachiopod.download.path <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/GBIF/brachiopods"
+#bivalve.download.path <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/GBIF/bivalves"
 #occ_download_get(raw_GBIF_bivalves, path = bivalve.download.path)
 #occ_download_get(raw_GBIF_brachiopoda, path = brachiopod.download.path)
 
 ## read GBIF data into R
-raw_GBIF_biv <- occ_download_import(as.download(path = paste0(bivalve.download.path, "/May_24.zip")))
-raw_GBIF_brach <- occ_download_import(as.download(path = paste0(brachiopod.download.path, "/May_24.zip")))
+#raw_GBIF_biv <- occ_download_import(as.download(path = paste0(bivalve.download.path, "/May_24.zip")))
+#raw_GBIF_brach <- occ_download_import(as.download(path = paste0(brachiopod.download.path, "/May_24.zip")))
 
+#### Cleaning time data ####
 ## Isolate bivalve and brachiopod data
 raw_PBDB <- raw_PBDB[c(which(raw_PBDB$phylum == "Brachiopoda"),which(raw_PBDB$class == "Bivalvia")),]
 
-#### Cleaning time data ####
 ## use fossilbrush to update Chronostratigraphy
 PBDB <- chrono_scale(raw_PBDB,  tscale = "GTS2020", srt = "early_interval", end = "late_interval",
                            max_ma = "max_ma", min_ma = "min_ma", verbose = FALSE)
@@ -180,7 +181,6 @@ PBDB_species <- add.reference.IDs(data = PBDB_species)
 PBDB_genera <- add.collection.IDs(data = PBDB_genera)
 PBDB_genera <- add.reference.IDs(data = PBDB_genera)
 
-
 #### Determine environment of each cell ####
 ## Doing this before standardising data in each cell (and losing more data)
 ## Define variables for search
@@ -218,6 +218,52 @@ b.species[PBDB_species$environment %in% deep] <- "d"
 env_axes <- 'bathnow'
 PBDB_species <- cbind(PBDB_species, data.frame('bathnow'=b.species, stringsAsFactors=TRUE))
 
+#### Add a depth category based on Guo et al. (2023) ####
+## Read in depth categories
+#setwd("/Users/tjs/Library/CloudStorage/OneDrive-Nexus365/Bivalve_brachiopod/data")
+#bivalve.ecology <- read.csv("Bivalvia_ecology_Guo2023.csv")
+#brachiopod.ecology <- read.csv("Brachiopoda_ecology_Guo2023.csv")
+#setwd(home)
+
+## Convert to ecology and add infaunal/epifaunal supercategories
+#bivalve.ecology[,"ecology"] <- NA
+#brachiopod.ecology[,"ecology"] <- NA
+#bivalve.ecology[,"category"] <- NA
+#brachiopod.ecology[,"category"] <- NA
+#biv.code <- c("epibyssate", "cemented", "recliner", "shallowI", "deepI", "unknownE")
+#brach.code <- c("pedicle", "cemented", "recliner", "infaunal", "unknownE")
+#biv.cat.code <- c("epifaunal", "epifaunal", "epifaunal", "infaunal", "infaunal", "epifaunal")
+#brach.cat.code <- c("epifaunal", "epifaunal", "epifaunal", "infaunal", "epifaunal")
+#for(i in 1:length(biv.code)){
+#  bivalve.ecology[which(bivalve.ecology[,"lifestyle"] == i),"ecology"] <- biv.code[i]
+#  bivalve.ecology[which(bivalve.ecology[,"lifestyle"] == i),"category"] <- biv.cat.code[i]
+#}
+#for(i in 1:length(brach.code)){
+#  brachiopod.ecology[which(brachiopod.ecology[,"lifestyle"] == i),"ecology"] <- brach.code[i]
+#  brachiopod.ecology[which(brachiopod.ecology[,"lifestyle"] == i),"category"] <- brach.cat.code[i]
+#}
+#bivalve.ecology <- bivalve.ecology[,-2]
+#brachiopod.ecology <- brachiopod.ecology[,-2]
+#
+### Export
+#write.csv(brachiopod.ecology, "data/Guo2023_brachiopod_ecology.csv")
+#write.csv(bivalve.ecology, "data/Guo2023_bivalve_ecology.csv")
+
+#### Assign depth categories to PBDB data
+## Define key
+brachiopod.ecology <- read.csv("data/Guo2023_brachiopod_ecology.csv", row.names = 1)
+bivalve.ecology <- read.csv("data/Guo2023_bivalve_ecology.csv", row.names = 1)
+key <- rbind(brachiopod.ecology, bivalve.ecology)
+
+## Read in function
+source("functions/add.ecology.IDs.R")
+PBDB_genera <- add.ecology.IDs(data = PBDB_genera, key)
+PBDB_species <- add.ecology.IDs(data = PBDB_species, key)
+
+## Filter out entries with no ecology data
+PBDB_genera_eco <- PBDB_genera[which(!is.na(PBDB_genera[,"ecological_cat"])),]
+PBDB_species_eco <- PBDB_species[which(!is.na(PBDB_species[,"ecological_cat"])),]
+
 #### Rasterising data ####
 ## Rasterise data using function
 genera_200 <- rasterOccData(occData = PBDB_genera, res = 200000)
@@ -225,9 +271,18 @@ genera_100 <- rasterOccData(occData = PBDB_genera, res = 100000)
 species_200 <- rasterOccData(occData = PBDB_species, res = 200000)
 species_100 <- rasterOccData(occData = PBDB_species, res = 100000)
 
+genera_eco_200 <- rasterOccData(occData = PBDB_genera_eco, res = 200000)
+genera_eco_100 <- rasterOccData(occData = PBDB_genera_eco, res = 100000)
+species_eco_200 <- rasterOccData(occData = PBDB_species_eco, res = 200000)
+species_eco_100 <- rasterOccData(occData = PBDB_species_eco, res = 100000)
+
 ## Export polished files
 saveRDS(genera_200, file = "data/genera_200.Rds")
 saveRDS(species_200, file = "data/species_200.Rds")
 saveRDS(genera_100, file = "data/genera_100.Rds")
 saveRDS(species_100, file = "data/species_100.Rds")
 
+saveRDS(genera_eco_200, file = "data/genera_eco_200.Rds")
+saveRDS(species_eco_200, file = "data/species_eco_200.Rds")
+saveRDS(genera_eco_100, file = "data/genera_eco_100.Rds")
+saveRDS(species_eco_100, file = "data/species_eco_100.Rds")
