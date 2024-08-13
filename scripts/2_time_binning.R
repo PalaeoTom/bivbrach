@@ -21,58 +21,77 @@ species_200 <- readRDS("data/species_200.Rds")
 genera_100 <- readRDS("data/genera_100.Rds")
 species_100 <- readRDS("data/species_100.Rds")
 
+genera_200_eco <- readRDS("data/genera_eco_200.Rds")
+genera_100_eco <- readRDS("data/genera_eco_100.Rds")
+species_200_eco <- readRDS("data/species_eco_200.Rds")
+species_100_eco <- readRDS("data/species_eco_100.Rds")
+
+## Split eco datasets into infaunal and epifaunal
+genera_200_epif <- genera_200_eco[which(genera_200_eco[,"ecological_cat"] == "epifaunal"),]
+genera_100_epif <- genera_100_eco[which(genera_100_eco[,"ecological_cat"] == "epifaunal"),]
+species_200_epif <- species_200_eco[which(species_200_eco[,"ecological_cat"] == "epifaunal"),]
+species_100_epif <- species_100_eco[which(species_100_eco[,"ecological_cat"] == "epifaunal"),]
+
+genera_200_inf <- genera_200_eco[which(genera_200_eco[,"ecological_cat"] == "infaunal"),]
+genera_100_inf <- genera_100_eco[which(genera_100_eco[,"ecological_cat"] == "infaunal"),]
+species_200_inf <- species_200_eco[which(species_200_eco[,"ecological_cat"] == "infaunal"),]
+species_100_inf <- species_100_eco[which(species_100_eco[,"ecological_cat"] == "infaunal"),]
+
 #### Get stage time bins ####
 # Function samples occurrences that fit within bins (won't include those that exist before or after)
-source("functions/extract.time.bin.R")
+#source("functions/extract.time.bin.R")
 
 ## First, derive Antell binning scheme
 ## Download raw stage data and create names column
-stages <- downloadTime('international ages')
-stages$name <- row.names(stages)
+#stages <- downloadTime('international ages')
+#stages$name <- row.names(stages)
 
 ## Re-order stages by age, oldest first
-stages <- stages[order(stages$b_age, decreasing=TRUE), ]
+#stages <- stages[order(stages$b_age, decreasing=TRUE), ]
 
 ## Create columns for new rounded ages
-stages$b_round <- stages$t_round <- 0
+#stages$b_round <- stages$t_round <- 0
 
 ## Read in function for defining rounded stage ages
-source("functions/round.age.R")
+#source("functions/round.age.R")
 
 ## Define groupings for rounding - taken from Antell et al. (2020)
-groupings <- list(u10 <- which(stages$b_age < 10),
-                  u150 <- which(stages$b_age < 150 & stages$b_age > 10),
-                  old <- which(stages$b_age > 150))
+#groupings <- list(u10 <- which(stages$b_age < 10),
+#                  u150 <- which(stages$b_age < 150 & stages$b_age > 10),
+#                  old <- which(stages$b_age > 150))
 
 ## Round all to two digits
-for (group in 1:length(groupings)){
-  bins <- groupings[[group]]
-  digits <- c(3, 3, 3)[group]
+#for (group in 1:length(groupings)){
+#  bins <- groupings[[group]]
+#  digits <- c(3, 3, 3)[group]
 
-  # round all up (so no 0-0 bins, and no overlap)
-  for (i in bins){
-    b <- stages$b_age[i]
-    t <- stages$b_age[i+1]
-    stages$b_round[i] <- round.age(b, digits=digits, round_up=T)
-    stages$t_round[i] <- round.age(t, digits=digits, round_up=T)
-  }
-}
+#  # round all up (so no 0-0 bins, and no overlap)
+#  for (i in bins){
+#    b <- stages$b_age[i]
+#    t <- stages$b_age[i+1]
+#    stages$b_round[i] <- round.age(b, digits=digits, round_up=T)
+#    stages$t_round[i] <- round.age(t, digits=digits, round_up=T)
+#  }
+#}
 
 ## Inspect time bins for overlap
 ## First bin is always fine
-checker <- matrix(NA, nrow = length(2:nrow(stages)), ncol = 2)
-checker[,1] <- stages[,"name"][-1]
-for(i in 2:nrow(stages)){
-  if(stages$t_round[i-1] == stages$b_round[i]){
-    checker[i-1,2] <- "equal to previous"
-  } else {
-    checker[i-1,2] <- "unequal"
-  }
-}
-View(checker)
+#checker <- matrix(NA, nrow = length(2:nrow(stages)), ncol = 2)
+#checker[,1] <- stages[,"name"][-1]
+#for(i in 2:nrow(stages)){
+#  if(stages$t_round[i-1] == stages$b_round[i]){
+#    checker[i-1,2] <- "equal to previous"
+#  } else {
+#    checker[i-1,2] <- "unequal"
+#  }
+#}
+#View(checker)
 
 ## No overlap between bins. Can continue. First we explort
-write.csv(stages, file = "data/cleaned_stages.csv")
+#write.csv(stages, file = "data/cleaned_stages.csv")
+
+## Read in time binning scheme
+stages <- read.csv("data/cleaned_stages.csv", row.names = 1)
 
 source("functions/extract.stage.bin.R")
 source("functions/extract.time.bin.R")
@@ -84,6 +103,16 @@ stages.g200 <- bin.data(occs = genera_200, trunc.stages = stages, complete.stage
 stages.s200 <- bin.data(occs = species_200, trunc.stages = stages, complete.stages = stages, uniqify.data = F, uniqify.taxVar = "unique_name")
 stages.g100 <- bin.data(occs = genera_100, trunc.stages = stages, complete.stages = stages, uniqify.data = F)
 stages.s100 <- bin.data(occs = species_100, trunc.stages = stages, complete.stages = stages, uniqify.data = F, uniqify.taxVar = "unique_name")
+
+stages.g200.epif <- bin.data(occs = genera_200_epif, trunc.stages = stages, complete.stages = stages, uniqify.data = F)
+stages.s200.epif <- bin.data(occs = species_200_epif, trunc.stages = stages, complete.stages = stages, uniqify.data = F, uniqify.taxVar = "unique_name")
+stages.g100.epif <- bin.data(occs = genera_100_epif, trunc.stages = stages, complete.stages = stages, uniqify.data = F)
+stages.s100.epif <- bin.data(occs = species_100_epif, trunc.stages = stages, complete.stages = stages, uniqify.data = F, uniqify.taxVar = "unique_name")
+
+stages.g200.inf <- bin.data(occs = genera_200_inf, trunc.stages = stages, complete.stages = stages, uniqify.data = F)
+stages.s200.inf <- bin.data(occs = species_200_inf, trunc.stages = stages, complete.stages = stages, uniqify.data = F, uniqify.taxVar = "unique_name")
+stages.g100.inf <- bin.data(occs = genera_100_inf, trunc.stages = stages, complete.stages = stages, uniqify.data = F)
+stages.s100.inf <- bin.data(occs = species_100_inf, trunc.stages = stages, complete.stages = stages, uniqify.data = F, uniqify.taxVar = "unique_name")
 
 #### Label time bins ####
 ## Get midpoints for each time bin to use as labels
@@ -103,6 +132,14 @@ names(stages.g200) <- stage.midpoints
 names(stages.g100) <- stage.midpoints
 names(stages.s200) <- stage.midpoints
 names(stages.s100) <- stage.midpoints
+names(stages.g200.epif) <- stage.midpoints
+names(stages.g100.epif) <- stage.midpoints
+names(stages.s200.epif) <- stage.midpoints
+names(stages.s100.epif) <- stage.midpoints
+names(stages.g200.inf) <- stage.midpoints
+names(stages.g100.inf) <- stage.midpoints
+names(stages.s200.inf) <- stage.midpoints
+names(stages.s100.inf) <- stage.midpoints
 
 #### Standardise each time bin to ensure good data quality ####
 source("functions/standardiseCells.R")
@@ -114,14 +151,35 @@ n.cores <- 4
 ## Standardise each time bin for collection number, reference number, and multiton ratio ##
 stages.g200.s <- standardiseCells(stages.g200, collMinimum = coll.min, refMinimum = ref.min, multitonRatioMin = multiton.min, level = "genera", n.cores = n.cores)
 stages.g100.s <- standardiseCells(stages.g100, collMinimum = coll.min, refMinimum = ref.min, multitonRatioMin = multiton.min, level = "genera", n.cores = n.cores)
-
 stages.s200.s <- standardiseCells(stages.s200, collMinimum = coll.min, refMinimum = ref.min, multitonRatioMin = multiton.min, level = "species", n.cores = n.cores)
 stages.s100.s <- standardiseCells(stages.s100, collMinimum = coll.min, refMinimum = ref.min, multitonRatioMin = multiton.min, level = "species", n.cores = n.cores)
+
+stages.g200.epif.s <- standardiseCells(stages.g200.epif, collMinimum = coll.min, refMinimum = ref.min, multitonRatioMin = multiton.min, level = "genera", n.cores = n.cores)
+stages.g100.epif.s <- standardiseCells(stages.g100.epif, collMinimum = coll.min, refMinimum = ref.min, multitonRatioMin = multiton.min, level = "genera", n.cores = n.cores)
+stages.s200.epif.s <- standardiseCells(stages.s200.epif, collMinimum = coll.min, refMinimum = ref.min, multitonRatioMin = multiton.min, level = "species", n.cores = n.cores)
+stages.s100.epif.s <- standardiseCells(stages.s100.epif, collMinimum = coll.min, refMinimum = ref.min, multitonRatioMin = multiton.min, level = "species", n.cores = n.cores)
+
+stages.g200.inf.s <- standardiseCells(stages.g200.inf, collMinimum = coll.min, refMinimum = ref.min, multitonRatioMin = multiton.min, level = "genera", n.cores = n.cores)
+stages.g100.inf.s <- standardiseCells(stages.g100.inf, collMinimum = coll.min, refMinimum = ref.min, multitonRatioMin = multiton.min, level = "genera", n.cores = n.cores)
+stages.s200.inf.s <- standardiseCells(stages.s200.inf, collMinimum = coll.min, refMinimum = ref.min, multitonRatioMin = multiton.min, level = "species", n.cores = n.cores)
+stages.s100.inf.s <- standardiseCells(stages.s100.inf, collMinimum = coll.min, refMinimum = ref.min, multitonRatioMin = multiton.min, level = "species", n.cores = n.cores)
 
 ## Export time binned data
 saveRDS(stages.g200.s, file = "data/stages_g200.Rds")
 saveRDS(stages.g100.s, file = "data/stages_g100.Rds")
-
 saveRDS(stages.s200.s, file = "data/stages_s200.Rds")
 saveRDS(stages.s100.s, file = "data/stages_s100.Rds")
+
+saveRDS(stages.g200.inf.s, file = "data/stages_g200_inf.Rds")
+saveRDS(stages.g100.inf.s, file = "data/stages_g100_inf.Rds")
+saveRDS(stages.s200.inf.s, file = "data/stages_s200_inf.Rds")
+saveRDS(stages.s100.inf.s, file = "data/stages_s100_inf.Rds")
+
+saveRDS(stages.g200.epif.s, file = "data/stages_g200_epif.Rds")
+saveRDS(stages.g100.epif.s, file = "data/stages_g100_epif.Rds")
+saveRDS(stages.s200.epif.s, file = "data/stages_s200_epif.Rds")
+saveRDS(stages.s100.epif.s, file = "data/stages_s100_epif.Rds")
+
+#### Sensitivity testing - additional quality criterion ####
+## Only retain grid cells with BOTH bivalves and brachiopods (i.e., remove absences, true and artefactual)
 
