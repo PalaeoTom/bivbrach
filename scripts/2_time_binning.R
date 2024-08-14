@@ -185,14 +185,14 @@ saveRDS(stages.s100.epif.s, file = "data/stages_s100_epif.Rds")
 ## Read in functions
 source("functions/standardiseCells.R")
 source("functions/add.reference.IDs.R")
-
 source("functions/applyRefCollThresh.R")
+source("functions/label.cell.reference.combo.comps.R")
 
 ## Set new quality critera
 multiton.min <- 0.2
 n.cores <- 4
 coll.min <- 10
-ref.min <- 1
+ref.min <- 3
 
 ## For minimum three references for both brachiopods and bivalves, initial threshold of just 3
 stages.g200.ref <- standardiseCells(stages.g200, collMinimum = coll.min, refMinimum = ref.min, multitonRatioMin = multiton.min, level = "genera", n.cores = n.cores)
@@ -200,11 +200,22 @@ stages.g100.ref <- standardiseCells(stages.g100, collMinimum = coll.min, refMini
 stages.s200.ref <- standardiseCells(stages.s200, collMinimum = coll.min, refMinimum = ref.min, multitonRatioMin = multiton.min, level = "species", n.cores = n.cores)
 stages.s100.ref <- standardiseCells(stages.s100, collMinimum = coll.min, refMinimum = ref.min, multitonRatioMin = multiton.min, level = "species", n.cores = n.cores)
 
+## Label cell-reference combination compositions
+stages.g200.ref <- label.cell.reference.combo.comps(stages.g200.ref, n.cores = 4)
+stages.g100.ref <- label.cell.reference.combo.comps(stages.g100.ref, n.cores = 4)
+stages.s200.ref <- label.cell.reference.combo.comps(stages.s200.ref, n.cores = 4)
+stages.s100.ref <- label.cell.reference.combo.comps(stages.s100.ref, n.cores = 4)
+
 ## Now drop cells with fewer than 3 references containing bivalves and/or brachiopods
 stages.g200.ref <- applyRefCollThresh(stages.g200.ref)
 stages.g100.ref <- applyRefCollThresh(stages.g100.ref)
 stages.s200.ref <- applyRefCollThresh(stages.s200.ref)
 stages.s100.ref <- applyRefCollThresh(stages.s100.ref)
 
+## Save
+saveRDS(stages.g200.ref, file = "data/stages_g200_ref3.Rds")
+saveRDS(stages.g100.ref, file = "data/stages_g100_ref3.Rds")
+saveRDS(stages.s200.ref, file = "data/stages_s200_ref3.Rds")
+saveRDS(stages.s100.ref, file = "data/stages_s100_ref3.Rds")
 
 

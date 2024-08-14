@@ -1,4 +1,5 @@
 applyRefCollThresh <- function(data, threshold = 3, mode = "references", n.cores = 4){
+  times <- names(data)
   if(mode == "references"){
     output <- mclapply(1:length(data), mc.cores = n.cores, function(x){
       if(nrow(data[[x]]) > 0){
@@ -55,5 +56,6 @@ applyRefCollThresh <- function(data, threshold = 3, mode = "references", n.cores
       return(out)
     })
   }
+  names(output) <- times
   return(output)
 }
