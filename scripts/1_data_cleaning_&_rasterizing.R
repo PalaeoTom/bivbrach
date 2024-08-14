@@ -171,16 +171,6 @@ PBDB_species$unique_name <- paste(PBDB_species$phylum, PBDB_species$accepted_nam
 #unac <- which(!PBDB_species$accepted_rank %in% "species")
 #PBDB_species$unique_name[unac] <- paste(PBDB_species$phylum[unac], PBDB_species$short_name[unac])
 
-#### Add reference and collection composition identifiers ####
-source("functions/add.collection.IDs.R")
-source("functions/add.reference.IDs.R")
-
-PBDB_species <- add.collection.IDs(data = PBDB_species)
-PBDB_species <- add.reference.IDs(data = PBDB_species)
-
-PBDB_genera <- add.collection.IDs(data = PBDB_genera)
-PBDB_genera <- add.reference.IDs(data = PBDB_genera)
-
 #### Determine environment of each cell ####
 ## Doing this before standardising data in each cell (and losing more data)
 ## Define variables for search

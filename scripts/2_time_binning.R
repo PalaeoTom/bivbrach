@@ -181,5 +181,30 @@ saveRDS(stages.s200.epif.s, file = "data/stages_s200_epif.Rds")
 saveRDS(stages.s100.epif.s, file = "data/stages_s100_epif.Rds")
 
 #### Sensitivity testing - additional quality criterion ####
-## Only retain grid cells with BOTH bivalves and brachiopods (i.e., remove absences, true and artefactual)
+## Only retain grid cells with 3+ references with bivalves and brachiopods
+## Read in functions
+source("functions/standardiseCells.R")
+source("functions/add.reference.IDs.R")
+
+source("functions/applyRefCollThresh.R")
+
+## Set new quality critera
+multiton.min <- 0.2
+n.cores <- 4
+coll.min <- 10
+ref.min <- 1
+
+## For minimum three references for both brachiopods and bivalves, initial threshold of just 3
+stages.g200.ref <- standardiseCells(stages.g200, collMinimum = coll.min, refMinimum = ref.min, multitonRatioMin = multiton.min, level = "genera", n.cores = n.cores)
+stages.g100.ref <- standardiseCells(stages.g100, collMinimum = coll.min, refMinimum = ref.min, multitonRatioMin = multiton.min, level = "genera", n.cores = n.cores)
+stages.s200.ref <- standardiseCells(stages.s200, collMinimum = coll.min, refMinimum = ref.min, multitonRatioMin = multiton.min, level = "species", n.cores = n.cores)
+stages.s100.ref <- standardiseCells(stages.s100, collMinimum = coll.min, refMinimum = ref.min, multitonRatioMin = multiton.min, level = "species", n.cores = n.cores)
+
+## Now drop cells with fewer than 3 references containing bivalves and/or brachiopods
+stages.g200.ref <- applyRefCollThresh(stages.g200.ref)
+stages.g100.ref <- applyRefCollThresh(stages.g100.ref)
+stages.s200.ref <- applyRefCollThresh(stages.s200.ref)
+stages.s100.ref <- applyRefCollThresh(stages.s100.ref)
+
+
 
