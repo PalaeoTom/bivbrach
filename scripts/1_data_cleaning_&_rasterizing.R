@@ -171,9 +171,18 @@ PBDB_species$unique_name <- paste(PBDB_species$phylum, PBDB_species$accepted_nam
 #unac <- which(!PBDB_species$accepted_rank %in% "species")
 #PBDB_species$unique_name[unac] <- paste(PBDB_species$phylum[unac], PBDB_species$short_name[unac])
 
-#### Determine environment of each cell ####
-## Doing this before standardising data in each cell (and losing more data)
-## Define variables for search
+#### Assign environmental, reefal, and lithological categories to each occurrence ####
+## Will use these values to assign cell values
+## First, change mixed lithologies to NA, so they can be ignored
+PBDB_genera$lithology1[grep('mixed', PBDB_genera$lithology1)] <- NA
+PBDB_species$lithology1[grep('mixed', PBDB_species$lithology1)] <- NA
+
+## Define categories
+carb <- c("\"carbonate\"", "\"limestone\"", "\"reef rocks\"", "bafflestone", "bindstone", "dolomite",
+          "framestone", "grainstone", "lime mudstone", "packstone", "rudstone", "floatstone",
+          "wackestone")
+clast <- c("\"shale\"", "\"siliciclastic\"", "\"volcaniclastic\"", "claystone", "conglomerate",
+           "mudstone", "phyllite", "quartzite", "sandstone", "siltstone", "slate", "schist")
 shallow <- c("coastal indet.", "delta front", "delta plain",
              "deltaic indet.", "estuary/bay", "foreshore", "interdistributary bay",
              "lagoonal", "lagoonal/restricted shallow subtidal",
@@ -187,26 +196,30 @@ deep <- c("basinal (carbonate)", "basinal (siliceous)", "basinal (siliciclastic)
           "deep subtidal shelf", "offshore", "offshore indet.",
           "offshore shelf", "slope", "submarine fan", "offshore ramp",
           "basin reef", "slope/ramp reef")
+reefal <- c("intrashelf/intraplatform reef", "reef, buildup or bioherm",
+            "perireef or subreef", "platform/shelf-margin reef", "basin reef", "slope/ramp reef")
+nonreefal <- c("coastal indet.", "delta front", "delta plain",
+               "deltaic indet.", "estuary/bay", "foreshore", "interdistributary bay",
+               "lagoonal", "lagoonal/restricted shallow subtidal",
+               "marginal marine indet.", "open shallow subtidal", "fluvial-deltaic indet.",
+               "paralic indet.", "peritidal", "prodelta", "sand shoal",
+               "shallow subtidal indet.", "shoreface", "transition zone/lower shoreface",
+               "basinal (carbonate)", "basinal (siliceous)", "basinal (siliciclastic)",
+               "deep-water indet.", "deep subtidal indet.", "deep subtidal ramp",
+               "deep subtidal shelf", "offshore", "offshore indet.",
+               "offshore shelf", "slope", "submarine fan", "offshore ramp")
 
-## categorise each record for each enviro type
-b.species <- rep(NA, nrow(PBDB_species))
-b.genera <- rep(NA, nrow(PBDB_genera))
+## Function for add covariates
+source("functions/add.occ.covariate.R")
 
-### Genera
-## Bathymetry (p = proximal = shallow)
-b.genera[PBDB_genera$environment %in% shallow] <- "p"
-b.genera[PBDB_genera$environment %in% deep] <- "d"
+## Add covariate values to both datasets
+PBDB_genera <- add.occ.covariate(PBDB_genera, name = "occLith", ref = "lithology1", varsLabs = c("carb", "sili"), var1 = carb, var2 = clast)
+PBDB_genera <- add.occ.covariate(PBDB_genera, name = "occEnv", ref = "environment", varsLabs = c("shal", "deep"), var1 = shallow, var2 = deep)
+PBDB_genera <- add.occ.covariate(PBDB_genera, name = "occReef", ref = "environment", varsLabs = c("reef", "noRf"), var1 = reefal, var2 = nonreefal)
 
-env_axes <- "bathnow"
-PBDB_genera <- cbind(PBDB_genera, data.frame('bathnow'=b.genera, stringsAsFactors=TRUE))
-
-### Species
-## Bathymetry (p = proximal = shallow)
-b.species[PBDB_species$environment %in% shallow] <- "p"
-b.species[PBDB_species$environment %in% deep] <- "d"
-
-env_axes <- 'bathnow'
-PBDB_species <- cbind(PBDB_species, data.frame('bathnow'=b.species, stringsAsFactors=TRUE))
+PBDB_species <- add.occ.covariate(PBDB_species, name = "occLith", ref = "lithology1", varsLabs = c("carb", "sili"), var1 = carb, var2 = clast)
+PBDB_species <- add.occ.covariate(PBDB_species, name = "occEnv", ref = "environment", varsLabs = c("shal", "deep"), var1 = shallow, var2 = deep)
+PBDB_species <- add.occ.covariate(PBDB_species, name = "occReef", ref = "environment", varsLabs = c("reef", "noRf"), var1 = reefal, var2 = nonreefal)
 
 #### Add a depth category based on Guo et al. (2023) ####
 ## Read in depth categories

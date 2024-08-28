@@ -14,7 +14,7 @@ library(dplyr)
 library(plyr)
 library(parallel)
 
-## Load data
+ ## Load data
 setwd("~/R_packages/bivbrach")
 genera_200 <- readRDS("data/genera_200.Rds")
 species_200 <- readRDS("data/species_200.Rds")
@@ -141,6 +141,44 @@ names(stages.g100.inf) <- stage.midpoints
 names(stages.s200.inf) <- stage.midpoints
 names(stages.s100.inf) <- stage.midpoints
 
+#### Derive covariate data - see Antell et al., 2020 ####
+## Determine cell lithology, environment, reef status, and latitudinal centroid from combined dataset, paste on to subsets
+source("functions/add.cell.covariate.R")
+
+## cellY in data frame is latitudinal centroid
+stages.g200 <- add.cell.covariate(stages.g200, name = "cellLith", ref = "occLith", values = c("carb", "sili"), threshold = 0.8, n.cores = 4)
+stages.g200 <- add.cell.covariate(stages.g200, name = "cellEnv", ref = "occEnv", values = c("shal", "deep"), threshold = 0.8, n.cores = 4)
+stages.g200 <- add.cell.covariate(stages.g200, name = "cellReef", ref = "occReef", values = c("reef", "noRf"), threshold = 0.8, n.cores = 4)
+
+stages.g100 <- add.cell.covariate(stages.g100, name = "cellLith", ref = "occLith", values = c("carb", "sili"), threshold = 0.8, n.cores = 4)
+stages.g100 <- add.cell.covariate(stages.g100, name = "cellEnv", ref = "occEnv", values = c("shal", "deep"), threshold = 0.8, n.cores = 4)
+stages.g100 <- add.cell.covariate(stages.g100, name = "cellReef", ref = "occReef", values = c("reef", "noRf"), threshold = 0.8, n.cores = 4)
+
+stages.s200 <- add.cell.covariate(stages.s200, name = "cellLith", ref = "occLith", values = c("carb", "sili"), threshold = 0.8, n.cores = 4)
+stages.s200 <- add.cell.covariate(stages.s200, name = "cellEnv", ref = "occEnv", values = c("shal", "deep"), threshold = 0.8, n.cores = 4)
+stages.s200 <- add.cell.covariate(stages.s200, name = "cellReef", ref = "occReef", values = c("reef", "noRf"), threshold = 0.8, n.cores = 4)
+
+stages.s100 <- add.cell.covariate(stages.s100, name = "cellLith", ref = "occLith", values = c("carb", "sili"), threshold = 0.8, n.cores = 4)
+stages.s100 <- add.cell.covariate(stages.s100, name = "cellEnv", ref = "occEnv", values = c("shal", "deep"), threshold = 0.8, n.cores = 4)
+stages.s100 <- add.cell.covariate(stages.s100, name = "cellReef", ref = "occReef", values = c("reef", "noRf"), threshold = 0.8, n.cores = 4)
+
+## Now to extract data for each grid cell and attach it to subsets
+## Load function
+source("functions/transfer.cell.covariate.R")
+
+## Run the function
+stages.g200.epif <- transfer.cell.covariate(source.data = stages.g200, export.data = stages.g200.epif, cov.cols = c("cellLith", "cellEnv", "cellReef"), cell.col = "cell", n.cores = 4)
+stages.g200.inf <- transfer.cell.covariate(source.data = stages.g200, export.data = stages.g200.inf, cov.cols = c("cellLith", "cellEnv", "cellReef"), cell.col = "cell", n.cores = 4)
+
+stages.g100.epif <- transfer.cell.covariate(source.data = stages.g100, export.data = stages.g100.epif, cov.cols = c("cellLith", "cellEnv", "cellReef"), cell.col = "cell", n.cores = 4)
+stages.g100.inf <- transfer.cell.covariate(source.data = stages.g100, export.data = stages.g100.inf, cov.cols = c("cellLith", "cellEnv", "cellReef"), cell.col = "cell", n.cores = 4)
+
+stages.s200.epif <- transfer.cell.covariate(source.data = stages.s200, export.data = stages.s200.epif, cov.cols = c("cellLith", "cellEnv", "cellReef"), cell.col = "cell", n.cores = 4)
+stages.s200.inf <- transfer.cell.covariate(source.data = stages.s200, export.data = stages.s200.inf, cov.cols = c("cellLith", "cellEnv", "cellReef"), cell.col = "cell", n.cores = 4)
+
+stages.s100.epif <- transfer.cell.covariate(source.data = stages.s100, export.data = stages.s100.epif, cov.cols = c("cellLith", "cellEnv", "cellReef"), cell.col = "cell", n.cores = 4)
+stages.s100.inf <- transfer.cell.covariate(source.data = stages.s100, export.data = stages.s100.inf, cov.cols = c("cellLith", "cellEnv", "cellReef"), cell.col = "cell", n.cores = 4)
+
 #### Standardise each time bin to ensure good data quality ####
 source("functions/standardiseCells.R")
 coll.min <- 10
@@ -217,5 +255,3 @@ saveRDS(stages.g200.ref, file = "data/stages_g200_ref3.Rds")
 saveRDS(stages.g100.ref, file = "data/stages_g100_ref3.Rds")
 saveRDS(stages.s200.ref, file = "data/stages_s200_ref3.Rds")
 saveRDS(stages.s100.ref, file = "data/stages_s100_ref3.Rds")
-
-
