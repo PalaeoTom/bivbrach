@@ -250,6 +250,12 @@ stages.g100.ref <- applyRefCollThresh(stages.g100.ref)
 stages.s200.ref <- applyRefCollThresh(stages.s200.ref)
 stages.s100.ref <- applyRefCollThresh(stages.s100.ref)
 
+## Finally, add covariate data to subsets
+stages.g200.ref <- transfer.cell.covariate(source.data = stages.g200, export.data = stages.g200.ref, cov.cols = c("cellLith", "cellEnv", "cellReef"), cell.col = "cell", n.cores = 4)
+stages.g100.ref <- transfer.cell.covariate(source.data = stages.g100, export.data = stages.g100.ref, cov.cols = c("cellLith", "cellEnv", "cellReef"), cell.col = "cell", n.cores = 4)
+stages.s200.ref <- transfer.cell.covariate(source.data = stages.s200, export.data = stages.s200.ref, cov.cols = c("cellLith", "cellEnv", "cellReef"), cell.col = "cell", n.cores = 4)
+stages.s100.ref <- transfer.cell.covariate(source.data = stages.s100, export.data = stages.s100.ref, cov.cols = c("cellLith", "cellEnv", "cellReef"), cell.col = "cell", n.cores = 4)
+
 ## Save
 saveRDS(stages.g200.ref, file = "data/stages_g200_ref3.Rds")
 saveRDS(stages.g100.ref, file = "data/stages_g100_ref3.Rds")
