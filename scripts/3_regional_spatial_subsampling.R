@@ -29,6 +29,21 @@ stages.g200 <- readRDS("data/stages_g200.Rds")
 stages.g100 <- readRDS("data/stages_g100.Rds")
 stages.s200 <- readRDS("data/stages_s200.Rds")
 stages.s100 <- readRDS("data/stages_s100.Rds")
+
+stages.g200.ref <- readRDS("data/stages_g200_ref3.Rds")
+stages.g100.ref <- readRDS("data/stages_g100_ref3.Rds")
+stages.s200.ref <- readRDS("data/stages_s200_ref3.Rds")
+stages.s100.ref <- readRDS("data/stages_s100_ref3.Rds")
+
+stages.g200.inf <- readRDS("data/stages_g200_inf.Rds")
+stages.g100.inf <- readRDS("data/stages_g100_inf.Rds")
+stages.s200.inf <- readRDS("data/stages_s200_inf.Rds")
+stages.s100.inf <- readRDS("data/stages_s100_inf.Rds")
+
+stages.g200.epif <- readRDS("data/stages_g200_epif.Rds")
+stages.g100.epif <- readRDS("data/stages_g100_epif.Rds")
+stages.s200.epif <- readRDS("data/stages_s200_epif.Rds")
+stages.s100.epif <- readRDS("data/stages_s100_epif.Rds")
 home <- getwd()
 
 ## Load new functions
@@ -45,15 +60,39 @@ names(vars) <- c("sQ","r")
 #### Get distribution of occurrence numbers for each subsample of sites ####
 ## Generate spatial subsamples, returning all occurrences associate with subsamples of sites
 ## Generate output vectors
-output.strings.sites <- c("stages_g200_sites",
-                          "stages_g100_sites",
-                          "stages_s200_sites",
-                          "stages_s100_sites")
+output.strings.sites <- c("stages_g200",
+                          "stages_g100",
+                          "stages_s200",
+                          "stages_s100",
+                          "stages_g200_ref",
+                          "stages_g100_ref",
+                          "stages_s200_ref",
+                          "stages_s100_ref",
+                          "stages_g200_epif",
+                          "stages_g100_epif",
+                          "stages_s200_epif",
+                          "stages_s100_epif",
+                          "stages_g200_inf",
+                          "stages_g100_inf",
+                          "stages_s200_inf",
+                          "stages_s100_inf")
 
 data.strings <- c("stages.g200",
                   "stages.g100",
                   "stages.s200",
-                  "stages.s100")
+                  "stages.s100",
+                  "stages.g200.ref",
+                  "stages.g100.ref",
+                  "stages.s200.ref",
+                  "stages.s100.ref",
+                  "stages.g200.epif",
+                  "stages.g100.epif",
+                  "stages.s200.epif",
+                  "stages.s100.epif",
+                  "stages.g200.inf",
+                  "stages.g100.inf",
+                  "stages.s200.inf",
+                  "stages.s100.inf")
 
 ## use biscuitsBatch to run all permutations
 for(z in 1:length(output.strings.sites)){
@@ -71,7 +110,22 @@ vars <- list(paste0("sQ",seq(1,length(siteQuotas),1)), paste0("r",seq(1,length(r
 taxa <- T
 threshold = threshold.VC = 1
 prefix.vector <- output.strings.sites
-out.pre.vector <- c("stages_g200_sites_viaTimBin","stages_g100_sites_viaTimBin","stages_s200_sites_viaTimBin","stages_s100_sites_viaTimBin")
+out.pre.vector <- c("stages_g200_viaTimeBin",
+                    "stages_g100_viaTimeBin",
+                    "stages_s200_viaTimeBin",
+                    "stages_s100_viaTimeBin",
+                    "stages_g200_ref_viaTimeBin",
+                    "stages_g100_ref_viaTimeBin",
+                    "stages_s200_ref_viaTimeBin",
+                    "stages_s100_ref_viaTimeBin",
+                    "stages_g200_epif_viaTimeBin",
+                    "stages_g100_epif_viaTimeBin",
+                    "stages_s200_epif_viaTimeBin",
+                    "stages_s100_epif_viaTimeBin",
+                    "stages_g200_inf_viaTimeBin",
+                    "stages_g100_inf_viaTimeBin",
+                    "stages_s200_inf_viaTimeBin",
+                    "stages_s100_inf_viaTimeBin")
 
 ## Run function
 for(z in 1:length(out.pre.vector)){
@@ -87,11 +141,22 @@ vars <- list(paste0("sQ",seq(1,length(siteQuotas),1)), paste0("r",seq(1,length(r
 names(vars) <- c("siteQuota", "radius")
 taxa <- T
 input.strings <- out.pre.vector
-output.strings <- c("stages.g200.occ.count",
-                    "stages.g100.occ.count",
-                    "stages.s200.occ.count",
-                    "stages.s100.occ.count")
-
+output.strings <- c("stages_g200_occ_count",
+                    "stages_g100_occ_count",
+                    "stages_s200_occ_count",
+                    "stages_s100_occ_count",
+                    "stages_g200_ref_occ_count",
+                    "stages_g100_ref_occ_count",
+                    "stages_s200_ref_occ_count",
+                    "stages_s100_ref_occ_count",
+                    "stages_g200_epif_occ_count",
+                    "stages_g100_epif_occ_count",
+                    "stages_s200_epif_occ_count",
+                    "stages_s100_epif_occ_count",
+                    "stages_g200_inf_occ_count",
+                    "stages_g100_inf_occ_count",
+                    "stages_s200_inf_occ_count",
+                    "stages_s100_inf_occ_count")
 ## Run the function
 for(z in 1:length(output.strings)){
   count.occurrences(input.dir = input.dir, input.pre = input.strings[z], output.dir = output.dir, output.pre = output.strings[z],
@@ -106,18 +171,54 @@ stages.g200.occs <- get.occs.per.cell(stages.g200)
 stages.g100.occs <- get.occs.per.cell(stages.g100)
 stages.s200.occs <- get.occs.per.cell(stages.s200)
 stages.s100.occs <- get.occs.per.cell(stages.s100)
+stages.g200.ref.occs <- get.occs.per.cell(stages.g200.ref)
+stages.g100.ref.occs <- get.occs.per.cell(stages.g100.ref)
+stages.s200.ref.occs <- get.occs.per.cell(stages.s200.ref)
+stages.s100.ref.occs <- get.occs.per.cell(stages.s100.ref)
+stages.g200.epif.occs <- get.occs.per.cell(stages.g200.epif)
+stages.g100.epif.occs <- get.occs.per.cell(stages.g100.epif)
+stages.s200.epif.occs <- get.occs.per.cell(stages.s200.epif)
+stages.s100.epif.occs <- get.occs.per.cell(stages.s100.epif)
+stages.g200.inf.occs <- get.occs.per.cell(stages.g200.inf)
+stages.g100.inf.occs <- get.occs.per.cell(stages.g100.inf)
+stages.s200.inf.occs <- get.occs.per.cell(stages.s200.inf)
+stages.s100.inf.occs <- get.occs.per.cell(stages.s100.inf)
 
 #### Generate spatial subsamples ####
-## Generate output vectors
+## Generate input and output vectors once again
 output.vector <- c("stages_g200",
                    "stages_g100",
                    "stages_s200",
-                   "stages_s100")
+                   "stages_s100",
+                   "stages_g200_ref",
+                   "stages_g100_ref",
+                   "stages_s200_ref",
+                   "stages_s100_ref",
+                   "stages_g200_epif",
+                   "stages_g100_epif",
+                   "stages_s200_epif",
+                   "stages_s100_epif",
+                   "stages_g200_inf",
+                   "stages_g100_inf",
+                   "stages_s200_inf",
+                   "stages_s100_inf")
 
 data.strings <- c("stages.g200",
                   "stages.g100",
                   "stages.s200",
-                  "stages.s100")
+                  "stages.s100",
+                  "stages.g200.ref",
+                  "stages.g100.ref",
+                  "stages.s200.ref",
+                  "stages.s100.ref",
+                  "stages.g200.epif",
+                  "stages.g100.epif",
+                  "stages.s200.epif",
+                  "stages.s100.epif",
+                  "stages.g200.inf",
+                  "stages.g100.inf",
+                  "stages.s200.inf",
+                  "stages.s100.inf")
 
 ## Get arguments for standard run
 ## BiscuitBatch arguments
@@ -157,20 +258,57 @@ data.strings <- c("stages.g200",
 #output = 'full'
 
 ## Read in outputs of occurrence counting
-stages.s100.occs.count <- read.csv("data/occurrence_count/stages.s100.occ.count.csv", row.names = 1)
-stages.s200.occs.count <- read.csv("data/occurrence_count/stages.s200.occ.count.csv", row.names = 1)
-stages.g100.occs.count <- read.csv("data/occurrence_count/stages.g100.occ.count.csv", row.names = 1)
-stages.g200.occs.count <- read.csv("data/occurrence_count/stages.g200.occ.count.csv", row.names = 1)
+stages.s100.occs.count <- read.csv("data/occurrence_count/stages_s100_occ_count.csv", row.names = 1)
+stages.s200.occs.count <- read.csv("data/occurrence_count/stages_s200_occ_count.csv", row.names = 1)
+stages.g100.occs.count <- read.csv("data/occurrence_count/stages_g100_occ_count.csv", row.names = 1)
+stages.g200.occs.count <- read.csv("data/occurrence_count/stages_g200_occ_count.csv", row.names = 1)
+stages.s100.ref.occs.count <- read.csv("data/occurrence_count/stages_s100_ref_occ_count.csv", row.names = 1)
+stages.s200.ref.occs.count <- read.csv("data/occurrence_count/stages_s200_ref_occ_count.csv", row.names = 1)
+stages.g100.ref.occs.count <- read.csv("data/occurrence_count/stages_g100_ref_occ_count.csv", row.names = 1)
+stages.g200.ref.occs.count <- read.csv("data/occurrence_count/stages_g200_ref_occ_count.csv", row.names = 1)
+stages.s100.epif.occs.count <- read.csv("data/occurrence_count/stages_s100_epif_occ_count.csv", row.names = 1)
+stages.s200.epif.occs.count <- read.csv("data/occurrence_count/stages_s200_epif_occ_count.csv", row.names = 1)
+stages.g100.epif.occs.count <- read.csv("data/occurrence_count/stages_g100_epif_occ_count.csv", row.names = 1)
+stages.g200.epif.occs.count <- read.csv("data/occurrence_count/stages_g200_epif_occ_count.csv", row.names = 1)
+stages.s100.inf.occs.count <- read.csv("data/occurrence_count/stages_s100_inf_occ_count.csv", row.names = 1)
+stages.s200.inf.occs.count <- read.csv("data/occurrence_count/stages_s200_inf_occ_count.csv", row.names = 1)
+stages.g100.inf.occs.count <- read.csv("data/occurrence_count/stages_g100_inf_occ_count.csv", row.names = 1)
+stages.g200.inf.occs.count <- read.csv("data/occurrence_count/stages_g200_inf_occ_count.csv", row.names = 1)
 
 ## Get minima for different configurations
 stages.g200.occ.n <- stages.g200.occs.count[,"minimum"]
 stages.g100.occ.n <- stages.g100.occs.count[,"minimum"]
 stages.s200.occ.n <- stages.s200.occs.count[,"minimum"]
 stages.s100.occ.n <- stages.s100.occs.count[,"minimum"]
+stages.g200.ref.occ.n <- stages.g200.ref.occs.count[,"minimum"]
+stages.g100.ref.occ.n <- stages.g100.ref.occs.count[,"minimum"]
+stages.s200.ref.occ.n <- stages.s200.ref.occs.count[,"minimum"]
+stages.s100.ref.occ.n <- stages.s100.ref.occs.count[,"minimum"]
+stages.g200.epif.occ.n <- stages.g200.epif.occs.count[,"minimum"]
+stages.g100.epif.occ.n <- stages.g100.epif.occs.count[,"minimum"]
+stages.s200.epif.occ.n <- stages.s200.epif.occs.count[,"minimum"]
+stages.s100.epif.occ.n <- stages.s100.epif.occs.count[,"minimum"]
+stages.g200.inf.occ.n <- stages.g200.inf.occs.count[,"minimum"]
+stages.g100.inf.occ.n <- stages.g100.inf.occs.count[,"minimum"]
+stages.s200.inf.occ.n <- stages.s200.inf.occs.count[,"minimum"]
+stages.s100.inf.occ.n <- stages.s100.inf.occs.count[,"minimum"]
+
 occ.list <- list(stages.g200.occ.n,
-                   stages.g100.occ.n,
-                   stages.s200.occ.n,
-                   stages.s100.occ.n)
+                 stages.g100.occ.n,
+                 stages.s200.occ.n,
+                 stages.s100.occ.n,
+                 stages.g200.ref.occ.n,
+                 stages.g100.ref.occ.n,
+                 stages.s200.ref.occ.n,
+                 stages.s100.ref.occ.n,
+                 stages.g200.epif.occ.n,
+                 stages.g100.epif.occ.n,
+                 stages.s200.epif.occ.n,
+                 stages.s100.epif.occ.n,
+                 stages.g200.inf.occ.n,
+                 stages.g100.inf.occ.n,
+                 stages.s200.inf.occ.n,
+                 stages.s100.inf.occ.n)
 
 ## get vars
 vars <- list(siteQuotas, radii)
@@ -191,12 +329,23 @@ output.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub"
 vars <- list(paste0("sQ",seq(1,length(siteQuotas),1)), paste0("r",seq(1,length(radii),1)))
 taxa <- T
 threshold = threshold.VC = 1
-prefix.vector <- c("stages_g200", "stages_g100","stages_s200","stages_s100")
-out.pre.vector <- c("stages_g200_viaTimBin","stages_g100_viaTimBin","stages_s200_viaTimBin","stages_s100_viaTimBin")
-data.strings <- c("stages.g200",
-                  "stages.g100",
-                  "stages.s200",
-                  "stages.s100")
+prefix.vector <- output.vector
+out.pre.vector <- c("stages_g200_viaTimeBin",
+                    "stages_g100_viaTimeBin",
+                    "stages_s200_viaTimeBin",
+                    "stages_s100_viaTimeBin",
+                    "stages_g200_ref_viaTimeBin",
+                    "stages_g100_ref_viaTimeBin",
+                    "stages_s200_ref_viaTimeBin",
+                    "stages_s100_ref_viaTimeBin",
+                    "stages_g200_epif_viaTimeBin",
+                    "stages_g100_epif_viaTimeBin",
+                    "stages_s200_epif_viaTimeBin",
+                    "stages_s100_epif_viaTimeBin",
+                    "stages_g200_inf_viaTimeBin",
+                    "stages_g100_inf_viaTimeBin",
+                    "stages_s200_inf_viaTimeBin",
+                    "stages_s100_inf_viaTimeBin")
 
 ## drop unusable bins arguments
 #i = 1
@@ -221,7 +370,7 @@ dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub"
 vars <- list(paste0("sQ",seq(1,length(siteQuotas),1)), paste0("r",seq(1,length(radii),1)))
 cores <- 4
 taxa.split <- T
-prefix.vector <- output.vector <- c("stages_g200", "stages_g100","stages_s200","stages_s100")
+prefix.vector <- output.vector
 
 ## count viable samples arguments
 #z = 1
@@ -243,14 +392,38 @@ stages.g200.VCs <- read.csv("data/viable_subsample_count/stages_g200_viable_subs
 stages.g100.VCs <- read.csv("data/viable_subsample_count/stages_g100_viable_subsamples.csv", header = T, row.names = 1)
 stages.s200.VCs <- read.csv("data/viable_subsample_count/stages_s200_viable_subsamples.csv", header = T, row.names = 1)
 stages.s100.VCs <- read.csv("data/viable_subsample_count/stages_s100_viable_subsamples.csv", header = T, row.names = 1)
+stages.g200.ref.VCs <- read.csv("data/viable_subsample_count/stages_g200_ref_viable_subsamples.csv", header = T, row.names = 1)
+stages.g100.ref.VCs <- read.csv("data/viable_subsample_count/stages_g100_ref_viable_subsamples.csv", header = T, row.names = 1)
+stages.s200.ref.VCs <- read.csv("data/viable_subsample_count/stages_s200_ref_viable_subsamples.csv", header = T, row.names = 1)
+stages.s100.ref.VCs <- read.csv("data/viable_subsample_count/stages_s100_ref_viable_subsamples.csv", header = T, row.names = 1)
+stages.g200.epif.VCs <- read.csv("data/viable_subsample_count/stages_g200_epif_viable_subsamples.csv", header = T, row.names = 1)
+stages.g100.epif.VCs <- read.csv("data/viable_subsample_count/stages_g100_epif_viable_subsamples.csv", header = T, row.names = 1)
+stages.s200.epif.VCs <- read.csv("data/viable_subsample_count/stages_s200_epif_viable_subsamples.csv", header = T, row.names = 1)
+stages.s100.epif.VCs <- read.csv("data/viable_subsample_count/stages_s100_epif_viable_subsamples.csv", header = T, row.names = 1)
+stages.g200.inf.VCs <- read.csv("data/viable_subsample_count/stages_g200_inf_viable_subsamples.csv", header = T, row.names = 1)
+stages.g100.inf.VCs <- read.csv("data/viable_subsample_count/stages_g100_inf_viable_subsamples.csv", header = T, row.names = 1)
+stages.s200.inf.VCs <- read.csv("data/viable_subsample_count/stages_s200_inf_viable_subsamples.csv", header = T, row.names = 1)
+stages.s100.inf.VCs <- read.csv("data/viable_subsample_count/stages_s100_inf_viable_subsamples.csv", header = T, row.names = 1)
 
 ## Update colnames using stage data to make them more usable
-stages <- downloadTime('international ages')
+stages <- read.csv("data/cleaned_stages.csv", row.names = 1)
 stages <- stages[order(stages$b_age, decreasing=TRUE), ]
 colnames(stages.g200.VCs) <- rownames(stages)[-102]
 colnames(stages.g100.VCs) <- rownames(stages)[-102]
 colnames(stages.s200.VCs) <- rownames(stages)[-102]
 colnames(stages.s100.VCs) <- rownames(stages)[-102]
+colnames(stages.g200.ref.VCs) <- rownames(stages)[-102]
+colnames(stages.g100.ref.VCs) <- rownames(stages)[-102]
+colnames(stages.s200.ref.VCs) <- rownames(stages)[-102]
+colnames(stages.s100.ref.VCs) <- rownames(stages)[-102]
+colnames(stages.g200.epif.VCs) <- rownames(stages)[-102]
+colnames(stages.g100.epif.VCs) <- rownames(stages)[-102]
+colnames(stages.s200.epif.VCs) <- rownames(stages)[-102]
+colnames(stages.s100.epif.VCs) <- rownames(stages)[-102]
+colnames(stages.g200.inf.VCs) <- rownames(stages)[-102]
+colnames(stages.g100.inf.VCs) <- rownames(stages)[-102]
+colnames(stages.s200.inf.VCs) <- rownames(stages)[-102]
+colnames(stages.s100.inf.VCs) <- rownames(stages)[-102]
 
 ## Get midpoints for plotting
 midpoints <- as.numeric(names(stages.g200))
@@ -261,19 +434,28 @@ periods <- periods[order(periods$b_age, decreasing=TRUE), ]
 periods <- periods[periods$b_age <= periods[which(rownames(periods) == "Cambrian"),"b_age"],]
 
 ## Main title vector
-titles <- c("Genera, 200km grid cells", "Genera, 100km grid cells", "Species, 200km grid cells", "Species, 100km grid cells")
+titles <- c("Genera, 200km grid cells", "Genera, 100km grid cells", "Species, 200km grid cells", "Species, 100km grid cells",
+            "Genera, 200km grid cells, 3+ references for both", "Genera, 100km grid cells, 3+ references for both", "Species, 200km grid cells, 3+ references for both", "Species, 100km grid cells, 3+ references for both",
+            "Genera, 200km grid cells, epifaunal", "Genera, 100km grid cells, epifaunal", "Species, 200km grid cells, epifaunal", "Species, 100km grid cells, epifaunal",
+            "Genera, 200km grid cells, infaunal", "Genera, 100km grid cells, infaunal", "Species, 200km grid cells, infaunal", "Species, 100km grid cells, infaunal")
 
 # Set output directory
 output.dir <- "~/R_packages/bivbrach/figures/viable_RCR_through_time"
 
 ## Output file name vector
-output.strings <- c("stages_g200", "stages_g100", "stages_s200", "stages_s100")
+output.strings <- output.vector
 
 ## Input strings
-input.strings <- c("stages.g200.VCs", "stages.g100.VCs", "stages.s200.VCs", "stages.s100.VCs")
+input.strings <- c("stages.g200.VCs", "stages.g100.VCs", "stages.s200.VCs", "stages.s100.VCs",
+                   "stages.g200.ref.VCs", "stages.g100.ref.VCs", "stages.s200.ref.VCs", "stages.s100.ref.VCs",
+                   "stages.g200.epif.VCs", "stages.g100.epif.VCs", "stages.s200.epif.VCs", "stages.s100.epif.VCs",
+                   "stages.g200.inf.VCs", "stages.g100.inf.VCs", "stages.s200.inf.VCs", "stages.s100.inf.VCs")
 
 ## Set legend position
-legend.position = c("topright", "topright", "topright", "topright")
+legend.position = c("topright", "topright", "topright", "topright",
+                    "topright", "topright", "topright", "topright",
+                    "topright", "topright", "topright", "topright",
+                    "topright", "topright", "topright", "topright")
 
 ## Set legend labels
 legend.labels <- c("Radius 200km, 2 sites", "Radius 200km, 3 sites", "Radius 200km, 4 sites", "Radius 200km, 5 sites",
@@ -302,9 +484,110 @@ source("functions/add.geo.scale.R")
 source("functions/plot.spatSubThroughTime.R")
 
 ## Set increments
-y.ax.inc <- 5
+y.ax.inc <- 3
 x.ax.inc <- 100
 
 ## Run plotting function
 plot.spatSubThroughTime(input.strings, output.dir, output.strings, strat.data = periods, time.data = midpoints, titles, legend.position, legend.labels,
                         y.axis.inc = y.ax.inc, x.axis.inc = x.ax.inc, line.pal = c(oranges, greens, purples), line.type.pal)
+
+#### Sensitivity test - subsample by sites first, then by references ####
+output.vector <- c("stages_g200_sites",
+                   "stages_g100_sites",
+                   "stages_s200_sites",
+                   "stages_s100_sites")
+
+data.strings <- c("stages.g200",
+                  "stages.g100",
+                  "stages.s200",
+                  "stages.s100")
+
+## get vars
+vars <- list(siteQuotas, radii)
+names(vars) <- c("sQ","r")
+
+## use biscuitsBatch to run all permutations, using minimum occurrence number for each run as occs number
+for(z in 1:length(output.vector)){
+  cookies2Batch(dataList = eval(parse(text=data.strings[z])), vars = vars, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub",
+                overlapThreshold = overlapThresholds, overlapType = overlapTypes, overlapPruningMode = "maxOccs", rarefaction = "sites", nOccs = occ.list[[z]],
+                name.output = output.vector[z], n.cores = 4, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
+}
+
+## Drop time bins with no data from each dataset ##
+input.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub"
+output.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub"
+vars <- list(paste0("sQ",seq(1,length(siteQuotas),1)), paste0("r",seq(1,length(radii),1)))
+taxa <- T
+threshold = threshold.VC = 1
+prefix.vector <- output.vector
+out.pre.vector <- c("stages_g200_sites_viaTimeBin",
+                    "stages_g100_sites_viaTimeBin",
+                    "stages_s200_sites_viaTimeBin",
+                    "stages_s100_sites_viaTimeBin")
+
+## Run function
+for(z in 1:length(out.pre.vector)){
+  drop.unusable.bins(input.dir = input.dir, input.pre = prefix.vector[z], output.dir = output.dir, output.pre = out.pre.vector[z],
+                     vars = vars, sD = eval(parse(text=data.strings[z])), threshold = threshold.VC, taxa = T)
+}
+
+sitesThenRefs.vector <- c("stages_g200_sitesThenRefs_viaTimeBin",
+                          "stages_g100_sitesThenRefs_viaTimeBin",
+                          "stages_s200_sitesThenRefs_viaTimeBin",
+                          "stages_s100_sitesThenRefs_viaTimeBin")
+z = 1
+input.dir = input.dir
+input.pre = out.pre.vector[z]
+output.dir = output.dir
+output.pre = sitesThenRefs.vector[z]
+vars = vars
+sD = eval(parse(text=data.strings[z]))
+taxa = T
+d = 1
+
+## Now, subsample references from sites
+subsample.references <- function(input.dir = input.dir, input.pre = prefix.vector[z], output.dir = output.dir, output.pre = out.pre.vector[z],
+                                 vars = vars, sD = eval(parse(text=data.strings[z])), taxa = T){
+combin <- expand.grid(vars)
+times <- names(sD)
+varStrings <- sapply(1:nrow(combin), function(x) paste(unlist(combin[x,]), collapse = "_"))
+input.dirs <- paste0(input.dir, "/", input.pre, "_", varStrings, ".Rds")
+output.dirs <- paste0(output.dir, "/", output.pre, "_", varStrings, ".Rds")
+  if(taxa){
+    ## for each input.dirs
+    for(d in 1:length(input.dirs)){
+      ## read in data
+      data <- suppressWarnings(tryCatch(readRDS(input.dirs[d]), error = function(e){}))
+      ## if data is NULL, skip to next
+      if(is.null(data)){
+        next
+      } else {
+        taxa.labels <- names(data)
+        time.labels <- names(data[[1]])
+        ## Pass over
+        output <- mclapply(1:length(data), mc.cores = n.cores, function(x){
+          per.bin <- lapply(1:length(data[[x]]), function(y){
+            per.RCR <- lapply(1:length(data[[x]][[y]]), function(z){
+              per.samples <- lapply(1:length(data[[x]][[y]][[z]]), function(s){
+                references <- unique(data[[x]][[y]][[z]][[s]][,"reference_no"])
+              })
+            })
+          })
+        })
+
+      }
+    }
+  } else {
+    ## for each input.dirs
+    for(d in 1:length(input.dirs)){
+      ## read in data
+      data <- suppressWarnings(tryCatch(readRDS(input.dirs[d]), error = function(e){}))
+      ## if data is NULL, skip to next
+      if(is.null(data)){
+        next
+      } else {
+        time.labels <- names(data)
+      }
+    }
+  }
+}
