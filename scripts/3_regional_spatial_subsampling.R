@@ -542,7 +542,7 @@ sitesThenRefs.vector <- c("stages_g200_sitesThenRefs_VTBO",
 source("functions/subsample.references.R")
 
 ## Run function
-for(z in 1:length(sitesThenRefs.vector)){
-  subsample.references(input.dir = input.dir, input.pre = out.pre.vector[z], output.dir = output.dir, output.pre = sitesThenRefs.vector[z],
+for(t in 1:length(sitesThenRefs.vector)){
+  subsample.references(input.dir = input.dir, input.pre = out.pre.vector[t], output.dir = output.dir, output.pre = sitesThenRefs.vector[t],
                      vars = vars, nRefs = 3, taxa = T, n.cores = 4)
 }
