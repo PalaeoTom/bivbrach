@@ -497,10 +497,10 @@ output.vector <- c("stages_g200_sites",
                    "stages_s200_sites",
                    "stages_s100_sites")
 
-data.strings <- c("stages.g200",
-                  "stages.g100",
-                  "stages.s200",
-                  "stages.s100")
+data.strings <- c("stages.g200.ref",
+                  "stages.g100.ref",
+                  "stages.s200.ref",
+                  "stages.s100.ref")
 
 ## get vars
 vars <- list(siteQuotas, radii)
@@ -509,7 +509,7 @@ names(vars) <- c("sQ","r")
 ## use biscuitsBatch to run all permutations, using minimum occurrence number for each run as occs number
 for(z in 1:length(output.vector)){
   cookies2Batch(dataList = eval(parse(text=data.strings[z])), vars = vars, b.crs = 'EPSG:8857', output.dir = "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub",
-                overlapThreshold = overlapThresholds, overlapType = overlapTypes, overlapPruningMode = "maxOccs", rarefaction = "sites", nOccs = occ.list[[z]],
+                overlapThreshold = overlapThresholds, overlapType = overlapTypes, overlapPruningMode = "maxOccs", rarefaction = "sites",
                 name.output = output.vector[z], n.cores = 4, taxa = c("Brachiopoda","Bivalvia"), taxa.level = c("phylum","class"))
 }
 
@@ -524,6 +524,7 @@ out.pre.vector <- c("stages_g200_sites_viaTimeBin",
                     "stages_g100_sites_viaTimeBin",
                     "stages_s200_sites_viaTimeBin",
                     "stages_s100_sites_viaTimeBin")
+source("functions/drop.unusable.bins.R")
 
 ## Run function
 for(z in 1:length(out.pre.vector)){
@@ -531,63 +532,17 @@ for(z in 1:length(out.pre.vector)){
                      vars = vars, sD = eval(parse(text=data.strings[z])), threshold = threshold.VC, taxa = T)
 }
 
-sitesThenRefs.vector <- c("stages_g200_sitesThenRefs_viaTimeBin",
-                          "stages_g100_sitesThenRefs_viaTimeBin",
-                          "stages_s200_sitesThenRefs_viaTimeBin",
-                          "stages_s100_sitesThenRefs_viaTimeBin")
-z = 1
-input.dir = input.dir
-input.pre = out.pre.vector[z]
-output.dir = output.dir
-output.pre = sitesThenRefs.vector[z]
-vars = vars
-sD = eval(parse(text=data.strings[z]))
-taxa = T
-d = 1
+## Now subsample 3 references for each taxon
+sitesThenRefs.vector <- c("stages_g200_sitesThenRefs_VTBO",
+                          "stages_g100_sitesThenRefs_VTBO",
+                          "stages_s200_sitesThenRefs_VTBO",
+                          "stages_s100_sitesThenRefs_VTBO")
 
-## Now, subsample references from sites
-subsample.references <- function(input.dir = input.dir, input.pre = prefix.vector[z], output.dir = output.dir, output.pre = out.pre.vector[z],
-                                 vars = vars, sD = eval(parse(text=data.strings[z])), taxa = T){
-combin <- expand.grid(vars)
-times <- names(sD)
-varStrings <- sapply(1:nrow(combin), function(x) paste(unlist(combin[x,]), collapse = "_"))
-input.dirs <- paste0(input.dir, "/", input.pre, "_", varStrings, ".Rds")
-output.dirs <- paste0(output.dir, "/", output.pre, "_", varStrings, ".Rds")
-  if(taxa){
-    ## for each input.dirs
-    for(d in 1:length(input.dirs)){
-      ## read in data
-      data <- suppressWarnings(tryCatch(readRDS(input.dirs[d]), error = function(e){}))
-      ## if data is NULL, skip to next
-      if(is.null(data)){
-        next
-      } else {
-        taxa.labels <- names(data)
-        time.labels <- names(data[[1]])
-        ## Pass over
-        output <- mclapply(1:length(data), mc.cores = n.cores, function(x){
-          per.bin <- lapply(1:length(data[[x]]), function(y){
-            per.RCR <- lapply(1:length(data[[x]][[y]]), function(z){
-              per.samples <- lapply(1:length(data[[x]][[y]][[z]]), function(s){
-                references <- unique(data[[x]][[y]][[z]][[s]][,"reference_no"])
-              })
-            })
-          })
-        })
+## Load function
+source("functions/subsample.references.R")
 
-      }
-    }
-  } else {
-    ## for each input.dirs
-    for(d in 1:length(input.dirs)){
-      ## read in data
-      data <- suppressWarnings(tryCatch(readRDS(input.dirs[d]), error = function(e){}))
-      ## if data is NULL, skip to next
-      if(is.null(data)){
-        next
-      } else {
-        time.labels <- names(data)
-      }
-    }
-  }
+## Run function
+for(z in 1:length(sitesThenRefs.vector)){
+  subsample.references(input.dir = input.dir, input.pre = out.pre.vector[z], output.dir = output.dir, output.pre = sitesThenRefs.vector[z],
+                     vars = vars, nRefs = 3, taxa = T, n.cores = 4)
 }
