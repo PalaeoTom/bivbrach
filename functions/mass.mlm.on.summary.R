@@ -108,8 +108,7 @@ mass.mlm.on.summary <- function(input.dir, input.pre, output.dir, output.pre, va
           stop("check argument 'mode' is 'median' or 'min'")
         }
       }
-      #mlm <- suppressMessages(tryCatch(lmer(Brachiopoda ~ Bivalvia + (1|times/source.subregion.ID), data = medMat), error = function(e){}))
-      mlm <- suppressMessages(tryCatch(lmer(Brachiopoda ~ Bivalvia + (Bivalvia|times/source.subregion.ID), data = data), error = function(e){}))
+      mlm <- suppressMessages(tryCatch(lmer(Brachiopoda ~ Bivalvia + sampLith + sampEnv + sampReef + sampLat + (1|times), data = data), error = function(e){}))
       if(is.null(mlm)){
         next
       } else {

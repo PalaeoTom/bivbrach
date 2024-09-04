@@ -26,15 +26,38 @@ names(vars.values) <- names(vars) <- c("site_quota", "radius")
 ## input strings
 ## Set output strings
 input.strings <- c("stages_g200",
-                    "stages_g100",
-                    "stages_s200",
-                    "stages_s100")
+                   "stages_g100",
+                   "stages_s200",
+                   "stages_s100",
+                   "stages_g200_epif",
+                   "stages_g100_epif",
+                   "stages_s200_epif",
+                   "stages_s100_epif",
+                   "stages_g200_inf",
+                   "stages_g100_inf",
+                   "stages_s200_inf",
+                   "stages_s100_inf",
+                   "stages_g200_sitesThenRefs",
+                   "stages_g100_sitesThenRefs",
+                   "stages_s200_sitesThenRefs",
+                   "stages_s100_sitesThenRefs")
 
 output.strings <- c("stages_g200_mlm",
-                   "stages_g100_mlm",
-                   "stages_s200_mlm",
-                   "stages_s100_mlm")
-
+                    "stages_g100_mlm",
+                    "stages_s200_mlm",
+                    "stages_s100_mlm",
+                    "stages_g200_epif_mlm",
+                    "stages_g100_epif_mlm",
+                    "stages_s200_epif_mlm",
+                    "stages_s100_epif_mlm",
+                    "stages_g200_inf_mlm",
+                    "stages_g100_inf_mlm",
+                    "stages_s200_inf_mlm",
+                    "stages_s100_inf_mlm",
+                    "stages_g200_sitesThenRefs_mlm",
+                    "stages_g100_sitesThenRefs_mlm",
+                    "stages_s200_sitesThenRefs_mlm",
+                    "stages_s100_sitesThenRefs_mlm")
 ## Set working directory
 setwd("~/R_packages/bivbrach")
 home <- getwd()
@@ -52,6 +75,7 @@ source("functions/mass.mlm.R")
 #output.pre = output.strings[m]
 #vars = vars
 #vars.values = vars.values
+#i = 1
 
 ## Run for each input
 for(m in 1:length(input.strings)){
@@ -84,7 +108,19 @@ eras[,"shape"] <- c(16,15,17)
 input.strings <- c("stages_g200",
                    "stages_g100",
                    "stages_s200",
-                   "stages_s100")
+                   "stages_s100",
+                   "stages_g200_epif",
+                   "stages_g100_epif",
+                   "stages_s200_epif",
+                   "stages_s100_epif",
+                   "stages_g200_inf",
+                   "stages_g100_inf",
+                   "stages_s200_inf",
+                   "stages_s100_inf",
+                   "stages_g200_sitesThenRefs",
+                   "stages_g100_sitesThenRefs",
+                   "stages_s200_sitesThenRefs",
+                   "stages_s100_sitesThenRefs")
 
 ## Function
 source("functions/mass.SJplot.R")
@@ -92,7 +128,18 @@ source("functions/mass.SJplot.R")
 ## Run function for all
 model.input.dir <- "~/R_packages/bivbrach/data/mlm/basic"
 rich.input.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_regRich"
-output.dir <- "~/R_packages/bivbrach/figures/sjPlot"
+output.dir <- "~/R_packages/bivbrach/figures/richness_lmm/"
+
+r = 1
+input.string = input.strings[r]
+argument.strings = title.strings
+model.input.dir
+rich.input.dir
+output.dir
+times.col = "times"
+period.scale = periods
+era.scale = eras
+xy = c("Bivalvia", "Brachiopoda")
 
 for(r in 1:length(input.strings)){
  mass.SJplot(input.strings[r], title.strings, model.input.dir, rich.input.dir, output.dir, times.col = "times", period.scale = periods, era.scale = eras, xy = c("Bivalvia", "Brachiopoda"))

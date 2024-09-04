@@ -1,4 +1,4 @@
-get.regional.richness <- function(input.dir, input.pre, output.dir, output.pre, vars, cov.cols, cov.types, cov.names, cell.col, taxa = T, n.cores = 1, taxVar = "genus"){
+get.regional.richness <- function(input.dir, input.pre, output.dir, output.pre, vars, cov.cols, cov.types, cat.cov.refs, cov.names, cell.col, taxa = T, n.cores = 1, taxVar = "genus"){
   ## set up inputs
   combin <- expand.grid(vars)
   varStrings <- sapply(1:nrow(combin), function(x) paste(unlist(combin[x,]), collapse = "_"))
@@ -81,7 +81,7 @@ get.regional.richness <- function(input.dir, input.pre, output.dir, output.pre, 
                   }
                 } else {
                   if(cov.types[i] == "continuous"){
-                    sampCov <- c(sampCov, mean(covs[,i]))
+                    sampCov <- c(sampCov, abs(mean(covs[,i])))
                   }
                 }
               }
@@ -92,7 +92,13 @@ get.regional.richness <- function(input.dir, input.pre, output.dir, output.pre, 
           per.cookie <- do.call(rbind, per.cookie)
           return(per.cookie)
         })
-        cov.out <- do.call(rbind, cov.out)
+        ## Convert categorical variables to strings and set reference
+        cov.out <- data.frame(do.call(rbind, cov.out), stringsAsFactors = T)
+        if(any(cov.types == "categorical")){
+          for(i in which(cov.types == "categorical")){
+            cov.out[,i] <- relevel(cov.out[,i], ref = cat.cov.refs[i])
+          }
+        }
         ## reformat outputs
         output.mat <- cbind(as.numeric(times.out), cookies.out, cov.out, output)
         colnames(output.mat) <- c("times", "source.subregion.ID", cov.names, taxa.labels)

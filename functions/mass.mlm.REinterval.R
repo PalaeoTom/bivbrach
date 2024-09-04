@@ -31,7 +31,7 @@ mass.mlm.REinterval <- function(input.dir, input.pre, output.dir, output.pre, va
       }
       # combine with data
       data <- cbind(data, interval.cat)
-      mlm <- suppressMessages(tryCatch(lmer(Brachiopoda ~ Bivalvia + (Bivalvia|interval/times/source.subregion.ID), data = data), error = function(e){}))
+      mlm <- suppressMessages(tryCatch(lmer(Brachiopoda ~ Bivalvia + sampLith + sampEnv + sampReef + sampLat + (1|interval/times/source.subregion.ID), data = data), error = function(e){}))
       if(is.null(mlm)){
         next
       } else {

@@ -75,7 +75,7 @@ mass.SJplot <- function(input.string, argument.strings, model.input.dir, rich.in
             legend.key.size = unit(10,"point"))
     scatter
     ## plot
-    pdf(file = paste0(output.dir, "/", plot.title, ".pdf"))
+    pdf(file = paste0(output.dir, "/", gsub(" ", "_", gsub(",", "", plot.title)), ".pdf"))
     print(scatter)
     dev.off()
   }
