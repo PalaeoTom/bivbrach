@@ -1,0 +1,2 @@
+"","site_quota","radius","n.samples","n.timeBins","n.subregions","avg.obs.per.timeBin","avg.obs.per.subregion","intercept","intercept.std.error","intercept.df","intercept.t.value","intercept.p.value","slope","slope.std.error","slope.df","slope.t.value","slope.p.value"
+"9",2,1000000,1600,11,16,145.454545454545,100,3.58339604702479,2.37066921107079,28.4554193210354,1.5115546404748,0.141674298589821,-0.366366761522814,0.0319728119745743,1589.46697713886,-11.4586969020479,2.89386196683053e-29

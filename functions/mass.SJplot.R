@@ -1,4 +1,4 @@
-mass.SJplot <- function(input.string, argument.strings, model.input.dir, rich.input.dir, output.dir, times.col, period.scale, era.scale, xy){
+mass.SJplot <- function(input.string, model.type, argument.strings, model.input.dir, rich.input.dir, output.dir, times.col, period.scale, era.scale, xy){
   if(grepl("_g",input.string)){
     taxon <- "Genera,"
   } else {
@@ -11,7 +11,16 @@ mass.SJplot <- function(input.string, argument.strings, model.input.dir, rich.in
   }
   data.string <- paste(taxon, gCells)
   ## Read in model
-  models <- readRDS(paste0(model.input.dir,"/",input.string,"_mlm_models.Rds"))
+  if(model.type == "full"){
+    models <- readRDS(paste0(model.input.dir,"/",input.string,"_full_lmm_models.Rds"))
+  } else {
+    if(model.type == "simple"){
+      models <- readRDS(paste0(model.input.dir,"/",input.string,"_simple_lmm_models.Rds"))
+    } else {
+      stop("check model.type")
+    }
+  }
+  if(length(models)>0){
   for(i in 1:length(models)){
     ## Read in richness data
     richness <- read.csv(paste0(rich.input.dir, "/", input.string, "_", names(models)[i], ".csv"))
@@ -41,7 +50,15 @@ mass.SJplot <- function(input.string, argument.strings, model.input.dir, rich.in
     era.legend <- period.scale[,"shape"]
     era.legend <- era.legend[period.scale[,"name"] %in% unique(richness[,"period"])]
     ## Get plot title
-    plot.title <- paste(data.string, argument.strings[which(argument.strings[,1] %in% names(models)[i]),2])
+    if(model.type == "full"){
+      plot.title <- paste0(data.string, " ", argument.strings[which(argument.strings[,1] %in% names(models)[i]),2], ", full model")
+    } else {
+      if(model.type == "simple"){
+        plot.title <- paste0(data.string, " ", argument.strings[which(argument.strings[,1] %in% names(models)[i]),2], ", simple model")
+      } else {
+        stop("check model.type")
+      }
+    }
     ## define plot data frame
     line.df <- get_model_data(models[[i]], type = "pred", terms = xy[1])
     ## basic scatter plot
@@ -78,5 +95,6 @@ mass.SJplot <- function(input.string, argument.strings, model.input.dir, rich.in
     pdf(file = paste0(output.dir, "/", gsub(" ", "_", gsub(",", "", plot.title)), ".pdf"))
     print(scatter)
     dev.off()
+  }
   }
 }
