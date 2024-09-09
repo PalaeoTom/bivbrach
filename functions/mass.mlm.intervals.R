@@ -31,7 +31,28 @@ mass.mlm.intervals <- function(input.dir, input.pre, output.dir, output.pre, var
         data.list[[t]][i,3] <- length(unique(data[,"source.subregion.ID"]))
         data.list[[t]][i,4] <- nrow(data)/(length(unique(data[,"times"])))
         data.list[[t]][i,5] <- nrow(data)/(length(unique(data[,"source.subregion.ID"])))
-        mlm <- suppressMessages(tryCatch(lmer(Brachiopoda ~ Bivalvia + sampLith + sampEnv + sampReef + sampLat + (1|times/source.subregion.ID), data = data), error = function(e){}))
+        ## check contrasts
+        if(length(levels(data[,"sampLith"]))>1 && length(levels(data[,"sampEnv"]))>1 && length(levels(data[,"sampReef"]))>1){
+          mlm <- suppressMessages(tryCatch(lmer(Brachiopoda ~ Bivalvia + sampLith + sampEnv + sampReef + sampLat + (1|times/source.subregion.ID), data = data), error = function(e){}))
+        }
+        if(!length(levels(data[,"sampLith"]))>1 && length(levels(data[,"sampEnv"]))>1 && length(levels(data[,"sampReef"]))>1){
+          mlm <- suppressMessages(tryCatch(lmer(Brachiopoda ~ Bivalvia  + sampEnv + sampReef + sampLat + (1|times/source.subregion.ID), data = data), error = function(e){}))
+        }
+        if(length(levels(data[,"sampLith"]))>1 && !length(levels(data[,"sampEnv"]))>1 && length(levels(data[,"sampReef"]))>1){
+          mlm <- suppressMessages(tryCatch(lmer(Brachiopoda ~ Bivalvia + sampLith + sampReef + sampLat + (1|times/source.subregion.ID), data = data), error = function(e){}))
+        }
+        if(length(levels(data[,"sampLith"]))>1 && length(levels(data[,"sampEnv"]))>1 && !length(levels(data[,"sampReef"]))>1){
+          mlm <- suppressMessages(tryCatch(lmer(Brachiopoda ~ Bivalvia + sampLith + sampEnv + sampLat + (1|times/source.subregion.ID), data = data), error = function(e){}))
+        }
+        if(length(levels(data[,"sampLith"]))>1 && !length(levels(data[,"sampEnv"]))>1 && !length(levels(data[,"sampReef"]))>1){
+          mlm <- suppressMessages(tryCatch(lmer(Brachiopoda ~ Bivalvia + sampLith + sampLat + (1|times/source.subregion.ID), data = data), error = function(e){}))
+        }
+        if(!length(levels(data[,"sampLith"]))>1 && length(levels(data[,"sampEnv"]))>1 && !length(levels(data[,"sampReef"]))>1){
+          mlm <- suppressMessages(tryCatch(lmer(Brachiopoda ~ Bivalvia + sampEnv + sampLat + (1|times/source.subregion.ID), data = data), error = function(e){}))
+        }
+        if(!length(levels(data[,"sampLith"]))>1 && !length(levels(data[,"sampEnv"]))>1 && length(levels(data[,"sampReef"]))>1){
+          mlm <- suppressMessages(tryCatch(lmer(Brachiopoda ~ Bivalvia + sampReef + sampLat + (1|times/source.subregion.ID), data = data), error = function(e){}))
+        }
         if(is.null(mlm)){
           next
         } else {

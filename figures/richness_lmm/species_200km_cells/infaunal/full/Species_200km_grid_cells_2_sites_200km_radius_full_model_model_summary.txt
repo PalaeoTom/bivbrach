@@ -1,0 +1,34 @@
+      [,1] [,2] [,3]     [,4] [,5]
+ [1,] 5100   28   51 182.1429  100
+ [2,]   NA   NA   NA       NA   NA
+ [3,]   NA   NA   NA       NA   NA
+ [4,]   NA   NA   NA       NA   NA
+ [5,]   NA   NA   NA       NA   NA
+ [6,]   NA   NA   NA       NA   NA
+ [7,]   NA   NA   NA       NA   NA
+ [8,]   NA   NA   NA       NA   NA
+ [9,]   NA   NA   NA       NA   NA
+[10,]   NA   NA   NA       NA   NA
+[11,]   NA   NA   NA       NA   NA
+[12,]   NA   NA   NA       NA   NA
+[1] "~/R_packages/bivbrach/figures/richness_lmm/median/genera_200km_cells/base/full"
+[1] "~/R_packages/bivbrach/figures/richness_lmm/median/genera_200km_cells/base/full"
+[1] "~/R_packages/bivbrach/figures/richness_lmm/median/genera_200km_cells/base/full"
+[1] "~/R_packages/bivbrach/figures/richness_lmm/median/genera_200km_cells/base/full"
+null device 
+          1 
+                       name   t_age   b_age   color shape
+Cambrian           Cambrian 485.400 538.800 #7FA056    16
+Ordovician       Ordovician 443.800 485.400 #009270    16
+Silurian           Silurian 419.200 443.800 #B3E1B6    16
+Devonian           Devonian 358.900 419.200 #CB8C37    16
+Carboniferous Carboniferous 298.900 358.900 #67A599    16
+Permian             Permian 251.902 298.900 #F04028    16
+Triassic           Triassic 201.400 251.902 #812B92    15
+Jurassic           Jurassic 145.000 201.400 #34B2C9    15
+Cretaceous       Cretaceous  66.000 145.000 #7FC64E    15
+Paleogene         Paleogene  23.030  66.000 #FD9A52    17
+Neogene             Neogene   2.580  23.030 #FFE619    17
+Quaternary       Quaternary   0.000   2.580 #F9F97F    17
+[1] "~/R_packages/bivbrach/figures/richness_lmm/median/genera_200km_cells/base/full"
+[1] "~/R_packages/bivbrach/figures/richness_lmm/median/genera_200km_cells/base/full"

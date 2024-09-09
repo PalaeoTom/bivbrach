@@ -1,0 +1,35 @@
+Linear mixed model fit by REML ['lmerMod']
+Formula: Brachiopoda ~ Bivalvia + sampLith + sampReef + sampLat + (1 |      times/source.subregion.ID)
+   Data: data
+
+REML criterion at convergence: 8052.4
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-5.0085 -0.5292 -0.0416  0.5834  4.3772 
+
+Random effects:
+ Groups                    Name        Variance Std.Dev.
+ source.subregion.ID:times (Intercept)  90.44    9.510  
+ times                     (Intercept) 127.31   11.283  
+ Residual                                8.29    2.879  
+Number of obs: 1600, groups:  source.subregion.ID:times, 16; times, 10
+
+Fixed effects:
+               Estimate Std. Error t value
+(Intercept)   3.085e+01  6.008e+00   5.136
+Bivalvia     -1.927e-01  2.362e-02  -8.159
+sampLithcarb -5.316e+00  1.560e+01  -0.341
+sampLithsili  1.692e-01  1.000e+00   0.169
+sampReefnoRf -2.594e+01  1.132e+01  -2.290
+sampLat      -1.490e-06  9.789e-07  -1.522
+
+Correlation of Fixed Effects:
+            (Intr) Bivalv smpLthc smpLths smpRfR
+Bivalvia    -0.005                              
+sampLithcrb -0.311 -0.014                       
+sampLithsil  0.014 -0.038  0.001                
+sampReefnRf -0.175 -0.013  0.051   0.028        
+sampLat     -0.625 -0.096  0.125  -0.046   0.144
+fit warnings:
+Some predictor variables are on very different scales: consider rescaling

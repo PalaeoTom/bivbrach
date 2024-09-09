@@ -1,4 +1,4 @@
-mass.SJplot <- function(input.string, model.type, argument.strings, model.input.dir, rich.input.dir, output.dir, times.col, period.scale, era.scale, xy){
+mass.SJplot <- function(input.string, model.type, argument.strings, model.input.dir, rich.input.dir, output.dir, times.col, period.scale, era.scale, xy, min.sample = 20){
   if(grepl("_g",input.string)){
     taxon <- "Genera,"
   } else {
@@ -17,13 +17,26 @@ mass.SJplot <- function(input.string, model.type, argument.strings, model.input.
     if(model.type == "simple"){
       models <- readRDS(paste0(model.input.dir,"/",input.string,"_simple_lmm_models.Rds"))
     } else {
+      if(model.type == "median"){
+        models <- readRDS(paste0(model.input.dir,"/",input.string,"_lmm_med_diff_models.Rds"))
+      } else {
       stop("check model.type")
+      }
     }
+  }
+  if(model.type == "median"){
+    richness.list <- readRDS(paste0(model.input.dir,"/",input.string,"_lmm_med_diff_median_richness.Rds"))
   }
   if(length(models)>0){
   for(i in 1:length(models)){
     ## Read in richness data
-    richness <- read.csv(paste0(rich.input.dir, "/", input.string, "_", names(models)[i], ".csv"))
+    if(model.type == "median"){
+      richness <- richness.list[[i]]
+    } else {
+      richness <- read.csv(paste0(rich.input.dir, "/", input.string, "_", names(models)[i], ".csv"))
+    }
+    ## Only plot if 20 or more samples
+    if(nrow(richness) >= min.sample){
     ## Use period.scale to assign period information
     period <- c()
     for(t in 1:nrow(period.scale)){
@@ -56,11 +69,19 @@ mass.SJplot <- function(input.string, model.type, argument.strings, model.input.
       if(model.type == "simple"){
         plot.title <- paste0(data.string, " ", argument.strings[which(argument.strings[,1] %in% names(models)[i]),2], ", simple model")
       } else {
+        if(model.type == "median"){
+          plot.title <- paste0(data.string, " ", argument.strings[which(argument.strings[,1] %in% names(models)[i]),2], ", median richness")
+        } else {
         stop("check model.type")
+        }
       }
     }
     ## define plot data frame
     line.df <- get_model_data(models[[i]], type = "pred", terms = xy[1])
+    ## Export model summary
+    sink(file = paste0(output.dir, "/", gsub(" ", "_", gsub(",", "", plot.title)), "_model_summary.txt"))
+    print(summary(models[[i]]))
+    sink()
     ## basic scatter plot
     scatter <- ggplot() +
       xlab("Bivalve richness") +
@@ -95,6 +116,7 @@ mass.SJplot <- function(input.string, model.type, argument.strings, model.input.
     pdf(file = paste0(output.dir, "/", gsub(" ", "_", gsub(",", "", plot.title)), ".pdf"))
     print(scatter)
     dev.off()
+    }
   }
   }
 }

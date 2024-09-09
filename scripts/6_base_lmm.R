@@ -119,15 +119,15 @@ input.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_regRich"
 source("functions/mass.lmm.R")
 
 ## mass.mlm arguments
-m = 1
-input.dir = input.dir
-input.pre = input.strings[m]
-output.dir = output.dirs[m]
-output.pre = output.strings.full[m]
-vars = vars
-vars.values = vars.values
-type = "full"
-i = 1
+#m = 1
+#input.dir = input.dir
+#input.pre = input.strings[m]
+#output.dir = output.dirs[m]
+#output.pre = output.strings.full[m]
+#vars = vars
+#vars.values = vars.values
+#type = "full"
+#i = 1
 
 ## Run for each input
 ## just bivalve predictor and time/subregion random effects
@@ -145,7 +145,7 @@ for(m in 1:length(input.strings)){
 ## Bivalve only predictor
 for(m in 1:length(input.strings)){
   mass.lmm(input.dir = input.dir, input.pre = input.strings[m], output.dir = output.dirs[m],
-                output.pre = output.strings.bivalveONLY[m], vars = vars, vars.values = vars.values, type - "bivalveONLY")
+                output.pre = output.strings.bivalveONLY[m], vars = vars, vars.values = vars.values, type = "bivalveONLY")
 }
 
 #### Testing model assumptions ####
@@ -208,23 +208,6 @@ input.strings.simple <- c("stages_g200",
                         "stages_s200_sitesThenRefs",
                         "stages_s100_sitesThenRefs")
 
-input.strings.bivalveONLY <-c("stages_g200_bivalveONLY_lmm",
-  "stages_g100_bivalveONLY_lmm",
-  "stages_s200_bivalveONLY_lmm",
-  "stages_s100_bivalveONLY_lmm",
-  "stages_g200_epif_bivalveONLY_lmm",
-  "stages_g100_epif_bivalveONLY_lmm",
-  "stages_s200_epif_bivalveONLY_lmm",
-  "stages_s100_epif_bivalveONLY_lmm",
-  "stages_g200_inf_bivalveONLY_lmm",
-  "stages_g100_inf_bivalveONLY_lmm",
-  "stages_s200_inf_bivalveONLY_lmm",
-  "stages_s100_inf_bivalveONLY_lmm",
-  "stages_g200_sitesThenRefs_bivalveONLY_lmm",
-  "stages_g100_sitesThenRefs_bivalveONLY_lmm",
-  "stages_s200_sitesThenRefs_bivalveONLY_lmm",
-  "stages_s100_sitesThenRefs_bivalveONLY_lmm")
-
 model.input.dirs <- c("~/R_packages/bivbrach/data/lmm/basic/genera_200km_cells/base",
                                      "~/R_packages/bivbrach/data/lmm/basic/genera_100km_cells/base",
                                      "~/R_packages/bivbrach/data/lmm/basic/species_200km_cells/base",
@@ -281,28 +264,27 @@ source("functions/mass.SJplot.R")
 ## Run function for all
 rich.input.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_regRich"
 
-r = 1
-input.string = input.strings.full[r]
-model.type = "full"
-argument.strings = title.strings
-model.input.dir = model.input.dirs[r]
-rich.input.dir = rich.input.dir
-output.dirs.full[r]
-times.col = "times"
-period.scale = periods
-era.scale = eras
-xy = c("Bivalvia", "Brachiopoda")
-i = 1
+#r = 1
+#input.string = input.strings.full[r]
+#model.type = "full"
+#argument.strings = title.strings
+#model.input.dir = model.input.dirs[r]
+#rich.input.dir = rich.input.dir
+#output.dir <- output.dirs.full[r]
+#times.col = "times"
+#period.scale = periods
+#era.scale = eras
+#xy = c("Bivalvia", "Brachiopoda")
+#i = 1
 
-for(r in 1:length(input.strings)){
+for(r in 1:length(input.strings.full)){
  mass.SJplot(input.strings.full[r], model.type = "full", title.strings, model.input.dirs[r], rich.input.dir, output.dirs.full[r], times.col = "times", period.scale = periods, era.scale = eras, xy = c("Bivalvia", "Brachiopoda"))
 }
 
-for(r in 1:length(input.strings)){
+for(r in 1:length(input.strings.simple)){
   mass.SJplot(input.strings.simple[r], model.type = "simple", title.strings, model.input.dirs[r], rich.input.dir, output.dirs.simple[r], times.col = "times", period.scale = periods, era.scale = eras, xy = c("Bivalvia", "Brachiopoda"))
 }
 
 
-tab_model(output.list, show.se = T, show.std = T, show.stat = T, show.df = T, show.fstat = T, show.aic = T, show.aicc = T, show.dev = T, show.loglik = T)
 
 
