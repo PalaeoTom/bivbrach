@@ -4,8 +4,8 @@ mass.mlm.intervals <- function(input.dir, input.pre, output.dir, output.pre, var
   input.dirs <- paste0(input.dir, "/", input.pre, "_", varStrings, ".csv")
   output.mat <- expand.grid(vars.values)
   ## create output matrix
-  data.mat <- matrix(NA, ncol = 15, nrow = nrow(output.mat))
-  colnames(data.mat) <- c("n.samples", "n.timeBins", "n.subregions", "avg.obs.per.timeBin", "avg.obs.per.subregion", "intercept", "intercept.std.error", "intercept.df", "intercept.t.value", "intercept.p.value", "slope", "slope.std.error", "slope.df", "slope.t.value", "slope.p.value")
+  data.mat <- matrix(NA, ncol = 5, nrow = nrow(output.mat))
+  colnames(data.mat) <- c("n.samples", "n.timeBins", "n.subregions", "avg.obs.per.timeBin", "avg.obs.per.subregion")
   ## create output list
   output.list <- lapply(1:nrow(output.mat), function(all) NA)
   ## create nested output object
@@ -15,11 +15,15 @@ mass.mlm.intervals <- function(input.dir, input.pre, output.dir, output.pre, var
   ## populate output vectors
   for(i in 1:nrow(output.mat)){
     ## Read in data
-    allData <- suppressWarnings(tryCatch(read.csv(input.dirs[i], row.names = 1), error = function(e){}))
+    allData <- suppressWarnings(tryCatch(read.csv(input.dirs[i], row.names = 1, stringsAsFactors = T), error = function(e){}))
     ## if null, log entries as NA
     if(is.null(allData)){
       next
     } else {
+      ## set reference category for full model
+      allData[,"sampLith"] <- relevel(allData[,"sampLith"], ref = "mix")
+      allData[,"sampEnv"] <- relevel(allData[,"sampEnv"], ref = "mix")
+      allData[,"sampReef"] <- relevel(allData[,"sampReef"], ref = "mix")
       for(t in 1:nrow(time.cutoffs)){
         data <- allData[intersect(which(allData[,"times"] >= time.cutoffs[t,"top"]),which(allData[,"times"] <= time.cutoffs[t,"bottom"])),]
         data.list[[t]][i,1] <- nrow(data)
@@ -33,18 +37,6 @@ mass.mlm.intervals <- function(input.dir, input.pre, output.dir, output.pre, var
         } else {
           ## Add MLM to list
           output.model.list[[t]][[i]] <- mlm
-          ## get coefficients
-          coefficients <- coef(summary(mlm))
-          data.list[[t]][i,6] <- coefficients[1,1]
-          data.list[[t]][i,7] <- coefficients[1,2]
-          data.list[[t]][i,8] <- coefficients[1,3]
-          data.list[[t]][i,9] <- coefficients[1,4]
-          data.list[[t]][i,10] <- coefficients[1,5]
-          data.list[[t]][i,11] <- coefficients[2,1]
-          data.list[[t]][i,12] <- coefficients[2,2]
-          data.list[[t]][i,13] <- coefficients[2,3]
-          data.list[[t]][i,14] <- coefficients[2,4]
-          data.list[[t]][i,15] <- coefficients[2,5]
         }
       }
     }
