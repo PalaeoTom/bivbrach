@@ -1,0 +1,20 @@
+
+Call:
+lm(formula = Bivalvia ~ sampLith, data = dataL[[d]])
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-19.321  -7.473  -2.257   7.527  30.679 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   16.4733     0.4582  35.951  < 2e-16 ***
+sampLithcarb   5.8478     0.9485   6.165 1.19e-09 ***
+sampLithsili  -0.2167     1.0228  -0.212    0.832    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 9.72 on 697 degrees of freedom
+Multiple R-squared:  0.05494,	Adjusted R-squared:  0.05223 
+F-statistic: 20.26 on 2 and 697 DF,  p-value: 2.801e-09
+

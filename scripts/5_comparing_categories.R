@@ -18,8 +18,7 @@ vars <- list(paste0("sQ",seq(1,length(siteQuotas),1)), paste0("r",seq(1,length(r
 vars.values <- list(siteQuotas, radii)
 names(vars.values) <- names(vars) <- c("site_quota", "radius")
 
-## input strings
-## Set output strings
+## Set input and output strings
 input.strings <- c("stages_g200",
                    "stages_g100",
                    "stages_s200",
@@ -105,39 +104,54 @@ output.strings.lat <- c("stages_g200_latitude",
                         "stages_s200_sitesThenRefs_latitude",
                         "stages_s100_sitesThenRefs_latitude")
 
-
-## Start with one to begin with
-## Set inout and output directories
+## Set inpout and output directories
 input.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_regRich"
-output.dirs <- c("~/R_packages/bivbrach/figures/lmm/richness_boxplots_comparing_categories/genera_200km_cells/base/",
-                 "~/R_packages/bivbrach/figures/lmm/richness_boxplots_comparing_categories/genera_100km_cells/base/",
-                 "~/R_packages/bivbrach/figures/lmm/richness_boxplots_comparing_categories/species_200km_cells/base/",
-                 "~/R_packages/bivbrach/figures/lmm/richness_boxplots_comparing_categories/species_200km_cells/base/",
-                 "~/R_packages/bivbrach/figures/lmm/richness_boxplots_comparing_categories/genera_200km_cells/epifaunal/",
-                 "~/R_packages/bivbrach/figures/lmm/richness_boxplots_comparing_categories/genera_100km_cells/epifaunal/",
-                 "~/R_packages/bivbrach/figures/lmm/richness_boxplots_comparing_categories/species_200km_cells/epifaunal/",
-                 "~/R_packages/bivbrach/figures/lmm/richness_boxplots_comparing_categories/species_200km_cells/epifaunal/",
-                 "~/R_packages/bivbrach/figures/lmm/richness_boxplots_comparing_categories/genera_200km_cells/infaunal/",
-                 "~/R_packages/bivbrach/figures/lmm/richness_boxplots_comparing_categories/genera_100km_cells/infaunal/",
-                 "~/R_packages/bivbrach/figures/lmm/richness_boxplots_comparing_categories/species_200km_cells/infaunal/",
-                 "~/R_packages/bivbrach/figures/lmm/richness_boxplots_comparing_categories/species_200km_cells/infaunal/",
-                 "~/R_packages/bivbrach/figures/lmm/richness_boxplots_comparing_categories/genera_200km_cells/sitesThenRefs/",
-                 "~/R_packages/bivbrach/figures/lmm/richness_boxplots_comparing_categories/genera_100km_cells/sitesThenRefs/",
-                 "~/R_packages/bivbrach/figures/lmm/richness_boxplots_comparing_categories/species_200km_cells/sitesThenRefs/",
-                 "~/R_packages/bivbrach/figures/lmm/richness_boxplots_comparing_categories/species_200km_cells/sitesThenRefs/")
+output.dirs <- c("~/R_packages/bivbrach/figures/richness_boxplots_comparing_categories/genera_200km_cells/base",
+                 "~/R_packages/bivbrach/figures/richness_boxplots_comparing_categories/genera_100km_cells/base",
+                 "~/R_packages/bivbrach/figures/richness_boxplots_comparing_categories/species_200km_cells/base",
+                 "~/R_packages/bivbrach/figures/richness_boxplots_comparing_categories/species_200km_cells/base",
+                 "~/R_packages/bivbrach/figures/richness_boxplots_comparing_categories/genera_200km_cells/epifaunal",
+                 "~/R_packages/bivbrach/figures/richness_boxplots_comparing_categories/genera_100km_cells/epifaunal",
+                 "~/R_packages/bivbrach/figures/richness_boxplots_comparing_categories/species_200km_cells/epifaunal",
+                 "~/R_packages/bivbrach/figures/richness_boxplots_comparing_categories/species_200km_cells/epifaunal",
+                 "~/R_packages/bivbrach/figures/richness_boxplots_comparing_categories/genera_200km_cells/infaunal",
+                 "~/R_packages/bivbrach/figures/richness_boxplots_comparing_categories/genera_100km_cells/infaunal",
+                 "~/R_packages/bivbrach/figures/richness_boxplots_comparing_categories/species_200km_cells/infaunal",
+                 "~/R_packages/bivbrach/figures/richness_boxplots_comparing_categories/species_200km_cells/infaunal",
+                 "~/R_packages/bivbrach/figures/richness_boxplots_comparing_categories/genera_200km_cells/sitesThenRefs",
+                 "~/R_packages/bivbrach/figures/richness_boxplots_comparing_categories/genera_100km_cells/sitesThenRefs",
+                 "~/R_packages/bivbrach/figures/richness_boxplots_comparing_categories/species_200km_cells/sitesThenRefs",
+                 "~/R_packages/bivbrach/figures/richness_boxplots_comparing_categories/species_200km_cells/sitesThenRefs")
 
 
-input.pre <- input.strings[1]
-output.pre <- output.strings.env[1]
-output.dir <- output.dirs[1]
+## Arguments
+#r = 11
+#input.pre <- input.strings[r]
+#output.pre <- output.strings.env[r]
+#output.dir <- output.dirs[r]
+#covariate <- "sampEnv"
+#data.strings <- c("Bivalvia", "Brachiopoda")
+#i = 1
+#d = 2
 
-combin <- expand.grid(vars)
-varStrings <- sapply(1:nrow(combin), function(x) paste(unlist(combin[x,]), collapse = "_"))
-input.dirs <- paste0(input.dir, "/", input.pre, "_", varStrings, ".csv")
-output.dir.mlm <- paste0(output.dir, "/", output.pre, "_models.Rds")
-output.dir <- paste0(output.dir, "/", output.pre, ".csv")
+## Read in function
+source("functions/compare.categories.R")
 
-i = 1
-data <- suppressWarnings(tryCatch(read.csv(input.dirs[i], row.names = 1), error = function(e){}))
+## Run the function!
+for(r in 1:length(input.strings)){
+  compare.categories(input.pre = input.strings[r], output.pre = output.strings.env[r], output.dir = output.dirs[r], covariate = "sampEnv", data.strings = c("Bivalvia", "Brachiopoda"))
+}
 
-plot_grpfrq(data$Brachiopoda, var.grp = data$sampEnv, type = "box")
+for(r in 1:length(input.strings)){
+  compare.categories(input.pre = input.strings[r], output.pre = output.strings.lith[r], output.dir = output.dirs[r], covariate = "sampLith", data.strings = c("Bivalvia", "Brachiopoda"))
+}
+
+for(r in 1:length(input.strings)){
+  compare.categories(input.pre = input.strings[r], output.pre = output.strings.reef[r], output.dir = output.dirs[r], covariate = "sampReef", data.strings = c("Bivalvia", "Brachiopoda"))
+}
+
+for(r in 1:length(input.strings)){
+  compare.categories(input.pre = input.strings[r], output.pre = output.strings.lat[r], output.dir = output.dirs[r], covariate = "sampLat", data.strings = c("Bivalvia", "Brachiopoda"))
+}
+
+

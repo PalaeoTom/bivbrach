@@ -1,0 +1,19 @@
+
+Call:
+lm(formula = Bivalvia ~ sampReef, data = dataL[[d]])
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-7.4182 -2.4182 -0.4182  1.5818 16.5818 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept)    7.4182     0.1348  55.017  < 2e-16 ***
+sampReefnoRf  -3.5382     0.4671  -7.575 7.15e-14 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 4.472 on 1198 degrees of freedom
+Multiple R-squared:  0.04571,	Adjusted R-squared:  0.04491 
+F-statistic: 57.38 on 1 and 1198 DF,  p-value: 7.149e-14
+

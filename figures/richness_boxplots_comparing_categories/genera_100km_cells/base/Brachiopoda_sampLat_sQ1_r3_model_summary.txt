@@ -1,0 +1,19 @@
+
+Call:
+lm(formula = Brachiopoda ~ sampLat, data = dataL[[d]])
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-12.5017 -10.0199   0.3311   7.4197  22.3007 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  1.369e+01  2.728e-01  50.180   <2e-16 ***
+sampLat     -5.684e-07  6.707e-08  -8.474   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 9.03 on 4998 degrees of freedom
+Multiple R-squared:  0.01417,	Adjusted R-squared:  0.01397 
+F-statistic: 71.82 on 1 and 4998 DF,  p-value: < 2.2e-16
+

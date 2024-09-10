@@ -1,0 +1,19 @@
+
+Call:
+lm(formula = Brachiopoda ~ sampReef, data = dataL[[d]])
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-30.919  -6.919   0.500  12.331  42.081 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   30.9189     0.5425  56.993   <2e-16 ***
+sampReefnoRf -14.4189     1.7156  -8.405   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 16.28 on 998 degrees of freedom
+Multiple R-squared:  0.0661,	Adjusted R-squared:  0.06517 
+F-statistic: 70.64 on 1 and 998 DF,  p-value: < 2.2e-16
+
