@@ -1,0 +1,33 @@
+Linear mixed model fit by REML ['lmerMod']
+Formula: Brachiopoda ~ Bivalvia + sampLith + sampLat + (1 | times/source.subregion.ID)
+   Data: data
+
+REML criterion at convergence: 776.5
+
+Scaled residuals: 
+     Min       1Q   Median       3Q      Max 
+-3.01085 -0.61525 -0.04752  0.45638  2.87351 
+
+Random effects:
+ Groups                    Name        Variance Std.Dev.
+ source.subregion.ID:times (Intercept) 2.780    1.667   
+ times                     (Intercept) 2.785    1.669   
+ Residual                              2.775    1.666   
+Number of obs: 200, groups:  source.subregion.ID:times, 2; times, 2
+
+Fixed effects:
+             Estimate Std. Error t value
+(Intercept)  12.77209    2.56970   4.970
+Bivalvia     -0.16056    0.04674  -3.435
+sampLithcarb 16.25777    3.35375   4.848
+
+Correlation of Fixed Effects:
+            (Intr) Bivalv
+Bivalvia    -0.391       
+sampLithcrb -0.620 -0.074
+fit warnings:
+fixed-effect model matrix is rank deficient so dropping 1 column / coefficient
+optimizer (nloptwrap) convergence code: 0 (OK)
+unable to evaluate scaled gradient
+Model failed to converge: degenerate  Hessian with 1 negative eigenvalues
+
