@@ -5,7 +5,7 @@
 rm(list = ls())
 
 ## If packages aren't installed, install them, then load them
-packages <- c("lme4", "velociraptr", "sjPlot", "ggplot2", "velociraptr", "dplyr")
+packages <- c("lme4", "velociraptr", "sjPlot", "ggplot2", "velociraptr", "dplyr", "cowplot")
 if(length(packages[!packages %in% installed.packages()[,"Package"]]) > 0){
   install.packages(packages[!packages %in% installed.packages()[,"Package"]])
 }
@@ -15,7 +15,9 @@ library(sjPlot)
 library(ggplot2)
 library(velociraptr)
 library(dplyr)
+library(cowplot)
 
+#### Modelling ####
 ## Load variable vectors - just looking at sites moving forward.
 radii <- as.integer(c(200000, 500000, 1000000))
 siteQuotas <- c(2, 3, 4, 5)
@@ -76,23 +78,6 @@ output.strings.simple <- c("stages_g200_simple_lmm",
                          "stages_s200_sitesThenRefs_simple_lmm",
                          "stages_s100_sitesThenRefs_simple_lmm")
 
-output.strings.bivalveONLY <- c("stages_g200_bivalveONLY_lmm",
-                           "stages_g100_bivalveONLY_lmm",
-                           "stages_s200_bivalveONLY_lmm",
-                           "stages_s100_bivalveONLY_lmm",
-                           "stages_g200_epif_bivalveONLY_lmm",
-                           "stages_g100_epif_bivalveONLY_lmm",
-                           "stages_s200_epif_bivalveONLY_lmm",
-                           "stages_s100_epif_bivalveONLY_lmm",
-                           "stages_g200_inf_bivalveONLY_lmm",
-                           "stages_g100_inf_bivalveONLY_lmm",
-                           "stages_s200_inf_bivalveONLY_lmm",
-                           "stages_s100_inf_bivalveONLY_lmm",
-                           "stages_g200_sitesThenRefs_bivalveONLY_lmm",
-                           "stages_g100_sitesThenRefs_bivalveONLY_lmm",
-                           "stages_s200_sitesThenRefs_bivalveONLY_lmm",
-                           "stages_s100_sitesThenRefs_bivalveONLY_lmm")
-
 output.dirs <- c("~/R_packages/bivbrach/data/lmm/basic/genera_200km_cells/base",
                       "~/R_packages/bivbrach/data/lmm/basic/genera_100km_cells/base",
                       "~/R_packages/bivbrach/data/lmm/basic/species_200km_cells/base",
@@ -149,8 +134,113 @@ for(m in 1:length(input.strings)){
 }
 
 #### Testing model assumptions ####
+rm(list = ls())
 
+## Load variable vectors - just looking at sites moving forward.
+radii <- as.integer(c(200000, 500000, 1000000))
+siteQuotas <- c(2, 3, 4, 5)
+vars <- list(paste0("sQ",seq(1,length(siteQuotas),1)), paste0("r",seq(1,length(radii),1)))
+vars.values <- list(siteQuotas, radii)
+names(vars.values) <- names(vars) <- c("site_quota", "radius")
 
+## Load input and output strings
+input.strings <- c("stages_g200",
+                   "stages_g100",
+                   "stages_s200",
+                   "stages_s100",
+                   "stages_g200_epif",
+                   "stages_g100_epif",
+                   "stages_s200_epif",
+                   "stages_s100_epif",
+                   "stages_g200_inf",
+                   "stages_g100_inf",
+                   "stages_s200_inf",
+                   "stages_s100_inf",
+                   "stages_g200_sitesThenRefs",
+                   "stages_g100_sitesThenRefs",
+                   "stages_s200_sitesThenRefs",
+                   "stages_s100_sitesThenRefs")
+
+input.dirs <- c("~/R_packages/bivbrach/data/lmm/basic/genera_200km_cells/base",
+                 "~/R_packages/bivbrach/data/lmm/basic/genera_100km_cells/base",
+                 "~/R_packages/bivbrach/data/lmm/basic/species_200km_cells/base",
+                 "~/R_packages/bivbrach/data/lmm/basic/species_100km_cells/base",
+                 "~/R_packages/bivbrach/data/lmm/basic/genera_200km_cells/epifaunal",
+                 "~/R_packages/bivbrach/data/lmm/basic/genera_100km_cells/epifaunal",
+                 "~/R_packages/bivbrach/data/lmm/basic/species_200km_cells/epifaunal",
+                 "~/R_packages/bivbrach/data/lmm/basic/species_100km_cells/epifaunal",
+                 "~/R_packages/bivbrach/data/lmm/basic/genera_200km_cells/infaunal",
+                 "~/R_packages/bivbrach/data/lmm/basic/genera_100km_cells/infaunal",
+                 "~/R_packages/bivbrach/data/lmm/basic/species_200km_cells/infaunal",
+                 "~/R_packages/bivbrach/data/lmm/basic/species_100km_cells/infaunal",
+                 "~/R_packages/bivbrach/data/lmm/basic/genera_200km_cells/sitesThenRefs",
+                 "~/R_packages/bivbrach/data/lmm/basic/genera_100km_cells/sitesThenRefs",
+                 "~/R_packages/bivbrach/data/lmm/basic/species_200km_cells/sitesThenRefs",
+                 "~/R_packages/bivbrach/data/lmm/basic/species_100km_cells/sitesThenRefs")
+
+output.dirs.full <- c("~/R_packages/bivbrach/figures/richness_lmm/genera_200km_cells/base/full",
+                      "~/R_packages/bivbrach/figures/richness_lmm/genera_100km_cells/base/full",
+                      "~/R_packages/bivbrach/figures/richness_lmm/species_200km_cells/base/full",
+                      "~/R_packages/bivbrach/figures/richness_lmm/species_100km_cells/base/full",
+                      "~/R_packages/bivbrach/figures/richness_lmm/genera_200km_cells/epifaunal/full",
+                      "~/R_packages/bivbrach/figures/richness_lmm/genera_100km_cells/epifaunal/full",
+                      "~/R_packages/bivbrach/figures/richness_lmm/species_200km_cells/epifaunal/full",
+                      "~/R_packages/bivbrach/figures/richness_lmm/species_100km_cells/epifaunal/full",
+                      "~/R_packages/bivbrach/figures/richness_lmm/genera_200km_cells/infaunal/full",
+                      "~/R_packages/bivbrach/figures/richness_lmm/genera_100km_cells/infaunal/full",
+                      "~/R_packages/bivbrach/figures/richness_lmm/species_200km_cells/infaunal/full",
+                      "~/R_packages/bivbrach/figures/richness_lmm/species_100km_cells/infaunal/full",
+                      "~/R_packages/bivbrach/figures/richness_lmm/genera_200km_cells/sitesThenRefs/full",
+                      "~/R_packages/bivbrach/figures/richness_lmm/genera_100km_cells/sitesThenRefs/full",
+                      "~/R_packages/bivbrach/figures/richness_lmm/species_200km_cells/sitesThenRefs/full",
+                      "~/R_packages/bivbrach/figures/richness_lmm/species_100km_cells/sitesThenRefs/full")
+
+output.dirs.simple <- c("~/R_packages/bivbrach/figures/richness_lmm/genera_200km_cells/base/simple",
+                        "~/R_packages/bivbrach/figures/richness_lmm/genera_100km_cells/base/simple",
+                        "~/R_packages/bivbrach/figures/richness_lmm/species_200km_cells/base/simple",
+                        "~/R_packages/bivbrach/figures/richness_lmm/species_100km_cells/base/simple",
+                        "~/R_packages/bivbrach/figures/richness_lmm/genera_200km_cells/epifaunal/simple",
+                        "~/R_packages/bivbrach/figures/richness_lmm/genera_100km_cells/epifaunal/simple",
+                        "~/R_packages/bivbrach/figures/richness_lmm/species_200km_cells/epifaunal/simple",
+                        "~/R_packages/bivbrach/figures/richness_lmm/species_100km_cells/epifaunal/simple",
+                        "~/R_packages/bivbrach/figures/richness_lmm/genera_200km_cells/infaunal/simple",
+                        "~/R_packages/bivbrach/figures/richness_lmm/genera_100km_cells/infaunal/simple",
+                        "~/R_packages/bivbrach/figures/richness_lmm/species_200km_cells/infaunal/simple",
+                        "~/R_packages/bivbrach/figures/richness_lmm/species_100km_cells/infaunal/simple",
+                        "~/R_packages/bivbrach/figures/richness_lmm/genera_200km_cells/sitesThenRefs/simple",
+                        "~/R_packages/bivbrach/figures/richness_lmm/genera_100km_cells/sitesThenRefs/simple",
+                        "~/R_packages/bivbrach/figures/richness_lmm/species_200km_cells/sitesThenRefs/simple",
+                        "~/R_packages/bivbrach/figures/richness_lmm/species_100km_cells/sitesThenRefs/simple")
+
+## Define plot title strings
+input.names <- c("sQ1_r1", "sQ2_r1", "sQ3_r1", "sQ4_r1",
+                 "sQ1_r2", "sQ2_r2", "sQ3_r2", "sQ4_r2",
+                 "sQ1_r3", "sQ2_r3", "sQ3_r3", "sQ4_r3")
+plot.names <- c("2 sites, 200km radius", "3 sites, 200km radius", "4 sites, 200km radius", "5 sites, 200km radius",
+                "2 sites, 500km radius", "3 sites, 500km radius", "4 sites, 500km radius", "5 sites, 500km radius",
+                "2 sites, 1000km radius", "3 sites, 1000km radius", "4 sites, 1000km radius", "5 sites, 1000km radius")
+title.strings <- cbind(input.names,plot.names)
+
+## Arguments for function
+#r = 1
+#input.string = input.strings[r]
+#model.type = "full"
+#argument.strings = title.strings
+#input.dir = input.dirs[r]
+#output.dir <- output.dirs.full[r]
+#i = 1
+
+## Read in function
+source("functions/visualise.model.assumption.R")
+
+## Run the function
+for(r in 1:length(input.strings)){
+  visualise.model.assumption(input.string = input.strings[r], model.type = "full", argument.strings = title.strings, input.dir = input.dirs[r], output.dir = output.dirs.full[r])
+}
+
+for(r in 1:length(input.strings)){
+  visualise.model.assumption(input.string = input.strings[r], model.type = "simple", argument.strings = title.strings, input.dir = input.dirs[r], output.dir = output.dirs.simple[r])
+}
 
 #### Plotting lmm with sjplot ####
 ## Define plot title strings

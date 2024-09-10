@@ -93,7 +93,59 @@ for(m in 1:length(input.strings)){
                       output.pre = output.strings.min.diff[m], vars = vars, vars.values = vars.values, mode = "min", unit = "diff", data.columns = c("Brachiopoda", "Bivalvia"))
 }
 
-## Now to plot ####
+## Testing model assumptions ##
+rm(list = ls())
+
+## Load variable vectors - just looking at sites moving forward.
+radii <- as.integer(c(200000, 500000, 1000000))
+siteQuotas <- c(2, 3, 4, 5)
+vars <- list(paste0("sQ",seq(1,length(siteQuotas),1)), paste0("r",seq(1,length(radii),1)))
+vars.values <- list(siteQuotas, radii)
+names(vars.values) <- names(vars) <- c("site_quota", "radius")
+
+## Load input and output strings
+input.strings <- c("stages_g200",
+                   "stages_g100",
+                   "stages_s200",
+                   "stages_s100")
+
+model.input.dirs <- c("~/R_packages/bivbrach/data/lmm/sensitivity_testing/median/genera_200km_cells",
+                      "~/R_packages/bivbrach/data/lmm/sensitivity_testing/median/genera_100km_cells",
+                      "~/R_packages/bivbrach/data/lmm/sensitivity_testing/median/species_200km_cells",
+                      "~/R_packages/bivbrach/data/lmm/sensitivity_testing/median/species_100km_cells")
+
+output.dirs.median <- c("~/R_packages/bivbrach/figures/richness_lmm/median/genera_200km_cells",
+                        "~/R_packages/bivbrach/figures/richness_lmm/median/genera_100km_cells",
+                        "~/R_packages/bivbrach/figures/richness_lmm/median/species_200km_cells",
+                        "~/R_packages/bivbrach/figures/richness_lmm/median/species_100km_cells")
+
+## Define plot title strings
+input.names <- c("sQ1_r1", "sQ2_r1", "sQ3_r1", "sQ4_r1",
+                 "sQ1_r2", "sQ2_r2", "sQ3_r2", "sQ4_r2",
+                 "sQ1_r3", "sQ2_r3", "sQ3_r3", "sQ4_r3")
+plot.names <- c("2 sites, 200km radius", "3 sites, 200km radius", "4 sites, 200km radius", "5 sites, 200km radius",
+                "2 sites, 500km radius", "3 sites, 500km radius", "4 sites, 500km radius", "5 sites, 500km radius",
+                "2 sites, 1000km radius", "3 sites, 1000km radius", "4 sites, 1000km radius", "5 sites, 1000km radius")
+title.strings <- cbind(input.names,plot.names)
+
+## Arguments for function
+#r = 1
+#input.string = input.strings[r]
+#model.type = "full"
+#argument.strings = title.strings
+#input.dir = input.dirs[r]
+#output.dir <- output.dirs.full[r]
+#i = 1
+
+## Read in function
+source("functions/visualise.model.assumption.R")
+
+## Run the function
+for(r in 1:length(input.strings)){
+  visualise.model.assumption(input.string = input.strings[r], model.type = "median", argument.strings = title.strings, input.dir = model.input.dirs[r], output.dir = output.dirs.median[r])
+}
+
+## Now to plot ##
 ## Define plot title strings
 input.names <- c("sQ1_r1", "sQ2_r1", "sQ3_r1", "sQ4_r1",
                  "sQ1_r2", "sQ2_r2", "sQ3_r2", "sQ4_r2",
@@ -218,6 +270,62 @@ for(m in 1:length(input.strings)){
 for(m in 1:length(input.strings)){
   mass.mlm.REinterval(input.dir = input.dir, input.pre = input.strings[m], output.dir = output.dirs.intervals.RE[m],
                       output.pre = output.strings.eras[m], vars = vars, vars.values = vars.values, interval = era.interval)
+}
+
+## Testing model assumptions ##
+rm(list = ls())
+
+## Load variable vectors - just looking at sites moving forward.
+radii <- as.integer(c(200000, 500000, 1000000))
+siteQuotas <- c(2, 3, 4, 5)
+vars <- list(paste0("sQ",seq(1,length(siteQuotas),1)), paste0("r",seq(1,length(radii),1)))
+vars.values <- list(siteQuotas, radii)
+names(vars.values) <- names(vars) <- c("site_quota", "radius")
+
+## Load input and output strings
+input.strings <- c("stages_g200",
+                   "stages_g100",
+                   "stages_s200",
+                   "stages_s100")
+
+model.input.dirs <- c("~/R_packages/bivbrach/data/lmm/sensitivity_testing/intervals_randomEffect/genera_200km_cells",
+                      "~/R_packages/bivbrach/data/lmm/sensitivity_testing/intervals_randomEffect/genera_100km_cells",
+                      "~/R_packages/bivbrach/data/lmm/sensitivity_testing/intervals_randomEffect/species_200km_cells",
+                      "~/R_packages/bivbrach/data/lmm/sensitivity_testing/intervals_randomEffect/species_100km_cells")
+
+output.dirs.intervals.RE <- c("~/R_packages/bivbrach/figures/richness_lmm/intervals_randomEffect/genera_200km_cells",
+                              "~/R_packages/bivbrach/figures/richness_lmm/intervals_randomEffect/genera_100km_cells",
+                              "~/R_packages/bivbrach/figures/richness_lmm/intervals_randomEffect/species_200km_cells",
+                              "~/R_packages/bivbrach/figures/richness_lmm/intervals_randomEffect/species_100km_cells")
+
+## Define plot title strings
+input.names <- c("sQ1_r1", "sQ2_r1", "sQ3_r1", "sQ4_r1",
+                 "sQ1_r2", "sQ2_r2", "sQ3_r2", "sQ4_r2",
+                 "sQ1_r3", "sQ2_r3", "sQ3_r3", "sQ4_r3")
+plot.names <- c("2 sites, 200km radius", "3 sites, 200km radius", "4 sites, 200km radius", "5 sites, 200km radius",
+                "2 sites, 500km radius", "3 sites, 500km radius", "4 sites, 500km radius", "5 sites, 500km radius",
+                "2 sites, 1000km radius", "3 sites, 1000km radius", "4 sites, 1000km radius", "5 sites, 1000km radius")
+title.strings <- cbind(input.names,plot.names)
+
+## Arguments for function
+#r = 1
+#input.string = input.strings[r]
+#model.type = "full"
+#argument.strings = title.strings
+#input.dir = input.dirs[r]
+#output.dir <- output.dirs.full[r]
+#i = 1
+
+## Read in function
+source("functions/visualise.model.assumption.R")
+
+## Run the function
+for(r in 1:length(input.strings)){
+  visualise.model.assumption(input.string = input.strings[r], model.type = "interval_RE_era", argument.strings = title.strings, input.dir = model.input.dirs[r], output.dir = output.dirs.intervals.RE[r])
+}
+
+for(r in 1:length(input.strings)){
+  visualise.model.assumption(input.string = input.strings[r], model.type = "interval_RE_PTME", argument.strings = title.strings, input.dir = model.input.dirs[r], output.dir = output.dirs.intervals.RE[r])
 }
 
 ## Plot!
@@ -352,6 +460,62 @@ for(m in 1:length(input.strings)){
 for(m in 1:length(input.strings)){
   mass.mlm.intervals(input.dir = input.dir, input.pre = input.strings[m], output.dir = output.dirs.intervals.split[m],
                      output.pre = output.strings.PTME[m], vars = vars, vars.values = vars.values, time.cutoffs = PTME.cutoffs)
+}
+
+## Testing model assumptions ##
+rm(list = ls())
+
+## Load variable vectors - just looking at sites moving forward.
+radii <- as.integer(c(200000, 500000, 1000000))
+siteQuotas <- c(2, 3, 4, 5)
+vars <- list(paste0("sQ",seq(1,length(siteQuotas),1)), paste0("r",seq(1,length(radii),1)))
+vars.values <- list(siteQuotas, radii)
+names(vars.values) <- names(vars) <- c("site_quota", "radius")
+
+## Load input and output strings
+input.strings <- c("stages_g200",
+                   "stages_g100",
+                   "stages_s200",
+                   "stages_s100")
+
+model.input.dirs <- c("~/R_packages/bivbrach/data/lmm/sensitivity_testing/intervals_splitData/genera_200km_cells",
+                      "~/R_packages/bivbrach/data/lmm/sensitivity_testing/intervals_splitData/genera_100km_cells",
+                      "~/R_packages/bivbrach/data/lmm/sensitivity_testing/intervals_splitData/species_200km_cells",
+                      "~/R_packages/bivbrach/data/lmm/sensitivity_testing/intervals_splitData/species_100km_cells")
+
+output.dirs.intervals.split <- c("~/R_packages/bivbrach/figures/richness_lmm/intervals_splitData/genera_200km_cells",
+                                 "~/R_packages/bivbrach/figures/richness_lmm/intervals_splitData/genera_100km_cells",
+                                 "~/R_packages/bivbrach/figures/richness_lmm/intervals_splitData/species_200km_cells",
+                                 "~/R_packages/bivbrach/figures/richness_lmm/intervals_splitData/species_100km_cells")
+
+## Define plot title strings
+input.names <- c("sQ1_r1", "sQ2_r1", "sQ3_r1", "sQ4_r1",
+                 "sQ1_r2", "sQ2_r2", "sQ3_r2", "sQ4_r2",
+                 "sQ1_r3", "sQ2_r3", "sQ3_r3", "sQ4_r3")
+plot.names <- c("2 sites, 200km radius", "3 sites, 200km radius", "4 sites, 200km radius", "5 sites, 200km radius",
+                "2 sites, 500km radius", "3 sites, 500km radius", "4 sites, 500km radius", "5 sites, 500km radius",
+                "2 sites, 1000km radius", "3 sites, 1000km radius", "4 sites, 1000km radius", "5 sites, 1000km radius")
+title.strings <- cbind(input.names,plot.names)
+
+## Arguments for function
+#r = 1
+#input.string = input.strings[r]
+#model.type = "full"
+#argument.strings = title.strings
+#input.dir = input.dirs[r]
+#output.dir <- output.dirs.full[r]
+#i = 1
+
+## Read in function
+source("functions/visualise.model.assumption.R")
+
+## Run the function
+for(r in 1:length(input.strings)){
+  visualise.model.assumption(input.string = input.strings[r], model.type = "interval_split_era", argument.strings = title.strings, input.dir = model.input.dirs[r], output.dir = output.dirs.intervals.split[r], intervals = c("Paleozoic", "Mesozoic", "Cenozoic"))
+}
+
+for(r in 1:length(input.strings)){
+  visualise.model.assumption(input.string = input.strings[r], model.type = "interval_split_PTME", argument.strings = title.strings, input.dir = model.input.dirs[r], output.dir = output.dirs.intervals.split[r], intervals = c("Pre-PTME", "Post-PTME"))
 }
 
 ## Now to plot!
