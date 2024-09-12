@@ -34,8 +34,9 @@ compare.categories <- function(input.pre, output.pre, output.dir, covariate, dat
               print(summary(model))
               sink()
               ## plot box plot
+              boxplot <- plot_grpfrq(dataL[[d]]$Bivalvia, var.grp = dataL[[d]]$sampEnv, type = "box")
               pdf(file = paste0(output.dir, "/", "Bivalvia_sampEnv_", varStrings[i], "_boxplot.pdf"))
-              plot_grpfrq(dataL[[d]]$Bivalvia, var.grp = dataL[[d]]$sampEnv, type = "box")
+              plot(boxplot)
               dev.off()
             } else {
               if(covariate == "sampLith"){
@@ -54,8 +55,9 @@ compare.categories <- function(input.pre, output.pre, output.dir, covariate, dat
                 print(summary(model))
                 sink()
                 ## plot box plot
+                boxplot <- plot_grpfrq(dataL[[d]]$Bivalvia, var.grp = dataL[[d]]$sampLith, type = "box")
                 pdf(file = paste0(output.dir, "/", "Bivalvia_sampLith_", varStrings[i], "_boxplot.pdf"))
-                plot_grpfrq(dataL[[d]]$Bivalvia, var.grp = dataL[[d]]$sampLith, type = "box")
+                plot(boxplot)
                 dev.off()
               } else {
                 if(covariate == "sampReef"){
@@ -74,8 +76,9 @@ compare.categories <- function(input.pre, output.pre, output.dir, covariate, dat
                   print(summary(model))
                   sink()
                   ## plot box plot
+                  boxplot <- plot_grpfrq(dataL[[d]]$Bivalvia, var.grp = dataL[[d]]$sampReef, type = "box")
                   pdf(file = paste0(output.dir, "/", "Bivalvia_sampReef_", varStrings[i], "_boxplot.pdf"))
-                  plot_grpfrq(dataL[[d]]$Bivalvia, var.grp = dataL[[d]]$sampReef, type = "box")
+                  plot(boxplot)
                   dev.off()
                 } else {
                   if(covariate == "sampLat"){
@@ -118,9 +121,11 @@ compare.categories <- function(input.pre, output.pre, output.dir, covariate, dat
                 sink(file = paste0(output.dir, "/", "Brachiopoda_sampEnv_", varStrings[i], "_model_summary.txt"))
                 print(summary(model))
                 sink()
+                ## Generate boxplot
+                boxplot <- plot_grpfrq(dataL[[d]]$Brachiopoda, var.grp = dataL[[d]]$sampEnv, type = "box")
                 ## plot box plot
                 pdf(file = paste0(output.dir, "/", "Brachiopoda_sampEnv_", varStrings[i], "_boxplot.pdf"))
-                plot_grpfrq(dataL[[d]]$Brachiopoda, var.grp = dataL[[d]]$sampEnv, type = "box")
+                plot(boxplot)
                 dev.off()
               } else {
                 if(covariate == "sampLith"){
@@ -139,8 +144,9 @@ compare.categories <- function(input.pre, output.pre, output.dir, covariate, dat
                   print(summary(model))
                   sink()
                   ## plot box plot
+                  boxplot <- plot_grpfrq(dataL[[d]]$Brachiopoda, var.grp = dataL[[d]]$sampLith, type = "box")
                   pdf(file = paste0(output.dir, "/", "Brachiopoda_sampLith_", varStrings[i], "_boxplot.pdf"))
-                  plot_grpfrq(dataL[[d]]$Brachiopoda, var.grp = dataL[[d]]$sampLith, type = "box")
+                  plot(boxplot)
                   dev.off()
                 } else {
                   if(covariate == "sampReef"){
@@ -159,8 +165,9 @@ compare.categories <- function(input.pre, output.pre, output.dir, covariate, dat
                     print(summary(model))
                     sink()
                     ## plot box plot
+                    boxplot <- plot_grpfrq(dataL[[d]]$Brachiopoda, var.grp = dataL[[d]]$sampReef, type = "box")
                     pdf(file = paste0(output.dir, "/", "Brachiopoda_sampReef_", varStrings[i], "_boxplot.pdf"))
-                    plot_grpfrq(dataL[[d]]$Brachiopoda, var.grp = dataL[[d]]$sampReef, type = "box")
+                    plot(boxplot)
                     dev.off()
                   } else {
                     if(covariate == "sampLat"){

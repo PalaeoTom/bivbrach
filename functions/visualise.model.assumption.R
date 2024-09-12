@@ -73,7 +73,7 @@ visualise.model.assumption <- function(input.string, model.type, argument.string
                 final <- plot_grid(title, predVresid, bottom_row, nrow = 3, labels = c("", "A"), rel_heights = c(0.2, 1, 1))
                 ## plot
                 pdf(file = paste0(output.dir, "/", gsub(" ", "_", gsub(",", "", plot.title)), "_model_assumptions.pdf"))
-                final
+                plot(final)
                 dev.off()
           }
         }
@@ -119,7 +119,7 @@ visualise.model.assumption <- function(input.string, model.type, argument.string
           final <- plot_grid(title, predVresid, bottom_row, nrow = 3, labels = c("", "A"), rel_heights = c(0.2, 1, 1))
           ## plot
           pdf(file = paste0(output.dir, "/", gsub(" ", "_", gsub(",", "", plot.title)), "_model_assumptions.pdf"))
-          final
+          plot(final)
           dev.off()
       }
     }
