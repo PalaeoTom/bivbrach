@@ -304,33 +304,25 @@ for(r in 1:length(input.strings)){
 
 #### Sensitivity testing - breaking up time periods ####
 rm(list = ls())
-radii <- as.integer(c(200000, 500000, 1000000))
-siteQuotas <- c(2, 3, 4, 5)
+radii <- as.integer(c(1000000, 500000))
+siteQuotas <- c(2, 4)
 vars <- list(paste0("sQ",seq(1,length(siteQuotas),1)), paste0("r",seq(1,length(radii),1)))
 vars.values <- list(siteQuotas, radii)
-names(vars.values) <- c("site_quota", "radius")
+names(vars.values) <- names(vars) <- c("site_quota", "radius")
 
 ## input strings
 ## Set output strings
 input.strings <- c("stages_g200",
-                   "stages_g100",
-                   "stages_s200",
-                   "stages_s100")
+                   "stages_s200")
 
 output.dirs.intervals.split <- c("~/R_packages/bivbrach/data/lmm/sensitivity_testing/intervals_splitData/genera_200km_cells",
-                              "~/R_packages/bivbrach/data/lmm/sensitivity_testing/intervals_splitData/genera_100km_cells",
-                              "~/R_packages/bivbrach/data/lmm/sensitivity_testing/intervals_splitData/species_200km_cells",
-                              "~/R_packages/bivbrach/data/lmm/sensitivity_testing/intervals_splitData/species_100km_cells")
+                              "~/R_packages/bivbrach/data/lmm/sensitivity_testing/intervals_splitData/species_200km_cells")
 
 output.strings.PTME <- c("stages_g200_lmm_PTME",
-                         "stages_g100_lmm_PTME",
-                         "stages_s200_lmm_PTME",
-                         "stages_s100_lmm_PTME")
+                         "stages_s200_lmm_PTME")
 
 output.strings.eras <- c("stages_g200_lmm_eras",
-                         "stages_g100_lmm_eras",
-                         "stages_s200_lmm_eras",
-                         "stages_s100_lmm_eras")
+                         "stages_s200_lmm_eras")
 
 ## Get stage data with times used (columns t_round and b_round)
 stages <- read.csv("data/cleaned_stages.csv", row.names = 1)
@@ -374,35 +366,25 @@ for(m in 1:length(input.strings)){
 rm(list = ls())
 
 ## Load variable vectors - just looking at sites moving forward.
-radii <- as.integer(c(200000, 500000, 1000000))
-siteQuotas <- c(2, 3, 4, 5)
+radii <- as.integer(c(1000000, 500000))
+siteQuotas <- c(2, 4)
 vars <- list(paste0("sQ",seq(1,length(siteQuotas),1)), paste0("r",seq(1,length(radii),1)))
 vars.values <- list(siteQuotas, radii)
 names(vars.values) <- names(vars) <- c("site_quota", "radius")
 
 ## Load input and output strings
 input.strings <- c("stages_g200",
-                   "stages_g100",
-                   "stages_s200",
-                   "stages_s100")
+                   "stages_s200")
 
 model.input.dirs <- c("~/R_packages/bivbrach/data/lmm/sensitivity_testing/intervals_splitData/genera_200km_cells",
-                      "~/R_packages/bivbrach/data/lmm/sensitivity_testing/intervals_splitData/genera_100km_cells",
-                      "~/R_packages/bivbrach/data/lmm/sensitivity_testing/intervals_splitData/species_200km_cells",
-                      "~/R_packages/bivbrach/data/lmm/sensitivity_testing/intervals_splitData/species_100km_cells")
+                      "~/R_packages/bivbrach/data/lmm/sensitivity_testing/intervals_splitData/species_200km_cells")
 
 output.dirs.intervals.split <- c("~/R_packages/bivbrach/figures/richness_lmm/intervals_splitData/genera_200km_cells",
-                                 "~/R_packages/bivbrach/figures/richness_lmm/intervals_splitData/genera_100km_cells",
-                                 "~/R_packages/bivbrach/figures/richness_lmm/intervals_splitData/species_200km_cells",
-                                 "~/R_packages/bivbrach/figures/richness_lmm/intervals_splitData/species_100km_cells")
+                                 "~/R_packages/bivbrach/figures/richness_lmm/intervals_splitData/species_200km_cells")
 
 ## Define plot title strings
-input.names <- c("sQ1_r1", "sQ2_r1", "sQ3_r1", "sQ4_r1",
-                 "sQ1_r2", "sQ2_r2", "sQ3_r2", "sQ4_r2",
-                 "sQ1_r3", "sQ2_r3", "sQ3_r3", "sQ4_r3")
-plot.names <- c("2 sites, 200km radius", "3 sites, 200km radius", "4 sites, 200km radius", "5 sites, 200km radius",
-                "2 sites, 500km radius", "3 sites, 500km radius", "4 sites, 500km radius", "5 sites, 500km radius",
-                "2 sites, 1000km radius", "3 sites, 1000km radius", "4 sites, 1000km radius", "5 sites, 1000km radius")
+input.names <- c("sQ1_r1", "sQ2_r2")
+plot.names <- c("2 sites, 1000km radius", "4 sites, 500km radius")
 title.strings <- cbind(input.names,plot.names)
 
 ## Arguments for function
@@ -427,14 +409,6 @@ for(r in 1:length(input.strings)){
 }
 
 ## Now to plot!
-input.names <- c("sQ1_r1", "sQ2_r1", "sQ3_r1", "sQ4_r1",
-                 "sQ1_r2", "sQ2_r2", "sQ3_r2", "sQ4_r2",
-                 "sQ1_r3", "sQ2_r3", "sQ3_r3", "sQ4_r3")
-plot.names <- c("2 sites, 200km radius", "3 sites, 200km radius", "4 sites, 200km radius", "5 sites, 200km radius",
-                "2 sites, 500km radius", "3 sites, 500km radius", "4 sites, 500km radius", "5 sites, 500km radius",
-                "2 sites, 1000km radius", "3 sites, 1000km radius", "4 sites, 1000km radius", "5 sites, 1000km radius")
-title.strings <- cbind(input.names,plot.names)
-
 ## Download period colour palettes
 periods <- downloadTime("international periods")
 periods <- periods[order(periods$b_age, decreasing=TRUE), ]
@@ -446,21 +420,32 @@ eras <- downloadTime("international eras")[1:3,]
 eras <- eras[order(eras$b_age, decreasing = TRUE),c(2,4,5)]
 eras[,"shape"] <- c(16,15,17)
 
+## Get stage data with times used (columns t_round and b_round)
+stages <- read.csv("data/cleaned_stages.csv", row.names = 1)
+stages[102,10] <- 0
+
+## get midpoints that are used
+source("functions/get.midpoints.R")
+midpoints <- get.midpoints(stages[,10:11])
+
+## Get time bins
+era.cutoffs <- matrix(c(stages["Fortunian","b_round"],stages["Induan","b_round"],stages["Danian","b_round"],stages["Induan","b_round"],stages["Maastrichtian","t_round"],0), ncol = 2, nrow = 3)
+colnames(era.cutoffs) <- c("bottom","top")
+rownames(era.cutoffs) <- c("Paleozoic", "Mesozoic", "Cenozoic")
+
+PTME.cutoffs <- matrix(c(stages["Fortunian","b_round"],stages["Induan","b_round"],stages["Induan","b_round"],0), ncol = 2, nrow = 2)
+colnames(PTME.cutoffs) <- c("bottom","top")
+rownames(PTME.cutoffs) <- c("Pre-PTME", "Post-PTME")
+
 ## define input and output strings
 input.strings <- c("stages_g200",
-                   "stages_g100",
-                   "stages_s200",
-                   "stages_s100")
+                   "stages_s200")
 
 model.input.dirs <- c("~/R_packages/bivbrach/data/lmm/sensitivity_testing/intervals_splitData/genera_200km_cells",
-                      "~/R_packages/bivbrach/data/lmm/sensitivity_testing/intervals_splitData/genera_100km_cells",
-                      "~/R_packages/bivbrach/data/lmm/sensitivity_testing/intervals_splitData/species_200km_cells",
-                      "~/R_packages/bivbrach/data/lmm/sensitivity_testing/intervals_splitData/species_100km_cells")
+                      "~/R_packages/bivbrach/data/lmm/sensitivity_testing/intervals_splitData/species_200km_cells")
 
 output.dirs.intervals.split <- c("~/R_packages/bivbrach/figures/richness_lmm/intervals_splitData/genera_200km_cells",
-                              "~/R_packages/bivbrach/figures/richness_lmm/intervals_splitData/genera_100km_cells",
-                              "~/R_packages/bivbrach/figures/richness_lmm/intervals_splitData/species_200km_cells",
-                              "~/R_packages/bivbrach/figures/richness_lmm/intervals_splitData/species_100km_cells")
+                              "~/R_packages/bivbrach/figures/richness_lmm/intervals_splitData/species_200km_cells")
 
 rich.input.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_regRich"
 
