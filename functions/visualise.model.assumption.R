@@ -118,7 +118,7 @@ visualise.model.assumption <- function(input.string, model.type, argument.string
           bottom_row <- plot_grid(residHist, QQ, ncol = 2, labels = c("B", "C"))
           final <- plot_grid(title, predVresid, bottom_row, nrow = 3, labels = c("", "A"), rel_heights = c(0.2, 1, 1))
           ## plot
-          pdf(file = paste0(output.dir, "/", gsub(" ", "_", gsub(",", "", plot.title)), "_model_assumptions.pdf"))
+          pdf(file = paste0(output.dir, "/", gsub(" ", "_", gsub(",", "", plot.title)), "_assumptions.pdf"))
           plot(final)
           dev.off()
       }
