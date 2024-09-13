@@ -26,7 +26,7 @@ plot.spatSubThroughTime <- function(input.strings, output.dir, output.strings, s
            legend = legend.labels,
            col = line.pal)
     box()
-    text(x = x.mm[2]+(x.mm[2]*0.1), y = sum(y.mm)/2, "Number of viable spatial subsamples", srt = 90)
+    text(x = x.mm[2]+(x.mm[2]*0.1), y = sum(y.mm)/2, "Number of viable radially-constrained regions", srt = 90)
     text(x = sum(x.mm)/2, y = y.mm[1]-(y.mm[2]*0.15), "Time (Ma)")
     dev.off()
   }

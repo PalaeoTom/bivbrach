@@ -1,5 +1,9 @@
-count.occurrences <- function(input.dir, output.dir, input.prefix, output.prefix, method, vars, n.cores, taxa = F){
-  combin <- expand.grid(vars)
+count.occurrences <- function(input.dir, output.dir, input.prefix, output.prefix, method, vars, n.cores, taxa = F, all.var.comb = F){
+  if(all.var.comb){
+    combin <- expand.grid(vars)
+  } else {
+    combin <- data.frame(do.call(cbind, vars))
+  }
   varStrings <- sapply(1:nrow(combin), function(x) paste(unlist(combin[x,]), collapse = "_"))
   input.dirs <- paste0(input.dir, "/", input.prefix, "_", varStrings, ".Rds")
   output.dir <- paste0(output.dir, "/", output.prefix, ".csv")

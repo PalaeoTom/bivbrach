@@ -4,11 +4,15 @@ cookies2Batch <- function(dataList, vars, b.crs, output.dir,
                          reps = 100, nOccs = 100,
                          rarefaction = "sitesThenOccs",
                          n.cores = 1, name.output = "new",
-                         taxa = NULL, taxa.level = NULL){
+                         taxa = NULL, taxa.level = NULL, all.var.comb = F){
   ## Set home directory
   home <- getwd()
   ## Get all possible combinations of settings (siteQuota, radius, overlapThreshold, overlapType, weightedStandardisation)
-  settings <- expand.grid(vars)
+  if(all.var.comb){
+    settings <- expand.grid(vars)
+  } else {
+    settings <- data.frame(do.call(cbind, vars))
+  }
   ## define identifiers for different settings and create list of settings for labelling
   params <- vars
   labs <- lapply(1:length(vars), function(x) paste0(names(vars)[x], seq(1, length(vars[[x]]), 1)))

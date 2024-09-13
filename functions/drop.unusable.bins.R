@@ -1,5 +1,9 @@
-drop.unusable.bins <- function(input.dir, input.pre, output.dir, output.pre, vars, sD, threshold = 2, taxa = F){
-  combin <- expand.grid(vars)
+drop.unusable.bins <- function(input.dir, input.pre, output.dir, output.pre, vars, sD, threshold = 2, taxa = F, all.var.comb = F){
+  if(all.var.comb){
+    combin <- expand.grid(vars)
+  } else {
+    combin <- data.frame(do.call(cbind, vars))
+  }
   times <- names(sD)
   varStrings <- sapply(1:nrow(combin), function(x) paste(unlist(combin[x,]), collapse = "_"))
   input.dirs <- paste0(input.dir, "/", input.pre, "_", varStrings, ".Rds")

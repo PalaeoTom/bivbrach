@@ -267,25 +267,32 @@ PBDB_species <- add.ecology.IDs(data = PBDB_species, key)
 PBDB_genera_eco <- PBDB_genera[which(!is.na(PBDB_genera[,"ecological_cat"])),]
 PBDB_species_eco <- PBDB_species[which(!is.na(PBDB_species[,"ecological_cat"])),]
 
+##### Pruning out bottom 5%/top 5% richness references for reference sensitivity test ####
+## Get quantiles of richness (genus and unique_name)
+source("functions/refine.references.R")
+
+## Run the function
+genera_RefRef <- refine.references(data = PBDB_genera, level = "genus", quantiles = c(0.05, 0.95), drop.ref.singletons.first = T)
+species_RefRef <- refine.references(data = PBDB_species, level = "unique_name", quantiles = c(0.05, 0.95), drop.ref.singletons.first = T)
+
 #### Rasterising data ####
 ## Rasterise data using function
 genera_200 <- rasterOccData(occData = PBDB_genera, res = 200000)
-genera_100 <- rasterOccData(occData = PBDB_genera, res = 100000)
 species_200 <- rasterOccData(occData = PBDB_species, res = 200000)
-species_100 <- rasterOccData(occData = PBDB_species, res = 100000)
 
 genera_eco_200 <- rasterOccData(occData = PBDB_genera_eco, res = 200000)
-genera_eco_100 <- rasterOccData(occData = PBDB_genera_eco, res = 100000)
 species_eco_200 <- rasterOccData(occData = PBDB_species_eco, res = 200000)
-species_eco_100 <- rasterOccData(occData = PBDB_species_eco, res = 100000)
+
+genera_200_RefRef <- rasterOccData(occData = genera_RefRef, res = 200000)
+species_200_RefRef <- rasterOccData(occData = species_RefRef, res = 200000)
 
 ## Export polished files
 saveRDS(genera_200, file = "data/genera_200.Rds")
 saveRDS(species_200, file = "data/species_200.Rds")
-saveRDS(genera_100, file = "data/genera_100.Rds")
-saveRDS(species_100, file = "data/species_100.Rds")
 
 saveRDS(genera_eco_200, file = "data/genera_eco_200.Rds")
 saveRDS(species_eco_200, file = "data/species_eco_200.Rds")
-saveRDS(genera_eco_100, file = "data/genera_eco_100.Rds")
-saveRDS(species_eco_100, file = "data/species_eco_100.Rds")
+
+saveRDS(genera_200_RefRef, file = "data/genera_RefRef_200.Rds")
+saveRDS(species_200_RefRef, file = "data/species_RefRef_200.Rds")
+

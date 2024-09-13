@@ -1,7 +1,11 @@
-count.viable.samples <- function(dir, pre, vars, sD, n.cores, output.dir, output.name, taxa = F){
+count.viable.samples <- function(dir, pre, vars, sD, n.cores, output.dir, output.name, taxa = F, all.var.comb = F){
   home <- getwd()
   ## get all combinations of labels
-  combin <- expand.grid(vars)
+  if(all.var.comb){
+    combin <- expand.grid(vars)
+  } else {
+    combin <- data.frame(do.call(cbind, vars))
+  }
   ## convert vars into a list of strings
   cLabs <- names(sD)
   rLabs <- sapply(1:nrow(combin), function(x) paste(unlist(combin[x,]), collapse = "_"))
