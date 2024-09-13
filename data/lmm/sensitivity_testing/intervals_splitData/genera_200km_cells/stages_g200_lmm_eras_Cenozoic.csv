@@ -1,0 +1,5 @@
+"","site_quota","radius","n.samples","n.timeBins","n.subregions","avg.obs.per.timeBin","avg.obs.per.subregion"
+"1",2,1000000,1100,8,11,137.5,100
+"2",4,1000000,NA,NA,NA,NA,NA
+"3",2,500000,NA,NA,NA,NA,NA
+"4",4,500000,100,1,1,100,100
