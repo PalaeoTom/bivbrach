@@ -19,48 +19,28 @@ setwd("~/R_packages/bivbrach")
 home <- getwd()
 
 ## Load variable vectors
-radii <- as.integer(c(200000, 500000, 1000000))
-siteQuotas <- c(2, 3, 4, 5)
+radii <- as.integer(c(1000000, 500000))
+siteQuotas <- c(2, 4)
 vars <- list(paste0("sQ",seq(1,length(siteQuotas),1)), paste0("r",seq(1,length(radii),1)))
 
 ## Set input strings
 input.strings <- c("stages_g200_viaTimeBin",
-                   "stages_g100_viaTimeBin",
                    "stages_s200_viaTimeBin",
-                   "stages_s100_viaTimeBin",
                    "stages_g200_epif_viaTimeBin",
-                   "stages_g100_epif_viaTimeBin",
                    "stages_s200_epif_viaTimeBin",
-                   "stages_s100_epif_viaTimeBin",
-                   "stages_g200_inf_viaTimeBin",
-                   "stages_g100_inf_viaTimeBin",
-                   "stages_s200_inf_viaTimeBin",
-                   "stages_s100_inf_viaTimeBin",
-                   "stages_g200_sitesThenRefs_VTBO",
-                   "stages_g100_sitesThenRefs_VTBO",
-                   "stages_s200_sitesThenRefs_VTBO",
-                   "stages_s100_sitesThenRefs_VTBO")
+                   "stages_g200_ref_viaTimeBin",
+                   "stages_s200_ref_viaTimeBin")
 
 ## Set output strings
 output.strings <- c("stages_g200",
-                    "stages_g100",
                     "stages_s200",
-                    "stages_s100",
                     "stages_g200_epif",
-                    "stages_g100_epif",
                     "stages_s200_epif",
-                    "stages_s100_epif",
-                    "stages_g200_inf",
-                    "stages_g100_inf",
-                    "stages_s200_inf",
-                    "stages_s100_inf",
-                    "stages_g200_sitesThenRefs",
-                    "stages_g100_sitesThenRefs",
-                    "stages_s200_sitesThenRefs",
-                    "stages_s100_sitesThenRefs")
+                    "stages_g200_ref",
+                    "stages_s200_ref")
 
 ## Set taxonomic variable string
-taxVar.strings <- rep(c(rep("genus", 2), rep("unique_name", 2)),4)
+taxVar.strings <- rep(c("genus", "unique_name"),3)
 
 ## Set input, and output directories
 input.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_spaSub"
