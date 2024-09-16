@@ -214,6 +214,9 @@ rich.input.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_regRich"
 #period.scale = periods
 #era.scale = eras
 #xy = c("Bivalvia", "Brachiopoda")
+#time.cutoffs = NULL
+#min.sample = 20
+#s = 1
 #i = 1
 
 for(r in 1:length(input.strings.full)){

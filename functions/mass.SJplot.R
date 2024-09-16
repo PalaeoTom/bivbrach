@@ -130,10 +130,23 @@ mass.SJplot <- function(input.string, model.type, argument.strings, model.input.
                       legend.position = "bottom",
                       legend.text = element_text(size = 10),
                       legend.key.size = unit(10,"point"))
-              scatter
+              ## Coefficient plot
+              coeff <- plot_model(models[[s]][[i]], vline = "grey", show.values = T, title = "", value.offset = 0.2) +
+                theme(text = element_text(family = "Helvetica"),,
+                      title = element_text(size = 12),
+                      axis.text = element_text(size = 11),
+                      axis.title = element_text(size = 12),
+                      legend.title = element_text(size = 12),
+                      axis.line = element_line(colour = "black"))
+              ## define title
+              title <- ggdraw() + draw_label(plot.title, fontface = "bold")
+              ## create grid
+              bottom_row <- plot_grid(scatter, coeff, ncol = 2, labels = c("A", "B"), rel_widths = c(1.2,1))
+              final <- plot_grid(title, bottom_row, nrow = 3, labels = c(""), rel_heights = c(0.2, 1))
+              final
               ## plot
               pdf(file = paste0(output.dir, "/", gsub(" ", "_", gsub(",", "", plot.title)), ".pdf"))
-              print(scatter)
+              print(final)
               dev.off()
               }
             }
@@ -209,7 +222,6 @@ mass.SJplot <- function(input.string, model.type, argument.strings, model.input.
           xlab("Bivalve richness") +
           ylab("Brachiopod richness") +
           labs(color = "Period") +
-          ggtitle(plot.title) +
           geom_point(data = richness, aes(x = Bivalvia, y = Brachiopoda, color = period, shape = era)) +
           scale_color_manual(breaks = unique(richness[,"period"]), values = point.col) +
           scale_shape_manual(values = point.shape) +
@@ -231,12 +243,25 @@ mass.SJplot <- function(input.string, model.type, argument.strings, model.input.
                 panel.background = element_blank(),
                 axis.line = element_line(colour = "black"),
                 legend.position = "bottom",
-                legend.text = element_text(size = 10),
+                legend.text = element_text(size = 9),
                 legend.key.size = unit(10,"point"))
-        scatter
+        ## Coefficient plot
+        coeff <- plot_model(models[[i]], vline = "grey", show.values = T, title = "", value.offset = 0.2) +
+          theme(text = element_text(family = "Helvetica"),,
+                title = element_text(size = 12),
+                axis.text = element_text(size = 11),
+                axis.title = element_text(size = 12),
+                legend.title = element_text(size = 12),
+                axis.line = element_line(colour = "black"))
+        ## define title
+        title <- ggdraw() + draw_label(plot.title, fontface = "bold")
+        ## create grid
+        bottom_row <- plot_grid(scatter, coeff, ncol = 2, labels = c("A", "B"), rel_widths = c(1.2,1))
+        final <- plot_grid(title, bottom_row, nrow = 3, labels = c(""), rel_heights = c(0.2, 1))
+        final
         ## plot
         pdf(file = paste0(output.dir, "/", gsub(" ", "_", gsub(",", "", plot.title)), ".pdf"))
-        print(scatter)
+        print(final)
         dev.off()
         }
       }
