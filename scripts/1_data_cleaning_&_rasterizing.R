@@ -12,7 +12,7 @@ setwd("~/R_packages/bivbrach")
 home <- getwd()
 
 ## If packages aren't installed, install them, then load them
-packages <- c("fossilbrush", "rnaturalearth", "rnaturalearthdata", "terra", "divDyn", "iNEXT", "divvy", "rgbif", "usethis", "bit64")
+packages <- c("fossilbrush", "rnaturalearth", "rnaturalearthdata", "terra", "divDyn", "iNEXT", "divvy", "rgbif", "usethis", "bit64", "dismo", "dplyr")
 if(length(packages[!packages %in% installed.packages()[,"Package"]]) > 0){
   install.packages(packages[!packages %in% installed.packages()[,"Package"]])
 }
@@ -25,14 +25,13 @@ library(iNEXT)
 library(divvy)
 library(rgbif)
 library(bit64)
+library(dismo)
+library(dplyr)
 
 ## install divvyCompanion from github and load
 library(remotes)
 install_github("PalaeoTom/divvyCompanion")
 library(divvyCompanion)
-
-## Load raw data
-raw_PBDB <- readRDS("data/PBDB_Nov23.Rds")
 
 #### Load GBIF data ####
 ## Set GBIF username
@@ -58,13 +57,259 @@ raw_PBDB <- readRDS("data/PBDB_Nov23.Rds")
 #occ_download_get(raw_GBIF_bivalves, path = bivalve.download.path)
 #occ_download_get(raw_GBIF_brachiopoda, path = brachiopod.download.path)
 
-## read GBIF data into R
-#raw_GBIF_biv <- occ_download_import(as.download(path = paste0(bivalve.download.path, "/May_24.zip")))
-#raw_GBIF_brach <- occ_download_import(as.download(path = paste0(brachiopod.download.path, "/May_24.zip")))
+## define complete paths
+#brachiopod.download.path <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/GBIF/brachiopods/Sept_24.zip"
+#bivalve.download.path <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/GBIF/bivalves/Sept_24.zip"
 
-#### Cleaning time data ####
+## set columns to be retained - will refine as we go
+#columns.TBR <- c("kingdom", "phylum", "class", "order", "family", "genus", "species", "taxonRank", "taxonomicStatus", "acceptedScientificName",
+#                 "decimalLatitude", "decimalLongitude", "hasCoordinate", "hasGeospatialIssues",
+#                 "occurrenceStatus", "coordinateUncertaintyInMeters", "issue",
+#                 "basisOfRecord",
+#                 "institutionCode",
+#                 "countryCode", "stateProvince", "county", "municipality", "higherGeography", "locality", "verbatimLocality",
+#                 "group", "formation", "member", "bed",
+#                 "earliestAgeOrLowestStage", "latestAgeOrHighestStage",
+#                 "collectionCode", "gbifID", "bibliographicCitation", "references", "publisher")
+
+## define output directory
+#out.dir <- "/Users/tjs/R_packages/bivbrach/data"
+
+## Load function
+## Cleans data, retaining needed rows
+#source("functions/import.raw.GBIF.R")
+
+## Run function
+#GBIF_biv <- data.frame(import.raw.GBIF(bivalve.download.path, columns.TBR, out.dir, export = T, export.name = "GBIF_biv_Oct24"))
+#GBIF_brach <- data.frame(import.raw.GBIF(brachiopod.download.path, columns.TBR, out.dir, export = T, export.name = "GBIF_brach_Oct24"))
+
+## Export raw GBIF
+#saveRDS(GBIF_biv, file = "data/raw_GBIF_biv_18Oct24.Rds")
+#saveRDS(GBIF_brach, file = "data/raw_GBIF_brach_18Oct24.Rds")
+
+## Load raw GBIF
+GBIF_biv <- readRDS("data/raw_GBIF_biv_18Oct24.Rds")
+GBIF_brach <- readRDS("data/raw_GBIF_brach_18Oct24.Rds")
+
+#### Cleaning GBIF taxonomy ####
+## Drop data with taxonRank not genus or species
+GBIF_biv <- GBIF_biv[-union(union(union(union(which(GBIF_biv[,"taxonRank"] == "ORDER"),which(GBIF_biv[,"taxonRank"] == "CLASS")),which(GBIF_biv[,"taxonRank"] == "PHYLUM")), which(GBIF_biv[,"taxonRank"] == "FAMILY")), which(GBIF_biv[,"taxonRank"] == "UNRANKED")),]
+GBIF_brach <- GBIF_brach[-union(union(union(union(which(GBIF_brach[,"taxonRank"] == "ORDER"),which(GBIF_brach[,"taxonRank"] == "CLASS")),which(GBIF_brach[,"taxonRank"] == "PHYLUM")), which(GBIF_brach[,"taxonRank"] == "FAMILY")), which(GBIF_brach[,"taxonRank"] == "UNRANKED")),]
+
+## Replace blanks with NA
+if(length(which(GBIF_biv[,"phylum"] == "")) > 0){
+  GBIF_biv[which(GBIF_biv[,"phylum"] == ""), "phylum"] <- NA
+}
+if(length(which(GBIF_biv[,"class"] == "")) > 0){
+  GBIF_biv[which(GBIF_biv[,"class"] == ""), "class"] <- NA
+}
+if(length(which(GBIF_biv[,"order"] == "")) > 0){
+  GBIF_biv[which(GBIF_biv[,"order"] == ""), "order"] <- NA
+}
+if(length(which(GBIF_biv[,"family"] == "")) > 0){
+  GBIF_biv[which(GBIF_biv[,"family"] == ""), "family"] <- NA
+}
+if(length(which(GBIF_biv[,"genus"] == "")) > 0){
+  GBIF_biv[which(GBIF_biv[,"genus"] == ""), "genus"] <- NA
+}
+if(length(which(GBIF_biv[,"species"] == "")) > 0){
+  GBIF_biv[which(GBIF_biv[,"species"] == ""), "species"] <- NA
+}
+if(length(which(GBIF_brach[,"phylum"] == "")) > 0){
+  GBIF_brach[which(GBIF_brach[,"phylum"] == ""), "phylum"] <- NA
+}
+if(length(which(GBIF_brach[,"class"] == "")) > 0){
+  GBIF_brach[which(GBIF_brach[,"class"] == ""), "class"] <- NA
+}
+if(length(which(GBIF_brach[,"order"] == "")) > 0){
+  GBIF_brach[which(GBIF_brach[,"order"] == ""), "order"] <- NA
+}
+if(length(which(GBIF_brach[,"family"] == "")) > 0){
+  GBIF_brach[which(GBIF_brach[,"family"] == ""), "family"] <- NA
+}
+if(length(which(GBIF_brach[,"genus"] == "")) > 0){
+  GBIF_brach[which(GBIF_brach[,"genus"] == ""), "genus"] <- NA
+}
+if(length(which(GBIF_brach[,"species"] == "")) > 0){
+  GBIF_brach[which(GBIF_brach[,"species"] == ""), "species"] <- NA
+}
+
+## Use misspell function to update genus designations before checking of taxonomy
+source("functions/misspell.R")
+GBIF_biv$genus <- misspell(GBIF_biv$genus)
+GBIF_brach$genus <- misspell(GBIF_brach$genus)
+
+## Set ranks for cleaning and acceptable suffixes to be used in dataset
+b_ranks <- c("phylum", "class", "order", "family", "genus")
+b_suff = list(NULL, NULL, NULL, NULL, c("ina", "ella", "etta"))
+
+## Now check for taxonomy issues using check_taxonomy
+biv_breakdown <- check_taxonomy(GBIF_biv, suff_set = b_suff, ranks = b_ranks, clean_name = TRUE, resolve_duplicates = TRUE, jump = 5)
+## Synonyms detected. Only concerned with genera.
+## No cross-rank names detected
+## Duplicates - will be resolved.
+## Export synonyms for exploration
+write.csv(biv_breakdown$synonyms, "data/biv_synonyms.csv")
+
+## Import synonyms to be corrected manually
+
+## Correct synonyms manually
+
+
+## Now check for taxonomy issues using check_taxonomy
+brach_breakdown <- check_taxonomy(GBIF_brach, suff_set = b_suff, ranks = b_ranks, clean_name = TRUE, resolve_duplicates = TRUE, jump = 5)
+## Synonyms detected
+## No cross-rank names detected
+## Duplicates - will be resolved.
+## Export synonyms for exploration
+write.csv(brach_breakdown$synonyms, "data/brach_synonyms.csv")
+
+## Import synonyms to be corrected manually
+
+## Correct synonyms manually
+
+## Now identified issues have been corrected, produce final datasets
+GBIF_biv <- check_taxonomy(GBIF_biv, suff_set = b_suff, ranks = b_ranks, clean_name = TRUE, resolve_duplicates = TRUE, jump = 5)$data
+GBIF_brach <- check_taxonomy(GBIF_brach, suff_set = b_suff, ranks = b_ranks, clean_name = TRUE, resolve_duplicates = TRUE, jump = 5)$data
+
+## Note: using check_taxonomy to resolve conflicting higher taxonomies for genera is easy but seems to produce nonsense taxonomies
+## If retention of this structure is important, advisable to switch this feature off
+## However, for richness/rates analysis, not a problem.
+
+## Screening data and removing subquality entries ##
+## Drop entries missing relevant taxonomy: codes as gaps or NAs.
+## For phyla, classes, and genera
+no_phy_gen <- unique(c(which(is.na(GBIF_biv$phylum)),
+                       which(is.na(GBIF_biv$class)),
+                       which(is.na(GBIF_biv$genus))))
+if(length(no_phy_gen) > 0){
+  GBIF_biv_genera <- GBIF_biv[-no_phy_gen,]
+} else {
+  GBIF_biv_genera <- GBIF_biv
+}
+
+## For phyla, classes, and species
+no_phy_spec <- unique(c(which(is.na(GBIF_biv$phylum)),
+                        which(is.na(GBIF_biv$class)),
+                        which(is.na(GBIF_biv$species))))
+if(length(no_phy_spec) > 0){
+  GBIF_biv_species <- GBIF_biv[-no_phy_spec,]
+} else {
+  GBIF_biv_species <- GBIF_biv
+}
+
+## Now for brachiopods
+no_phy_gen <- unique(c(which(is.na(GBIF_brach$phylum)),
+                       which(is.na(GBIF_brach$class)),
+                       which(is.na(GBIF_brach$genus))))
+if(length(no_phy_gen) > 0){
+  GBIF_brach_genera <- GBIF_brach[-no_phy_gen,]
+} else {
+  GBIF_brach_genera <- GBIF_brach
+}
+
+## For phyla, classes, and species
+no_phy_spec <- unique(c(which(is.na(GBIF_brach$phylum)),
+                        which(is.na(GBIF_brach$class)),
+                        which(is.na(GBIF_brach$species))))
+if(length(no_phy_spec) > 0){
+  GBIF_brach_species <- GBIF_brach[-no_phy_spec,]
+} else {
+  GBIF_brach_species <- GBIF_brach
+}
+
+## Next, prune out remaining entries not identified to species rank or lower (just in case we are missing any)
+GBIF_biv_species <- GBIF_biv_species[which(GBIF_biv_species[,"taxonRank"] %in% c("SPECIES", "SUBSPECIES", "VARIETY", "FORM")),]
+GBIF_brach_species <- GBIF_brach_species[which(GBIF_brach_species[,"taxonRank"] %in% c("SPECIES", "SUBSPECIES", "VARIETY", "FORM")),]
+
+## Clean up species names, drop those not identified to species level
+GBIF_biv_species$short_name <- cleansp(GBIF_biv_species$species, misspells=T, stems=T)
+GBIF_biv_species <- GBIF_biv_species[!is.na(GBIF_biv_species$species),]
+
+GBIF_brach_species$short_name <- cleansp(GBIF_brach_species$species, misspells=T, stems=T)
+GBIF_brach_species <- GBIF_brach_species[!is.na(GBIF_brach_species$species),]
+
+## Define unique name combining phyla and short name
+GBIF_biv_species$unique_name <- paste(GBIF_biv_species$phylum, GBIF_biv_species$short_name)
+GBIF_brach_species$unique_name <- paste(GBIF_brach_species$phylum, GBIF_brach_species$short_name)
+
+#### Time calibration ####
+## Exploring data. Separate data with stage-level time data, and that without.
+biv_timed <- intersect(which(!(GBIF_biv[,"earliestAgeOrLowestStage"]=="")), which(!(GBIF_biv[,"latestAgeOrHighestStage"]=="")))
+brach_timed <- intersect(which(!(GBIF_brach[,"earliestAgeOrLowestStage"]=="")), which(!(GBIF_brach[,"latestAgeOrHighestStage"]=="")))
+GBIF_biv_timed <- GBIF_biv[biv_timed,]
+GBIF_biv_nontimed <- GBIF_biv[-biv_timed,]
+GBIF_brach_timed <- GBIF_brach[brach_timed,]
+GBIF_brach_nontimed <- GBIF_brach[-brach_timed,]
+
+## Of the nontimed, how many have formation data
+biv_nontimed_forms <- which(!(GBIF_biv_nontimed[,"formation"]==""))
+brach_nontimed_forms <- which(!(GBIF_brach_nontimed[,"formation"]==""))
+
+#### Georeferencing GBIF ####
+## Register google maps API keys
+gMAPIKey <- "AIzaSyAeUFGhS8Inob5ByMIPTokWg076qmStEV0"
+
+## First, partition datasets. 1) Data with coordinates and georeferenceVerificationstatus verified.
+biv_keepers <- intersect(intersect(which((GBIF_biv[,"hasCoordinate"])), which(!(GBIF_biv[,"hasGeospatialIssues"]))), grep("verified by", GBIF_biv[,"georeferenceVerificationStatus"]))
+GBIF_biv_geo <- GBIF_biv[biv_keepers,]
+GBIF_biv_nogeo <- GBIF_biv[-biv_keepers,]
+
+brach_keepers <- intersect(intersect(which((GBIF_brach[,"hasCoordinate"])), which(!(GBIF_brach[,"hasGeospatialIssues"]))), grep("verified by", GBIF_brach[,"georeferenceVerificationStatus"]))
+GBIF_brach_geo <- GBIF_brach[brach_keepers,]
+GBIF_brach_nogeo <- GBIF_brach[-brach_keepers,]
+
+## Drop rows with empty locality + country strings
+GBIF_biv_nogeo <- GBIF_biv_nogeo[-union(which(GBIF_biv_nogeo[,"higherGeography"] == ""), which(GBIF_biv_nogeo[,"locality"] == "")),]
+GBIF_brach_nogeo <- GBIF_brach_nogeo[-union(which(GBIF_brach_nogeo[,"higherGeography"] == ""), which(GBIF_brach_nogeo[,"locality"] == "")),]
+
+## Concatenate higherGeography [19] and locality [26]
+biv_locations <- data.frame(apply(GBIF_biv_nogeo, 1, function(x) paste0(x[26], ", ", x[19])))
+colnames(biv_locations) <- "locations"
+brach_locations <- data.frame(apply(GBIF_brach_nogeo, 1, function(x) paste0(x[26], ", ", x[19])))
+colnames(brach_locations) <- "locations"
+
+## Get lat/long using mutate_geocode - DO NOT RUN UNTIL BILLING SORTED FOR GOOGLE CLOUD
+#biv_locations_geo <- mutate_geocode(biv_locations, locations)
+#brach_locations_geo <- mutate_geocode(brach_locations, locations)
+
+test_set <- biv_locations[1:10,]
+## Get rid of nearest named place
+test_set <- gsub("Nearest Named Place:", "", test_set)
+test_dismo <- dismo::geocode(test_set, oneRecord = F, geocode_key = gMAPIKey)
+test_dismo_2 <- dismo::geocode(test_set, oneRecord = T, geocode_key = gMAPIKey)
+
+
+
+
+#### Cleaning PBDB ####
+## Load raw PBDB data
+raw_PBDB <- readRDS("data/PBDB_Nov23.Rds")
+
+## Clean time data
 ## Isolate bivalve and brachiopod data
 raw_PBDB <- raw_PBDB[c(which(raw_PBDB$phylum == "Brachiopoda"),which(raw_PBDB$class == "Bivalvia")),]
+
+## Update formations using Ali's key
+#formations <- read.csv("formation_sorting.csv")
+#write.csv(formations, file = "data/AC_cleaned_PBDB_formations.csv")
+formations <- read.csv("data/AC_cleaned_PBDB_formations.csv", row.names = 1)[,c(2,4)]
+formations <- formations[which(apply(formations, 1, function(x) !x[1] == x[2])),]
+
+## Correct
+for(i in 1:nrow(formations)){
+  if(any(raw_PBDB[,"formation"] %in% formations[i,1])){
+    raw_PBDB[which(raw_PBDB[,"formation"] %in% formations[i,1]),"formation"] <- formations[i,2]
+  }
+}
+
+## Test that it has worked
+for(i in 1:nrow(formations)){
+  if(any(raw_PBDB[,"formation"] %in% formations[i,1])){
+    print(i)
+    print(which(raw_PBDB[,"formation"] %in% formations[i,1]))
+  }
+}
 
 ## use fossilbrush to update Chronostratigraphy
 PBDB <- chrono_scale(raw_PBDB,  tscale = "GTS2020", srt = "early_interval", end = "late_interval",
@@ -101,8 +346,6 @@ PBDB[inoceramus_sch,5] <- "Inoceramus schoendorfi"
 ## Use misspell function to update genus, family, and order designations
 source("functions/misspell.R")
 PBDB$genus <- misspell(PBDB$genus)
-PBDB$family <- misspell(PBDB$family)
-PBDB$order <- misspell(PBDB$order)
 
 ## Set ranks for cleaning and acceptable suffixes to be used in dataset
 b_ranks <- c("phylum", "class", "order", "family", "genus")
@@ -121,6 +364,11 @@ PBDB <- check_taxonomy(PBDB, suff_set = b_suff, ranks = b_ranks, clean_name = TR
 ## Note: using check_taxonomy to resolve conflicting higher taxonomies for genera is easy but seems to produce nonsense taxonomies
 ## If retention of this structure is important, advisable to switch this feature off
 ## However, for richness/rates analysis, not a problem.
+
+## Export formation data for regex searching
+PBDB_formations <- data.frame(unique(PBDB[,"formation"]))
+colnames(PBDB_formations) <- "formation"
+write.csv(PBDB_formations, "data/PBDB_formations.csv")
 
 #### Screening data and removing subquality entries ####
 ## Both data frames
