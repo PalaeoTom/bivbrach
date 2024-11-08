@@ -49,7 +49,7 @@ Peabody_biv <- read.csv("Peabody_Bivalves_May2024.csv")
 Peabody_brach <- read.csv("Peabody_Brachiopods_May2024.csv")
 
 #### Cleaning up museum data ####
-## Start with FMNH.
+## Start with FMNH. Classify as open and embargoed, then combine. Isolate formations first.
 
 
 
