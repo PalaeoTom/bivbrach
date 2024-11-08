@@ -12,7 +12,7 @@ setwd("~/R_packages/bivbrach")
 home <- getwd()
 
 ## If packages aren't installed, install them, then load them
-packages <- c("fossilbrush", "rnaturalearth", "rnaturalearthdata", "terra", "divDyn", "iNEXT", "divvy", "rgbif", "usethis", "bit64", "dismo", "dplyr")
+packages <- c("fossilbrush", "rnaturalearth", "rnaturalearthdata", "terra", "divDyn", "iNEXT", "divvy", "rgbif", "usethis", "bit64", "dismo", "dplyr", "stringr")
 if(length(packages[!packages %in% installed.packages()[,"Package"]]) > 0){
   install.packages(packages[!packages %in% installed.packages()[,"Package"]])
 }
@@ -27,11 +27,31 @@ library(rgbif)
 library(bit64)
 library(dismo)
 library(dplyr)
+library(stringr)
 
 ## install divvyCompanion from github and load
 library(remotes)
 install_github("PalaeoTom/divvyCompanion")
 library(divvyCompanion)
+
+#### Load museum data ####
+setwd("~/Library/CloudStorage/OneDrive-Nexus365/Bivalve_brachiopod/data")
+FMNH_biv <- read.csv("FMNH_Bivalvia_June2024.csv")
+FMNH_brach <- read.csv("FMNH_Brachiopoda_June2024.csv")
+FMNH_biv_E1 <- read.csv("FMNH_AL004_BIVALVIA.csv")
+FMNH_biv_E2 <- read.csv("FMNH_LI005_BIVALVIA.csv")
+FMNH_biv_E3 <- read.csv("FMNH_SO047_BIVALVIA.csv")
+FMNH_brach_E1 <- read.csv("FMNH_SO047_BRACHIOPODA.csv")[1,]
+NMS_biv <- read.csv("NMS_bivalves.csv")
+NMS_brach <- read.csv("NMS_brachiopoda.csv")
+AMNH <- read.csv("AMNH_May_2024.csv")
+Peabody_biv <- read.csv("Peabody_Bivalves_May2024.csv")
+Peabody_brach <- read.csv("Peabody_Brachiopods_May2024.csv")
+
+#### Cleaning up museum data ####
+## Start with FMNH.
+
+
 
 #### Load GBIF data ####
 ## Set GBIF username
@@ -63,7 +83,7 @@ library(divvyCompanion)
 
 ## set columns to be retained - will refine as we go
 #columns.TBR <- c("kingdom", "phylum", "class", "order", "family", "genus", "species", "taxonRank", "taxonomicStatus", "acceptedScientificName",
-#                 "decimalLatitude", "decimalLongitude", "hasCoordinate", "hasGeospatialIssues",
+#                 "decimalLatitude", "decimalLongitude", "hasGeospatialIssues",
 #                 "occurrenceStatus", "coordinateUncertaintyInMeters", "issue",
 #                 "basisOfRecord",
 #                 "institutionCode",
@@ -233,54 +253,148 @@ GBIF_brach_species <- GBIF_brach_species[!is.na(GBIF_brach_species$species),]
 GBIF_biv_species$unique_name <- paste(GBIF_biv_species$phylum, GBIF_biv_species$short_name)
 GBIF_brach_species$unique_name <- paste(GBIF_brach_species$phylum, GBIF_brach_species$short_name)
 
-#### Time calibration ####
-## Exploring data. Separate data with stage-level time data, and that without.
-biv_timed <- intersect(which(!(GBIF_biv[,"earliestAgeOrLowestStage"]=="")), which(!(GBIF_biv[,"latestAgeOrHighestStage"]=="")))
-brach_timed <- intersect(which(!(GBIF_brach[,"earliestAgeOrLowestStage"]=="")), which(!(GBIF_brach[,"latestAgeOrHighestStage"]=="")))
-GBIF_biv_timed <- GBIF_biv[biv_timed,]
-GBIF_biv_nontimed <- GBIF_biv[-biv_timed,]
-GBIF_brach_timed <- GBIF_brach[brach_timed,]
-GBIF_brach_nontimed <- GBIF_brach[-brach_timed,]
+#### Pruning out entries without essential data ####
+## Time calibration - requires either: earliestAgeOrLowestStage+latestAgeOrHighestStage OR formation
+## Georeferencing - requires either: locality OR verbatimLocality OR decimalLatitude+decimalLongitude+coordinateUncertaintyInMeters+passes checks
 
-## Of the nontimed, how many have formation data
-biv_nontimed_forms <- which(!(GBIF_biv_nontimed[,"formation"]==""))
-brach_nontimed_forms <- which(!(GBIF_brach_nontimed[,"formation"]==""))
+## Read in ISOconversion (go from 2 digit codes to 3)
+ISO.codes <- read.csv("data/ISO_conversion.csv", row.names = 1)
+colnames(ISO.codes) <- c("lang.code", "ISO2", "ISO3")
+
+## Check and clean essential metadata
+check.clean.metaData <- function(GBIF_data, ISO.codes){
+  ## time calibration - empty cells if not present
+  notTimed <- union(which(GBIF_data[,"earliestAgeOrLowestStage"]==""), which(GBIF_data[,"latestAgeOrHighestStage"]==""))
+  if(length(notTimed)>0){
+    ## get intersect between those missing time and missing formation
+    dropTime <- intersect(notTimed, which(GBIF_data[,"formation"] == ""))
+  }
+  if(length(dropTime) > 0){
+    GBIF_data <- GBIF_data[-dropTime,]
+  }
+  ## georeferencing - NA if not present
+  noCoords <- union(union(union(which(is.na(GBIF_data[,"decimalLatitude"])), which(is.na(GBIF_data[,"decimalLongitude"]))), which(is.na(GBIF_data[,"coordinateUncertaintyInMeters"]))), which(GBIF_data[,"countryCode"]==""))
+  if(length(noCoords)>0){
+    ## get intersect with those missing locality or verbatimLocality
+    noLoc <- intersect(which(GBIF_data[,"locality"]==""), which(GBIF_data[,"verbatimLocality"]==""))
+    dropGeo <- intersect(noCoords, noLoc)
+  }
+  if(length(dropGeo) > 0){
+    GBIF_data <- GBIF_data[-dropGeo,]
+  }
+  ## Now to check quality of coordinate data
+  split.errors <- str_split(GBIF_data$issue, pattern = ";")
+  fatal.issues <- c("COORDINATE_INVALID", "COORDINATE_OUT_OF_RANGE", "COORDINATE_REPROJECTION_FAILED", "COORDINATE_REPROJECTION_SUSPICIOUS", "COORDINATE_UNCERTAINTY_METERS_INVALID",
+                    "COUNTRY_COORDINATE_MISMATCH", "GEODETIC_DATUM_INVALID", "PRESUMED_NEGATIVE_LATITUDE", "PRESUMED_NEGATIVE_LONGITUDE", "PRESUMED_SWAPPED_COORDINATES",
+                    "ZERO_COORDINATE")
+  ## pass over list of split errors, check for fatal errors
+  checkers <- c()
+  for(x in 1:length(split.errors)){
+    if(any(fatal.issues %in% split.errors[[x]])){
+     checkers <- c(checkers, x)
+    }
+  }
+  ## Check coordinate uncertainty
+  for(x in 1:nrow(GBIF_data)){
+    if(!is.na(GBIF_data[x,"coordinateUncertaintyInMeters"])){
+      if(GBIF_data[x,"coordinateUncertaintyInMeters"] > 50000){
+        checkers <- c(checkers, x)
+      }
+    }
+  }
+  if(length(checkers) > 0){
+    droppers <- intersect(intersect(which(GBIF_data[,"locality"]==""), which(GBIF_data[,"verbatimLocality"]=="")), unique(checkers))
+    nulls <- checkers[!checkers %in% droppers]
+    GBIF_data <- GBIF_data[-droppers,]
+    GBIF_data[nulls, c("decimalLongitude", "decimalLatitude", "coordinateUncertaintyInMeters")] <- NA
+  }
+  ## add 3 digit ISO codes
+  GBIF_data <- merge(GBIF_data, ISO.codes, by.x = "countryCode", by.y = "ISO2", all.x = T)
+  ## get rows without blanks in country code or NA in lat and long. Already determined to keep these due to locality information.
+  cc_rows <- sort(unique(intersect(intersect(which(!GBIF_data$countryCode == ""), which(!is.na(GBIF_data$decimalLatitude))), which(!is.na(GBIF_data$decimalLongitude)))))
+  ## Check for intersect between cc_rows and flagged vector populated by cc cleaner functions
+  f1 <- CoordinateCleaner::cc_val(GBIF_data[cc_rows,], lat = "decimalLatitude", lon = "decimalLongitude", value = "flagged")
+  ## Create a vector of row IDs to compare against cc_rows
+  flagged <- which(!f1)
+  # equal latitude and longitudes
+  f2 <- CoordinateCleaner::cc_equ(GBIF_data[cc_rows,], lat = "decimalLatitude", lon = "decimalLongitude", value = "flagged")
+  flagged <- c(flagged,which(!f2))
+  # country centroids
+  f3 <- CoordinateCleaner::cc_cen(GBIF_data[cc_rows,], lat = "decimalLatitude", lon = "decimalLongitude", value = "flagged")
+  flagged <- c(flagged,which(!f3))
+  # institution coordinates
+  f4 <- CoordinateCleaner::cc_inst(GBIF_data[cc_rows,], lat = "decimalLatitude", lon = "decimalLongitude", value = "flagged")
+  flagged <- c(flagged,which(!f4))
+  # GBIF headquarters
+  f5 <- CoordinateCleaner::cc_gbif(GBIF_data[cc_rows,], lat = "decimalLatitude", lon = "decimalLongitude", value = "flagged")
+  flagged <- c(flagged,which(!f5))
+  # country capitals (within 1km)
+  f6 <- CoordinateCleaner::cc_cap(GBIF_data[cc_rows,], lat = "decimalLatitude", lon = "decimalLongitude", value = "flagged", buffer = 1000)
+  flagged <- c(flagged,which(!f6))
+  # country lookup (25km buffer)
+  f7 <- CoordinateCleaner::cc_coun(GBIF_data[cc_rows,], lat = "decimalLatitude", lon = "decimalLongitude", value = "flagged", iso3 = "ISO3", buffer = 25000)
+  flagged <- c(flagged,which(!f7))
+  ## refine to unique, sort, then convert to the rows in the data. frame
+  flagged <- cc_rows[sort(unique(flagged))]
+  ## now we have cc_rows that are problematic.
+  if(length(flagged) > 0){
+    droppers <- intersect(intersect(which(GBIF_data[,"locality"]==""), which(GBIF_data[,"verbatimLocality"]=="")), flagged)
+    nulls <- flagged[!flagged %in% droppers]
+    GBIF_data <- GBIF_data[-droppers,]
+    GBIF_data[nulls, c("decimalLongitude", "decimalLatitude", "coordinateUncertaintyInMeters")] <- NA
+  }
+  return(GBIF_data)
+}
+
+## Run the function
+GBIF_biv_genera <- check.clean.metaData(GBIF_data = GBIF_biv_genera, ISO.codes)
+GBIF_biv_species <- check.clean.metaData(GBIF_data = GBIF_biv_species, ISO.codes)
+GBIF_brach_genera <- check.clean.metaData(GBIF_data = GBIF_brach_genera, ISO.codes)
+GBIF_brach_species <- check.clean.metaData(GBIF_data = GBIF_brach_species, ISO.codes)
+
+## Export for a checkpoint
+saveRDS(GBIF_biv_genera, file = "data/GBIF_biv_genera.Rds")
+saveRDS(GBIF_biv_species, file = "data/GBIF_biv_species.Rds")
+saveRDS(GBIF_brach_genera, file = "data/GBIF_brach_genera.Rds")
+saveRDS(GBIF_brach_species, file = "data/GBIF_brach_species.Rds")
+
+## Isolate formations for Ian/to check
+formations <- c(GBIF_biv_genera$formation, GBIF_biv_species$formation, GBIF_brach_genera$formation, GBIF_brach_species$formation)
+formations <- data.frame(sort(unique(formations)))
+formations <- cbind(formations, formations)
+colnames(formations) <- c("original","updated")
+write.csv(formations, file = "data/TS_cleaned_GBIF_formations.csv")
+
+#### Time calibration ####
+## Split data into with time and without.
+
 
 #### Georeferencing GBIF ####
 ## Register google maps API keys
 gMAPIKey <- "AIzaSyAeUFGhS8Inob5ByMIPTokWg076qmStEV0"
 
-## First, partition datasets. 1) Data with coordinates and georeferenceVerificationstatus verified.
-biv_keepers <- intersect(intersect(which((GBIF_biv[,"hasCoordinate"])), which(!(GBIF_biv[,"hasGeospatialIssues"]))), grep("verified by", GBIF_biv[,"georeferenceVerificationStatus"]))
-GBIF_biv_geo <- GBIF_biv[biv_keepers,]
-GBIF_biv_nogeo <- GBIF_biv[-biv_keepers,]
+## First, partition datasets. Those with lat/long, those without.
 
-brach_keepers <- intersect(intersect(which((GBIF_brach[,"hasCoordinate"])), which(!(GBIF_brach[,"hasGeospatialIssues"]))), grep("verified by", GBIF_brach[,"georeferenceVerificationStatus"]))
-GBIF_brach_geo <- GBIF_brach[brach_keepers,]
-GBIF_brach_nogeo <- GBIF_brach[-brach_keepers,]
+## Drop rows with empty locality or verbatim locality strings
 
-## Drop rows with empty locality + country strings
-GBIF_biv_nogeo <- GBIF_biv_nogeo[-union(which(GBIF_biv_nogeo[,"higherGeography"] == ""), which(GBIF_biv_nogeo[,"locality"] == "")),]
-GBIF_brach_nogeo <- GBIF_brach_nogeo[-union(which(GBIF_brach_nogeo[,"higherGeography"] == ""), which(GBIF_brach_nogeo[,"locality"] == "")),]
 
 ## Concatenate higherGeography [19] and locality [26]
-biv_locations <- data.frame(apply(GBIF_biv_nogeo, 1, function(x) paste0(x[26], ", ", x[19])))
-colnames(biv_locations) <- "locations"
-brach_locations <- data.frame(apply(GBIF_brach_nogeo, 1, function(x) paste0(x[26], ", ", x[19])))
-colnames(brach_locations) <- "locations"
+biv_genera_locations <- data.frame(apply(, 1, function(x) paste0(x[26], ", ", x[19])))
+colnames(biv_genera_locations) <- "locations"
+brach_genera_locations <- data.frame(apply(, 1, function(x) paste0(x[26], ", ", x[19])))
+colnames(brach_genera_locations) <- "locations"
 
 ## Get lat/long using mutate_geocode - DO NOT RUN UNTIL BILLING SORTED FOR GOOGLE CLOUD
 #biv_locations_geo <- mutate_geocode(biv_locations, locations)
 #brach_locations_geo <- mutate_geocode(brach_locations, locations)
 
-test_set <- biv_locations[1:10,]
 ## Get rid of nearest named place
+test_set <- biv_locations[1:10,]
 test_set <- gsub("Nearest Named Place:", "", test_set)
+
+## Run test with dismo - works!
 test_dismo <- dismo::geocode(test_set, oneRecord = F, geocode_key = gMAPIKey)
 test_dismo_2 <- dismo::geocode(test_set, oneRecord = T, geocode_key = gMAPIKey)
-
-
-
 
 #### Cleaning PBDB ####
 ## Load raw PBDB data
