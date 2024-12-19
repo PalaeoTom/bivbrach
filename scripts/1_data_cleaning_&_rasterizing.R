@@ -47,8 +47,9 @@ NMS_brach <- read.csv("NMS_brachiopoda.csv")
 AMNH <- read.csv("AMNH_May_2024.csv")
 Peabody_biv <- read.csv("Peabody_Bivalves_May2024.csv")
 Peabody_brach <- read.csv("Peabody_Brachiopods_May2024.csv")
+setwd(home)
 
-#### Cleaning up museum data ####
+#### FMNH data ####
 ## Start with FMNH. Classify as open and embargoed, then combine. Isolate formations first.
 FMNH_biv$status <- "open"
 FMNH_brach$status <- "open"
@@ -100,6 +101,132 @@ FMNH_brach <- FMNH_brach[-which(is.na(FMNH_brach$Latitude1) | is.na(FMNH_brach$L
 
 ## Isolate formations
 FMNH_formations <- sort(unique(c(FMNH_biv$Formation, FMNH_brach$Formation)))
+
+## Export FMNH formations
+setwd(home)
+saveRDS(FMNH_biv, file = "data/museum/FMNH_biv.Rds")
+saveRDS(FMNH_brach, file = "data/museum/FMNH_brach.Rds")
+
+#### NMS data ####
+## Start with bivalves - change gaps to 1
+NMS_biv[which(NMS_biv[,"Number.of.specimens"] == ""),"Number.of.specimens"] <- 1
+
+## Separate out duplicates
+NMS_biv_dups <- NMS_biv[which(!NMS_biv[,"Number.of.specimens"] == 1),]
+NMS_biv <- NMS_biv[which(NMS_biv[,"Number.of.specimens"] == 1),]
+
+## Check non-singles
+table(NMS_biv_dups[,"Number.of.specimens"])
+
+## Tidy up
+NMS_biv_dups <- NMS_biv_dups[which(!NMS_biv_dups$Number.of.specimens == ">10"),]
+NMS_biv_dups[which(NMS_biv_dups$Number.of.specimens == "14 slides"),"Number.of.specimens"] <- 14
+table(NMS_biv_dups[,"Number.of.specimens"])
+
+## Duplicate
+duped <- lapply(1:nrow(NMS_biv_dups), function(x){
+  out <- NMS_biv_dups[rep(x,as.integer(NMS_biv_dups[x,"Number.of.specimens"])),]
+})
+duped <- do.call(rbind, duped)
+duped$Number.of.specimens <- 1
+
+## Recombine
+NMS_biv <- rbind(NMS_biv, duped)
+
+## Update column names
+colnames(NMS_biv) <- c("accessionNumber", "n", "genus", "species", "locality", "period", "formation")
+colnames(NMS_brach) <- c("x", "accessionNumber", "fullName", "locality", "formation", "stage", "period", "notes")
+
+## Drop useless columns
+NMS_biv <- NMS_biv[,c(1,3,4,5,6,7)]
+NMS_brach <- NMS_brach[,c(2,3,4,5,6,7)]
+
+## check for gaps and NAs, and genera for undetermined/indeterminate
+table(NMS_biv$genus)
+droppers <- c()
+droppers <- c(droppers, which(is.na(NMS_biv[,"genus"])))
+droppers <- c(droppers, which(is.na(NMS_biv[,"species"])))
+droppers <- c(droppers, which(is.na(NMS_biv[,"locality"])))
+droppers <- c(droppers, which(is.na(NMS_biv[,"formation"])))
+droppers <- c(droppers, which(NMS_biv[,"genus"] == ""))
+droppers <- c(droppers, which(NMS_biv[,"species"] == ""))
+droppers <- c(droppers, which(NMS_biv[,"locality"] == ""))
+droppers <- c(droppers, which(NMS_biv[,"formation"] == ""))
+droppers <- c(droppers, which(NMS_biv[,"genus"] == "undetermined"))
+droppers <- c(droppers, which(NMS_biv[,"genus"] == "indeterminate"))
+droppers <- c(droppers, which(NMS_biv[,"genus"] == "?"))
+droppers <- c(droppers, which(NMS_biv[,"genus"] == "bivave"))
+droppers <- c(droppers, which(NMS_biv[,"genus"] == "bivaves"))
+droppers <- unique(droppers)
+NMS_biv <- NMS_biv[-droppers,]
+
+## Tidy up undetermined/indeterminate
+gen.level <- c()
+gen.level <- c(gen.level,which(NMS_biv[,"species"] == "undetermined"))
+gen.level <- c(gen.level,which(NMS_biv[,"species"] == "indeterminate"))
+gen.level <- c(gen.level,which(NMS_biv[,"species"] == "sp"))
+gen.level <- c(gen.level,which(NMS_biv[,"species"] == "sp "))
+gen.level <- c(gen.level,which(NMS_biv[,"species"] == "sp,"))
+gen.level <- c(gen.level,which(NMS_biv[,"species"] == "sp?"))
+gen.level <- c(gen.level,which(NMS_biv[,"species"] == "sp."))
+gen.level <- c(gen.level,which(NMS_biv[,"species"] == "sp. nov?"))
+gen.level <- c(gen.level,which(NMS_biv[,"species"] == "sp.?"))
+NMS_biv[gen.level,"species"] <- "sp."
+NMS_biv$phylum <- "Mollusca"
+
+## Now to do the same for brachiopods. First, need to split scientific name
+names <- str_split_fixed(NMS_brach[,"fullName"], pattern = " ", n = 2)
+colnames(names) <- c("genus", "species")
+NMS_brach <- cbind(names, NMS_brach)
+NMS_brach$fullName <- NULL
+
+## dropping time
+droppers <- c()
+droppers <- c(droppers, which(is.na(NMS_brach[,"genus"])))
+droppers <- c(droppers, which(is.na(NMS_brach[,"species"])))
+droppers <- c(droppers, which(is.na(NMS_brach[,"locality"])))
+droppers <- c(droppers, which(is.na(NMS_brach[,"formation"])))
+droppers <- c(droppers, which(NMS_brach[,"genus"] == ""))
+droppers <- c(droppers, which(NMS_brach[,"species"] == ""))
+droppers <- c(droppers, which(NMS_brach[,"locality"] == ""))
+droppers <- c(droppers, intersect(which(NMS_brach[,"formation"] == ""), which(NMS_brach[,"stage"] == "")))
+droppers <- c(droppers, which(NMS_brach[,"genus"] == "cf."))
+droppers <- c(droppers, which(NMS_brach[,"genus"] == "maybe"))
+droppers <- c(droppers, which(NMS_brach[,"genus"] == "need"))
+droppers <- c(droppers, which(NMS_brach[,"genus"] == "no"))
+droppers <- c(droppers, which(NMS_brach[,"genus"] == "Indeterminate,"))
+droppers <- c(droppers, which(NMS_brach[,"genus"] == "unidentified"))
+droppers <- unique(droppers)
+NMS_brach <- NMS_brach[-droppers,]
+
+## Tidy up undetermined/indeterminate
+gen.level <- c()
+table(NMS_brach$species)
+gen.level <- c(gen.level,which(NMS_brach[,"species"] == "fam., gen. et sp. indet."))
+gen.level <- c(gen.level,which(NMS_brach[,"species"] == "Group"))
+gen.level <- c(gen.level,which(NMS_brach[,"species"] == "indet"))
+gen.level <- c(gen.level,which(NMS_brach[,"species"] == "indet."))
+gen.level <- c(gen.level,which(NMS_brach[,"species"] == "indet. with fluorite"))
+gen.level <- c(gen.level,which(NMS_brach[,"species"] == "indetermined"))
+gen.level <- c(gen.level,which(NMS_brach[,"species"] == "invertebrates"))
+gen.level <- c(gen.level,which(NMS_brach[,"species"] == "n. sp."))
+gen.level <- c(gen.level,which(NMS_brach[,"species"] == "sp."))
+gen.level <- c(gen.level,which(NMS_brach[,"species"] == "sp. "))
+gen.level <- c(gen.level,which(NMS_brach[,"species"] == "sp. aff. mentzeli"))
+gen.level <- c(gen.level,which(NMS_brach[,"species"] == "spp."))
+NMS_brach[gen.level,"species"] <- "sp."
+NMS_brach$phylum <- "Brachiopoda"
+
+## Export
+saveRDS(NMS_biv, file = "data/museum/NMS_biv.Rds")
+saveRDS(NMS_brach, file = "data/museum/NMS_brach.Rds")
+
+## Isolate formations
+NMS_formations <- sort(unique(c(NMS_biv$formation, NMS_brach$formation)))
+## Drop gap
+NMS_formations <- NMS_formations[-1]
+
+#### AMNH data ####
 
 #### Load GBIF data ####
 ## Set GBIF username
