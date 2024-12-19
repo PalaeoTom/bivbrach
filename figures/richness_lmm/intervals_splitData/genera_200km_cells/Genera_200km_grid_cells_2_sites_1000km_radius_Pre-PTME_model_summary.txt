@@ -16,15 +16,15 @@ Random effects:
 Number of obs: 2700, groups:  source.subregion.ID:times, 27; times, 15
 
 Fixed effects:
-               Estimate Std. Error t value
-(Intercept)   2.234e+01  1.758e+00  12.705
-Bivalvia     -3.880e-01  1.751e-02 -22.157
-sampLithcarb  1.753e+00  5.463e-01   3.209
-sampLithsili -1.827e+00  3.524e-01  -5.185
-sampEnvdeep  -2.542e+00  1.080e+00  -2.354
-sampEnvshal   7.010e-02  7.229e+00   0.010
-sampReefnoRf -2.551e+00  3.428e-01  -7.443
-sampLat       5.422e-07  3.300e-07   1.643
+                  Estimate    Std. Error t value
+(Intercept)  22.3399102123  1.7582953295  12.705
+Bivalvia     -0.3880353095  0.0175133419 -22.157
+sampLithcarb  1.7528948312  0.5462692857   3.209
+sampLithsili -1.8269933534  0.3523857831  -5.185
+sampEnvdeep  -2.5420349718  1.0799076351  -2.354
+sampEnvshal   0.0701038691  7.2292364825   0.010
+sampReefnoRf -2.5513937933  0.3428049834  -7.443
+sampLat       0.0000005422  0.0000003300   1.643
 
 Correlation of Fixed Effects:
             (Intr) Bivalv smpLthc smpLths smpEnvd smpEnvs smpRfR

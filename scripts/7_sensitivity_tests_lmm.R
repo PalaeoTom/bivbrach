@@ -410,15 +410,19 @@ for(r in 1:length(input.strings)){
 
 ## Now to plot!
 ## Download period colour palettes
-periods <- downloadTime("international periods")
-periods <- periods[order(periods$b_age, decreasing=TRUE), ]
-periods <- periods[periods$b_age <= periods[which(rownames(periods) == "Cambrian"),"b_age"],c(2,4,5,8)]
-periods[,"shape"] <- c(rep(16, 6), rep(15, 3), rep(17, 3))
+#periods <- downloadTime("international periods")
+#periods <- periods[order(periods$b_age, decreasing=TRUE), ]
+#periods <- periods[periods$b_age <= periods[which(rownames(periods) == "Cambrian"),"b_age"],c(2,4,5,8)]
+#periods[,"shape"] <- c(rep(16, 6), rep(15, 3), rep(17, 3))
+#write.csv(periods, "data/periods.csv")
+periods <- read.csv("data/periods.csv", row.names = 1)
 
 ## Download era shape palette
-eras <- downloadTime("international eras")[1:3,]
-eras <- eras[order(eras$b_age, decreasing = TRUE),c(2,4,5)]
-eras[,"shape"] <- c(16,15,17)
+#eras <- eras[order(eras$b_age, decreasing = TRUE),c(2,4,5)]
+#eras <- downloadTime("international eras")[1:3,]
+#eras[,"shape"] <- c(16,15,17)
+#write.csv(eras, "data/eras.csv")
+eras <- read.csv("data/eras.csv", row.names = 1)
 
 ## Get stage data with times used (columns t_round and b_round)
 stages <- read.csv("data/cleaned_stages.csv", row.names = 1)
@@ -453,7 +457,7 @@ rich.input.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_regRich"
 source("functions/mass.SJplot.R")
 
 ## Run function for all
-#r = 2
+#r = 1
 #input.string = input.strings[r]
 #model.type = "interval_split_PTME"
 #argument.strings = title.strings
@@ -465,19 +469,21 @@ source("functions/mass.SJplot.R")
 #era.scale = eras
 #xy = c("Bivalvia", "Brachiopoda")
 #min.sample = 20
-#time.cutoffs = era.cutoffs
-#s = 3
-#i = 2
+#time.cutoffs = PTME.cutoffs
+#s = 1
+#i = 1
 
 ## Run it!
-for(r in 1:length(input.strings)){
-  mass.SJplot(input.strings[r], model.type = "interval_split_era", argument.strings = title.strings,
-              model.input.dir = model.input.dirs[r], rich.input.dir = rich.input.dir,
-              output.dir = output.dirs.intervals.split[r], times.col = "times", period.scale = periods,
-              era.scale = eras, xy = c("Bivalvia", "Brachiopoda"), min.sample = 20, time.cutoffs = era.cutoffs)
-}
+#for(r in 1:length(input.strings)){
+#  mass.SJplot(input.strings[r], model.type = "interval_split_era", argument.strings = title.strings,
+#              model.input.dir = model.input.dirs[r], rich.input.dir = rich.input.dir,
+#              output.dir = output.dirs.intervals.split[r], times.col = "times", period.scale = periods,
+#              era.scale = eras, xy = c("Bivalvia", "Brachiopoda"), min.sample = 20, time.cutoffs = era.cutoffs)
+#}
 
-for(r in 1:length(input.strings)){
-  mass.SJplot(input.strings[r], model.type = "interval_split_PTME", title.strings, model.input.dirs[r], rich.input.dir, output.dirs.intervals.split[r], times.col = "times", period.scale = periods, era.scale = eras, xy = c("Bivalvia", "Brachiopoda"), time.cutoffs = PTME.cutoffs)
-}
+#for(r in 1:length(input.strings)){
+#  mass.SJplot(input.strings[r], model.type = "interval_split_PTME", title.strings, model.input.dirs[r], rich.input.dir, output.dirs.intervals.split[r], times.col = "times", period.scale = periods, era.scale = eras, xy = c("Bivalvia", "Brachiopoda"), time.cutoffs = PTME.cutoffs)
+#}
+
+
 

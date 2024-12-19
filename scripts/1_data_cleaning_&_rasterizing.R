@@ -50,8 +50,56 @@ Peabody_brach <- read.csv("Peabody_Brachiopods_May2024.csv")
 
 #### Cleaning up museum data ####
 ## Start with FMNH. Classify as open and embargoed, then combine. Isolate formations first.
+FMNH_biv$status <- "open"
+FMNH_brach$status <- "open"
+FMNH_biv_E1$status <- "embargoed"
+FMNH_biv_E2$status <- "embargoed"
+FMNH_biv_E3$status <- "embargoed"
+FMNH_brach_E1$status <- "embargoed"
 
+## Combine into single embargoed dataset for bivalves
+## Create frame
+FMNH_biv_E <- rbind(FMNH_biv_E1, FMNH_biv_E2, FMNH_biv_E3)
+biv_E_frame <- as.data.frame(matrix("", ncol = ncol(FMNH_biv), nrow = nrow(FMNH_biv_E)))
+colnames(biv_E_frame) <- colnames(FMNH_biv)
 
+## Drop columns not included in main dataset
+FMNH_biv_E <- FMNH_biv_E[,colnames(FMNH_biv_E) %in% colnames(FMNH_biv)]
+
+## Populate frame
+biv_E_frame[,match(colnames(FMNH_biv_E),colnames(FMNH_biv))] <- FMNH_biv_E
+
+## Combine with other bivalves
+FMNH_biv <- rbind(FMNH_biv, biv_E_frame)
+
+## Same for brachiopods
+brach_E_frame <- as.data.frame(matrix("", ncol = ncol(FMNH_brach), nrow = nrow(FMNH_brach_E1)))
+colnames(brach_E_frame) <- colnames(FMNH_brach)
+
+## Drop columns not included in main dataset
+FMNH_brach_E1 <- FMNH_brach_E1[,colnames(FMNH_brach_E1) %in% colnames(FMNH_brach)]
+
+## Populate frame
+brach_E_frame[,match(colnames(FMNH_brach_E1),colnames(FMNH_brach))] <- FMNH_brach_E1
+
+## Combine with other brachalves
+FMNH_brach <- rbind(FMNH_brach, brach_E_frame)
+
+## Drop specimen status = missing entries
+FMNH_biv <- FMNH_biv[which(!FMNH_biv$SpecimenStatus == "MISSING"),]
+FMNH_brach <- FMNH_brach[which(!FMNH_brach$SpecimenStatus == "MISSING"),]
+
+## Prune out those with missing formations
+FMNH_biv <- FMNH_biv[which(!FMNH_biv$Formation == ""),]
+FMNH_brach <- FMNH_brach[which(!FMNH_brach$Formation == ""),]
+
+## Prune out entries missing lat or long entries
+## Right now, not possible to geocode FMNH data as no locality strings. As such, need to stick to museum lat/long data
+FMNH_biv <- FMNH_biv[-which(is.na(FMNH_biv$Latitude1) | is.na(FMNH_biv$Longitude1)),]
+FMNH_brach <- FMNH_brach[-which(is.na(FMNH_brach$Latitude1) | is.na(FMNH_brach$Longitude1)),]
+
+## Isolate formations
+FMNH_formations <- sort(unique(c(FMNH_biv$Formation, FMNH_brach$Formation)))
 
 #### Load GBIF data ####
 ## Set GBIF username

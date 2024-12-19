@@ -159,15 +159,18 @@ plot.names <- c("2 sites, 1000km radius", "4 sites, 500km radius")
 title.strings <- cbind(input.names,plot.names)
 
 ## Download period colour palettes
-periods <- downloadTime("international periods")
-periods <- periods[order(periods$b_age, decreasing=TRUE), ]
-periods <- periods[periods$b_age <= periods[which(rownames(periods) == "Cambrian"),"b_age"],c(2,4,5,8)]
-periods[,"shape"] <- c(rep(16, 6), rep(15, 3), rep(17, 3))
+#periods <- downloadTime("international periods")
+#periods <- periods[order(periods$b_age, decreasing=TRUE), ]
+#periods <- periods[periods$b_age <= periods[which(rownames(periods) == "Cambrian"),"b_age"],c(2,4,5,8)]
+#periods[,"shape"] <- c(rep(16, 6), rep(15, 3), rep(17, 3))
+periods <- read.csv("data/periods.csv", row.names = 1)
+eras <- read.csv("data/eras.csv", row.names = 1)
+
 
 ## Download era shape palette
-eras <- downloadTime("international eras")[1:3,]
-eras <- eras[order(eras$b_age, decreasing = TRUE),c(2,4,5)]
-eras[,"shape"] <- c(16,15,17)
+#eras <- eras[order(eras$b_age, decreasing = TRUE),c(2,4,5)]
+#eras <- downloadTime("international eras")[1:3,]
+#eras[,"shape"] <- c(16,15,17)
 
 ## define input and output strings
 input.strings.full <- input.strings.simple <- c("stages_g200",
@@ -219,10 +222,12 @@ rich.input.dir <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/raw_regRich"
 #s = 1
 #i = 1
 
-for(r in 1:length(input.strings.full)){
- mass.SJplot(input.strings.full[r], model.type = "full", title.strings, model.input.dirs[r], rich.input.dir, output.dirs.full[r], times.col = "times", period.scale = periods, era.scale = eras, xy = c("Bivalvia", "Brachiopoda"))
-}
+#for(r in 1:length(input.strings.full)){
+# mass.SJplot(input.strings.full[r], model.type = "full", title.strings, model.input.dirs[r], rich.input.dir, output.dirs.full[r], times.col = "times", period.scale = periods, era.scale = eras, xy = c("Bivalvia", "Brachiopoda"))
+#}
 
-for(r in 1:length(input.strings.simple)){
-  mass.SJplot(input.strings.simple[r], model.type = "simple", title.strings, model.input.dirs[r], rich.input.dir, output.dirs.simple[r], times.col = "times", period.scale = periods, era.scale = eras, xy = c("Bivalvia", "Brachiopoda"))
-}
+#for(r in 1:length(input.strings.simple)){
+#  mass.SJplot(input.strings.simple[r], model.type = "simple", title.strings, model.input.dirs[r], rich.input.dir, output.dirs.simple[r], times.col = "times", period.scale = periods, era.scale = eras, xy = c("Bivalvia", "Brachiopoda"))
+#}
+
+
