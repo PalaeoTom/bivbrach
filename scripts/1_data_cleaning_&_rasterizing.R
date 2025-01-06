@@ -99,6 +99,47 @@ FMNH_brach <- FMNH_brach[which(!FMNH_brach$Formation == ""),]
 FMNH_biv <- FMNH_biv[-which(is.na(FMNH_biv$Latitude1) | is.na(FMNH_biv$Longitude1)),]
 FMNH_brach <- FMNH_brach[-which(is.na(FMNH_brach$Latitude1) | is.na(FMNH_brach$Longitude1)),]
 
+## Prune out entries missing genus
+## Bivalves
+#View(data.frame(table(FMNH_biv$Genus)))
+droppers <- c()
+droppers <- c(droppers, which(FMNH_biv$Genus == ""))
+droppers <- c(droppers, which(FMNH_biv$Genus == "HERE"))
+FMNH_biv <- FMNH_biv[-droppers,]
+
+## Little bit of initial frame cleaning
+FMNH_biv$Phylum <- "Mollusca"
+FMNH_biv$Class <- "Bivalvia"
+FMNH_biv$Genus <- str_to_title(FMNH_biv$Genus)
+FMNH_biv$Species <- tolower(FMNH_biv$Species)
+FMNH_biv$Formation <- str_to_title(FMNH_biv$Formation)
+
+## Update all unknown species to sp.
+#View(data.frame(table(FMNH_biv$Species)))
+gen.level <- c()
+gen.level <- c(gen.level, which(FMNH_biv$Species == ""))
+gen.level <- c(gen.level, which(FMNH_biv$Species == "incertae"))
+gen.level <- unique(gen.level)
+FMNH_biv[gen.level,"Species"] <- "sp."
+
+## Brachiopods
+#View(data.frame(table(FMNH_brach$Genus)))
+droppers <- c()
+droppers <- c(droppers, which(FMNH_brach$Genus == ""))
+FMNH_brach <- FMNH_brach[-droppers,]
+
+## Clean brachiopod data
+FMNH_brach$Phylum <- "Brachiopoda"
+FMNH_brach$Genus <- str_to_title(FMNH_brach$Genus)
+FMNH_brach$Species <- tolower(FMNH_brach$Species)
+FMNH_brach$Formation <- str_to_title(FMNH_brach$Formation)
+
+## Update all unknown species
+#View(data.frame(table(FMNH_brach$Species)))
+gen.level <- c()
+gen.level <- c(gen.level, which(FMNH_brach$Species == ""))
+FMNH_brach[gen.level,"Species"] <- "sp."
+
 ## Isolate formations
 FMNH_formations <- sort(unique(c(FMNH_biv$Formation, FMNH_brach$Formation)))
 
@@ -142,35 +183,68 @@ NMS_biv <- NMS_biv[,c(1,3,4,5,6,7)]
 NMS_brach <- NMS_brach[,c(2,3,4,5,6,7)]
 
 ## check for gaps and NAs, and genera for undetermined/indeterminate
-table(NMS_biv$genus)
+#View(data.frame(table(NMS_biv$genus)))
 droppers <- c()
 droppers <- c(droppers, which(is.na(NMS_biv[,"genus"])))
-droppers <- c(droppers, which(is.na(NMS_biv[,"species"])))
 droppers <- c(droppers, which(is.na(NMS_biv[,"locality"])))
 droppers <- c(droppers, which(is.na(NMS_biv[,"formation"])))
 droppers <- c(droppers, which(NMS_biv[,"genus"] == ""))
-droppers <- c(droppers, which(NMS_biv[,"species"] == ""))
 droppers <- c(droppers, which(NMS_biv[,"locality"] == ""))
 droppers <- c(droppers, which(NMS_biv[,"formation"] == ""))
 droppers <- c(droppers, which(NMS_biv[,"genus"] == "undetermined"))
 droppers <- c(droppers, which(NMS_biv[,"genus"] == "indeterminate"))
+droppers <- c(droppers, which(NMS_biv[,"genus"] == "indetermiante"))
+droppers <- c(droppers, which(NMS_biv[,"genus"] == "Indeterminate"))
 droppers <- c(droppers, which(NMS_biv[,"genus"] == "?"))
 droppers <- c(droppers, which(NMS_biv[,"genus"] == "bivave"))
 droppers <- c(droppers, which(NMS_biv[,"genus"] == "bivaves"))
+droppers <- c(droppers, which(NMS_biv[,"genus"] == "Myacites or Modiola"))
+droppers <- c(droppers, which(NMS_biv[,"genus"] == "Myalinia & Myacites"))
+droppers <- c(droppers, which(NMS_biv[,"genus"] == "Pholadomya  & Lima"))
+droppers <- c(droppers, which(NMS_biv[,"genus"] == "various"))
+## Check for affiliations
+affs <- unique(NMS_biv[,"genus"][which(str_detect(NMS_biv[,"genus"], pattern = "aff"))])
+affs
+## No affs!
+## Check for dots
+dots <- unique(NMS_biv$genus[which(str_detect(NMS_biv$genus, pattern = "\\."))])
+## prune out dots to retain
+dots <- dots[-c(4, 5, 6, 7)]
+dots
+droppers <- c(droppers,which(NMS_biv[,"genus"] %in% dots))
+## No dots!
 droppers <- unique(droppers)
 NMS_biv <- NMS_biv[-droppers,]
 
 ## Tidy up undetermined/indeterminate
+#View(data.frame(table(NMS_biv$species)))
 gen.level <- c()
+gen.level <- c(gen.level,which(NMS_biv[,"species"] == ""))
+gen.level <- c(gen.level,which(is.na(NMS_biv[,"species"])))
+## get names with periods
+dots <- unique(NMS_biv$species[which(str_detect(NMS_biv$species, pattern = "\\."))])
+dots
+## remove rows to retain (dropping cf genera, converting cf species to sp.)
+dots <- dots[-c(4, 5, 12)]
+dots
+gen.level <- c(gen.level, which(NMS_biv$species %in% dots))
 gen.level <- c(gen.level,which(NMS_biv[,"species"] == "undetermined"))
 gen.level <- c(gen.level,which(NMS_biv[,"species"] == "indeterminate"))
+gen.level <- c(gen.level,which(NMS_biv[,"species"] == "from"))
+gen.level <- c(gen.level,which(NMS_biv[,"species"] == "iron"))
 gen.level <- c(gen.level,which(NMS_biv[,"species"] == "sp"))
 gen.level <- c(gen.level,which(NMS_biv[,"species"] == "sp "))
 gen.level <- c(gen.level,which(NMS_biv[,"species"] == "sp,"))
 gen.level <- c(gen.level,which(NMS_biv[,"species"] == "sp?"))
-gen.level <- c(gen.level,which(NMS_biv[,"species"] == "sp."))
-gen.level <- c(gen.level,which(NMS_biv[,"species"] == "sp. nov?"))
-gen.level <- c(gen.level,which(NMS_biv[,"species"] == "sp.?"))
+gen.level <- c(gen.level,which(NMS_biv[,"species"] == "gloucestershire"))
+## Convert affiliations to sp.
+affs <- unique(NMS_biv[,"species"][which(str_detect(NMS_biv[,"species"], pattern = "aff"))])
+affs
+##
+affs <- affs[-c(1,4)]
+affs
+gen.level <- c(gen.level, which(NMS_biv[,"species"] %in% affs))
+gen.level <- unique(gen.level)
 NMS_biv[gen.level,"species"] <- "sp."
 NMS_biv$phylum <- "Mollusca"
 
@@ -181,39 +255,67 @@ NMS_brach <- cbind(names, NMS_brach)
 NMS_brach$fullName <- NULL
 
 ## dropping time
+#View(data.frame(table(NMS_brach$genus)))
 droppers <- c()
 droppers <- c(droppers, which(is.na(NMS_brach[,"genus"])))
-droppers <- c(droppers, which(is.na(NMS_brach[,"species"])))
 droppers <- c(droppers, which(is.na(NMS_brach[,"locality"])))
 droppers <- c(droppers, which(is.na(NMS_brach[,"formation"])))
 droppers <- c(droppers, which(NMS_brach[,"genus"] == ""))
-droppers <- c(droppers, which(NMS_brach[,"species"] == ""))
 droppers <- c(droppers, which(NMS_brach[,"locality"] == ""))
 droppers <- c(droppers, intersect(which(NMS_brach[,"formation"] == ""), which(NMS_brach[,"stage"] == "")))
 droppers <- c(droppers, which(NMS_brach[,"genus"] == "cf."))
+droppers <- c(droppers, which(NMS_brach[,"genus"] == "FOR"))
+droppers <- c(droppers, which(NMS_brach[,"genus"] == "brachiopod"))
+droppers <- c(droppers, which(NMS_brach[,"genus"] == "Brachiopoda"))
+droppers <- c(droppers, which(NMS_brach[,"genus"] == "brachiopoda"))
 droppers <- c(droppers, which(NMS_brach[,"genus"] == "maybe"))
 droppers <- c(droppers, which(NMS_brach[,"genus"] == "need"))
 droppers <- c(droppers, which(NMS_brach[,"genus"] == "no"))
+droppers <- c(droppers, which(NMS_brach[,"genus"] == "spines"))
+droppers <- c(droppers, which(NMS_brach[,"genus"] == "fossil-bearing"))
+droppers <- c(droppers, which(NMS_brach[,"genus"] == "mixed"))
 droppers <- c(droppers, which(NMS_brach[,"genus"] == "Indeterminate,"))
 droppers <- c(droppers, which(NMS_brach[,"genus"] == "unidentified"))
+droppers <- c(droppers, which(NMS_brach[,"genus"] == "productellidae"))
+droppers <- c(droppers, which(NMS_brach[,"genus"] == "Rhynchonelloidea"))
+## Convert affiliations to sp.
+affs <- unique(NMS_brach[,"genus"][which(str_detect(NMS_brach[,"genus"], pattern = "aff"))])
+affs
+## No affs!
+## Check for dots
+dots <- unique(NMS_brach$genus[which(str_detect(NMS_brach$genus, pattern = "\\."))])
+dots
+## Only dot is accounted for above.
+## No dots!
 droppers <- unique(droppers)
 NMS_brach <- NMS_brach[-droppers,]
 
 ## Tidy up undetermined/indeterminate
+#View(data.frame(table(NMS_brach$species)))
 gen.level <- c()
-table(NMS_brach$species)
-gen.level <- c(gen.level,which(NMS_brach[,"species"] == "fam., gen. et sp. indet."))
+gen.level <- c(gen.level,which(NMS_brach[,"species"] == ""))
+gen.level <- c(gen.level,which(is.na(NMS_brach[,"species"])))
 gen.level <- c(gen.level,which(NMS_brach[,"species"] == "Group"))
 gen.level <- c(gen.level,which(NMS_brach[,"species"] == "indet"))
-gen.level <- c(gen.level,which(NMS_brach[,"species"] == "indet."))
-gen.level <- c(gen.level,which(NMS_brach[,"species"] == "indet. with fluorite"))
 gen.level <- c(gen.level,which(NMS_brach[,"species"] == "indetermined"))
 gen.level <- c(gen.level,which(NMS_brach[,"species"] == "invertebrates"))
-gen.level <- c(gen.level,which(NMS_brach[,"species"] == "n. sp."))
-gen.level <- c(gen.level,which(NMS_brach[,"species"] == "sp."))
-gen.level <- c(gen.level,which(NMS_brach[,"species"] == "sp. "))
-gen.level <- c(gen.level,which(NMS_brach[,"species"] == "sp. aff. mentzeli"))
-gen.level <- c(gen.level,which(NMS_brach[,"species"] == "spp."))
+gen.level <- c(gen.level,which(NMS_brach[,"species"] == "brachiopod"))
+gen.level <- c(gen.level,which(NMS_brach[,"species"] == "brachiopods"))
+## Convert affiliations to sp.
+affs <- unique(NMS_brach[,"species"][which(str_detect(NMS_brach[,"species"], pattern = "aff"))])
+affs
+##
+affs <- affs[-c(11:12)]
+affs
+gen.level <- c(gen.level, which(NMS_brach[,"species"] %in% affs))
+## get names with periods
+dots <- unique(NMS_brach$species[which(str_detect(NMS_brach$species, pattern = "\\."))])
+dots
+## remove rows to retain (dropping cf genera, converting cf species to sp.)
+dots <- dots[-c(44, 46)]
+dots
+gen.level <- c(gen.level, which(NMS_brach$species %in% dots))
+gen.level <- unique(gen.level)
 NMS_brach[gen.level,"species"] <- "sp."
 NMS_brach$phylum <- "Brachiopoda"
 
@@ -227,7 +329,6 @@ NMS_formations <- sort(unique(c(NMS_biv$formation, NMS_brach$formation)))
 NMS_formations <- NMS_formations[-1]
 
 #### AMNH data ####
-View(AMNH)
 ## Update colnames
 colnames(AMNH) <- c("IRN", "catN", "suffix", "phylum", "class", "order", "family", "genus", "subgenus", "species", "subspecies",
                     "recordType", "refPublicationDate", "refTitle", "bibFigurePagination", "bibPlatePagination", "system", "group",
@@ -236,9 +337,36 @@ colnames(AMNH) <- c("IRN", "catN", "suffix", "phylum", "class", "order", "family
                     "latitudeDecimal", "latitudeVerbatim", "longitude", "longitudeDecimal", "longitudeVerbatim")
 
 ## Prune to relevant columns
-##Test
+AMNH <- AMNH[,c(1:11, 14, 17:20, 22:32, 39, 42)]
 
-#### Load GBIF data ####
+## Drop rows with no genera, phylum/class, formation/age, or latitude+longtitude/locality
+View(data.frame(table(AMNH$genus)))
+droppers <- c()
+droppers <- c(droppers, which(AMNH$genus == ""))
+droppers <- c(droppers, which(AMNH$genus == "?"))
+droppers <- c(droppers, which(AMNH$genus == "Unidentified"))
+droppers <- c(droppers, which(AMNH$genus == "Undetermined"))
+## get names with periods
+dots <- AMNH$genus[which(str_detect(AMNH$genus, pattern = "\\."))]
+dots
+## remove rows to retain
+dots <- dots[-c(16:19, 31)]
+droppers <- c(droppers, which(AMNH$genus %in% dots))
+droppers <- c(droppers, which(AMNH$genus == "????"))
+droppers <- c(droppers, which(AMNH$genus == "#NAME?"))
+droppers <- c(droppers, which(AMNH$genus == "Bivalvia | cephalopoda"))
+droppers <- c(droppers, which(AMNH$genus == "Centrinella-rhipidomella"))
+
+
+## neither phylum nor class
+droppers <- c(droppers, intersect(which(AMNH$phylum == ""), which(AMNH$class == "")))
+## neither formation nor age
+
+## neither both lat+long nor locality
+
+
+
+
 #### Load GBIF data ####
 ## Set GBIF username
 #library(usethis)
