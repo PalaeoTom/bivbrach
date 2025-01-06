@@ -236,7 +236,7 @@ colnames(AMNH) <- c("IRN", "catN", "suffix", "phylum", "class", "order", "family
                     "latitudeDecimal", "latitudeVerbatim", "longitude", "longitudeDecimal", "longitudeVerbatim")
 
 ## Prune to relevant columns
-
+##Test
 
 #### Load GBIF data ####
 #### Load GBIF data ####
