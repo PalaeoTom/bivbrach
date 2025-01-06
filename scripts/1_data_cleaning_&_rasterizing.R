@@ -227,7 +227,18 @@ NMS_formations <- sort(unique(c(NMS_biv$formation, NMS_brach$formation)))
 NMS_formations <- NMS_formations[-1]
 
 #### AMNH data ####
+View(AMNH)
+## Update colnames
+colnames(AMNH) <- c("IRN", "catN", "suffix", "phylum", "class", "order", "family", "genus", "subgenus", "species", "subspecies",
+                    "recordType", "refPublicationDate", "refTitle", "bibFigurePagination", "bibPlatePagination", "system", "group",
+                    "era", "eon", "siteNumber", "country", "state", "county", "township", "preciseLocation", "locality", "period",
+                    "epoch", "age", "formation", "member", "zone", "bed", "collectorString", "collectorDate", "originalCount", "latitude",
+                    "latitudeDecimal", "latitudeVerbatim", "longitude", "longitudeDecimal", "longitudeVerbatim")
 
+## Prune to relevant columns
+
+
+#### Load GBIF data ####
 #### Load GBIF data ####
 ## Set GBIF username
 #library(usethis)
