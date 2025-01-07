@@ -376,6 +376,7 @@ if(any(str_detect(NMS_biv[,"genus"], pattern = "\\?"))){
 ## Check formations for unusable entries
 #View(data.frame(table(NMS_biv$formation)))
 droppers <- c(droppers, which(is.na(NMS_biv[,"formation"])))
+droppers <- c(droppers, which(NMS_biv[,"formation"] == ""))
 droppers <- c(droppers, which(NMS_biv[,"formation"] == "basal similis-pulchra zone, from 30 ft above top furnace mine"))
 droppers <- c(droppers, which(NMS_biv[,"formation"] == "Ga"))
 droppers <- unique(droppers)
@@ -693,27 +694,52 @@ colnames(AMNH) <- c("IRN", "catN", "suffix", "phylum", "class", "order", "family
 ## Prune to relevant columns
 AMNH <- AMNH[,c(1:11, 14, 17:20, 22:32, 39, 42)]
 
+## Add genus uncertainty column
+AMNH$uncertainGenus <- F
+
 ## Drop rows with no genera, phylum/class, formation/age, or latitude+longtitude/locality
-View(data.frame(table(AMNH$genus)))
+#View(data.frame(table(AMNH$genus)))
 droppers <- c()
 droppers <- c(droppers, which(AMNH$genus == ""))
-droppers <- c(droppers, which(AMNH$genus == "?"))
-## get names with periods
-dots <- unique(AMNH$genus[which(str_detect(AMNH$genus, pattern = "\\."))])
-dots
-## remove rows to retain
-dots <- dots[-c(14, 15, 26)]
-dots
-droppers <- c(droppers, which(AMNH$genus %in% dots))
-droppers <- c(droppers, which(AMNH$genus == "????"))
-droppers <- c(droppers, which(AMNH$genus == "#NAME?"))
+## Check for "aff"
+if(any(str_detect(AMNH[,"genus"], pattern = regex("aff", ignore_case = T)))){
+  print("'aff's detected")
+}
+## Check for "cf"
+if(any(str_detect(AMNH[,"genus"], pattern = regex("cf", ignore_case = T)))){
+  print("'cf's detected")
+  cfs <- unique(AMNH$genus[which(str_detect(AMNH$genus, pattern = regex("cf", ignore_case = T)))])
+  cfs
+  ## drop all but 3
+  cfs <- cfs[-3]
+  cfs
+  droppers <- c(droppers, which(AMNH[,"genus"] %in% cfs))
+}
+## Check for dots
+if(any(str_detect(AMNH[,"genus"], pattern = "\\."))){
+  print("periods detected")
+  dots <- unique(AMNH$genus[which(str_detect(AMNH$genus, pattern = "\\."))])
+  dots
+  ## prune out most dots
+  dots <- dots[-c(14, 15, 26)]
+  dots
+  droppers <- c(droppers,which(AMNH[,"genus"] %in% dots))
+}
+## Check for "?"
+if(any(str_detect(AMNH[,"genus"], pattern = "\\?"))){
+  print("'?'s detected")
+  questions <- unique(AMNH$genus[which(str_detect(AMNH$genus, pattern = "\\?"))])
+  #View(data.frame(questions))
+  ## Only drop a few
+  questions <- questions[c(4, 43, 154, 159, 173, 196, 213)]
+  questions
+  droppers <- c(droppers,which(AMNH[,"genus"] %in% questions))
+}
 droppers <- c(droppers, which(AMNH$genus == "Bivalvia | cephalopoda"))
 droppers <- c(droppers, which(AMNH$genus == "Centrinella-rhipidomella"))
-droppers <- c(droppers, which(AMNH$genus == "? myalina,?liebea"))
 droppers <- c(droppers, which(AMNH$genus == "Deltopecten + etheripectn"))
 droppers <- c(droppers, which(AMNH$genus == "Fragum/trigonicardia"))
 droppers <- c(droppers, which(AMNH$genus == "Genus"))
-droppers <- c(droppers, which(AMNH$genus == "Genus ?"))
 droppers <- c(droppers, which(AMNH$genus == "Indet"))
 droppers <- c(droppers, which(AMNH$genus == "Indeterminate"))
 droppers <- c(droppers, which(AMNH$genus == "Indetermined"))
@@ -724,19 +750,31 @@ droppers <- c(droppers, which(AMNH$genus == "Liebea + bakevellia"))
 droppers <- c(droppers, which(AMNH$genus == "Mya  or panopea"))
 droppers <- c(droppers, which(AMNH$genus == "New genus"))
 droppers <- c(droppers, which(AMNH$genus == "Pseudomonotis + libea"))
-## get names with cf
-cfs <- AMNH$genus[which(str_detect(AMNH$genus, pattern = regex("cf", ignore_case = T)))]
-cfs
-## remove rows to retain
-cfs <- cfs[-c(3)]
-cfs
-droppers <- c(droppers, which(AMNH$genus %in% cfs))
-
 ## neither phylum nor class
 droppers <- c(droppers, intersect(which(AMNH$phylum == ""), which(AMNH$class == "")))
 ## neither formation nor age
+## define noStage and noForm, then get intersection
+
+##### Resume here! #####
+
+
 
 ## neither both lat+long nor locality
+## define noLat/long and noLoc, then get intersection
+
+## After this, get unique droppers and drop
+
+## Next, remove question marks from stage, formation, and genus
+
+## Tidy up genus capitalization
+
+## Then convert all uncertain species to "sp."
+
+## Then remove ?s from those remaining
+
+## Then fix capitalization for species
+
+
 
 #### Peabody data ####
 rm(list = ls())
