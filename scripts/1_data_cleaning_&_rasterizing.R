@@ -7,10 +7,6 @@
 ## Clean directory
 rm(list = ls())
 
-## Set working directory
-setwd("~/R_packages/bivbrach")
-home <- getwd()
-
 ## If packages aren't installed, install them, then load them
 packages <- c("fossilbrush", "rnaturalearth", "rnaturalearthdata", "terra", "divDyn", "iNEXT", "divvy", "rgbif", "usethis", "bit64", "dismo", "dplyr", "stringr")
 if(length(packages[!packages %in% installed.packages()[,"Package"]]) > 0){
@@ -34,7 +30,14 @@ library(remotes)
 install_github("PalaeoTom/divvyCompanion")
 library(divvyCompanion)
 
-#### Load museum data ####
+#### FMNH data ####
+rm(list = ls())
+
+## Set working directory
+setwd("~/R_packages/bivbrach")
+home <- getwd()
+
+## Load data
 setwd("~/Library/CloudStorage/OneDrive-Nexus365/Bivalve_brachiopod/data")
 FMNH_biv <- read.csv("FMNH_Bivalvia_June2024.csv")
 FMNH_brach <- read.csv("FMNH_Brachiopoda_June2024.csv")
@@ -42,14 +45,8 @@ FMNH_biv_E1 <- read.csv("FMNH_AL004_BIVALVIA.csv")
 FMNH_biv_E2 <- read.csv("FMNH_LI005_BIVALVIA.csv")
 FMNH_biv_E3 <- read.csv("FMNH_SO047_BIVALVIA.csv")
 FMNH_brach_E1 <- read.csv("FMNH_SO047_BRACHIOPODA.csv")[1,]
-NMS_biv <- read.csv("NMS_bivalves.csv")
-NMS_brach <- read.csv("NMS_brachiopoda.csv")
-AMNH <- read.csv("AMNH_May_2024.csv")
-Peabody_biv <- read.csv("Peabody_Bivalves_May2024.csv")
-Peabody_brach <- read.csv("Peabody_Brachiopods_May2024.csv")
 setwd(home)
 
-#### FMNH data ####
 ## Start with FMNH. Classify as open and embargoed, then combine. Isolate formations first.
 FMNH_biv$status <- "open"
 FMNH_brach$status <- "open"
@@ -83,41 +80,105 @@ FMNH_brach_E1 <- FMNH_brach_E1[,colnames(FMNH_brach_E1) %in% colnames(FMNH_brach
 ## Populate frame
 brach_E_frame[,match(colnames(FMNH_brach_E1),colnames(FMNH_brach))] <- FMNH_brach_E1
 
-## Combine with other brachalves
+## Combine with other brachs
 FMNH_brach <- rbind(FMNH_brach, brach_E_frame)
 
-## Drop specimen status = missing entries
-FMNH_biv <- FMNH_biv[which(!FMNH_biv$SpecimenStatus == "MISSING"),]
-FMNH_brach <- FMNH_brach[which(!FMNH_brach$SpecimenStatus == "MISSING"),]
+## Add uncertainGenus column
+FMNH_brach$uncertainGenus <- F
+FMNH_biv$uncertainGenus <- F
 
-## Prune out those with missing formations
-FMNH_biv <- FMNH_biv[which(!FMNH_biv$Formation == ""),]
-FMNH_brach <- FMNH_brach[which(!FMNH_brach$Formation == ""),]
-
-## Prune out entries missing lat or long entries
-## Right now, not possible to geocode FMNH data as no locality strings. As such, need to stick to museum lat/long data
-FMNH_biv <- FMNH_biv[-which(is.na(FMNH_biv$Latitude1) | is.na(FMNH_biv$Longitude1)),]
-FMNH_brach <- FMNH_brach[-which(is.na(FMNH_brach$Latitude1) | is.na(FMNH_brach$Longitude1)),]
-
-## Prune out entries missing genus
+## Prune out deficient entries missing genus
 ## Bivalves
 #View(data.frame(table(FMNH_biv$Genus)))
 droppers <- c()
 droppers <- c(droppers, which(FMNH_biv$Genus == ""))
 droppers <- c(droppers, which(FMNH_biv$Genus == "HERE"))
+## Check for "aff"
+if(any(str_detect(FMNH_biv[,"Genus"], pattern = regex("aff", ignore_case = T)))){
+  print("'aff's detected")
+  ## None
+}
+## Check for "cf"
+if(any(str_detect(FMNH_biv[,"Genus"], pattern = regex("cf", ignore_case = T)))){
+  print("'cf's detected")
+  ## None
+}
+## Check for dots
+if(any(str_detect(FMNH_biv[,"Genus"], pattern = "\\."))){
+  print("periods detected")
+  ## None
+}
+## Check for "?"
+if(any(str_detect(FMNH_biv[,"Genus"], pattern = "\\?"))){
+  print("'?'s detected")
+  ## None
+}
+## Missing specimens
+#View(data.frame(table(FMNH_biv$SpecimenStatus)))
+droppers <- c(droppers, which(FMNH_biv$SpecimenStatus == "MISSING"))
+## Missing or uncertain formations - needed for time
+#View(data.frame(table(FMNH_biv$Formation)))
+droppers <- c(droppers, which(FMNH_biv$Formation == ""))
+droppers <- c(droppers, which(FMNH_biv$Formation == "BERMONT FORMATION / FORT THOMPSON FORMATION"))
+droppers <- c(droppers, which(FMNH_biv$Formation == "CALOOSAHATCHEE FORMATION / BERMONT FORMATION"))
+droppers <- c(droppers, which(FMNH_biv$Formation == "CALOOSAHATCHEE FORMATION / BERMONT FORMATION?"))
+droppers <- c(droppers, which(FMNH_biv$Formation == "CALOOSAHATCHEE FORMATION / COFFEE MILL HAMMOCK FORMATION"))
+droppers <- c(droppers, which(FMNH_biv$Formation == "CALOOSAHATCHEE FM. / BERMONT FM. / FT. THOMPSON FM."))
+droppers <- c(droppers, which(FMNH_biv$Formation == "CALOOSAHATCHEE FORMATION / FORT THOMPSON FORMATION"))
+droppers <- c(droppers, which(FMNH_biv$Formation == "CHIPOLA/JACKSON BLUFF FMS."))
+droppers <- c(droppers, which(FMNH_biv$Formation == "DAKOTA/MANCOS FORMATIONS"))
+droppers <- c(droppers, which(FMNH_biv$Formation == "DUPLIN/RAYSOR FORMATION"))
+droppers <- c(droppers, which(FMNH_biv$Formation == "EDWARDS/COMANCHE PEAK LIMESTONES/WALNUT FORMATION"))
+droppers <- c(droppers, which(FMNH_biv$Formation == "GLENDON/MARIANNA FORMATIONS"))
+droppers <- c(droppers, which(FMNH_biv$Formation == "MT. LAUREL SD./NAVASINK FM."))
+droppers <- c(droppers, which(FMNH_biv$Formation == "OCALA LIMESTONE(UPPER)/MARIANNA LIMESTONE"))
+droppers <- c(droppers, which(FMNH_biv$Formation == "OCALA LIMESTONE/COOPER MARL"))
+droppers <- c(droppers, which(FMNH_biv$Formation == "OCALA LIMESTONE/TIVOLA BD."))
+droppers <- c(droppers, which(FMNH_biv$Formation == "OCALA LS./BUMPNOSE LS./MARIANNA LS."))
+droppers <- c(droppers, which(FMNH_biv$Formation == "OCALA/SUWANNEE LIMESTONES"))
+droppers <- c(droppers, which(FMNH_biv$Formation == "RAYSOR/CHOWAN RIVER FORMATIONS"))
+droppers <- c(droppers, which(FMNH_biv$Formation == "RIPLEY/PRAIRIE BLUFF FORMATION"))
+droppers <- c(droppers, which(FMNH_biv$Formation == "SUWANNEE LS./STATENVILLE FM."))
+droppers <- c(droppers, which(FMNH_biv$Formation == "TAMIAMI FM., PINECREST BEDS/CALOOSAHATCHEE FM./BERMONT FM."))
+droppers <- c(droppers, which(FMNH_biv$Formation == "TAMIAMI FORMATION, PINECREST BEDS & OCHOPEE LIMESTONE/CALOOSAHAT"))
+droppers <- c(droppers, which(FMNH_biv$Formation == "TAMIAMI FORMATION, PINECREST BEDS/BERMONT FORMATION"))
+droppers <- c(droppers, which(FMNH_biv$Formation == "TAMIAMI FORMATION, PINECREST BEDS/CALOOSAHATCHEE FORMATION"))
+droppers <- c(droppers, which(FMNH_biv$Formation == "TAMIAMI FORMATION/CALOOSAHATCHEE FORMATION"))
+droppers <- c(droppers, which(FMNH_biv$Formation == "TAMIAMI/CALOOSAHATCHEE/FORT THOMPSON FMS."))
+droppers <- c(droppers, which(FMNH_biv$Formation == "TAMIAMI/NASHUA/FORT THOMPSON FORMATIONS"))
+droppers <- c(droppers, which(FMNH_biv$Formation == "TUPELO BAY FORMATION (CROSS MEMBER) / SANTEE LIMESTONE"))
+## Prune out entries missing lat or long entries
+## Right now, not possible to geocode FMNH data as no locality strings. As such, need to stick to museum lat/long data
+droppers <- c(droppers, which(is.na(FMNH_biv$Latitude1) | is.na(FMNH_biv$Longitude1)))
+droppers <- unique(droppers)
 FMNH_biv <- FMNH_biv[-droppers,]
-
-## Little bit of initial frame cleaning
-FMNH_biv$Phylum <- "Mollusca"
-FMNH_biv$Class <- "Bivalvia"
-FMNH_biv$Genus <- str_to_title(FMNH_biv$Genus)
-FMNH_biv$Species <- tolower(FMNH_biv$Species)
-FMNH_biv$Formation <- str_to_title(FMNH_biv$Formation)
 
 ## Update all unknown species to sp.
 #View(data.frame(table(FMNH_biv$Species)))
 gen.level <- c()
 gen.level <- c(gen.level, which(FMNH_biv$Species == ""))
+## Check for "aff"
+if(any(str_detect(FMNH_biv[,"Species"], pattern = regex("aff", ignore_case = T)))){
+  print("'aff's detected")
+  affs <- FMNH_biv[,"Species"][which(str_detect(FMNH_biv[,"Species"], pattern = regex("aff", ignore_case = T)))]
+  affs
+  ## No need to drop
+}
+## Check for "cf"
+if(any(str_detect(FMNH_biv[,"Species"], pattern = regex("cf", ignore_case = T)))){
+  print("'cf's detected")
+  ## None
+}
+## Check for dots
+if(any(str_detect(FMNH_biv[,"Species"], pattern = "\\."))){
+  print("periods detected")
+  ## None
+}
+## Check for "?"
+if(any(str_detect(FMNH_biv[,"Species"], pattern = "\\?"))){
+  print("'?'s detected")
+  ## None
+}
 gen.level <- c(gen.level, which(FMNH_biv$Species == "incertae"))
 gen.level <- unique(gen.level)
 FMNH_biv[gen.level,"Species"] <- "sp."
@@ -126,7 +187,82 @@ FMNH_biv[gen.level,"Species"] <- "sp."
 #View(data.frame(table(FMNH_brach$Genus)))
 droppers <- c()
 droppers <- c(droppers, which(FMNH_brach$Genus == ""))
+## Check for "aff"
+if(any(str_detect(FMNH_brach[,"Genus"], pattern = regex("aff", ignore_case = T)))){
+  print("'aff's detected")
+}
+## Check for "cf"
+if(any(str_detect(FMNH_brach[,"Genus"], pattern = regex("cf", ignore_case = T)))){
+  print("'cf's detected")
+}
+## Check for dots
+if(any(str_detect(FMNH_brach[,"Genus"], pattern = "\\."))){
+  print("periods detected")
+}
+## Check for "?"
+if(any(str_detect(FMNH_brach[,"Genus"], pattern = "\\?"))){
+  print("'?'s detected")
+}
+## Prune out those with missing formations
+#View(data.frame(table(FMNH_brach$Formation)))
+droppers <- c(droppers, which(FMNH_brach$Formation == ""))
+droppers <- c(droppers, which(FMNH_brach$Formation == "ARNHEIM FORMATION / LIBERTY FORMATION"))
+droppers <- c(droppers, which(FMNH_brach$Formation == "LIBERTY/WHITEWATER FORMATIONS"))
+droppers <- c(droppers, which(FMNH_brach$Formation == "MAYSVILLIAN/RICHMONDIAN STAGES"))
+droppers <- c(droppers, which(FMNH_brach$Formation == "MCMILLAN/LIBERTY FORMATIONS"))
+droppers <- c(droppers, which(FMNH_brach$Formation == "MT. AUBURN/ARNHEIM FORMATIONS"))
+droppers <- c(droppers, which(FMNH_brach$Formation == "MT. AUBURN/ELKHORN FORMATIONS"))
+droppers <- c(droppers, which(FMNH_brach$Formation == "TUPELO BAY FORMATION (CROSS MEMBER) / SANTEE LIMESTONE"))
+droppers <- c(droppers, which(FMNH_brach$Formation == "WAYNESVILLE/ELKHORN FORMATIONS"))
+droppers <- c(droppers, which(FMNH_brach$Formation == "WAYNESVILLE/LIBERTY FORMATIONS"))
+droppers <- c(droppers, which(FMNH_brach$Formation == "WAYNESVILLE/WHITEWATER FORMATIONS"))
+## Drop specimen status = missing entries
+droppers <- c(droppers, which(FMNH_brach$SpecimenStatus == "MISSING"))
+## Prune out entries missing lat or long entries
+## Right now, not possible to geocode FMNH data as no locality strings. As such, need to stick to museum lat/long data
+droppers <- c(droppers, which(is.na(FMNH_brach$Latitude1) | is.na(FMNH_brach$Longitude1)))
+droppers <- unique(droppers)
 FMNH_brach <- FMNH_brach[-droppers,]
+
+## Update all unknown species
+#View(data.frame(table(FMNH_brach$Species)))
+gen.level <- c()
+gen.level <- c(gen.level, which(FMNH_brach$Species == ""))
+## Check for "aff"
+if(any(str_detect(FMNH_brach[,"Species"], pattern = regex("aff", ignore_case = T)))){
+  print("'aff's detected")
+}
+## Check for "cf"
+if(any(str_detect(FMNH_brach[,"Species"], pattern = regex("cf", ignore_case = T)))){
+  print("'cf's detected")
+}
+## Check for dots
+if(any(str_detect(FMNH_brach[,"Species"], pattern = "\\."))){
+  print("periods detected")
+}
+## Check for "?"
+if(any(str_detect(FMNH_brach[,"Species"], pattern = "\\?"))){
+  print("'?'s detected")
+}
+FMNH_brach[gen.level,"Species"] <- "sp."
+
+## Tidy up formations
+## bivalves
+qmarks <- FMNH_biv$Formation[which(str_detect(FMNH_biv$Formation, pattern = "\\?"))]
+qmarks
+FMNH_biv[which(str_detect(FMNH_biv$Formation, pattern = "\\?")), "Formation"] <- str_replace_all(FMNH_biv[which(FMNH_biv[,"Formation"] %in% qmarks), "Formation"], pattern = "\\?", replacement = "")
+
+## brachiopods
+qmarks <- FMNH_brach$Formation[which(str_detect(FMNH_brach$Formation, pattern = "\\?"))]
+qmarks
+FMNH_brach[which(str_detect(FMNH_brach$Formation, pattern = "\\?")), "Formation"] <- str_replace_all(FMNH_brach[which(FMNH_brach[,"Formation"] %in% qmarks), "Formation"], pattern = "\\?", replacement = "")
+
+## Clean bivalve data
+FMNH_biv$Phylum <- "Mollusca"
+FMNH_biv$Class <- "Bivalvia"
+FMNH_biv$Genus <- str_to_title(FMNH_biv$Genus)
+FMNH_biv$Species <- tolower(FMNH_biv$Species)
+FMNH_biv$Formation <- str_to_title(FMNH_biv$Formation)
 
 ## Clean brachiopod data
 FMNH_brach$Phylum <- "Brachiopoda"
@@ -134,21 +270,23 @@ FMNH_brach$Genus <- str_to_title(FMNH_brach$Genus)
 FMNH_brach$Species <- tolower(FMNH_brach$Species)
 FMNH_brach$Formation <- str_to_title(FMNH_brach$Formation)
 
-## Update all unknown species
-#View(data.frame(table(FMNH_brach$Species)))
-gen.level <- c()
-gen.level <- c(gen.level, which(FMNH_brach$Species == ""))
-FMNH_brach[gen.level,"Species"] <- "sp."
-
-## Isolate formations
-FMNH_formations <- sort(unique(c(FMNH_biv$Formation, FMNH_brach$Formation)))
-
-## Export FMNH formations
+## Export data
 setwd(home)
 saveRDS(FMNH_biv, file = "data/museum/FMNH_biv.Rds")
 saveRDS(FMNH_brach, file = "data/museum/FMNH_brach.Rds")
 
 #### NMS data ####
+rm(list = ls())
+
+## Set working directory
+setwd("~/R_packages/bivbrach")
+home <- getwd()
+
+setwd("~/Library/CloudStorage/OneDrive-Nexus365/Bivalve_brachiopod/data")
+NMS_biv <- read.csv("NMS_bivalves.csv")
+NMS_brach <- read.csv("NMS_brachiopoda.csv")
+setwd(home)
+
 ## Start with bivalves - change gaps to 1
 NMS_biv[which(NMS_biv[,"Number.of.specimens"] == ""),"Number.of.specimens"] <- 1
 
@@ -182,52 +320,84 @@ colnames(NMS_brach) <- c("x", "accessionNumber", "fullName", "locality", "format
 NMS_biv <- NMS_biv[,c(1,3,4,5,6,7)]
 NMS_brach <- NMS_brach[,c(2,3,4,5,6,7)]
 
-## check for gaps and NAs, and genera for undetermined/indeterminate
+## Add uncertainGenus
+NMS_biv$uncertainGenus <- F
+NMS_brach$uncertainGenus <- F
+
+## check for gaps and NAs, and genera for unusable names
 #View(data.frame(table(NMS_biv$genus)))
 droppers <- c()
 droppers <- c(droppers, which(is.na(NMS_biv[,"genus"])))
 droppers <- c(droppers, which(is.na(NMS_biv[,"locality"])))
-droppers <- c(droppers, which(is.na(NMS_biv[,"formation"])))
 droppers <- c(droppers, which(NMS_biv[,"genus"] == ""))
 droppers <- c(droppers, which(NMS_biv[,"locality"] == ""))
-droppers <- c(droppers, which(NMS_biv[,"formation"] == ""))
 droppers <- c(droppers, which(NMS_biv[,"genus"] == "undetermined"))
 droppers <- c(droppers, which(NMS_biv[,"genus"] == "indeterminate"))
 droppers <- c(droppers, which(NMS_biv[,"genus"] == "indetermiante"))
 droppers <- c(droppers, which(NMS_biv[,"genus"] == "Indeterminate"))
-droppers <- c(droppers, which(NMS_biv[,"genus"] == "?"))
 droppers <- c(droppers, which(NMS_biv[,"genus"] == "bivave"))
 droppers <- c(droppers, which(NMS_biv[,"genus"] == "bivaves"))
 droppers <- c(droppers, which(NMS_biv[,"genus"] == "Myacites or Modiola"))
 droppers <- c(droppers, which(NMS_biv[,"genus"] == "Myalinia & Myacites"))
 droppers <- c(droppers, which(NMS_biv[,"genus"] == "Pholadomya  & Lima"))
 droppers <- c(droppers, which(NMS_biv[,"genus"] == "various"))
-## Check for affiliations
-affs <- unique(NMS_biv[,"genus"][which(str_detect(NMS_biv[,"genus"], pattern = "aff"))])
-affs
-## No affs!
+## Check for "aff"
+if(any(str_detect(NMS_biv[,"genus"], pattern = regex("aff", ignore_case = T)))){
+  print("'aff's detected")
+}
+## Check for "cf"
+if(any(str_detect(NMS_biv[,"genus"], pattern = regex("cf", ignore_case = T)))){
+  print("'cf's detected")
+  cfs <- unique(NMS_biv$genus[which(str_detect(NMS_biv$genus, pattern = regex("cf", ignore_case = T)))])
+  cfs
+  ## drop all
+  droppers <- c(droppers, which(NMS_biv[,"genus"] %in% cfs))
+}
 ## Check for dots
-dots <- unique(NMS_biv$genus[which(str_detect(NMS_biv$genus, pattern = "\\."))])
-## prune out dots to retain
-dots <- dots[-c(4, 5, 6, 7)]
-dots
-droppers <- c(droppers,which(NMS_biv[,"genus"] %in% dots))
-## No dots!
+if(any(str_detect(NMS_biv[,"genus"], pattern = "\\."))){
+  print("periods detected")
+  dots <- unique(NMS_biv$genus[which(str_detect(NMS_biv$genus, pattern = "\\."))])
+  dots
+  ## prune out dots to retain
+  dots <- dots[-c(4, 5, 6, 7)]
+  dots
+  droppers <- c(droppers,which(NMS_biv[,"genus"] %in% dots))
+}
+## Check for "?"
+if(any(str_detect(NMS_biv[,"genus"], pattern = "\\?"))){
+  print("'?'s detected")
+  questions <- unique(NMS_biv$genus[which(str_detect(NMS_biv$genus, pattern = "\\?"))])
+  questions
+  ## drop total unknowns, clean up others
+  questions <- questions[-c(1:18, 20:23)]
+  questions
+  droppers <- c(droppers,which(NMS_biv[,"genus"] %in% questions))
+}
+## Check formations for unusable entries
+#View(data.frame(table(NMS_biv$formation)))
+droppers <- c(droppers, which(is.na(NMS_biv[,"formation"])))
+droppers <- c(droppers, which(NMS_biv[,"formation"] == "basal similis-pulchra zone, from 30 ft above top furnace mine"))
+droppers <- c(droppers, which(NMS_biv[,"formation"] == "Ga"))
 droppers <- unique(droppers)
 NMS_biv <- NMS_biv[-droppers,]
+
+## Remove qmarks from genus and formation columns
+## Tidy up formations
+qmarks <- NMS_biv$formation[which(str_detect(NMS_biv$formation, pattern = "\\?"))]
+qmarks
+## none there!
+
+## Same for genera
+qmarks <- unique(NMS_biv$genus[which(str_detect(NMS_biv$genus, pattern = "\\?"))])
+qmarks
+NMS_biv[which(NMS_biv[,"genus"] %in% qmarks),"uncertainGenus"] <- T
+NMS_biv[which(NMS_biv[,"genus"] %in% qmarks),"genus"] <- str_replace_all(NMS_biv[which(NMS_biv[,"genus"] %in% qmarks),"genus"], pattern = "\\?", replacement = "")
 
 ## Tidy up undetermined/indeterminate
 #View(data.frame(table(NMS_biv$species)))
 gen.level <- c()
 gen.level <- c(gen.level,which(NMS_biv[,"species"] == ""))
 gen.level <- c(gen.level,which(is.na(NMS_biv[,"species"])))
-## get names with periods
-dots <- unique(NMS_biv$species[which(str_detect(NMS_biv$species, pattern = "\\."))])
-dots
-## remove rows to retain (dropping cf genera, converting cf species to sp.)
-dots <- dots[-c(4, 5, 12)]
-dots
-gen.level <- c(gen.level, which(NMS_biv$species %in% dots))
 gen.level <- c(gen.level,which(NMS_biv[,"species"] == "undetermined"))
 gen.level <- c(gen.level,which(NMS_biv[,"species"] == "indeterminate"))
 gen.level <- c(gen.level,which(NMS_biv[,"species"] == "from"))
@@ -237,16 +407,57 @@ gen.level <- c(gen.level,which(NMS_biv[,"species"] == "sp "))
 gen.level <- c(gen.level,which(NMS_biv[,"species"] == "sp,"))
 gen.level <- c(gen.level,which(NMS_biv[,"species"] == "sp?"))
 gen.level <- c(gen.level,which(NMS_biv[,"species"] == "gloucestershire"))
-## Convert affiliations to sp.
-affs <- unique(NMS_biv[,"species"][which(str_detect(NMS_biv[,"species"], pattern = "aff"))])
-affs
-##
-affs <- affs[-c(1,4)]
-affs
-gen.level <- c(gen.level, which(NMS_biv[,"species"] %in% affs))
+## Check for "aff"
+if(any(str_detect(NMS_biv[,"species"], pattern = regex("aff", ignore_case = T)))){
+  print("'aff's detected")
+  affs <- unique(NMS_biv[,"species"][which(str_detect(NMS_biv[,"species"], pattern = regex("aff", ignore_case = T)))])
+  affs
+  ##
+  affs <- affs[-c(1, 3, 18)]
+  affs
+  gen.level <- c(gen.level, which(NMS_biv[,"species"] %in% affs))
+}
+## Check for "cf"
+if(any(str_detect(NMS_biv[,"species"], pattern = regex("cf", ignore_case = T)))){
+  print("'cf's detected")
+  cfs <- unique(NMS_biv$species[which(str_detect(NMS_biv$species, pattern = regex("cf", ignore_case = T)))])
+  cfs
+  ## change all
+  gen.level <- c(gen.level, which(NMS_biv[,"species"] %in% cfs))
+}
+## Check for dots
+if(any(str_detect(NMS_biv[,"species"], pattern = "\\."))){
+  print("periods detected")
+  dots <- unique(NMS_biv$species[which(str_detect(NMS_biv$species, pattern = "\\."))])
+  dots
+  ## prune out dots to retain
+  dots <- dots[-c(2, 4, 8, 9, 38, 67, 68)]
+  dots
+  gen.level <- c(gen.level,which(NMS_biv[,"species"] %in% dots))
+}
+## Check for "?"
+if(any(str_detect(NMS_biv[,"species"], pattern = "\\?"))){
+  print("'?'s detected")
+  questions <- unique(NMS_biv$species[which(str_detect(NMS_biv$species, pattern = "\\?"))])
+  questions
+  ## drop total unknowns, clean up others
+  questions <- questions[c(6, 8, 12)]
+  questions
+  gen.level <- c(gen.level,which(NMS_biv[,"species"] %in% questions))
+}
 gen.level <- unique(gen.level)
 NMS_biv[gen.level,"species"] <- "sp."
 NMS_biv$phylum <- "Mollusca"
+
+## Remove question marks from species
+qmarks <- unique(NMS_biv$species[which(str_detect(NMS_biv$species, pattern = "\\?"))])
+qmarks
+NMS_biv[which(NMS_biv[,"species"] %in% qmarks),"species"] <- str_replace_all(NMS_biv[which(NMS_biv[,"species"] %in% qmarks),"species"], pattern = "\\?", replacement = "")
+
+## Finally, tidy up main columns
+NMS_biv$genus <- str_to_title(NMS_biv$genus)
+NMS_biv$species <- tolower(NMS_biv$species)
+NMS_biv$formation <- str_to_title(NMS_biv$formation)
 
 ## Now to do the same for brachiopods. First, need to split scientific name
 names <- str_split_fixed(NMS_brach[,"fullName"], pattern = " ", n = 2)
@@ -254,16 +465,13 @@ colnames(names) <- c("genus", "species")
 NMS_brach <- cbind(names, NMS_brach)
 NMS_brach$fullName <- NULL
 
-## dropping time
+## dropping unusable records
 #View(data.frame(table(NMS_brach$genus)))
 droppers <- c()
 droppers <- c(droppers, which(is.na(NMS_brach[,"genus"])))
 droppers <- c(droppers, which(is.na(NMS_brach[,"locality"])))
-droppers <- c(droppers, which(is.na(NMS_brach[,"formation"])))
 droppers <- c(droppers, which(NMS_brach[,"genus"] == ""))
 droppers <- c(droppers, which(NMS_brach[,"locality"] == ""))
-droppers <- c(droppers, intersect(which(NMS_brach[,"formation"] == ""), which(NMS_brach[,"stage"] == "")))
-droppers <- c(droppers, which(NMS_brach[,"genus"] == "cf."))
 droppers <- c(droppers, which(NMS_brach[,"genus"] == "FOR"))
 droppers <- c(droppers, which(NMS_brach[,"genus"] == "brachiopod"))
 droppers <- c(droppers, which(NMS_brach[,"genus"] == "Brachiopoda"))
@@ -278,19 +486,125 @@ droppers <- c(droppers, which(NMS_brach[,"genus"] == "Indeterminate,"))
 droppers <- c(droppers, which(NMS_brach[,"genus"] == "unidentified"))
 droppers <- c(droppers, which(NMS_brach[,"genus"] == "productellidae"))
 droppers <- c(droppers, which(NMS_brach[,"genus"] == "Rhynchonelloidea"))
-## Convert affiliations to sp.
-affs <- unique(NMS_brach[,"genus"][which(str_detect(NMS_brach[,"genus"], pattern = "aff"))])
-affs
-## No affs!
+## Check for "aff"
+if(any(str_detect(NMS_brach[,"genus"], pattern = regex("aff", ignore_case = T)))){
+  print("'aff's detected")
+}
+## Check for "cf"
+if(any(str_detect(NMS_brach[,"genus"], pattern = regex("cf", ignore_case = T)))){
+  print("'cf's detected")
+  cfs <- unique(NMS_brach$genus[which(str_detect(NMS_brach$genus, pattern = regex("cf", ignore_case = T)))])
+  cfs
+  ## drop all
+  droppers <- c(droppers, which(NMS_brach[,"genus"] %in% cfs))
+}
 ## Check for dots
-dots <- unique(NMS_brach$genus[which(str_detect(NMS_brach$genus, pattern = "\\."))])
-dots
-## Only dot is accounted for above.
-## No dots!
+if(any(str_detect(NMS_brach[,"genus"], pattern = "\\."))){
+  print("periods detected")
+  dots <- unique(NMS_brach$genus[which(str_detect(NMS_brach$genus, pattern = "\\."))])
+  dots
+  ## prune out all dots
+  droppers <- c(droppers,which(NMS_brach[,"genus"] %in% dots))
+}
+## Check for "?"
+if(any(str_detect(NMS_brach[,"genus"], pattern = "\\?"))){
+  print("'?'s detected")
+  questions <- unique(NMS_brach$genus[which(str_detect(NMS_brach$genus, pattern = "\\?"))])
+  questions
+  ## none to drop
+}
+## Drop entries that don't have stage data and don't have usable formations (only brachiopod has stage data)
+## first, get no stage
+#View(data.frame(table(NMS_brach$stage)))
+noStage <- c(which(NMS_brach[,"stage"] == ""), which(NMS_brach[,"stage"] == "?"))
+#View(data.frame(table(NMS_brach$formation)))
+noForm <- c()
+noForm <- c(noForm, which(NMS_brach[,"formation"] == ""))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "?"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "3 fathoms below Eastet Main Coal, Limestone Coal Group"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "3rd rudist Zone of d'Orbigny, Chloritische Kreide (?=Lower Chalk; or ?Upper Greensand)"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "4 ft above Charlestown Main Limestone"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "4th Limestone above ?___"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "above Stinchar Limestone, Barr Series"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "base of Micraster coranguinum Zone"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "black shale bed interstratified with volcanic blue and buff ash"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "Caradoc-Ashgill transition"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "Caradoc-Ashgill Transition"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "Chalk"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "from shale beneath No. 1 Limestone, Lower Limestone Series"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "Kreide? = Chalk?"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "Limestone Bed in shales overhanging Upper Series, Lower Limestone Series"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "Limestone band"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "Lower Limestone Series? MIS"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "MGS"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "need to see the register"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "No 19 Zone"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "No. 1 Bed"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "No. 1 Bed, Invertiel"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "No. 3 Bed"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "No.1 Bed"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "No.1 Limestone"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "P. zone"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "shale above 4 inch coal, Ironstone Measures"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "shale above Highfield Limestone"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "shale above Lower Coal, Sub Series, Lower Limestone"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "shale above Lower Coal, sub-Series, Lower Limestone"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "shale above tuff with Bykneuk Limestone"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "shale above Upper Longcraig Limestone"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "shale band above 4 foot coal Ironstone Measures"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == 'shale in connection with "Blue" coal Seam'))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "shale over Hosie Limestone, Lower Limestone Group"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "Shale over limestone, Lower Limestone Series"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "shale over lower coal sub-series, Lower Limestone"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "shale under Top Hosie Limestone"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == 'shale underlying the "Blue" coal seam'))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "shales above bone bed"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "shales above Charlestown Main Limestone"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "shales above Lower Sandstone"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "shales above No. 2 Limestone, shale above the top limestone, Lower Limestone Series"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "Shales below 2nd Abden Limestone"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "Stage D"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "Stage D1y"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "Stage D1Y"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "Stage E"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "Stage E2"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "Stage F"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "Stage F Barrande"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "Stage F2"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "T. inconstans beds"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "top cor-test. Zone"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "top Micraster cor. Test. Zone"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "top of Merameca Group"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "top of Terebratulina gracilis Zone"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "unknown"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "Whitehouse Group, Caradoc-Ashgill transition"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "zone 19"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "Zone S. Vaughan"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "Zone Terebratulina gracilis"))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "Zone with Holaster planus"))
+noForm <- sort(noForm)
+droppers <- c(droppers, intersect(noStage, noForm))
 droppers <- unique(droppers)
 NMS_brach <- NMS_brach[-droppers,]
 
-## Tidy up undetermined/indeterminate
+## Remove question marks from genera, formations, and stages
+## Tidy up formations
+qmarks <- NMS_brach$formation[which(str_detect(NMS_brach$formation, pattern = "\\?"))]
+qmarks
+NMS_brach[which(NMS_brach[,"formation"] %in% qmarks),"formation"] <- str_replace_all(NMS_brach[which(NMS_brach[,"formation"] %in% qmarks),"formation"], pattern = "\\?", replacement = "")
+
+## Same for genera
+qmarks <- unique(NMS_brach$genus[which(str_detect(NMS_brach$genus, pattern = "\\?"))])
+qmarks
+NMS_brach[which(NMS_brach[,"genus"] %in% qmarks),"uncertainGenus"] <- T
+NMS_brach[which(NMS_brach[,"genus"] %in% qmarks),"genus"] <- str_replace_all(NMS_brach[which(NMS_brach[,"genus"] %in% qmarks),"genus"], pattern = "\\?", replacement = "")
+
+## And same for stages
+qmarks <- unique(NMS_brach$stage[which(str_detect(NMS_brach$stage, pattern = "\\?"))])
+qmarks
+NMS_brach[which(NMS_brach[,"stage"] %in% qmarks),"stage"] <- str_replace_all(NMS_brach[which(NMS_brach[,"stage"] %in% qmarks),"stage"], pattern = "\\?", replacement = "")
+
+## Tidy up undetermined/indeterminate species
 #View(data.frame(table(NMS_brach$species)))
 gen.level <- c()
 gen.level <- c(gen.level,which(NMS_brach[,"species"] == ""))
@@ -301,34 +615,74 @@ gen.level <- c(gen.level,which(NMS_brach[,"species"] == "indetermined"))
 gen.level <- c(gen.level,which(NMS_brach[,"species"] == "invertebrates"))
 gen.level <- c(gen.level,which(NMS_brach[,"species"] == "brachiopod"))
 gen.level <- c(gen.level,which(NMS_brach[,"species"] == "brachiopods"))
-## Convert affiliations to sp.
-affs <- unique(NMS_brach[,"species"][which(str_detect(NMS_brach[,"species"], pattern = "aff"))])
-affs
-##
-affs <- affs[-c(11:12)]
-affs
-gen.level <- c(gen.level, which(NMS_brach[,"species"] %in% affs))
-## get names with periods
-dots <- unique(NMS_brach$species[which(str_detect(NMS_brach$species, pattern = "\\."))])
-dots
-## remove rows to retain (dropping cf genera, converting cf species to sp.)
-dots <- dots[-c(44, 46)]
-dots
-gen.level <- c(gen.level, which(NMS_brach$species %in% dots))
+## Check for "aff"
+if(any(str_detect(NMS_brach[,"species"], pattern = regex("aff", ignore_case = T)))){
+  print("'aff's detected")
+  affs <- unique(NMS_brach[,"species"][which(str_detect(NMS_brach[,"species"], pattern = regex("aff", ignore_case = T)))])
+  affs
+  ##
+  affs <- affs[-c(9, 10)]
+  affs
+  gen.level <- c(gen.level, which(NMS_brach[,"species"] %in% affs))
+}
+## Check for "cf"
+if(any(str_detect(NMS_brach[,"species"], pattern = regex("cf", ignore_case = T)))){
+  print("'cf's detected")
+  cfs <- unique(NMS_brach$species[which(str_detect(NMS_brach$species, pattern = regex("cf", ignore_case = T)))])
+  cfs
+  ## change all
+  gen.level <- c(gen.level, which(NMS_brach[,"species"] %in% cfs))
+}
+## Check for dots
+if(any(str_detect(NMS_brach[,"species"], pattern = "\\."))){
+  print("periods detected")
+  dots <- unique(NMS_brach$species[which(str_detect(NMS_brach$species, pattern = "\\."))])
+  dots
+  ## prune out dots to retain
+  dots <- dots[-c(41, 43)]
+  dots
+  gen.level <- c(gen.level,which(NMS_brach[,"species"] %in% dots))
+}
+## Check for "?"
+if(any(str_detect(NMS_brach[,"species"], pattern = "\\?"))){
+  print("'?'s detected")
+  questions <- unique(NMS_brach$species[which(str_detect(NMS_brach$species, pattern = "\\?"))])
+  questions
+  ## drop total unknowns, clean up others
+  questions <- questions[c(2, 6)]
+  questions
+  gen.level <- c(gen.level,which(NMS_brach[,"species"] %in% questions))
+}
 gen.level <- unique(gen.level)
 NMS_brach[gen.level,"species"] <- "sp."
 NMS_brach$phylum <- "Brachiopoda"
+
+## Remove question marks from species
+qmarks <- unique(NMS_brach$species[which(str_detect(NMS_brach$species, pattern = "\\?"))])
+qmarks
+NMS_brach[which(NMS_brach[,"species"] %in% qmarks),"species"] <- str_replace_all(NMS_brach[which(NMS_brach[,"species"] %in% qmarks),"species"], pattern = "\\?", replacement = "")
+
+## Finally, tidy up main columns
+NMS_brach$genus <- str_to_title(NMS_brach$genus)
+NMS_brach$species <- tolower(NMS_brach$species)
+NMS_brach$formation <- str_to_title(NMS_brach$formation)
 
 ## Export
 saveRDS(NMS_biv, file = "data/museum/NMS_biv.Rds")
 saveRDS(NMS_brach, file = "data/museum/NMS_brach.Rds")
 
-## Isolate formations
-NMS_formations <- sort(unique(c(NMS_biv$formation, NMS_brach$formation)))
-## Drop gap
-NMS_formations <- NMS_formations[-1]
-
 #### AMNH data ####
+rm(list = ls())
+
+## Set working directory
+setwd("~/R_packages/bivbrach")
+home <- getwd()
+
+## Load data
+setwd("~/Library/CloudStorage/OneDrive-Nexus365/Bivalve_brachiopod/data")
+AMNH <- read.csv("AMNH_May_2024.csv")
+setwd(home)
+
 ## Update colnames
 colnames(AMNH) <- c("IRN", "catN", "suffix", "phylum", "class", "order", "family", "genus", "subgenus", "species", "subspecies",
                     "recordType", "refPublicationDate", "refTitle", "bibFigurePagination", "bibPlatePagination", "system", "group",
@@ -344,19 +698,39 @@ View(data.frame(table(AMNH$genus)))
 droppers <- c()
 droppers <- c(droppers, which(AMNH$genus == ""))
 droppers <- c(droppers, which(AMNH$genus == "?"))
-droppers <- c(droppers, which(AMNH$genus == "Unidentified"))
-droppers <- c(droppers, which(AMNH$genus == "Undetermined"))
 ## get names with periods
-dots <- AMNH$genus[which(str_detect(AMNH$genus, pattern = "\\."))]
+dots <- unique(AMNH$genus[which(str_detect(AMNH$genus, pattern = "\\."))])
 dots
 ## remove rows to retain
-dots <- dots[-c(16:19, 31)]
+dots <- dots[-c(14, 15, 26)]
+dots
 droppers <- c(droppers, which(AMNH$genus %in% dots))
 droppers <- c(droppers, which(AMNH$genus == "????"))
 droppers <- c(droppers, which(AMNH$genus == "#NAME?"))
 droppers <- c(droppers, which(AMNH$genus == "Bivalvia | cephalopoda"))
 droppers <- c(droppers, which(AMNH$genus == "Centrinella-rhipidomella"))
-
+droppers <- c(droppers, which(AMNH$genus == "? myalina,?liebea"))
+droppers <- c(droppers, which(AMNH$genus == "Deltopecten + etheripectn"))
+droppers <- c(droppers, which(AMNH$genus == "Fragum/trigonicardia"))
+droppers <- c(droppers, which(AMNH$genus == "Genus"))
+droppers <- c(droppers, which(AMNH$genus == "Genus ?"))
+droppers <- c(droppers, which(AMNH$genus == "Indet"))
+droppers <- c(droppers, which(AMNH$genus == "Indeterminate"))
+droppers <- c(droppers, which(AMNH$genus == "Indetermined"))
+droppers <- c(droppers, which(AMNH$genus == "Unidentified"))
+droppers <- c(droppers, which(AMNH$genus == "Undetermined"))
+droppers <- c(droppers, which(AMNH$genus == "L'azaria"))
+droppers <- c(droppers, which(AMNH$genus == "Liebea + bakevellia"))
+droppers <- c(droppers, which(AMNH$genus == "Mya  or panopea"))
+droppers <- c(droppers, which(AMNH$genus == "New genus"))
+droppers <- c(droppers, which(AMNH$genus == "Pseudomonotis + libea"))
+## get names with cf
+cfs <- AMNH$genus[which(str_detect(AMNH$genus, pattern = regex("cf", ignore_case = T)))]
+cfs
+## remove rows to retain
+cfs <- cfs[-c(3)]
+cfs
+droppers <- c(droppers, which(AMNH$genus %in% cfs))
 
 ## neither phylum nor class
 droppers <- c(droppers, intersect(which(AMNH$phylum == ""), which(AMNH$class == "")))
@@ -364,6 +738,18 @@ droppers <- c(droppers, intersect(which(AMNH$phylum == ""), which(AMNH$class == 
 
 ## neither both lat+long nor locality
 
+#### Peabody data ####
+rm(list = ls())
+
+## Set working directory
+setwd("~/R_packages/bivbrach")
+home <- getwd()
+
+## Load data
+setwd("~/Library/CloudStorage/OneDrive-Nexus365/Bivalve_brachiopod/data")
+Peabody_biv <- read.csv("Peabody_Bivalves_May2024.csv")
+Peabody_brach <- read.csv("Peabody_Brachiopods_May2024.csv")
+setwd(home)
 
 
 
