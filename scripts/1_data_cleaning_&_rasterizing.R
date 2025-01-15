@@ -26,8 +26,8 @@ library(dplyr)
 library(stringr)
 
 ## install divvyCompanion from github and load
-library(remotes)
-install_github("PalaeoTom/divvyCompanion")
+#library(remotes)
+#install_github("PalaeoTom/divvyCompanion")
 library(divvyCompanion)
 
 #### FMNH data ####
@@ -83,10 +83,6 @@ brach_E_frame[,match(colnames(FMNH_brach_E1),colnames(FMNH_brach))] <- FMNH_brac
 ## Combine with other brachs
 FMNH_brach <- rbind(FMNH_brach, brach_E_frame)
 
-## Add uncertainGenus column
-FMNH_brach$uncertainGenus <- F
-FMNH_biv$uncertainGenus <- F
-
 ## Prune out deficient entries missing genus
 ## Bivalves
 #View(data.frame(table(FMNH_biv$Genus)))
@@ -116,42 +112,56 @@ if(any(str_detect(FMNH_biv[,"Genus"], pattern = "\\?"))){
 ## Missing specimens
 #View(data.frame(table(FMNH_biv$SpecimenStatus)))
 droppers <- c(droppers, which(FMNH_biv$SpecimenStatus == "MISSING"))
+
 ## Missing or uncertain formations - needed for time
 #View(data.frame(table(FMNH_biv$Formation)))
-droppers <- c(droppers, which(FMNH_biv$Formation == ""))
-droppers <- c(droppers, which(FMNH_biv$Formation == "BERMONT FORMATION / FORT THOMPSON FORMATION"))
-droppers <- c(droppers, which(FMNH_biv$Formation == "CALOOSAHATCHEE FORMATION / BERMONT FORMATION"))
-droppers <- c(droppers, which(FMNH_biv$Formation == "CALOOSAHATCHEE FORMATION / BERMONT FORMATION?"))
-droppers <- c(droppers, which(FMNH_biv$Formation == "CALOOSAHATCHEE FORMATION / COFFEE MILL HAMMOCK FORMATION"))
-droppers <- c(droppers, which(FMNH_biv$Formation == "CALOOSAHATCHEE FM. / BERMONT FM. / FT. THOMPSON FM."))
-droppers <- c(droppers, which(FMNH_biv$Formation == "CALOOSAHATCHEE FORMATION / FORT THOMPSON FORMATION"))
-droppers <- c(droppers, which(FMNH_biv$Formation == "CHIPOLA/JACKSON BLUFF FMS."))
-droppers <- c(droppers, which(FMNH_biv$Formation == "DAKOTA/MANCOS FORMATIONS"))
-droppers <- c(droppers, which(FMNH_biv$Formation == "DUPLIN/RAYSOR FORMATION"))
-droppers <- c(droppers, which(FMNH_biv$Formation == "EDWARDS/COMANCHE PEAK LIMESTONES/WALNUT FORMATION"))
-droppers <- c(droppers, which(FMNH_biv$Formation == "GLENDON/MARIANNA FORMATIONS"))
-droppers <- c(droppers, which(FMNH_biv$Formation == "MT. LAUREL SD./NAVASINK FM."))
-droppers <- c(droppers, which(FMNH_biv$Formation == "OCALA LIMESTONE(UPPER)/MARIANNA LIMESTONE"))
-droppers <- c(droppers, which(FMNH_biv$Formation == "OCALA LIMESTONE/COOPER MARL"))
-droppers <- c(droppers, which(FMNH_biv$Formation == "OCALA LIMESTONE/TIVOLA BD."))
-droppers <- c(droppers, which(FMNH_biv$Formation == "OCALA LS./BUMPNOSE LS./MARIANNA LS."))
-droppers <- c(droppers, which(FMNH_biv$Formation == "OCALA/SUWANNEE LIMESTONES"))
-droppers <- c(droppers, which(FMNH_biv$Formation == "RAYSOR/CHOWAN RIVER FORMATIONS"))
-droppers <- c(droppers, which(FMNH_biv$Formation == "RIPLEY/PRAIRIE BLUFF FORMATION"))
-droppers <- c(droppers, which(FMNH_biv$Formation == "SUWANNEE LS./STATENVILLE FM."))
-droppers <- c(droppers, which(FMNH_biv$Formation == "TAMIAMI FM., PINECREST BEDS/CALOOSAHATCHEE FM./BERMONT FM."))
-droppers <- c(droppers, which(FMNH_biv$Formation == "TAMIAMI FORMATION, PINECREST BEDS & OCHOPEE LIMESTONE/CALOOSAHAT"))
-droppers <- c(droppers, which(FMNH_biv$Formation == "TAMIAMI FORMATION, PINECREST BEDS/BERMONT FORMATION"))
-droppers <- c(droppers, which(FMNH_biv$Formation == "TAMIAMI FORMATION, PINECREST BEDS/CALOOSAHATCHEE FORMATION"))
-droppers <- c(droppers, which(FMNH_biv$Formation == "TAMIAMI FORMATION/CALOOSAHATCHEE FORMATION"))
-droppers <- c(droppers, which(FMNH_biv$Formation == "TAMIAMI/CALOOSAHATCHEE/FORT THOMPSON FMS."))
-droppers <- c(droppers, which(FMNH_biv$Formation == "TAMIAMI/NASHUA/FORT THOMPSON FORMATIONS"))
-droppers <- c(droppers, which(FMNH_biv$Formation == "TUPELO BAY FORMATION (CROSS MEMBER) / SANTEE LIMESTONE"))
-## Prune out entries missing lat or long entries
-## Right now, not possible to geocode FMNH data as no locality strings. As such, need to stick to museum lat/long data
-droppers <- c(droppers, which(is.na(FMNH_biv$Latitude1) | is.na(FMNH_biv$Longitude1)))
+noForm <- which(FMNH_biv$Formation == "")
+noLL <- which(is.na(FMNH_biv$Latitude1) | is.na(FMNH_biv$Longitude1))
+droppers <- c(droppers, intersect(noForm, noLL))
+
+## Drop droppers
 droppers <- unique(droppers)
 FMNH_biv <- FMNH_biv[-droppers,]
+
+## Isolate formation data and split into 3
+formations <- data.frame(FMNH_biv$Formation)
+FMNH_biv$Formation <- NULL
+colnames(formations) <- "formation1"
+
+## Get maximum number of formations within a single record
+## Find all punctuation
+p <- unique(unlist(str_extract_all(formations$formation1, pattern = "[[:punct:]]")))
+p
+
+## 9 total
+## Check entries associated with each
+#View(data.frame(table(formations$formation1[which(str_detect(formations$formation1, pattern = "\\/"))])))
+## Only punctuation that needs splitting by is /. The rest can be dropped and replace with spaces..
+p <- paste0('\\', p[-2])
+for(c in p){
+  formations$formation1 <- str_replace_all(formations$formation1, pattern = c, replacement = " ")
+}
+## get split formations
+split.forms <- str_split(formations$formation1, pattern = "\\/")
+max.forms <- max(sapply(1:length(split.forms), function(x) length(split.forms[[x]])))
+## maximum 3 formations
+formations$formation2 <- ""
+formations$formation3 <- ""
+
+## Now to pass over each formation
+for(i in 1:nrow(formations)){
+  if(str_detect(formations$formation1[i], pattern = "\\/")){
+    ## extract formations
+    formVec <- unlist(str_split(formations$formation1[i], pattern = "\\/"))
+    ## assign to new columns
+    for(f in 1:length(formVec)){
+      formations[i,f] <- formVec[f]
+    }
+  }
+}
+
+## Re-attach to dataset
+FMNH_biv <- cbind(FMNH_biv, formations)
 
 ## Update all unknown species to sp.
 #View(data.frame(table(FMNH_biv$Species)))
@@ -203,26 +213,56 @@ if(any(str_detect(FMNH_brach[,"Genus"], pattern = "\\."))){
 if(any(str_detect(FMNH_brach[,"Genus"], pattern = "\\?"))){
   print("'?'s detected")
 }
-## Prune out those with missing formations
-#View(data.frame(table(FMNH_brach$Formation)))
-droppers <- c(droppers, which(FMNH_brach$Formation == ""))
-droppers <- c(droppers, which(FMNH_brach$Formation == "ARNHEIM FORMATION / LIBERTY FORMATION"))
-droppers <- c(droppers, which(FMNH_brach$Formation == "LIBERTY/WHITEWATER FORMATIONS"))
-droppers <- c(droppers, which(FMNH_brach$Formation == "MAYSVILLIAN/RICHMONDIAN STAGES"))
-droppers <- c(droppers, which(FMNH_brach$Formation == "MCMILLAN/LIBERTY FORMATIONS"))
-droppers <- c(droppers, which(FMNH_brach$Formation == "MT. AUBURN/ARNHEIM FORMATIONS"))
-droppers <- c(droppers, which(FMNH_brach$Formation == "MT. AUBURN/ELKHORN FORMATIONS"))
-droppers <- c(droppers, which(FMNH_brach$Formation == "TUPELO BAY FORMATION (CROSS MEMBER) / SANTEE LIMESTONE"))
-droppers <- c(droppers, which(FMNH_brach$Formation == "WAYNESVILLE/ELKHORN FORMATIONS"))
-droppers <- c(droppers, which(FMNH_brach$Formation == "WAYNESVILLE/LIBERTY FORMATIONS"))
-droppers <- c(droppers, which(FMNH_brach$Formation == "WAYNESVILLE/WHITEWATER FORMATIONS"))
 ## Drop specimen status = missing entries
 droppers <- c(droppers, which(FMNH_brach$SpecimenStatus == "MISSING"))
 ## Prune out entries missing lat or long entries
-## Right now, not possible to geocode FMNH data as no locality strings. As such, need to stick to museum lat/long data
-droppers <- c(droppers, which(is.na(FMNH_brach$Latitude1) | is.na(FMNH_brach$Longitude1)))
+## Right now, not possible to geocode FMNH data as no locality strings. As such, need to stick to museum lat/long data.
+## Drop entries missing lat/long AND formation data
+#View(data.frame(table(FMNH_brach$Formation)))
+noForm <- which(FMNH_brach$Formation == "")
+noLL <- which(is.na(FMNH_brach$Latitude1) | is.na(FMNH_brach$Longitude1))
+droppers <- c(droppers, intersect(noForm, noLL))
 droppers <- unique(droppers)
 FMNH_brach <- FMNH_brach[-droppers,]
+
+## Isolate formation data and split into 3
+formations <- data.frame(FMNH_brach$Formation)
+FMNH_brach$Formation <- NULL
+colnames(formations) <- "formation1"
+
+## Get maximum number of formations within a single record
+## Find all punctuation
+p <- unique(unlist(str_extract_all(formations$formation1, pattern = "[[:punct:]]")))
+p
+
+## 9 total
+## Check entries associated with each
+#View(data.frame(table(formations$formation1[which(str_detect(formations$formation1, pattern = "\\/"))])))
+## Only punctuation that needs splitting by is /. The rest can be dropped and replace with spaces..
+p <- paste0('\\', p[-6])
+for(c in p){
+  formations$formation1 <- str_replace_all(formations$formation1, pattern = c, replacement = " ")
+}
+## get split formations
+split.forms <- str_split(formations$formation1, pattern = "\\/")
+max.forms <- max(sapply(1:length(split.forms), function(x) length(split.forms[[x]])))
+## maximum 3 formations
+formations$formation2 <- ""
+
+## Now to pass over each formation
+for(i in 1:nrow(formations)){
+  if(str_detect(formations$formation1[i], pattern = "\\/")){
+    ## extract formations
+    formVec <- unlist(str_split(formations$formation1[i], pattern = "\\/"))
+    ## assign to new columns
+    for(f in 1:length(formVec)){
+      formations[i,f] <- formVec[f]
+    }
+  }
+}
+
+## Re-attach to dataset
+FMNH_brach <- cbind(FMNH_brach, formations)
 
 ## Update all unknown species
 #View(data.frame(table(FMNH_brach$Species)))
@@ -246,29 +286,21 @@ if(any(str_detect(FMNH_brach[,"Species"], pattern = "\\?"))){
 }
 FMNH_brach[gen.level,"Species"] <- "sp."
 
-## Tidy up formations
-## bivalves
-qmarks <- FMNH_biv$Formation[which(str_detect(FMNH_biv$Formation, pattern = "\\?"))]
-qmarks
-FMNH_biv[which(str_detect(FMNH_biv$Formation, pattern = "\\?")), "Formation"] <- str_replace_all(FMNH_biv[which(FMNH_biv[,"Formation"] %in% qmarks), "Formation"], pattern = "\\?", replacement = "")
-
-## brachiopods
-qmarks <- FMNH_brach$Formation[which(str_detect(FMNH_brach$Formation, pattern = "\\?"))]
-qmarks
-FMNH_brach[which(str_detect(FMNH_brach$Formation, pattern = "\\?")), "Formation"] <- str_replace_all(FMNH_brach[which(FMNH_brach[,"Formation"] %in% qmarks), "Formation"], pattern = "\\?", replacement = "")
-
 ## Clean bivalve data
 FMNH_biv$Phylum <- "Mollusca"
 FMNH_biv$Class <- "Bivalvia"
 FMNH_biv$Genus <- str_to_title(FMNH_biv$Genus)
 FMNH_biv$Species <- tolower(FMNH_biv$Species)
-FMNH_biv$Formation <- str_to_title(FMNH_biv$Formation)
+FMNH_biv$formation1 <- str_to_title(FMNH_biv$formation1)
+FMNH_biv$formation2 <- str_to_title(FMNH_biv$formation2)
+FMNH_biv$formation3 <- str_to_title(FMNH_biv$formation3)
 
 ## Clean brachiopod data
 FMNH_brach$Phylum <- "Brachiopoda"
 FMNH_brach$Genus <- str_to_title(FMNH_brach$Genus)
 FMNH_brach$Species <- tolower(FMNH_brach$Species)
-FMNH_brach$Formation <- str_to_title(FMNH_brach$Formation)
+FMNH_brach$formation1 <- str_to_title(FMNH_brach$formation1)
+FMNH_brach$formation2 <- str_to_title(FMNH_brach$formation2)
 
 ## Export data
 setwd(home)
@@ -320,10 +352,6 @@ colnames(NMS_brach) <- c("x", "accessionNumber", "fullName", "locality", "format
 NMS_biv <- NMS_biv[,c(1,3,4,5,6,7)]
 NMS_brach <- NMS_brach[,c(2,3,4,5,6,7)]
 
-## Add uncertainGenus
-NMS_biv$uncertainGenus <- F
-NMS_brach$uncertainGenus <- F
-
 ## check for gaps and NAs, and genera for unusable names
 #View(data.frame(table(NMS_biv$genus)))
 droppers <- c()
@@ -368,9 +396,6 @@ if(any(str_detect(NMS_biv[,"genus"], pattern = "\\?"))){
   print("'?'s detected")
   questions <- unique(NMS_biv$genus[which(str_detect(NMS_biv$genus, pattern = "\\?"))])
   questions
-  ## drop total unknowns, clean up others
-  questions <- questions[-c(1:18, 20:23)]
-  questions
   droppers <- c(droppers,which(NMS_biv[,"genus"] %in% questions))
 }
 ## Check formations for unusable entries
@@ -382,17 +407,26 @@ droppers <- c(droppers, which(NMS_biv[,"formation"] == "Ga"))
 droppers <- unique(droppers)
 NMS_biv <- NMS_biv[-droppers,]
 
-## Remove qmarks from genus and formation columns
 ## Tidy up formations
-qmarks <- NMS_biv$formation[which(str_detect(NMS_biv$formation, pattern = "\\?"))]
-qmarks
-## none there!
+formations <- data.frame(NMS_biv$formation)
+NMS_biv$formation <- NULL
+colnames(formations) <- "formation1"
 
-## Same for genera
-qmarks <- unique(NMS_biv$genus[which(str_detect(NMS_biv$genus, pattern = "\\?"))])
-qmarks
-NMS_biv[which(NMS_biv[,"genus"] %in% qmarks),"uncertainGenus"] <- T
-NMS_biv[which(NMS_biv[,"genus"] %in% qmarks),"genus"] <- str_replace_all(NMS_biv[which(NMS_biv[,"genus"] %in% qmarks),"genus"], pattern = "\\?", replacement = "")
+## Get maximum number of formations within a single record
+## Find all punctuation
+p <- unique(unlist(str_extract_all(formations$formation1, pattern = "[[:punct:]]")))
+p
+
+## Check entries associated with each punctuation
+#View(data.frame(table(formations$formation1[which(str_detect(formations$formation1, pattern = "\\."))])))
+## No splitting required, can clean up all.
+p <- paste0('\\', p)
+for(c in p){
+  formations$formation1 <- str_replace_all(formations$formation1, pattern = c, replacement = " ")
+}
+
+## Re-attach to dataset
+NMS_biv <- cbind(NMS_biv, formations)
 
 ## Tidy up undetermined/indeterminate
 #View(data.frame(table(NMS_biv$species)))
@@ -458,7 +492,7 @@ NMS_biv[which(NMS_biv[,"species"] %in% qmarks),"species"] <- str_replace_all(NMS
 ## Finally, tidy up main columns
 NMS_biv$genus <- str_to_title(NMS_biv$genus)
 NMS_biv$species <- tolower(NMS_biv$species)
-NMS_biv$formation <- str_to_title(NMS_biv$formation)
+NMS_biv$formation1 <- str_to_title(NMS_biv$formation1)
 
 ## Now to do the same for brachiopods. First, need to split scientific name
 names <- str_split_fixed(NMS_brach[,"fullName"], pattern = " ", n = 2)
@@ -512,7 +546,7 @@ if(any(str_detect(NMS_brach[,"genus"], pattern = "\\?"))){
   print("'?'s detected")
   questions <- unique(NMS_brach$genus[which(str_detect(NMS_brach$genus, pattern = "\\?"))])
   questions
-  ## none to drop
+  droppers <- c(droppers,which(NMS_brach[,"genus"] %in% questions))
 }
 ## Drop entries that don't have stage data and don't have usable formations (only brachiopod has stage data)
 ## first, get no stage
@@ -522,21 +556,12 @@ noStage <- c(which(NMS_brach[,"stage"] == ""), which(NMS_brach[,"stage"] == "?")
 noForm <- c()
 noForm <- c(noForm, which(NMS_brach[,"formation"] == ""))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "?"))
-noForm <- c(noForm, which(NMS_brach[,"formation"] == "3 fathoms below Eastet Main Coal, Limestone Coal Group"))
-noForm <- c(noForm, which(NMS_brach[,"formation"] == "3rd rudist Zone of d'Orbigny, Chloritische Kreide (?=Lower Chalk; or ?Upper Greensand)"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "4 ft above Charlestown Main Limestone"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "4th Limestone above ?___"))
-noForm <- c(noForm, which(NMS_brach[,"formation"] == "above Stinchar Limestone, Barr Series"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "base of Micraster coranguinum Zone"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "black shale bed interstratified with volcanic blue and buff ash"))
-noForm <- c(noForm, which(NMS_brach[,"formation"] == "Caradoc-Ashgill transition"))
-noForm <- c(noForm, which(NMS_brach[,"formation"] == "Caradoc-Ashgill Transition"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "Chalk"))
-noForm <- c(noForm, which(NMS_brach[,"formation"] == "from shale beneath No. 1 Limestone, Lower Limestone Series"))
-noForm <- c(noForm, which(NMS_brach[,"formation"] == "Kreide? = Chalk?"))
-noForm <- c(noForm, which(NMS_brach[,"formation"] == "Limestone Bed in shales overhanging Upper Series, Lower Limestone Series"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "Limestone band"))
-noForm <- c(noForm, which(NMS_brach[,"formation"] == "Lower Limestone Series? MIS"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "MGS"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "need to see the register"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "No 19 Zone"))
@@ -546,23 +571,16 @@ noForm <- c(noForm, which(NMS_brach[,"formation"] == "No. 3 Bed"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "No.1 Bed"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "No.1 Limestone"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "P. zone"))
-noForm <- c(noForm, which(NMS_brach[,"formation"] == "shale above 4 inch coal, Ironstone Measures"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "shale above Highfield Limestone"))
-noForm <- c(noForm, which(NMS_brach[,"formation"] == "shale above Lower Coal, Sub Series, Lower Limestone"))
-noForm <- c(noForm, which(NMS_brach[,"formation"] == "shale above Lower Coal, sub-Series, Lower Limestone"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "shale above tuff with Bykneuk Limestone"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "shale above Upper Longcraig Limestone"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "shale band above 4 foot coal Ironstone Measures"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == 'shale in connection with "Blue" coal Seam'))
-noForm <- c(noForm, which(NMS_brach[,"formation"] == "shale over Hosie Limestone, Lower Limestone Group"))
-noForm <- c(noForm, which(NMS_brach[,"formation"] == "Shale over limestone, Lower Limestone Series"))
-noForm <- c(noForm, which(NMS_brach[,"formation"] == "shale over lower coal sub-series, Lower Limestone"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "shale under Top Hosie Limestone"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == 'shale underlying the "Blue" coal seam'))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "shales above bone bed"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "shales above Charlestown Main Limestone"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "shales above Lower Sandstone"))
-noForm <- c(noForm, which(NMS_brach[,"formation"] == "shales above No. 2 Limestone, shale above the top limestone, Lower Limestone Series"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "Shales below 2nd Abden Limestone"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "Stage D"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "Stage D1y"))
@@ -578,29 +596,73 @@ noForm <- c(noForm, which(NMS_brach[,"formation"] == "top Micraster cor. Test. Z
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "top of Merameca Group"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "top of Terebratulina gracilis Zone"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "unknown"))
-noForm <- c(noForm, which(NMS_brach[,"formation"] == "Whitehouse Group, Caradoc-Ashgill transition"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "zone 19"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "Zone S. Vaughan"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "Zone Terebratulina gracilis"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "Zone with Holaster planus"))
-noForm <- sort(noForm)
 droppers <- c(droppers, intersect(noStage, noForm))
 droppers <- unique(droppers)
 NMS_brach <- NMS_brach[-droppers,]
 
-## Remove question marks from genera, formations, and stages
-## Tidy up formations
-qmarks <- NMS_brach$formation[which(str_detect(NMS_brach$formation, pattern = "\\?"))]
-qmarks
-NMS_brach[which(NMS_brach[,"formation"] %in% qmarks),"formation"] <- str_replace_all(NMS_brach[which(NMS_brach[,"formation"] %in% qmarks),"formation"], pattern = "\\?", replacement = "")
+## Isolate formation data and split into 3
+formations <- data.frame(NMS_brach$formation)
+NMS_brach$formation <- NULL
+colnames(formations) <- "formation1"
 
-## Same for genera
-qmarks <- unique(NMS_brach$genus[which(str_detect(NMS_brach$genus, pattern = "\\?"))])
-qmarks
-NMS_brach[which(NMS_brach[,"genus"] %in% qmarks),"uncertainGenus"] <- T
-NMS_brach[which(NMS_brach[,"genus"] %in% qmarks),"genus"] <- str_replace_all(NMS_brach[which(NMS_brach[,"genus"] %in% qmarks),"genus"], pattern = "\\?", replacement = "")
+## Get maximum number of formations within a single record
+## Find all punctuation
+p <- unique(unlist(str_extract_all(formations$formation1, pattern = "[[:punct:]]")))
+p
 
-## And same for stages
+## 9 total
+## Check entries associated with each
+#View(data.frame(table(formations$formation1[which(str_detect(formations$formation1, pattern = '\"'))])))
+## Split by hyphen and semi-colon
+p <- paste0('\\', p[-c(3, 10)])
+p
+for(c in p){
+  formations$formation1 <- str_replace_all(formations$formation1, pattern = c, replacement = " ")
+}
+## get split formations - maximum of 2.
+split.forms <- c(str_split(formations$formation1, pattern = "\\-"), str_split(formations$formation1, pattern = "\\;"))
+max.forms <- max(sapply(1:length(split.forms), function(x) length(split.forms[[x]])))
+## maximum 3 formations
+formations$formation2 <- ""
+
+## Now to find offending rows
+splitters <- c()
+splitters <- c(splitters, which(str_detect(formations$formation1, pattern = '\\;')))
+splitters <- c(splitters, which(str_detect(formations$formation1, pattern = '\\-')))
+splitters <- unique(splitters)
+
+## Remove keepers and check again
+formations$formation1[splitters]
+splitters <- splitters[-c(16:33)]
+formations$formation1[splitters]
+
+for(i in splitters){
+  if(str_detect(formations$formation1[i], pattern = "\\;")){
+    ## extract formations
+    formVec <- unlist(str_split(formations$formation1[i], pattern = "\\;"))
+    ## assign to new columns
+    for(f in 1:length(formVec)){
+      formations[i,f] <- formVec[f]
+    }
+  }
+  if(str_detect(formations$formation1[i], pattern = "\\-")){
+    ## extract formations
+    formVec <- unlist(str_split(formations$formation1[i], pattern = "\\-"))
+    ## assign to new columns
+    for(f in 1:length(formVec)){
+      formations[i,f] <- formVec[f]
+    }
+  }
+}
+
+## Re-attach to dataset
+NMS_brach <- cbind(NMS_brach, formations)
+
+## Clean stages
 qmarks <- unique(NMS_brach$stage[which(str_detect(NMS_brach$stage, pattern = "\\?"))])
 qmarks
 NMS_brach[which(NMS_brach[,"stage"] %in% qmarks),"stage"] <- str_replace_all(NMS_brach[which(NMS_brach[,"stage"] %in% qmarks),"stage"], pattern = "\\?", replacement = "")
@@ -640,7 +702,7 @@ if(any(str_detect(NMS_brach[,"species"], pattern = "\\."))){
   dots <- unique(NMS_brach$species[which(str_detect(NMS_brach$species, pattern = "\\."))])
   dots
   ## prune out dots to retain
-  dots <- dots[-c(41, 43)]
+  dots <- dots[-c(42, 44)]
   dots
   gen.level <- c(gen.level,which(NMS_brach[,"species"] %in% dots))
 }
@@ -666,7 +728,8 @@ NMS_brach[which(NMS_brach[,"species"] %in% qmarks),"species"] <- str_replace_all
 ## Finally, tidy up main columns
 NMS_brach$genus <- str_to_title(NMS_brach$genus)
 NMS_brach$species <- tolower(NMS_brach$species)
-NMS_brach$formation <- str_to_title(NMS_brach$formation)
+NMS_brach$formation1 <- str_to_title(NMS_brach$formation1)
+NMS_brach$formation2 <- str_to_title(NMS_brach$formation2)
 
 ## Export
 saveRDS(NMS_biv, file = "data/museum/NMS_biv.Rds")
@@ -694,9 +757,6 @@ colnames(AMNH) <- c("IRN", "catN", "suffix", "phylum", "class", "order", "family
 ## Prune to relevant columns
 AMNH <- AMNH[,c(1:11, 14, 17:20, 22:32, 39, 42)]
 
-## Add genus uncertainty column
-AMNH$uncertainGenus <- F
-
 ## Drop rows with no genera, phylum/class, formation/age, or latitude+longtitude/locality
 #View(data.frame(table(AMNH$genus)))
 droppers <- c()
@@ -710,9 +770,6 @@ if(any(str_detect(AMNH[,"genus"], pattern = regex("cf", ignore_case = T)))){
   print("'cf's detected")
   cfs <- unique(AMNH$genus[which(str_detect(AMNH$genus, pattern = regex("cf", ignore_case = T)))])
   cfs
-  ## drop all but 3
-  cfs <- cfs[-3]
-  cfs
   droppers <- c(droppers, which(AMNH[,"genus"] %in% cfs))
 }
 ## Check for dots
@@ -721,7 +778,7 @@ if(any(str_detect(AMNH[,"genus"], pattern = "\\."))){
   dots <- unique(AMNH$genus[which(str_detect(AMNH$genus, pattern = "\\."))])
   dots
   ## prune out most dots
-  dots <- dots[-c(14, 15, 26)]
+  dots <- dots[-c(14)]
   dots
   droppers <- c(droppers,which(AMNH[,"genus"] %in% dots))
 }
@@ -729,10 +786,7 @@ if(any(str_detect(AMNH[,"genus"], pattern = "\\."))){
 if(any(str_detect(AMNH[,"genus"], pattern = "\\?"))){
   print("'?'s detected")
   questions <- unique(AMNH$genus[which(str_detect(AMNH$genus, pattern = "\\?"))])
-  #View(data.frame(questions))
-  ## Only drop a few
-  questions <- questions[c(4, 43, 154, 159, 173, 196, 213)]
-  questions
+  #View(table(data.frame(questions)))
   droppers <- c(droppers,which(AMNH[,"genus"] %in% questions))
 }
 droppers <- c(droppers, which(AMNH$genus == "Bivalvia | cephalopoda"))
@@ -754,27 +808,306 @@ droppers <- c(droppers, which(AMNH$genus == "Pseudomonotis + libea"))
 droppers <- c(droppers, intersect(which(AMNH$phylum == ""), which(AMNH$class == "")))
 ## neither formation nor age
 ## define noStage and noForm, then get intersection
-
-##### Resume here! #####
-
-
-
+## first, manually move formations to formation column
+AMNH$formation[which(AMNH$age == "(Duplin)")] <- "Upper Duplin"
+AMNH$age[which(AMNH$age == "(Duplin)")] <- ""
+#View(data.frame(table(AMNH$age)))
+noStage <- c()
+noStage <- c(noStage, which(AMNH$age == ""))
+noStage <- c(noStage, which(AMNH$age == "(E)"))
+noStage <- c(noStage, which(AMNH$age == "A"))
+noStage <- c(noStage, which(AMNH$age == "Late, Or Permian"))
+noStage <- c(noStage, which(AMNH$age == "Lower-Middle"))
+noStage <- c(noStage, which(AMNH$age == "Lower/Middle"))
+noStage <- c(noStage, which(AMNH$age == "P."))
+noStage <- c(noStage, which(AMNH$age == "P.P.?"))
+noStage <- c(noStage, which(AMNH$age == "Sub"))
+noStage <- c(noStage, which(AMNH$age == "Recent"))
+noStage <- c(noStage, which(AMNH$age == "Top"))
+noStage <- c(noStage, which(AMNH$age == "Upper"))
+noStage <- c(noStage, which(AMNH$age == "Upper ?"))
+noStage <- c(noStage, which(AMNH$age == "W. Facies"))
+noStage <- c(noStage, which(AMNH$age == "West Facies"))
+## Now for noForm
+#View(data.frame(table(AMNH$formation)))
+noForm <- c()
+noForm <- c(noForm, which(AMNH$formation == ""))
+noForm <- c(noForm, which(AMNH$formation == "(Overlying Lignite Beds0"))
+noForm <- c(noForm, which(AMNH$formation == "50' Above Phosphoria"))
+noForm <- c(noForm, which(AMNH$formation == "Above Abeih Beds"))
+noForm <- c(noForm, which(AMNH$formation == "Above Abeith Beds"))
+noForm <- c(noForm, which(AMNH$formation == "Above Bewerty Beds"))
+noForm <- c(noForm, which(AMNH$formation == "Above Bone Spring Ls."))
+noForm <- c(noForm, which(AMNH$formation == "Above Middle Of Placid Shale"))
+noForm <- c(noForm, which(AMNH$formation == "Albian"))
+noForm <- c(noForm, which(AMNH$formation == "Bluff 3"))
+noForm <- c(noForm, which(AMNH$formation == "Clay"))
+noForm <- c(noForm, which(AMNH$formation == "Jurassic Beds"))
+noForm <- c(noForm, which(AMNH$formation == "Jurassic Limestone"))
+noForm <- c(noForm, which(AMNH$formation == "Just Below Tully Limestone"))
+noForm <- c(noForm, which(AMNH$formation == "Shale Above Hurlet Limestone"))
+noForm <- c(noForm, which(AMNH$formation == "Shale Below Lecompton Ls."))
+noForm <- c(noForm, which(AMNH$formation == "Shale Below Topeka Limestone"))
+noForm <- c(noForm, which(AMNH$formation == "Shale Below Topeka Ls."))
+noForm <- c(noForm, which(AMNH$formation == "Shale Just Under Lecompton Ls."))
+noForm <- c(noForm, which(AMNH$formation == "Sub."))
+noForm <- c(noForm, which(AMNH$formation == "Sub. Moy."))
+noForm <- c(noForm, which(AMNH$formation == "Upper"))
+noForm <- c(noForm, which(AMNH$formation == "Upper Bed"))
+noForm <- c(noForm, which(AMNH$formation == "Upper Beds"))
+noForm <- c(noForm, which(AMNH$formation == "Upper Chalk"))
+noForm <- c(noForm, which(AMNH$formation == "Word 1 ?, Kaibab"))
+noForm <- c(noForm, which(AMNH$formation == "X Shale"))
+droppers <- c(droppers, intersect(noForm, noStage))
 ## neither both lat+long nor locality
 ## define noLat/long and noLoc, then get intersection
-
+noLL <- union(which(is.na(AMNH$latitudeDecimal)),which(is.na(AMNH$longitudeDecimal)))
+noLoc <- which(AMNH$locality == "")
+droppers <- c(droppers, intersect(noLL, noLoc))
 ## After this, get unique droppers and drop
+droppers <- unique(droppers)
+AMNH <- AMNH[-droppers,]
 
-## Next, remove question marks from stage, formation, and genus
+## Split and clean stages
+stageDoub <- c()
+stageDoub <- c(stageDoub, which(AMNH$age == "Anisian | Ladinian, Upper"))
+stageDoub <- c(stageDoub, which(AMNH$age == "Anisian-Ladinian"))
+stageDoub <- c(stageDoub, which(AMNH$age == "Campanian | Maastrichtian"))
+stageDoub <- c(stageDoub, which(AMNH$age == "CINCINNATIAN | RICHMONDIAN"))
+stageDoub <- c(stageDoub, which(AMNH$age == "CLARKFORKIAN - WASATCHIAN"))
+stageDoub <- c(stageDoub, which(AMNH$age == "EIFELIAN|GIVETIAN"))
+stageDoub <- c(stageDoub, which(AMNH$age == "Gulfian_Early Late Maastrichtian"))
+stageDoub <- c(stageDoub, which(AMNH$age == "Maastrichtian | Campanian"))
+stageDoub <- c(stageDoub, which(AMNH$age == "PENNSYLVANIAN, M |DESMOINESIAN"))
+stageDoub <- c(stageDoub, which(AMNH$age == "Quadraten-Senonian"))
 
-## Tidy up genus capitalization
+
+## Split and clean stages
+stages <- data.frame(AMNH$age)
+AMNH$age <- NULL
+colnames(stages) <- "stage1"
+
+## Only 2 stages max
+stages$stage2 <- ""
+
+## Specify splitting punctuation
+p <- c("|", "-", "_")
+
+## Split stages
+for(i in stageDoub){
+  for(m in p){
+    if(str_detect(stages$stage1[i], pattern = fixed(m))){
+      ## extract stages
+      formVec <- unlist(str_split(stages$stage1[i], pattern = fixed(m)))
+      ## assign to new columns
+      for(f in 1:length(formVec)){
+        stages[i,f] <- formVec[f]
+      }
+    }
+  }
+}
+
+## Re-attach to dataset
+AMNH <- cbind(AMNH, stages)
+
+## Now do the same for formations
+formations <- data.frame(AMNH$formation)
+AMNH$formation <- NULL
+colnames(formations) <- "formation1"
+
+## Get maximum number of formations within a single record
+## Find all punctuation
+p <- unique(unlist(str_extract_all(formations$formation1, pattern = "[[:punct:]]")))
+p
+
+## 9 total
+## Check entries associated with each
+View(data.frame(table(formations$formation1[which(str_detect(formations$formation1, pattern = fixed('\"')))])))
+## Split by hyphen, ambersand, and backslash
+p <- paste0('\\', p[-c(6, 7, 12)])
+p
+for(c in p){
+  formations$formation1 <- str_replace_all(formations$formation1, pattern = c, replacement = " ")
+}
+## get split formations - maximum of 2.
+split.forms <- c(str_split(formations$formation1, pattern = fixed("-")), str_split(formations$formation1, pattern = fixed("&")), str_split(formations$formation1, pattern = fixed("/")))
+max.forms <- sapply(1:length(split.forms), function(x) length(split.forms[[x]]))
+
+## One rogue entry with 7 elements - will resolve manually then re-run
+formations$formation1[which(max.forms == 7)] <- "Tebo Shale-Lexington Coal"
+
+## Re-run
+split.forms <- c(str_split(formations$formation1, pattern = fixed("-")), str_split(formations$formation1, pattern = fixed("&")), str_split(formations$formation1, pattern = fixed("/")))
+max.forms <- max(sapply(1:length(split.forms), function(x) length(split.forms[[x]])))
+
+## maximum 2 formations
+formations$formation2 <- ""
+
+## Now to find offending rows
+splitters <- c()
+splitters <- c(splitters, which(str_detect(formations$formation1, pattern = fixed('-'))))
+splitters <- c(splitters, which(str_detect(formations$formation1, pattern = fixed('&'))))
+splitters <- c(splitters, which(str_detect(formations$formation1, pattern = fixed('/'))))
+splitters <- unique(splitters)
+
+## Remove keepers and check again
+formations$formation1[splitters]
+splitters <- splitters[-c(3:14, 25:27, 29:30, 42, 50:55)]
+formations$formation1[splitters]
+
+## Split splitters
+for(i in splitters){
+  if(str_detect(formations$formation1[i], pattern = fixed('&'))){
+    ## extract formations
+    formVec <- unlist(str_split(formations$formation1[i], pattern = fixed('&')))
+    ## assign to new columns
+    for(f in 1:length(formVec)){
+      formations[i,f] <- formVec[f]
+    }
+  }
+  if(str_detect(formations$formation1[i], pattern = fixed('/'))){
+    ## extract formations
+    formVec <- unlist(str_split(formations$formation1[i], pattern = fixed('/')))
+    ## assign to new columns
+    for(f in 1:length(formVec)){
+      formations[i,f] <- formVec[f]
+    }
+  }
+  if(str_detect(formations$formation1[i], pattern = fixed('-'))){
+    ## extract formations
+    formVec <- unlist(str_split(formations$formation1[i], pattern = fixed('-')))
+    ## assign to new columns
+    for(f in 1:length(formVec)){
+      formations[i,f] <- formVec[f]
+    }
+  }
+}
+
+## Re-attach to dataset
+AMNH <- cbind(AMNH, formations)
+
+## Tidy up phylum and classifications
+#View(data.frame(table(AMNH$phylum)))
+AMNH$phylum[which(AMNH$phylum == "Brachiopoda-articulata")] <- "Brachiopoda"
+AMNH$phylum[which(AMNH$phylum == "")] <- "Mollusca"
+View(data.frame(table(AMNH$phylum)))
+View(data.frame(table(AMNH$class)))
+AMNH$class[which(AMNH$class == "Bivalvia (lost)")] <- "Bivalvia"
+AMNH$class[which(AMNH$class == "Lingulida")] <- "Lingulata"
+AMNH$class[which(AMNH$class == "Stophomenata")] <- "Strophomenata"
+AMNH$phylum[which(AMNH$class == "Brachiopoda")] <- "Brachiopoda"
+AMNH$class[which(AMNH$class == "Brachiopoda")] <- ""
+AMNH <- AMNH[-which(AMNH$class == "Gastropoda"),]
+
+## Tidy up genus, stage, and formation capitalization
+AMNH$genus <- str_to_title(AMNH$genus)
+AMNH$formation1 <- str_to_title(AMNH$formation1)
+AMNH$formation2 <- str_to_title(AMNH$formation2)
+AMNH$stage1 <- str_to_title(AMNH$stage1)
+AMNH$stage2 <- str_to_title(AMNH$stage2)
 
 ## Then convert all uncertain species to "sp."
-
-## Then remove ?s from those remaining
+## Tidy up undetermined/indeterminate species
+View(data.frame(table(AMNH$species)))
+gen.level <- c()
+gen.level <- c(gen.level,which(AMNH[,"species"] == "aesop.&pyranitatoides"))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "ap. A"))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "ap. B"))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "cp. sp 1"))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "eburnea&perlaevis"))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "indet."))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "medium"))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "n sp"))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "n. sp"))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "n. sp."))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "n. sp.?"))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "n.sp"))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "n.sp?"))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "n.sp."))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "new sp."))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "nov. sp."))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "nov.sp."))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "orbiculata & lingula"))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "sp"))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "sp ?"))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "sp #1"))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "sp aff p."))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "sp?"))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "sp."))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "sp. ?"))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "sp. 1"))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "sp. 2"))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "sp. a"))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "sp. A"))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "sp. b"))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "sp. B"))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "sp. indet."))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "sp. new"))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "sp. nov."))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "sp. undes (?)"))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "sp. undes."))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "sp. undesc."))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "sp. undescr."))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "sp. undescribed"))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "sp. undet"))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "sp. undet."))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "sp. undeter."))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "sp. undetermined"))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "sp.?"))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "sp.1"))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "sp.2"))
+gen.level <- c(gen.level,which(AMNH[,"species"] == "undescribed"))
+## Check for "aff"
+if(any(str_detect(AMNH[,"species"], pattern = regex("aff", ignore_case = T)))){
+  print("'aff's detected")
+  affs <- unique(AMNH[,"species"][which(str_detect(AMNH[,"species"], pattern = regex("aff", ignore_case = T)))])
+  affs
+  ##
+  affs <- affs[-c(1, 2, 3, 5)]
+  affs
+  gen.level <- c(gen.level, which(AMNH[,"species"] %in% affs))
+}
+## Check for "cf"
+if(any(str_detect(AMNH[,"species"], pattern = regex("cf", ignore_case = T)))){
+  print("'cf's detected")
+  cfs <- unique(AMNH$species[which(str_detect(AMNH$species, pattern = regex("cf", ignore_case = T)))])
+  cfs
+  ## change some
+  cfs <- cfs[-c(46)]
+  cfs
+  gen.level <- c(gen.level, which(AMNH[,"species"] %in% cfs))
+}
+## Check for dots
+if(any(str_detect(AMNH[,"species"], pattern = "\\."))){
+  print("periods detected")
+  dots <- unique(AMNH$species[which(str_detect(AMNH$species, pattern = "\\."))])
+  View(data.frame(dots))
+  ## prune out dots to retain
+  dots <- dots[-c(10, 14, 20, 72, 74, 76, 78, 80, 88, 89, 90, 93, 94, 96:101, 103)]
+  View(data.frame(d))
+  gen.level <- c(gen.level,which(AMNH[,"species"] %in% dots))
+}
+## Check for "?"
+if(any(str_detect(AMNH[,"species"], pattern = "\\?"))){
+  print("'?'s detected")
+  questions <- unique(AMNH$species[which(str_detect(AMNH$species, pattern = "\\?"))])
+  questions
+  ## drop total unknowns, clean up others
+  gen.level <- c(gen.level,which(AMNH[,"species"] %in% questions))
+}
+gen.level <- unique(gen.level)
+AMNH[gen.level,"species"] <- "sp."
 
 ## Then fix capitalization for species
+AMNH$species <- tolower(AMNH$species)
 
+## Split into bivalves and brachiopods
+AMNH_biv <- AMNH[which(AMNH$phylum == "Mollusca"),]
+AMNH_brach <- AMNH[which(AMNH$phylum == "Brachiopoda"),]
 
+## Export
+saveRDS(AMNH_biv, file = "data/museum/AMNH_biv.Rds")
+saveRDS(AMNH_brach, file = "data/museum/AMNH_brach.Rds")
 
 #### Peabody data ####
 rm(list = ls())
@@ -789,7 +1122,365 @@ Peabody_biv <- read.csv("Peabody_Bivalves_May2024.csv")
 Peabody_brach <- read.csv("Peabody_Brachiopods_May2024.csv")
 setwd(home)
 
+## Inspect data
+View(Peabody_biv)
 
+## Prune to relevant columns
+Peabody_biv <- Peabody_biv[,-c(1,2,4,5,7,8,13,17,19,20,21,22,25,33,34,35,36,38,39)]
+Peabody_brach <- Peabody_brach[,-c(1,2,4,5,7,8,13,17,19,20,21,22,25,33,34,35,36,38,39)]
+
+## Update colnames
+colnames(Peabody_biv) <- colnames(Peabody_brach) <- c("catFullNumber", "fullName", "locality", "epoch", "formation", "member", "period", "districtCountyShire", "age", "facies",
+                           "latitude", "longitude", "phylum", "subPhylum", "class", "order", "family", "genus", "reference", "collectorSurname")
+
+
+## Drop rows with no genera, phylum/class, formation/age, or latitude+longtitude/locality
+#View(data.frame(table(Peabody_biv$genus)))
+droppers <- c()
+droppers <- c(droppers, which(Peabody_biv$genus == ""))
+## Check for "aff"
+if(any(str_detect(Peabody_biv[,"genus"], pattern = regex("aff", ignore_case = T)))){
+  print("'aff's detected")
+}
+## Check for "cf"
+if(any(str_detect(Peabody_biv[,"genus"], pattern = regex("cf", ignore_case = T)))){
+  print("'cf's detected")
+  cfs <- unique(Peabody_biv$genus[which(str_detect(Peabody_biv$genus, pattern = regex("cf", ignore_case = T)))])
+  cfs
+  droppers <- c(droppers, which(Peabody_biv[,"genus"] %in% cfs))
+}
+## Check for dots
+if(any(str_detect(Peabody_biv[,"genus"], pattern = "\\."))){
+  print("periods detected")
+  dots <- unique(Peabody_biv$genus[which(str_detect(Peabody_biv$genus, pattern = "\\."))])
+  dots
+  ## prune out most dots
+  dots <- dots[-c(14)]
+  dots
+  droppers <- c(droppers,which(Peabody_biv[,"genus"] %in% dots))
+}
+## Check for "?"
+if(any(str_detect(Peabody_biv[,"genus"], pattern = "\\?"))){
+  print("'?'s detected")
+  questions <- unique(Peabody_biv$genus[which(str_detect(Peabody_biv$genus, pattern = "\\?"))])
+  #View(table(data.frame(questions)))
+  droppers <- c(droppers,which(Peabody_biv[,"genus"] %in% questions))
+}
+droppers <- c(droppers, which(Peabody_biv$genus == "Bivalvia | cephalopoda"))
+droppers <- c(droppers, which(Peabody_biv$genus == "Centrinella-rhipidomella"))
+droppers <- c(droppers, which(Peabody_biv$genus == "Deltopecten + etheripectn"))
+droppers <- c(droppers, which(Peabody_biv$genus == "Fragum/trigonicardia"))
+droppers <- c(droppers, which(Peabody_biv$genus == "Genus"))
+droppers <- c(droppers, which(Peabody_biv$genus == "Indet"))
+droppers <- c(droppers, which(Peabody_biv$genus == "Indeterminate"))
+droppers <- c(droppers, which(Peabody_biv$genus == "Indetermined"))
+droppers <- c(droppers, which(Peabody_biv$genus == "Unidentified"))
+droppers <- c(droppers, which(Peabody_biv$genus == "Undetermined"))
+droppers <- c(droppers, which(Peabody_biv$genus == "L'azaria"))
+droppers <- c(droppers, which(Peabody_biv$genus == "Liebea + bakevellia"))
+droppers <- c(droppers, which(Peabody_biv$genus == "Mya  or panopea"))
+droppers <- c(droppers, which(Peabody_biv$genus == "New genus"))
+droppers <- c(droppers, which(Peabody_biv$genus == "Pseudomonotis + libea"))
+## neither phylum nor class
+droppers <- c(droppers, intersect(which(Peabody_biv$phylum == ""), which(Peabody_biv$class == "")))
+## neither formation nor age
+## define noStage and noForm, then get intersection
+## first, manually move formations to formation column
+Peabody_biv$formation[which(Peabody_biv$age == "(Duplin)")] <- "Upper Duplin"
+Peabody_biv$age[which(Peabody_biv$age == "(Duplin)")] <- ""
+#View(data.frame(table(Peabody_biv$age)))
+noStage <- c()
+noStage <- c(noStage, which(Peabody_biv$age == ""))
+noStage <- c(noStage, which(Peabody_biv$age == "(E)"))
+noStage <- c(noStage, which(Peabody_biv$age == "A"))
+noStage <- c(noStage, which(Peabody_biv$age == "Late, Or Permian"))
+noStage <- c(noStage, which(Peabody_biv$age == "Lower-Middle"))
+noStage <- c(noStage, which(Peabody_biv$age == "Lower/Middle"))
+noStage <- c(noStage, which(Peabody_biv$age == "P."))
+noStage <- c(noStage, which(Peabody_biv$age == "P.P.?"))
+noStage <- c(noStage, which(Peabody_biv$age == "Sub"))
+noStage <- c(noStage, which(Peabody_biv$age == "Recent"))
+noStage <- c(noStage, which(Peabody_biv$age == "Top"))
+noStage <- c(noStage, which(Peabody_biv$age == "Upper"))
+noStage <- c(noStage, which(Peabody_biv$age == "Upper ?"))
+noStage <- c(noStage, which(Peabody_biv$age == "W. Facies"))
+noStage <- c(noStage, which(Peabody_biv$age == "West Facies"))
+## Now for noForm
+#View(data.frame(table(Peabody_biv$formation)))
+noForm <- c()
+noForm <- c(noForm, which(Peabody_biv$formation == ""))
+noForm <- c(noForm, which(Peabody_biv$formation == "(Overlying Lignite Beds0"))
+noForm <- c(noForm, which(Peabody_biv$formation == "50' Above Phosphoria"))
+noForm <- c(noForm, which(Peabody_biv$formation == "Above Abeih Beds"))
+noForm <- c(noForm, which(Peabody_biv$formation == "Above Abeith Beds"))
+noForm <- c(noForm, which(Peabody_biv$formation == "Above Bewerty Beds"))
+noForm <- c(noForm, which(Peabody_biv$formation == "Above Bone Spring Ls."))
+noForm <- c(noForm, which(Peabody_biv$formation == "Above Middle Of Placid Shale"))
+noForm <- c(noForm, which(Peabody_biv$formation == "Albian"))
+noForm <- c(noForm, which(Peabody_biv$formation == "Bluff 3"))
+noForm <- c(noForm, which(Peabody_biv$formation == "Clay"))
+noForm <- c(noForm, which(Peabody_biv$formation == "Jurassic Beds"))
+noForm <- c(noForm, which(Peabody_biv$formation == "Jurassic Limestone"))
+noForm <- c(noForm, which(Peabody_biv$formation == "Just Below Tully Limestone"))
+noForm <- c(noForm, which(Peabody_biv$formation == "Shale Above Hurlet Limestone"))
+noForm <- c(noForm, which(Peabody_biv$formation == "Shale Below Lecompton Ls."))
+noForm <- c(noForm, which(Peabody_biv$formation == "Shale Below Topeka Limestone"))
+noForm <- c(noForm, which(Peabody_biv$formation == "Shale Below Topeka Ls."))
+noForm <- c(noForm, which(Peabody_biv$formation == "Shale Just Under Lecompton Ls."))
+noForm <- c(noForm, which(Peabody_biv$formation == "Sub."))
+noForm <- c(noForm, which(Peabody_biv$formation == "Sub. Moy."))
+noForm <- c(noForm, which(Peabody_biv$formation == "Upper"))
+noForm <- c(noForm, which(Peabody_biv$formation == "Upper Bed"))
+noForm <- c(noForm, which(Peabody_biv$formation == "Upper Beds"))
+noForm <- c(noForm, which(Peabody_biv$formation == "Upper Chalk"))
+noForm <- c(noForm, which(Peabody_biv$formation == "Word 1 ?, Kaibab"))
+noForm <- c(noForm, which(Peabody_biv$formation == "X Shale"))
+droppers <- c(droppers, intersect(noForm, noStage))
+## neither both lat+long nor locality
+## define noLat/long and noLoc, then get intersection
+noLL <- union(which(is.na(Peabody_biv$latitudeDecimal)),which(is.na(Peabody_biv$longitudeDecimal)))
+noLoc <- which(Peabody_biv$locality == "")
+droppers <- c(droppers, intersect(noLL, noLoc))
+## After this, get unique droppers and drop
+droppers <- unique(droppers)
+Peabody_biv <- Peabody_biv[-droppers,]
+
+## Split and clean stages
+stageDoub <- c()
+stageDoub <- c(stageDoub, which(Peabody_biv$age == "Anisian | Ladinian, Upper"))
+stageDoub <- c(stageDoub, which(Peabody_biv$age == "Anisian-Ladinian"))
+stageDoub <- c(stageDoub, which(Peabody_biv$age == "Campanian | Maastrichtian"))
+stageDoub <- c(stageDoub, which(Peabody_biv$age == "CINCINNATIAN | RICHMONDIAN"))
+stageDoub <- c(stageDoub, which(Peabody_biv$age == "CLARKFORKIAN - WASATCHIAN"))
+stageDoub <- c(stageDoub, which(Peabody_biv$age == "EIFELIAN|GIVETIAN"))
+stageDoub <- c(stageDoub, which(Peabody_biv$age == "Gulfian_Early Late Maastrichtian"))
+stageDoub <- c(stageDoub, which(Peabody_biv$age == "Maastrichtian | Campanian"))
+stageDoub <- c(stageDoub, which(Peabody_biv$age == "PENNSYLVANIAN, M |DESMOINESIAN"))
+stageDoub <- c(stageDoub, which(Peabody_biv$age == "Quadraten-Senonian"))
+
+
+## Split and clean stages
+stages <- data.frame(Peabody_biv$age)
+Peabody_biv$age <- NULL
+colnames(stages) <- "stage1"
+
+## Only 2 stages max
+stages$stage2 <- ""
+
+## Specify splitting punctuation
+p <- c("|", "-", "_")
+
+## Split stages
+for(i in stageDoub){
+  for(m in p){
+    if(str_detect(stages$stage1[i], pattern = fixed(m))){
+      ## extract stages
+      formVec <- unlist(str_split(stages$stage1[i], pattern = fixed(m)))
+      ## assign to new columns
+      for(f in 1:length(formVec)){
+        stages[i,f] <- formVec[f]
+      }
+    }
+  }
+}
+
+## Re-attach to dataset
+Peabody_biv <- cbind(Peabody_biv, stages)
+
+## Now do the same for formations
+formations <- data.frame(Peabody_biv$formation)
+Peabody_biv$formation <- NULL
+colnames(formations) <- "formation1"
+
+## Get maximum number of formations within a single record
+## Find all punctuation
+p <- unique(unlist(str_extract_all(formations$formation1, pattern = "[[:punct:]]")))
+p
+
+## 9 total
+## Check entries associated with each
+View(data.frame(table(formations$formation1[which(str_detect(formations$formation1, pattern = fixed('\"')))])))
+## Split by hyphen, ambersand, and backslash
+p <- paste0('\\', p[-c(6, 7, 12)])
+p
+for(c in p){
+  formations$formation1 <- str_replace_all(formations$formation1, pattern = c, replacement = " ")
+}
+## get split formations - maximum of 2.
+split.forms <- c(str_split(formations$formation1, pattern = fixed("-")), str_split(formations$formation1, pattern = fixed("&")), str_split(formations$formation1, pattern = fixed("/")))
+max.forms <- sapply(1:length(split.forms), function(x) length(split.forms[[x]]))
+
+## One rogue entry with 7 elements - will resolve manually then re-run
+formations$formation1[which(max.forms == 7)] <- "Tebo Shale-Lexington Coal"
+
+## Re-run
+split.forms <- c(str_split(formations$formation1, pattern = fixed("-")), str_split(formations$formation1, pattern = fixed("&")), str_split(formations$formation1, pattern = fixed("/")))
+max.forms <- max(sapply(1:length(split.forms), function(x) length(split.forms[[x]])))
+
+## maximum 2 formations
+formations$formation2 <- ""
+
+## Now to find offending rows
+splitters <- c()
+splitters <- c(splitters, which(str_detect(formations$formation1, pattern = fixed('-'))))
+splitters <- c(splitters, which(str_detect(formations$formation1, pattern = fixed('&'))))
+splitters <- c(splitters, which(str_detect(formations$formation1, pattern = fixed('/'))))
+splitters <- unique(splitters)
+
+## Remove keepers and check again
+formations$formation1[splitters]
+splitters <- splitters[-c(3:14, 25:27, 29:30, 42, 50:55)]
+formations$formation1[splitters]
+
+## Split splitters
+for(i in splitters){
+  if(str_detect(formations$formation1[i], pattern = fixed('&'))){
+    ## extract formations
+    formVec <- unlist(str_split(formations$formation1[i], pattern = fixed('&')))
+    ## assign to new columns
+    for(f in 1:length(formVec)){
+      formations[i,f] <- formVec[f]
+    }
+  }
+  if(str_detect(formations$formation1[i], pattern = fixed('/'))){
+    ## extract formations
+    formVec <- unlist(str_split(formations$formation1[i], pattern = fixed('/')))
+    ## assign to new columns
+    for(f in 1:length(formVec)){
+      formations[i,f] <- formVec[f]
+    }
+  }
+  if(str_detect(formations$formation1[i], pattern = fixed('-'))){
+    ## extract formations
+    formVec <- unlist(str_split(formations$formation1[i], pattern = fixed('-')))
+    ## assign to new columns
+    for(f in 1:length(formVec)){
+      formations[i,f] <- formVec[f]
+    }
+  }
+}
+
+## Re-attach to dataset
+Peabody_biv <- cbind(Peabody_biv, formations)
+
+## Tidy up phylum and classifications
+#View(data.frame(table(Peabody_biv$phylum)))
+Peabody_biv$phylum[which(Peabody_biv$phylum == "Brachiopoda-articulata")] <- "Brachiopoda"
+Peabody_biv$phylum[which(Peabody_biv$phylum == "")] <- "Mollusca"
+View(data.frame(table(Peabody_biv$phylum)))
+View(data.frame(table(Peabody_biv$class)))
+Peabody_biv$class[which(Peabody_biv$class == "Bivalvia (lost)")] <- "Bivalvia"
+Peabody_biv$class[which(Peabody_biv$class == "Lingulida")] <- "Lingulata"
+Peabody_biv$class[which(Peabody_biv$class == "Stophomenata")] <- "Strophomenata"
+Peabody_biv$phylum[which(Peabody_biv$class == "Brachiopoda")] <- "Brachiopoda"
+Peabody_biv$class[which(Peabody_biv$class == "Brachiopoda")] <- ""
+Peabody_biv <- Peabody_biv[-which(Peabody_biv$class == "Gastropoda"),]
+
+## Tidy up genus, stage, and formation capitalization
+Peabody_biv$genus <- str_to_title(Peabody_biv$genus)
+Peabody_biv$formation1 <- str_to_title(Peabody_biv$formation1)
+Peabody_biv$formation2 <- str_to_title(Peabody_biv$formation2)
+Peabody_biv$stage1 <- str_to_title(Peabody_biv$stage1)
+Peabody_biv$stage2 <- str_to_title(Peabody_biv$stage2)
+
+## Then convert all uncertain species to "sp."
+## Tidy up undetermined/indeterminate species
+View(data.frame(table(Peabody_biv$species)))
+gen.level <- c()
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "aesop.&pyranitatoides"))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "ap. A"))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "ap. B"))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "cp. sp 1"))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "eburnea&perlaevis"))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "indet."))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "medium"))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "n sp"))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "n. sp"))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "n. sp."))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "n. sp.?"))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "n.sp"))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "n.sp?"))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "n.sp."))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "new sp."))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "nov. sp."))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "nov.sp."))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "orbiculata & lingula"))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "sp"))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "sp ?"))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "sp #1"))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "sp aff p."))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "sp?"))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "sp."))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "sp. ?"))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "sp. 1"))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "sp. 2"))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "sp. a"))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "sp. A"))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "sp. b"))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "sp. B"))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "sp. indet."))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "sp. new"))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "sp. nov."))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "sp. undes (?)"))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "sp. undes."))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "sp. undesc."))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "sp. undescr."))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "sp. undescribed"))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "sp. undet"))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "sp. undet."))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "sp. undeter."))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "sp. undetermined"))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "sp.?"))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "sp.1"))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "sp.2"))
+gen.level <- c(gen.level,which(Peabody_biv[,"species"] == "undescribed"))
+## Check for "aff"
+if(any(str_detect(Peabody_biv[,"species"], pattern = regex("aff", ignore_case = T)))){
+  print("'aff's detected")
+  affs <- unique(Peabody_biv[,"species"][which(str_detect(Peabody_biv[,"species"], pattern = regex("aff", ignore_case = T)))])
+  affs
+  ##
+  affs <- affs[-c(1, 2, 3, 5)]
+  affs
+  gen.level <- c(gen.level, which(Peabody_biv[,"species"] %in% affs))
+}
+## Check for "cf"
+if(any(str_detect(Peabody_biv[,"species"], pattern = regex("cf", ignore_case = T)))){
+  print("'cf's detected")
+  cfs <- unique(Peabody_biv$species[which(str_detect(Peabody_biv$species, pattern = regex("cf", ignore_case = T)))])
+  cfs
+  ## change some
+  cfs <- cfs[-c(46)]
+  cfs
+  gen.level <- c(gen.level, which(Peabody_biv[,"species"] %in% cfs))
+}
+## Check for dots
+if(any(str_detect(Peabody_biv[,"species"], pattern = "\\."))){
+  print("periods detected")
+  dots <- unique(Peabody_biv$species[which(str_detect(Peabody_biv$species, pattern = "\\."))])
+  View(data.frame(dots))
+  ## prune out dots to retain
+  dots <- dots[-c(10, 14, 20, 72, 74, 76, 78, 80, 88, 89, 90, 93, 94, 96:101, 103)]
+  View(data.frame(d))
+  gen.level <- c(gen.level,which(Peabody_biv[,"species"] %in% dots))
+}
+## Check for "?"
+if(any(str_detect(Peabody_biv[,"species"], pattern = "\\?"))){
+  print("'?'s detected")
+  questions <- unique(Peabody_biv$species[which(str_detect(Peabody_biv$species, pattern = "\\?"))])
+  questions
+  ## drop total unknowns, clean up others
+  gen.level <- c(gen.level,which(Peabody_biv[,"species"] %in% questions))
+}
+gen.level <- unique(gen.level)
+Peabody_biv[gen.level,"species"] <- "sp."
+
+## Then fix capitalization for species
+Peabody_biv$species <- tolower(Peabody_biv$species)
+
+## Export
+saveRDS(AMNH_biv, file = "data/museum/AMNH_biv.Rds")
+saveRDS(AMNH_brach, file = "data/museum/AMNH_brach.Rds")
 
 #### Load GBIF data ####
 ## Set GBIF username
