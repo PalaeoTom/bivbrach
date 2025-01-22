@@ -99,10 +99,12 @@ if(any(str_detect(NMS_biv[,"genus"], pattern = "\\?"))){
   questions
   droppers <- c(droppers,which(NMS_biv[,"genus"] %in% questions))
 }
+## No higher taxa to check.
+
 ## Check formations for unusable entries
 #View(data.frame(table(NMS_biv$formation)))
-droppers <- c(droppers, which(is.na(NMS_biv[,"formation"])))
 droppers <- c(droppers, which(NMS_biv[,"formation"] == ""))
+droppers <- c(droppers, which(NMS_biv[,"formation"] == "etage G"))
 droppers <- c(droppers, which(NMS_biv[,"formation"] == "basal similis-pulchra zone, from 30 ft above top furnace mine"))
 droppers <- c(droppers, which(NMS_biv[,"formation"] == "Ga"))
 droppers <- unique(droppers)
@@ -248,13 +250,16 @@ if(any(str_detect(NMS_brach[,"genus"], pattern = "\\?"))){
   questions
   droppers <- c(droppers,which(NMS_brach[,"genus"] %in% questions))
 }
+## No higher taxa.
+
 ## Drop entries that don't have stage data and don't have usable formations (only brachiopod has stage data)
 ## first, get no stage
 #View(data.frame(table(NMS_brach$stage)))
 noStage <- c(which(NMS_brach[,"stage"] == ""), which(NMS_brach[,"stage"] == "?"))
-#View(data.frame(table(NMS_brach$formation)))
+View(data.frame(table(NMS_brach$formation)))
 noForm <- c()
 noForm <- c(noForm, which(NMS_brach[,"formation"] == ""))
+noForm <- c(noForm, which(NMS_brach[,"formation"] == "Etage E"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "?"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "4 ft above Charlestown Main Limestone"))
 noForm <- c(noForm, which(NMS_brach[,"formation"] == "4th Limestone above ?___"))

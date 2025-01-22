@@ -87,6 +87,13 @@ if(any(str_detect(FMNH_biv[,"Genus"], pattern = "\\?"))){
   print("'?'s detected")
   ## None
 }
+
+## Check higher taxonomy
+#View(data.frame(table(FMNH_biv$Phylum)))
+# phyla fine
+#View(data.frame(table(FMNH_biv$Class)))
+# class fine
+
 ## Missing specimens
 #View(data.frame(table(FMNH_biv$SpecimenStatus)))
 droppers <- c(droppers, which(FMNH_biv$SpecimenStatus == "MISSING"))
@@ -197,6 +204,12 @@ if(any(str_detect(FMNH_brach[,"Genus"], pattern = "\\."))){
 if(any(str_detect(FMNH_brach[,"Genus"], pattern = "\\?"))){
   print("'?'s detected")
 }
+## Check higher taxa
+#View(data.frame(table(FMNH_brach$Phylum)))
+## fine!
+#View(data.frame(table(FMNH_brach$Class)))
+## fine!
+
 ## Drop specimen status = missing entries
 droppers <- c(droppers, which(FMNH_brach$SpecimenStatus == "MISSING"))
 ## Prune out entries missing lat or long entries

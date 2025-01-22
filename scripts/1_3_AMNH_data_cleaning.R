@@ -102,7 +102,7 @@ noStage <- c(noStage, which(AMNH$age == "Upper ?"))
 noStage <- c(noStage, which(AMNH$age == "W. Facies"))
 noStage <- c(noStage, which(AMNH$age == "West Facies"))
 ## Now for noForm
-#View(data.frame(table(AMNH$formation)))
+View(data.frame(table(AMNH$formation)))
 noForm <- c()
 noForm <- c(noForm, which(AMNH$formation == ""))
 noForm <- c(noForm, which(AMNH$formation == "(Overlying Lignite Beds0"))
