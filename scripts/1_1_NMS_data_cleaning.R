@@ -502,6 +502,13 @@ NMS_biv <- NMS_biv[,c(1,7, 2, 3, 5, 9, 6, 8, 4)]
 colnames(NMS_brach)
 NMS_brach <- NMS_brach[,c(3, 9, 1, 2, 6, 5, 7, 8, 4)]
 
-## Combine and export
+## Combine
 NMS <- rbind(NMS_biv, NMS_brach)
+
+#### Final tweaks ####
+## Get rid of all spaces outside of string
+NMS$formation1 <- str_trim(NMS$formation1)
+NMS$formation2 <- str_trim(NMS$formation2)
+
+#### Export ####
 saveRDS(NMS, file = "data/museum/NMS.Rds")

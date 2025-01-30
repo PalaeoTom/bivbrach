@@ -835,6 +835,15 @@ GBIF_brach <- GBIF_brach[,c(25, 2, 3, 4, 5, 6, 7, 8, 29, 30, 37, 31, 32, 21, 33,
 
 ## Recombine and export
 GBIF <- rbind(GBIF_biv, GBIF_brach)
+
+#### Final tweaks ####
+## Get rid of all spaces outside of string
+GBIF$formation1 <- str_trim(GBIF$formation1)
+GBIF$formation2 <- str_trim(GBIF$formation2)
+GBIF$formation3 <- str_trim(GBIF$formation3)
+GBIF$formation4 <- str_trim(GBIF$formation4)
+
+## Export
 saveRDS(GBIF, file = "data/GBIF/GBIF.Rds")
 
 #### Time calibration ####

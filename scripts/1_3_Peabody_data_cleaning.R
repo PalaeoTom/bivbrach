@@ -722,6 +722,11 @@ Peabody <- rbind(Peabody_biv, Peabody_brach)
 colnames(Peabody)
 Peabody <- Peabody[,c(1, 11, 12, 13, 14,15,16, 19, 6, 4, 20, 21, 22, 23, 5, 8, 9, 10, 7, 3, 17, 24, 18)]
 
+#### Final tweaks ####
+## Get rid of all spaces outside of string
+Peabody$formation1 <- str_trim(Peabody$formation1)
+Peabody$formation2 <- str_trim(Peabody$formation2)
+
 ## Export
 saveRDS(Peabody, file = "data/museum/Peabody.Rds")
 

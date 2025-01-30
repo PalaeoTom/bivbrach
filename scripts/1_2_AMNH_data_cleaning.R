@@ -486,6 +486,11 @@ AMNH <- AMNH[-recent,]
 colnames(AMNH)
 AMNH <- AMNH[,c(1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 16, 15, 23, 24, 28, 29, 13, 14, 30, 31, 25, 26, 27, 17, 18, 19, 20, 21, 22, 12)]
 
+#### Final tweaks ####
+## Get rid of all spaces outside of string
+AMNH$formation1 <- str_trim(AMNH$formation1)
+AMNH$formation2 <- str_trim(AMNH$formation2)
+
 ## Export
 saveRDS(AMNH, file = "data/museum/AMNH.Rds")
 
