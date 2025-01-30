@@ -491,6 +491,17 @@ if(length(recent) > 0){
   NMS_biv <- NMS_biv[-recent,]
 }
 
-## Export
-saveRDS(NMS_biv, file = "data/museum/NMS_biv.Rds")
-saveRDS(NMS_brach, file = "data/museum/NMS_brach.Rds")
+## Add formation 2 and stage columns to bivalves
+NMS_biv$formation2 <- ""
+NMS_biv$stage <- ""
+
+## Rearrange
+colnames(NMS_biv)
+NMS_biv <- NMS_biv[,c(1,7, 2, 3, 5, 9, 6, 8, 4)]
+
+colnames(NMS_brach)
+NMS_brach <- NMS_brach[,c(3, 9, 1, 2, 6, 5, 7, 8, 4)]
+
+## Combine and export
+NMS <- rbind(NMS_biv, NMS_brach)
+saveRDS(NMS, file = "data/museum/NMS.Rds")

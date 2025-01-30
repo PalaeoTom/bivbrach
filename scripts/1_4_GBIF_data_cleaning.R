@@ -1,4 +1,4 @@
-## 1. Initial data processing - GBIF cleaning
+## 1.4 Initial data processing - GBIF cleaning
 ## Started by TJS on 08/01/2024
 
 ## GBIF access citation
@@ -73,8 +73,8 @@ rm(list = ls())
 #saveRDS(GBIF_brach, file = "data/raw_GBIF_brach_18Oct24.Rds")
 
 ## Load raw GBIF
-GBIF_biv <- readRDS("data/raw_GBIF_biv_18Oct24.Rds")
-GBIF_brach <- readRDS("data/raw_GBIF_brach_18Oct24.Rds")
+GBIF_biv <- readRDS("data/unclean_data/raw_GBIF_biv_18Oct24.Rds")
+GBIF_brach <- readRDS("data/unclean_data/raw_GBIF_brach_18Oct24.Rds")
 
 #### Dropping useless columns ####
 GBIF_biv <- GBIF_biv[,-c(9, 10, 13, 14, 15, 18, 35, 37)]
@@ -188,7 +188,7 @@ noLoc <- unique(noLoc)
 source("functions/cleanCoordinates.R")
 
 ## Read in ISOconversion (go from 2 digit codes to 3)
-ISO.codes <- read.csv("data/ISO_conversion.csv", row.names = 1)
+ISO.codes <- read.csv("data/metadata/ISO_conversion.csv", row.names = 1)
 colnames(ISO.codes) <- c("lang.code", "ISO2", "ISO3")
 
 ## Run the function
@@ -272,9 +272,10 @@ GBIF_biv[which(GBIF_biv$latestAgeOrHighestStage == "Upper Ludlow, Pragian, Zlich
 ## With non-punctuation
 ## None!
 
+#### Read in bivalve milestone data ####
 ## Wittle down to stages to be split
 ## First, save progress
-saveRDS(GBIF_biv, file = "data/GBIF/GBIF_biv_milestone.Rds")
+#saveRDS(GBIF_biv, file = "data/GBIF/GBIF_biv_milestone.Rds")
 GBIF_biv <- readRDS("data/GBIF/GBIF_biv_milestone.Rds")
 
 ## Now unusuable records have been dropped, split stages and formations
@@ -517,33 +518,6 @@ if(length(recent) > 0){
 }
 
 ## No punctuation or anything else
-## Export for a checkpoint
-saveRDS(GBIF_biv, file = "data/GBIF/GBIF_biv.Rds")
-GBIF_biv <- readRDS("data/GBIF/GBIF_biv.Rds")
-
-##### OPTIONAL: Clean up taxonomy using fossilbrush #####
-## Set ranks for cleaning and acceptable suffixes to be used in dataset
-b_ranks <- c("phylum", "class", "order", "family", "genus")
-b_suff = list(NULL, NULL, NULL, NULL, c("ina", "ella", "etta"))
-
-## Now check for taxonomy issues using check_taxonomy
-biv_breakdown <- check_taxonomy(GBIF_biv, suff_set = b_suff, ranks = b_ranks, clean_name = TRUE, resolve_duplicates = TRUE, jump = 5)
-## Synonyms detected. Only concerned with genera.
-## No cross-rank names detected
-## Duplicates - will be resolved.
-
-## Export synonyms for exploration
-
-## Import synonyms to be corrected manually
-
-## Correct synonyms manually
-
-## Now identified issues have been corrected, produce final datasets
-GBIF_biv <- check_taxonomy(GBIF_biv, suff_set = b_suff, ranks = b_ranks, clean_name = TRUE, resolve_duplicates = TRUE, jump = 5)$data
-
-## Note: using check_taxonomy to resolve conflicting higher taxonomies for genera is easy but seems to produce nonsense taxonomies
-## If retention of this structure is important, advisable to switch this feature off
-## However, for richness/rates analysis, not a problem.
 
 #### Brachiopods ####
 ##### Manually inspecting taxonomy #####
@@ -844,34 +818,24 @@ gen.level <- c(gen.level,which(GBIF_brach$species == ""))
 GBIF_brach[gen.level, "species"] <- "sp."
 
 ## No punctuation or anything else
-## Export for a checkpoint
-saveRDS(GBIF_brach, file = "data/GBIF/GBIF_brach.Rds")
 
-#### OPTIONAL: Clean up taxonomy using fossilbrush ####
-## Set ranks for cleaning and acceptable suffixes to be used in dataset
-b_ranks <- c("phylum", "class", "order", "family", "genus")
-b_suff = list(NULL, NULL, NULL, NULL, c("ina", "ella", "etta"))
+## Standardise columns, rearrange, combine
+colnames(GBIF_biv)
+colnames(GBIF_brach)
+GBIF_brach$formation3 <- ""
+GBIF_brach$formation4 <- ""
+GBIF_brach$earliestAgeOrLowestStage3 <- ""
 
-## Now check for taxonomy issues using check_taxonomy
-brach_breakdown <- check_taxonomy(GBIF_brach, suff_set = b_suff, ranks = b_ranks, clean_name = TRUE, resolve_duplicates = TRUE, jump = 5)
-## Synonyms detected. Only concerned with genera.
-## No cross-rank names detected
-## Duplicates - will be resolved.
+## Rearrange
+View(data.frame(colnames(GBIF_biv)))
+GBIF_biv <- GBIF_biv[,c(25, 2, 3, 4, 5, 6, 7, 8, 29, 30, 31, 32, 33, 21, 34, 35, 36, 37, 22, 23, 10, 11, 12, 28, 15, 16, 17, 18, 19, 20, 26, 24)]
 
-## Export synonyms for exploration
+View(data.frame(colnames(GBIF_brach)))
+GBIF_brach <- GBIF_brach[,c(25, 2, 3, 4, 5, 6, 7, 8, 29, 30, 37, 31, 32, 21, 33, 34, 35, 36, 22, 23, 10, 11, 12, 28, 15, 16, 17, 18, 19, 20, 26, 24)]
 
-## Import synonyms to be corrected manually
-
-## Correct synonyms manually
-
-## Now identified issues have been corrected, produce final datasets
-GBIF_brach <- check_taxonomy(GBIF_brach, suff_set = b_suff, ranks = b_ranks, clean_name = TRUE, resolve_duplicates = TRUE, jump = 5)$data
-
-## Note: using check_taxonomy to resolve conflicting higher taxonomies for genera is easy but seems to produce nonsense taxonomies
-## If retention of this structure is important, advisable to switch this feature off
-## However, for richness/rates analysis, not a problem.
-
-
+## Recombine and export
+GBIF <- rbind(GBIF_biv, GBIF_brach)
+saveRDS(GBIF, file = "data/GBIF/GBIF.Rds")
 
 #### Time calibration ####
 ## Split data into with time and without.

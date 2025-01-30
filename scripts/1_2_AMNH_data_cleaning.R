@@ -482,12 +482,11 @@ recent <- c(recent, which(AMNH$stage2 == regex("Holocene", ignore_case = T)))
 recent <- unique(recent)
 AMNH <- AMNH[-recent,]
 
-## Split into bivalves and brachiopods
-AMNH_biv <- AMNH[which(AMNH$phylum == "Mollusca"),]
-AMNH_brach <- AMNH[which(AMNH$phylum == "Brachiopoda"),]
+## Rearrange and re-label
+colnames(AMNH)
+AMNH <- AMNH[,c(1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 16, 15, 23, 24, 28, 29, 13, 14, 30, 31, 25, 26, 27, 17, 18, 19, 20, 21, 22, 12)]
 
 ## Export
-saveRDS(AMNH_biv, file = "data/museum/AMNH_biv.Rds")
-saveRDS(AMNH_brach, file = "data/museum/AMNH_brach.Rds")
+saveRDS(AMNH, file = "data/museum/AMNH.Rds")
 
 

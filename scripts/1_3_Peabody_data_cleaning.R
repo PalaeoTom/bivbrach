@@ -715,9 +715,15 @@ if(length(recent) > 0){
   Peabody_biv <- Peabody_biv[-recent,]
 }
 
+## Combine then standardise
+Peabody <- rbind(Peabody_biv, Peabody_brach)
+
+## Rearrange
+colnames(Peabody)
+Peabody <- Peabody[,c(1, 11, 12, 13, 14,15,16, 19, 6, 4, 20, 21, 22, 23, 5, 8, 9, 10, 7, 3, 17, 24, 18)]
+
 ## Export
-saveRDS(Peabody_biv, file = "data/museum/Peabody_biv.Rds")
-saveRDS(Peabody_brach, file = "data/museum/Peabody_brach.Rds")
+saveRDS(Peabody, file = "data/museum/Peabody.Rds")
 
 
 
