@@ -204,12 +204,6 @@ GBIF_biv <- GBIF_biv[-droppers,]
 ## Check for formations or stage or age
 ## First, check for incomplete age categories
 #View(data.frame(table(GBIF_biv$earliestAgeOrLowestStage)))
-## Change recent to Holocene
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Recent")] <- "Holocene"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "recent")] <- "Holocene"
-GBIF_biv$latestAgeOrHighestStage[which(GBIF_biv$latestAgeOrHighestStage == "Recent")] <- "Holocene"
-GBIF_biv$latestAgeOrHighestStage[which(GBIF_biv$latestAgeOrHighestStage == "recent")] <- "Holocene"
-
 ## Check ages
 noEarly <-c()
 noEarly <-c(noEarly, which(GBIF_biv$earliestAgeOrLowestStage == ""))
@@ -278,6 +272,11 @@ GBIF_biv[which(GBIF_biv$latestAgeOrHighestStage == "Upper Ludlow, Pragian, Zlich
 ## With non-punctuation
 ## None!
 
+## Wittle down to stages to be split
+## First, save progress
+saveRDS(GBIF_biv, file = "data/GBIF/GBIF_biv_milestone.Rds")
+GBIF_biv <- readRDS("data/GBIF/GBIF_biv_milestone.Rds")
+
 ## Now unusuable records have been dropped, split stages and formations
 ## Start with stages
 latePunct <- c()
@@ -289,11 +288,6 @@ earlyPunct <- c()
 earlyPunct <- c(earlyPunct, unique(GBIF_biv$earliestAgeOrLowestStage[which(str_detect(GBIF_biv$earliestAgeOrLowestStage, pattern = "[:punct:]"))]))
 earlyPunct <- c(earlyPunct, GBIF_biv$earliestAgeOrLowestStage[which(str_detect(GBIF_biv$earliestAgeOrLowestStage, pattern = " to "))])
 earlyPunct <- unique(earlyPunct)
-
-## Wittle down to stages to be split
-## First, save progress
-saveRDS(GBIF_biv, file = "data/GBIF/GBIF_biv_milestone.rds")
-GBIF_biv <- readRDS("data/GBIF/GBIF_biv_milestone.rds")
 
 #View(data.frame(latePunct))
 latePunct <- latePunct[c(8, 10, 26, 28, 30, 31, 33, 34, 35, 36, 42, 43, 44, 46, 47, 50, 53, 56, 58, 61, 62, 63)]
@@ -509,9 +503,23 @@ gen.level <- c()
 gen.level <- c(gen.level,which(GBIF_biv$species == ""))
 GBIF_biv[gen.level, "species"] <- "sp."
 
+## Finally, drop recent entries
+recent <- c()
+recent <- c(recent, which(GBIF_biv$earliestAgeOrLowestStage1 == regex("Recent", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$earliestAgeOrLowestStage1== regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$earliestAgeOrLowestStage2 == regex("Recent", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$earliestAgeOrLowestStage2== regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$earliestAgeOrLowestStage3 == regex("Recent", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$earliestAgeOrLowestStage3== regex("Holocene", ignore_case = T)))
+recent <- unique(recent)
+if(length(recent) > 0){
+  GBIF_biv <- GBIF_biv[-recent,]
+}
+
 ## No punctuation or anything else
 ## Export for a checkpoint
 saveRDS(GBIF_biv, file = "data/GBIF/GBIF_biv.Rds")
+GBIF_biv <- readRDS("data/GBIF/GBIF_biv.Rds")
 
 ##### OPTIONAL: Clean up taxonomy using fossilbrush #####
 ## Set ranks for cleaning and acceptable suffixes to be used in dataset
@@ -575,6 +583,295 @@ colnames(ISO.codes) <- c("lang.code", "ISO2", "ISO3")
 
 ## Run the function
 GBIF_brach <- cleanCoordinates(GBIF_data = GBIF_brach, ISO.codes)
+
+## Identify lat/longs with NAs
+noLL <- which(is.na(GBIF_brach$decimalLatitude) | is.na(GBIF_brach$decimalLatitude))
+
+## Drop intersection of noLL and noLoc
+droppers <- c()
+droppers <- c(droppers, intersect(noLL, noLoc))
+GBIF_brach <- GBIF_brach[-droppers,]
+
+## Record milestone - post coordinate cleaner
+#saveRDS(GBIF_brach, file = "data/GBIF/GBIF_brach_milestone.Rds")
+GBIF_brach <- readRDS("data/GBIF/GBIF_brach_milestone.Rds")
+
+## Check for formations or stage or age
+recent <- c()
+recent <- c(recent, which(GBIF_brach$latestAgeOrHighestStage == regex("Recent", ignore_case = T)))
+recent <- c(recent, which(GBIF_brach$earliestAgeOrLowestStage == regex("Recent", ignore_case = T)))
+recent <- c(recent, which(GBIF_brach$latestAgeOrHighestStage == regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(GBIF_brach$earliestAgeOrLowestStage == regex("Holocene", ignore_case = T)))
+recent <- unique(recent)
+if(length(recent) > 0){
+  GBIF_brach <- GBIF_brach[-recent,]
+}
+
+## First, check for incomplete age categories.
+## First, early
+#View(data.frame(table(GBIF_brach$earliestAgeOrLowestStage)))
+noEarly <- c()
+noEarly <-c(noEarly, which(GBIF_brach$earliestAgeOrLowestStage == ""))
+noEarly <-c(noEarly, which(GBIF_brach$earliestAgeOrLowestStage == "Early"))
+noEarly <-c(noEarly, which(GBIF_brach$earliestAgeOrLowestStage == "indet."))
+noEarly <-c(noEarly, which(GBIF_brach$earliestAgeOrLowestStage == "Late"))
+noEarly <-c(noEarly, which(GBIF_brach$earliestAgeOrLowestStage == "Middle"))
+noEarly <-c(noEarly, which(GBIF_brach$earliestAgeOrLowestStage == "Unnamed"))
+noEarly <- unique(noEarly)
+
+#View(data.frame(table(GBIF_brach$latestAgeOrHighestStage)))
+noLate <- c()
+noLate <-c(noLate, which(GBIF_brach$latestAgeOrHighestStage == ""))
+noLate <-c(noLate, which(GBIF_brach$latestAgeOrHighestStage == "early"))
+noLate <-c(noLate, which(GBIF_brach$latestAgeOrHighestStage == "late"))
+noLate <-c(noLate, which(GBIF_brach$latestAgeOrHighestStage == "middle"))
+noLate <-c(noLate, which(GBIF_brach$latestAgeOrHighestStage == "second stage"))
+noLate <- unique(noLate)
+
+## Get no stage
+noStage <- intersect(noLate, noEarly)
+
+## Check formations
+#View(data.frame(table(GBIF_brach$formation)))
+noForm <- c()
+noForm <- c(noForm, which(GBIF_brach$formation == ""))
+noForm <- c(noForm, which(GBIF_brach$formation == "?"))
+noForm <- c(noForm, which(GBIF_brach$formation == "A2-3"))
+noForm <- c(noForm, which(GBIF_brach$formation == "A3-4"))
+noForm <- c(noForm, which(GBIF_brach$formation == "B2"))
+noForm <- c(noForm, which(GBIF_brach$formation == "C1"))
+noForm <- c(noForm, which(GBIF_brach$formation == "Chalk"))
+noForm <- c(noForm, which(GBIF_brach$formation == "Chalk Formation"))
+noForm <- c(noForm, which(GBIF_brach$formation == "Etage Dd1 alpha"))
+noForm <- c(noForm, which(GBIF_brach$formation == "Etage Dd1 beta"))
+noForm <- c(noForm, which(GBIF_brach$formation == "Etage Dd1 gamma"))
+noForm <- c(noForm, which(GBIF_brach$formation == "Etage Dd2"))
+noForm <- c(noForm, which(GBIF_brach$formation == "Etage Dd3"))
+noForm <- c(noForm, which(GBIF_brach$formation == "Etage Ee1"))
+noForm <- c(noForm, which(GBIF_brach$formation == "Etage Ee2"))
+noForm <- c(noForm, which(GBIF_brach$formation == "Etage F"))
+noForm <- c(noForm, which(GBIF_brach$formation == "Etage Ff1"))
+noForm <- c(noForm, which(GBIF_brach$formation == "Etage Ff2"))
+noForm <- c(noForm, which(GBIF_brach$formation == "Etage Gg1"))
+noForm <- c(noForm, which(GBIF_brach$formation == "Etage Gg2"))
+noForm <- c(noForm, which(GBIF_brach$formation == "Etage Hh1"))
+noForm <- c(noForm, which(GBIF_brach$formation == "IV Bd"))
+noForm <- c(noForm, which(GBIF_brach$formation == "LOWER"))
+noForm <- c(noForm, which(GBIF_brach$formation == "Stage D"))
+noForm <- c(noForm, which(GBIF_brach$formation == "unkn. Miss. Chester"))
+noForm <- c(noForm, which(GBIF_brach$formation == "unknown"))
+noForm <- c(noForm, which(GBIF_brach$formation == "Unknown"))
+noForm <- c(noForm, which(GBIF_brach$formation == "unknown formation"))
+noForm <- c(noForm, which(GBIF_brach$formation == "Unnamed"))
+noForm <- c(noForm, which(GBIF_brach$formation == "unnamed Unit 3"))
+noForm <- c(noForm, which(GBIF_brach$formation == "Unrecorded"))
+noForm <- c(noForm, which(GBIF_brach$formation == "Ordovician undiff."))
+noForm <- unique(noForm)
+
+## get intersect
+droppers <- intersect(noForm, noStage)
+GBIF_brach <- GBIF_brach[-droppers, ]
+
+##### Splitting ages #####
+#View(data.frame(table(GBIF_brach$latestAgeOrHighestStage)))
+latePunct <- c()
+latePunct <- c(latePunct, unique(GBIF_brach$latestAgeOrHighestStage[which(str_detect(GBIF_brach$latestAgeOrHighestStage, pattern = "[:punct:]"))]))
+latePunct <- c(latePunct, GBIF_brach$latestAgeOrHighestStage[which(str_detect(GBIF_brach$latestAgeOrHighestStage, pattern = " to "))])
+latePunct <- unique(latePunct)
+
+#View(data.frame(table(GBIF_brach$earliestAgeOrLowestStage)))
+earlyPunct <- c()
+earlyPunct <- c(earlyPunct, unique(GBIF_brach$earliestAgeOrLowestStage[which(str_detect(GBIF_brach$earliestAgeOrLowestStage, pattern = "[:punct:]"))]))
+earlyPunct <- c(earlyPunct, GBIF_brach$earliestAgeOrLowestStage[which(str_detect(GBIF_brach$earliestAgeOrLowestStage, pattern = " to "))])
+earlyPunct <- unique(earlyPunct)
+
+## Wittle down to those to be split
+latePunct
+latePunct <- latePunct[c(4, 16, 17, 18, 19, 20, 22)]
+
+earlyPunct
+earlyPunct <- earlyPunct[c(3, 5, 9, 13, 17, 25:32, 34:43, 49:50, 52:54, 59:60)]
+
+## get entries to be split
+splitLate <- c()
+for(i in 1:length(latePunct)){
+  splitLate <- c(splitLate, which(GBIF_brach$latestAgeOrHighestStage == latePunct[i]))
+}
+
+splitEarly <- c()
+for(i in 1:length(earlyPunct)){
+  splitEarly <- c(splitEarly, which(GBIF_brach$earliestAgeOrLowestStage == earlyPunct[i]))
+}
+
+## Isolate stages from main data file
+lateStage <- data.frame(GBIF_brach$latestAgeOrHighestStage)
+colnames(lateStage) <- "latestAgeOrHighestStage1"
+
+earlyStage <- data.frame(GBIF_brach$earliestAgeOrLowestStage)
+colnames(earlyStage) <- "earliestAgeOrLowestStage1"
+
+## Only 2 stages max for each
+lateStage$latestAgeOrHighestStage2 <- ""
+earlyStage$earliestAgeOrLowestStage2 <- ""
+
+## Specify splitting strings/characters
+p <- c('-', '/', ',', ' to ')
+
+## Split late stages
+for(i in splitLate){
+  for(m in p){
+    if(str_detect(lateStage$latestAgeOrHighestStage1[i], pattern = fixed(m))){
+      ## extract stages
+      ageVec <- unlist(str_split(lateStage$latestAgeOrHighestStage1[i], pattern = fixed(m)))
+      ## assign to new columns
+      for(f in 1:length(ageVec)){
+        lateStage[i,f] <- ageVec[f]
+      }
+    }
+  }
+}
+
+## Split late stages
+for(i in splitEarly){
+  for(m in p){
+    if(str_detect(earlyStage$earliestAgeOrLowestStage1[i], pattern = fixed(m))){
+      ## extract stages
+      ageVec <- unlist(str_split(earlyStage$earliestAgeOrLowestStage1[i], pattern = fixed(m)))
+      ## assign to new columns
+      for(f in 1:length(ageVec)){
+        earlyStage[i,f] <- ageVec[f]
+      }
+    }
+  }
+}
+
+## delete original stage data columns
+GBIF_brach$earliestAgeOrLowestStage <- NULL
+GBIF_brach$latestAgeOrHighestStage <- NULL
+
+## Attach to dataset
+GBIF_brach <- cbind(GBIF_brach, earlyStage, lateStage)
+
+##### Splitting formations #####
+## First, update one problem formation
+GBIF_brach$formation[which(GBIF_brach$formation == "Upper and Lower Fezouata formations, undifferentiated")] <- "Upper Fezouata formation and Lower Fezouata formation"
+
+## Now find formations to split
+forms <- unique(GBIF_brach$formation[which(str_detect(GBIF_brach$formation, pattern = "[:punct:]"))])
+forms <- c(forms, GBIF_brach$formation[which(str_detect(GBIF_brach$formation, pattern = " and "))])
+forms <- c(forms, GBIF_brach$formation[which(str_detect(GBIF_brach$formation, pattern = " & "))])
+forms <- c(forms, GBIF_brach$formation[which(str_detect(GBIF_brach$formation, pattern = " or "))])
+forms <- unique(forms)
+
+## Wittle down to those to split
+View(data.frame(forms))
+forms <- forms[c(11, 17, 29, 49, 117, 125, 147, 192, 243, 245, 251, 270, 310, 317, 326, 349, 353, 359, 371:373, 375:377, 380, 384, 390, 399, 402:409)]
+
+## get ages to be split
+splitForms <- c()
+for(i in 1:length(forms)){
+  splitForms <- c(splitForms, which(GBIF_brach$formation == forms[i]))
+}
+
+## Isolate formation
+formations <- data.frame(GBIF_brach$formation)
+colnames(formations) <- "formation1"
+
+## max 2 formations
+formations$formation2 <- ""
+
+## Specify string to split by
+p <- c('/', '-', ' and ', ' & ', ' or ')
+
+## Split formations
+for(i in splitForms){
+  for(m in p){
+    if(str_detect(formations$formation1[i], pattern = fixed(m))){
+      ## extract forms
+      formVec <- unlist(str_split(formations$formation1[i], pattern = fixed(m)))
+      ## assign to new columns
+      for(f in 1:length(formVec)){
+        formations[i,f] <- formVec[f]
+      }
+    }
+  }
+}
+
+## delete original stage data columns
+GBIF_brach$formation <- NULL
+
+## Attach to dataset
+GBIF_brach <- cbind(GBIF_brach, formations)
+
+## Tidy formations, stages, and genera
+## Use misspell to tidy up dipthongs and alternative spellings
+source("functions/misspell.R")
+GBIF_brach$genus <- misspell(GBIF_brach$genus)
+
+## Drop punctuation from formations and stages (fossilbrush will clean taxa)
+GBIF_brach$genus <- str_replace_all(GBIF_brach$genus, pattern = "[:punct:]", replacement = "")
+GBIF_brach$earliestAgeOrLowestStage1 <- str_replace_all(GBIF_brach$earliestAgeOrLowestStage1, pattern = "[:punct:]", replacement = "")
+GBIF_brach$earliestAgeOrLowestStage2 <- str_replace_all(GBIF_brach$earliestAgeOrLowestStage2, pattern = "[:punct:]", replacement = "")
+GBIF_brach$latestAgeOrHighestStage1 <- str_replace_all(GBIF_brach$latestAgeOrHighestStage1, pattern = "[:punct:]", replacement = "")
+GBIF_brach$latestAgeOrHighestStage2 <- str_replace_all(GBIF_brach$latestAgeOrHighestStage2, pattern = "[:punct:]", replacement = "")
+GBIF_brach$formation1 <- str_replace_all(GBIF_brach$formation1, pattern = "[:punct:]", replacement = "")
+GBIF_brach$formation2 <- str_replace_all(GBIF_brach$formation2, pattern = "[:punct:]", replacement = "")
+
+## Correct capitalization
+GBIF_brach$genus <- str_to_title(GBIF_brach$genus)
+GBIF_brach$formation1 <- str_to_title(GBIF_brach$formation1)
+GBIF_brach$formation2 <- str_to_title(GBIF_brach$formation2)
+GBIF_brach$earliestAgeOrLowestStage1 <- str_to_title(GBIF_brach$earliestAgeOrLowestStage1)
+GBIF_brach$earliestAgeOrLowestStage2 <- str_to_title(GBIF_brach$earliestAgeOrLowestStage2)
+GBIF_brach$latestAgeOrHighestStage1 <- str_to_title(GBIF_brach$latestAgeOrHighestStage1)
+GBIF_brach$latestAgeOrHighestStage2 <- str_to_title(GBIF_brach$latestAgeOrHighestStage2)
+
+## Tidy up species - first, reduce to species name alone
+splitSpecies <- str_split(GBIF_brach$species, pattern = fixed(" "))
+splitSpecies <- lapply(1:length(splitSpecies), function(x){
+  if(length(splitSpecies[[x]])>1){
+    return(splitSpecies[[x]][2])
+  } else {
+    return(splitSpecies[[x]])
+  }
+})
+GBIF_brach$species <- unlist(splitSpecies)
+
+## Now to tidy up unknowns
+View(data.frame(table(GBIF_brach$species)))
+gen.level <- c()
+gen.level <- c(gen.level,which(GBIF_brach$species == ""))
+GBIF_brach[gen.level, "species"] <- "sp."
+
+## No punctuation or anything else
+## Export for a checkpoint
+saveRDS(GBIF_brach, file = "data/GBIF/GBIF_brach.Rds")
+
+#### OPTIONAL: Clean up taxonomy using fossilbrush ####
+## Set ranks for cleaning and acceptable suffixes to be used in dataset
+b_ranks <- c("phylum", "class", "order", "family", "genus")
+b_suff = list(NULL, NULL, NULL, NULL, c("ina", "ella", "etta"))
+
+## Now check for taxonomy issues using check_taxonomy
+brach_breakdown <- check_taxonomy(GBIF_brach, suff_set = b_suff, ranks = b_ranks, clean_name = TRUE, resolve_duplicates = TRUE, jump = 5)
+## Synonyms detected. Only concerned with genera.
+## No cross-rank names detected
+## Duplicates - will be resolved.
+
+## Export synonyms for exploration
+
+## Import synonyms to be corrected manually
+
+## Correct synonyms manually
+
+## Now identified issues have been corrected, produce final datasets
+GBIF_brach <- check_taxonomy(GBIF_brach, suff_set = b_suff, ranks = b_ranks, clean_name = TRUE, resolve_duplicates = TRUE, jump = 5)$data
+
+## Note: using check_taxonomy to resolve conflicting higher taxonomies for genera is easy but seems to produce nonsense taxonomies
+## If retention of this structure is important, advisable to switch this feature off
+## However, for richness/rates analysis, not a problem.
+
+
 
 #### Time calibration ####
 ## Split data into with time and without.

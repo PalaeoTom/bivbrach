@@ -53,6 +53,12 @@ colnames(NMS_brach) <- c("x", "accessionNumber", "fullName", "locality", "format
 NMS_biv <- NMS_biv[,c(1,3,4,5,6,7)]
 NMS_brach <- NMS_brach[,c(2,3,4,5,6,7)]
 
+## Check for holocene entries and drop
+#View(data.frame(table(NMS_biv$period)))
+## No Bivalves
+#View(data.frame(table(NMS_brach$period)))
+## No holocene brachiopods
+
 #### Bivalves ####
 ## check for gaps and NAs, and genera for unusable names
 #View(data.frame(table(NMS_biv$genus)))
@@ -462,6 +468,28 @@ NMS_brach$phylum <- "Brachiopoda"
 
 ## Finally, tidy up main columns
 NMS_brach$species <- tolower(NMS_brach$species)
+
+## Finally, check and drop holocene/recent entries
+## Brachiopod first
+recent <- c()
+recent <- c(recent, which(NMS_brach$stage == regex("Recent", ignore_case = T)))
+recent <- c(recent, which(NMS_brach$stage == regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(NMS_brach$period == regex("Recent", ignore_case = T)))
+recent <- c(recent, which(NMS_brach$period == regex("Holocene", ignore_case = T)))
+recent <- unique(recent)
+if(length(recent) > 0){
+  NMS_brach <- NMS_brach[-recent,]
+}
+
+recent <- c()
+recent <- c(recent, which(NMS_biv$stage == regex("Recent", ignore_case = T)))
+recent <- c(recent, which(NMS_biv$stage == regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(NMS_biv$period == regex("Recent", ignore_case = T)))
+recent <- c(recent, which(NMS_biv$period == regex("Holocene", ignore_case = T)))
+recent <- unique(recent)
+if(length(recent) > 0){
+  NMS_biv <- NMS_biv[-recent,]
+}
 
 ## Export
 saveRDS(NMS_biv, file = "data/museum/NMS_biv.Rds")

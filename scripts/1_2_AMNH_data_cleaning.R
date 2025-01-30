@@ -471,6 +471,17 @@ AMNH[gen.level,"species"] <- "sp."
 ## Then fix capitalization for species
 AMNH$species <- tolower(AMNH$species)
 
+## Finally, check and drop holocene/recent entries
+recent <- c()
+recent <- c(recent, which(AMNH$epoch == regex("Recent", ignore_case = T)))
+recent <- c(recent, which(AMNH$epoch == regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(AMNH$stage1 == regex("Recent", ignore_case = T)))
+recent <- c(recent, which(AMNH$stage1 == regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(AMNH$stage2 == regex("Recent", ignore_case = T)))
+recent <- c(recent, which(AMNH$stage2 == regex("Holocene", ignore_case = T)))
+recent <- unique(recent)
+AMNH <- AMNH[-recent,]
+
 ## Split into bivalves and brachiopods
 AMNH_biv <- AMNH[which(AMNH$phylum == "Mollusca"),]
 AMNH_brach <- AMNH[which(AMNH$phylum == "Brachiopoda"),]

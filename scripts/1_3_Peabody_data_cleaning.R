@@ -684,6 +684,37 @@ Peabody_brach[gen.level,"species"] <- "sp."
 ## Then fix capitalization for species
 Peabody_brach$species <- tolower(Peabody_brach$species)
 
+## Finally, check and drop holocene/recent entries
+## Brachiopod first
+recent <- c()
+recent <- c(recent, which(Peabody_brach$stage1 == regex("Recent", ignore_case = T)))
+recent <- c(recent, which(Peabody_brach$stage1 == regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(Peabody_brach$stage2 == regex("Recent", ignore_case = T)))
+recent <- c(recent, which(Peabody_brach$stage2 == regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(Peabody_brach$period == regex("Recent", ignore_case = T)))
+recent <- c(recent, which(Peabody_brach$period == regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(Peabody_brach$epoch == regex("Recent", ignore_case = T)))
+recent <- c(recent, which(Peabody_brach$epoch == regex("Holocene", ignore_case = T)))
+recent <- unique(recent)
+if(length(recent) > 0){
+  Peabody_brach <- Peabody_brach[-recent,]
+}
+
+## Now bivalves
+recent <- c()
+recent <- c(recent, which(Peabody_biv$stage1 == regex("Recent", ignore_case = T)))
+recent <- c(recent, which(Peabody_biv$stage1 == regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(Peabody_biv$stage2 == regex("Recent", ignore_case = T)))
+recent <- c(recent, which(Peabody_biv$stage2 == regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(Peabody_biv$period == regex("Recent", ignore_case = T)))
+recent <- c(recent, which(Peabody_biv$period == regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(Peabody_biv$epoch == regex("Recent", ignore_case = T)))
+recent <- c(recent, which(Peabody_biv$epoch == regex("Holocene", ignore_case = T)))
+recent <- unique(recent)
+if(length(recent) > 0){
+  Peabody_biv <- Peabody_biv[-recent,]
+}
+
 ## Export
 saveRDS(Peabody_biv, file = "data/museum/Peabody_biv.Rds")
 saveRDS(Peabody_brach, file = "data/museum/Peabody_brach.Rds")
