@@ -1,10 +1,11 @@
 ## 1.5 Non-PBDB formation and genera cleaning
 
 ## Load libraries
-packages <- c("")
+packages <- c("readr")
 if(length(packages[!packages %in% installed.packages()[,"Package"]]) > 0){
   install.packages(packages[!packages %in% installed.packages()[,"Package"]])
 }
+library(readr)
 
 ## Clean directory
 rm(list = ls())
@@ -62,8 +63,27 @@ Peabody$origin <- "Peabody"
 Peabody <- Peabody[,c(3,1,2)]
 
 ## Combine into one
-incomplete_key <- rbind(PBDB_cleaned, GBIF, NMS, AMNH, Peabody)
+incomplete_key <- rbind(GBIF, NMS, AMNH, Peabody)
+
+## Remove duplicates
+incomplete_key <- incomplete_key[-which(duplicated(incomplete_key[,c(2,3)])),]
+
+## Combine with PBDB
+incomplete_key <- rbind(PBDB_cleaned, incomplete_key)
 
 ## Sort alphabetically by middle column
-test <- incomplete_key[order(incomplete_key$old_formation),]
+incomplete_key <- incomplete_key[order(incomplete_key$old_formation),]
+
+## Drop gaps
+incomplete_key <- incomplete_key[-which(incomplete_key$old_formation == ""),]
+
+## Add group and member columns
+incomplete_key$group <- ""
+incomplete_key$member <- ""
+
+## Export as csv for manual correction
+write_excel_csv(incomplete_key, file = "data/metadata/incomplete_formation_key.csv")
+
+## Read in datasets to check
+GBIF <- readRDS("data/GBIF/GBIF.Rds")
 
