@@ -5,7 +5,7 @@
 # GBIF.org (20 May 2024) GBIF Occurrence Download  https://doi.org/10.15468/dl.3xb65c
 
 ## Load libraries
-packages <- c("fossilbrush", "stringr", "CoordinateCleaner", "rgbif", "divDyn")
+packages <- c("fossilbrush", "stringr", "CoordinateCleaner", "rgbif", "divDyn", "velociraptr")
 if(length(packages[!packages %in% installed.packages()[,"Package"]]) > 0){
   install.packages(packages[!packages %in% installed.packages()[,"Package"]])
 }
@@ -14,6 +14,7 @@ library(fossilbrush)
 library(CoordinateCleaner)
 library(rgbif)
 library(divDyn)
+library(velociraptr)
 
 ## Clean directory
 rm(list = ls())
@@ -316,12 +317,30 @@ GBIF_biv[OIS.stages,"formation"] <- "Red Sea Coastal Plain"
 GBIF_biv[which(GBIF_biv$earliestAgeOrLowestStage == "Dogger alpha"),"formation"] <- "Brown Jura"
 GBIF_biv[which(GBIF_biv$earliestAgeOrLowestStage == "Dogger alpha"),"earliestAgeOrLowestStage"] <- "Aalenian-Callovian"
 
-## Final bespoke fixing of stages
+## Clean stages - might move this to main cleaning scripts
 ## First, read in stages
 stage_names <- read.csv("data/metadata/cleaned_stages.csv", row.names = 1, header = T)$name
 
-## Check for stage name
-any(stage_names == "Altonian")
+## Now clean
+source("functions/clean.stage.names.R")
+GBIF_biv <- clean.stage.names(data = GBIF_biv, columns = c("latestAgeOrHighestStage", "earliestAgeOrLowestStage"), stages = stage_names)
+
+##### Resume here - look to see if there is an automated way to leverage macrostrat stratigraphy.
+
+## get stages
+strat.names <- c("international ages", "international epochs", "international periods", "calcareous nannoplankton zones", "New Zealand ages", "custom COSUNA", "North American land mammal ages",
+                 "international intervals", "COSUNA", "international eras", "international eons", "Trilobite Zonation - Laurentia", "Conodont Zonation", "North American Regional", "Ammonite Zonation - Boreal",
+                 "Ammonite Zonation - Western Interior", "international intervals covering all time", "Scotese Reconstruction", "Geomagnetic Polarity Chron", "Geomagnetic Polarity Subchron", "Planktic foraminiferal Primary Biozones",
+                 "Planktic foraminiferal Secondary Biozones", "Planktic foraminiferal datums", "Cretaceous Planktic foraminifer zonations", "Low latitude radiolarian zonation",
+                 "Neogene North Pacific Diatom Biochronology", "Neogene North Pacific Diatom Biochronology Subzones", "Siberian Regional", "Australian Regional", "Western Europe Regional",
+                 "Russian Platform Regional Stages", "Russian Precambrian Eras", "Russian Precambrian Eons", "Russian Epochs", "Russian Stages")
+## Get all terrestrial stratigraphic schemes from Macrostrat
+schemes <- downloadTime(strat.names[1])
+for(i in strat.names){
+  schemes <- rbind(schemes, downloadTime(i))
+}
+rownames(schemes) <- NULL
+write.csv(schemes, file = "data/metadata/macrostrat_raw.csv")
 
 ## Now check bivalves
 View(data.frame(table(GBIF_biv$earliestAgeOrLowestStage)))
@@ -379,29 +398,12 @@ GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "")
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "")] <- ""
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "")] <- ""
 
-## Clean stages - might move this to main cleaning scripts
-data <- GBIF
-columns <- c("latestAgeOrHighestStage1", "latestAgeOrHighestStage2", "earliestAgeOrLowestStage1", "earliestAgeOrLowestStage2", "earliestAgeOrLowestStage2")
-stages <- stage.data$name
-i = columns[1]
 
-clean.stage.names <- function(data, columns, stages){
-  for(i in columns){
-    ## strip accents
-    data[,i] <- stringi::stri_trans_general(data[,i], "Latin-ASCII")
-    ## now swap out trailing ien for ian
-    iens <- which(str_detect(data[,i], pattern = "ien"))
-    data[iens,i] <- str_replace(data[iens,i], pattern = "ien", replacement = "ian")
-    ## Fix Pliansbachian to Pliensbachian
 
-    ## Extract actual stages
 
-    ##
 
-  }
-  ## Strip accents
 
-}
+
 
 ## Now unusuable records have been dropped, split stages and formations
 ## Start with stages

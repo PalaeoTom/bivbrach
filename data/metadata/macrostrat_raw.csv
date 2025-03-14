@@ -1,0 +1,1462 @@
+"","int_id","name","abbrev","t_age","b_age","int_type","timescales","color","Midpoint"
+"1",1038,"Meghalayan",NA,0,0.0042,"age","international ages--1","#FEF2E0",0.0021
+"2",1039,"Northgrippian",NA,0.0042,0.0082,"age","international ages--1","#FEF2E0",0.0062
+"3",1040,"Greenlandian",NA,0.0082,0.0117,"age","international ages--1","#FEF2E0",0.00995
+"4",492,"Late Pleistocene",NA,0.0117,0.129,"age","international ages--1","#FFF2C7",0.07035
+"5",1688,"Chibanian",NA,0.129,0.774,"age","international ages--1","#fff2c7",0.4515
+"6",276,"Calabrian",NA,0.774,1.8,"age","international ages--1","#FFF2C7",1.287
+"7",219,"Gelasian",NA,1.8,2.58,"age","international ages--1","#FFEDB3",2.19
+"8",11,"Piacenzian",NA,2.58,3.6,"age","international ages--1","#FFFFBF",3.09
+"9",12,"Zanclean",NA,3.6,5.333,"age","international ages--1","#FFFFB3",4.4665
+"10",14,"Messinian",NA,5.333,7.246,"age","international ages--1","#FFFF73",6.2895
+"11",15,"Tortonian",NA,7.246,11.63,"age","international ages--1","#FFFF66",9.438
+"12",16,"Serravallian",NA,11.63,13.82,"age","international ages--1","#FFFF59",12.725
+"13",17,"Langhian",NA,13.82,15.98,"age","international ages--1","#FFFF4D",14.9
+"14",18,"Burdigalian",NA,15.98,20.44,"age","international ages--1","#FFFF41",18.21
+"15",19,"Aquitanian",NA,20.44,23.03,"age","international ages--1","#FFFF33",21.735
+"16",22,"Chattian",NA,23.03,27.82,"age","international ages--1","#FEE6AA",25.425
+"17",23,"Rupelian",NA,27.82,33.9,"age","international ages--1","#FED99A",30.86
+"18",25,"Priabonian",NA,33.9,37.71,"age","international ages--1","#FDCDA1",35.805
+"19",26,"Bartonian",NA,37.71,41.2,"age","international ages--1","#FDC091",39.455
+"20",27,"Lutetian",NA,41.2,47.8,"age","international ages--1","#FCB482",44.5
+"21",28,"Ypresian",NA,47.8,56,"age","international ages--1","#FCA773",51.9
+"22",30,"Thanetian",NA,56,59.2,"age","international ages--1","#FDBF6F",57.6
+"23",273,"Selandian",NA,59.2,61.6,"age","international ages--1","#FEBF65",60.4
+"24",31,"Danian",NA,61.6,66,"age","international ages--1","#FDB462",63.8
+"25",35,"Maastrichtian",NA,66,72.1,"age","international ages--1","#F2FA8C",69.05
+"26",36,"Campanian",NA,72.1,83.6,"age","international ages--1","#E6F47F",77.85
+"27",37,"Santonian",NA,83.6,86.3,"age","international ages--1","#D9EF74",84.95
+"28",38,"Coniacian",NA,86.3,89.8,"age","international ages--1","#CCE968",88.05
+"29",39,"Turonian",NA,89.8,93.9,"age","international ages--1","#BFE35D",91.85
+"30",40,"Cenomanian",NA,93.9,100.5,"age","international ages--1","#B3DE53",97.2
+"31",42,"Albian",NA,100.5,113,"age","international ages--1","#CCEA97",106.75
+"32",43,"Aptian",NA,113,121.4,"age","international ages--1","#BFE48A",117.2
+"33",44,"Barremian",NA,121.4,125.77,"age","international ages--1","#B3DF7F",123.585
+"34",45,"Hauterivian",NA,125.77,132.6,"age","international ages--1","#A6D975",129.185
+"35",46,"Valanginian",NA,132.6,139.8,"age","international ages--1","#99D36A",136.2
+"36",47,"Berriasian",NA,139.8,145,"age","international ages--1","#8CCD60",142.4
+"37",50,"Tithonian",NA,145,149.2,"age","international ages--1","#D9F1F7",147.1
+"38",51,"Kimmeridgian",NA,149.2,154.8,"age","international ages--1","#CCECF4",152
+"39",52,"Oxfordian",NA,154.8,161.5,"age","international ages--1","#BFE7F1",158.15
+"40",54,"Callovian",NA,161.5,165.3,"age","international ages--1","#BFE7E5",163.4
+"41",55,"Bathonian",NA,165.3,168.2,"age","international ages--1","#B3E2E3",166.75
+"42",56,"Bajocian",NA,168.2,170.9,"age","international ages--1","#A6DDE0",169.55
+"43",57,"Aalenian",NA,170.9,174.7,"age","international ages--1","#9AD9DD",172.8
+"44",59,"Toarcian",NA,174.7,184.2,"age","international ages--1","#99CEE3",179.45
+"45",60,"Pliensbachian",NA,184.2,192.9,"age","international ages--1","#80C5DD",188.55
+"46",61,"Sinemurian",NA,192.9,199.5,"age","international ages--1","#67BCD8",196.2
+"47",62,"Hettangian",NA,199.5,201.4,"age","international ages--1","#4EB3D3",200.45
+"48",65,"Rhaetian",NA,201.4,208.5,"age","international ages--1","#E3B9DB",204.95
+"49",66,"Norian",NA,208.5,227,"age","international ages--1","#D6AAD3",217.75
+"50",67,"Carnian",NA,227,237,"age","international ages--1","#C99BCB",232
+"51",69,"Ladinian",NA,237,242,"age","international ages--1","#C983BF",239.5
+"52",70,"Anisian",NA,242,247.2,"age","international ages--1","#BC75B7",244.6
+"53",72,"Olenekian",NA,247.2,251.2,"age","international ages--1","#B051A5",249.2
+"54",73,"Induan",NA,251.2,251.902,"age","international ages--1","#A4469F",251.551
+"55",221,"Changhsingian",NA,251.902,254.14,"age","international ages--1","#FCC0B2",253.021
+"56",222,"Wuchiapingian",NA,254.14,259.51,"age","international ages--1","#FCB4A2",256.825
+"57",224,"Capitanian",NA,259.51,264.28,"age","international ages--1","#FB9A85",261.895
+"58",225,"Wordian",NA,264.28,266.9,"age","international ages--1","#FB8D76",265.59
+"59",226,"Roadian",NA,266.9,273.01,"age","international ages--1","#FB8069",269.955
+"60",79,"Kungurian",NA,273.01,283.5,"age","international ages--1","#E38776",278.255
+"61",81,"Artinskian",NA,283.5,290.1,"age","international ages--1","#E37B68",286.8
+"62",82,"Sakmarian",NA,290.1,293.52,"age","international ages--1","#E36F5C",291.81
+"63",83,"Asselian",NA,293.52,298.9,"age","international ages--1","#E36350",296.21
+"64",86,"Gzhelian",NA,298.9,303.7,"age","international ages--1","#CCD4C7",301.3
+"65",87,"Kasimovian",NA,303.7,307,"age","international ages--1","#BFD0C5",305.35
+"66",88,"Moscovian",NA,307,315.2,"age","international ages--1","#C7CBB9",311.1
+"67",89,"Bashkirian",NA,315.2,323.2,"age","international ages--1","#99C2B5",319.2
+"68",91,"Serpukhovian",NA,323.2,330.9,"age","international ages--1","#BFC26B",327.05
+"69",92,"Visean",NA,330.9,346.7,"age","international ages--1","#A6B96C",338.8
+"70",93,"Tournaisian",NA,346.7,358.9,"age","international ages--1","#8CB06C",352.8
+"71",96,"Famennian",NA,358.9,372.2,"age","international ages--1","#F2EDC5",365.55
+"72",97,"Frasnian",NA,372.2,382.7,"age","international ages--1","#F2EDAD",377.45
+"73",99,"Givetian",NA,382.7,387.7,"age","international ages--1","#F1E185",385.2
+"74",100,"Eifelian",NA,387.7,393.3,"age","international ages--1","#F1D576",390.5
+"75",102,"Emsian",NA,393.3,407.6,"age","international ages--1","#E5D075",400.45
+"76",228,"Pragian",NA,407.6,410.8,"age","international ages--1","#E5C468",409.2
+"77",229,"Lochkovian",NA,410.8,419.2,"age","international ages--1","#E5B75A",415
+"78",107,"Pridoli",NA,419.2,423,"epoch","international ages--1","#E6F5E1",421.1
+"79",230,"Ludfordian",NA,423,425.6,"age","international ages--1","#D9F0DF",424.3
+"80",231,"Gorstian",NA,425.6,427.4,"age","international ages--1","#CCECDD",426.5
+"81",232,"Homerian",NA,427.4,430.5,"age","international ages--1","#CCEBD1",428.95
+"82",233,"Sheinwoodian",NA,430.5,433.4,"age","international ages--1","#BFE6C3",431.95
+"83",234,"Telychian",NA,433.4,438.5,"age","international ages--1","#BFE6CF",435.95
+"84",235,"Aeronian",NA,438.5,440.8,"age","international ages--1","#B3E1C2",439.65
+"85",236,"Rhuddanian",NA,440.8,443.8,"age","international ages--1","#A6DCB5",442.3
+"86",237,"Hirnantian",NA,443.8,445.2,"age","international ages--1","#A6DBAB",444.5
+"87",238,"Katian",NA,445.2,453,"age","international ages--1","#99D69F",449.1
+"88",239,"Sandbian",NA,453,458.4,"age","international ages--1","#8CD094",455.7
+"89",240,"Darriwilian",NA,458.4,467.3,"age","international ages--1","#74C69C",462.85
+"90",241,"Dapingian",NA,467.3,470,"age","international ages--1","#66C092",468.65
+"91",242,"Floian",NA,470,477.7,"age","international ages--1","#41B087",473.85
+"92",121,"Tremadocian",NA,477.7,485.4,"age","international ages--1","#33A97E",481.55
+"93",247,"Stage 10",NA,485.4,489.5,"age","international ages--1","#E6F5C9",487.45
+"94",248,"Jiangshanian",NA,489.5,494,"age","international ages--1","#D9F0BB",491.75
+"95",249,"Paibian",NA,494,497,"age","international ages--1","#CCEBAE",495.5
+"96",250,"Guzhangian",NA,497,500.5,"age","international ages--1","#CCDFAA",498.75
+"97",251,"Drumian",NA,500.5,504.5,"age","international ages--1","#BFD99D",502.5
+"98",252,"Wuliuan",NA,504.5,509,"age","international ages--1","#B3D492",506.75
+"99",253,"Stage 4",NA,509,514,"age","international ages--1","#B3CA8E",511.5
+"100",254,"Stage 3",NA,514,521,"age","international ages--1","#A6C583",517.5
+"101",255,"Stage 2",NA,521,529,"age","international ages--1","#A6BA80",525
+"102",256,"Fortunian",NA,529,538.8,"age","international ages--1","#99B575",533.9
+"103",1038,"Meghalayan",NA,0,0.0042,"age","international ages--1","#FEF2E0",0.0021
+"104",1039,"Northgrippian",NA,0.0042,0.0082,"age","international ages--1","#FEF2E0",0.0062
+"105",1040,"Greenlandian",NA,0.0082,0.0117,"age","international ages--1","#FEF2E0",0.00995
+"106",492,"Late Pleistocene",NA,0.0117,0.129,"age","international ages--1","#FFF2C7",0.07035
+"107",1688,"Chibanian",NA,0.129,0.774,"age","international ages--1","#fff2c7",0.4515
+"108",276,"Calabrian",NA,0.774,1.8,"age","international ages--1","#FFF2C7",1.287
+"109",219,"Gelasian",NA,1.8,2.58,"age","international ages--1","#FFEDB3",2.19
+"110",11,"Piacenzian",NA,2.58,3.6,"age","international ages--1","#FFFFBF",3.09
+"111",12,"Zanclean",NA,3.6,5.333,"age","international ages--1","#FFFFB3",4.4665
+"112",14,"Messinian",NA,5.333,7.246,"age","international ages--1","#FFFF73",6.2895
+"113",15,"Tortonian",NA,7.246,11.63,"age","international ages--1","#FFFF66",9.438
+"114",16,"Serravallian",NA,11.63,13.82,"age","international ages--1","#FFFF59",12.725
+"115",17,"Langhian",NA,13.82,15.98,"age","international ages--1","#FFFF4D",14.9
+"116",18,"Burdigalian",NA,15.98,20.44,"age","international ages--1","#FFFF41",18.21
+"117",19,"Aquitanian",NA,20.44,23.03,"age","international ages--1","#FFFF33",21.735
+"118",22,"Chattian",NA,23.03,27.82,"age","international ages--1","#FEE6AA",25.425
+"119",23,"Rupelian",NA,27.82,33.9,"age","international ages--1","#FED99A",30.86
+"120",25,"Priabonian",NA,33.9,37.71,"age","international ages--1","#FDCDA1",35.805
+"121",26,"Bartonian",NA,37.71,41.2,"age","international ages--1","#FDC091",39.455
+"122",27,"Lutetian",NA,41.2,47.8,"age","international ages--1","#FCB482",44.5
+"123",28,"Ypresian",NA,47.8,56,"age","international ages--1","#FCA773",51.9
+"124",30,"Thanetian",NA,56,59.2,"age","international ages--1","#FDBF6F",57.6
+"125",273,"Selandian",NA,59.2,61.6,"age","international ages--1","#FEBF65",60.4
+"126",31,"Danian",NA,61.6,66,"age","international ages--1","#FDB462",63.8
+"127",35,"Maastrichtian",NA,66,72.1,"age","international ages--1","#F2FA8C",69.05
+"128",36,"Campanian",NA,72.1,83.6,"age","international ages--1","#E6F47F",77.85
+"129",37,"Santonian",NA,83.6,86.3,"age","international ages--1","#D9EF74",84.95
+"130",38,"Coniacian",NA,86.3,89.8,"age","international ages--1","#CCE968",88.05
+"131",39,"Turonian",NA,89.8,93.9,"age","international ages--1","#BFE35D",91.85
+"132",40,"Cenomanian",NA,93.9,100.5,"age","international ages--1","#B3DE53",97.2
+"133",42,"Albian",NA,100.5,113,"age","international ages--1","#CCEA97",106.75
+"134",43,"Aptian",NA,113,121.4,"age","international ages--1","#BFE48A",117.2
+"135",44,"Barremian",NA,121.4,125.77,"age","international ages--1","#B3DF7F",123.585
+"136",45,"Hauterivian",NA,125.77,132.6,"age","international ages--1","#A6D975",129.185
+"137",46,"Valanginian",NA,132.6,139.8,"age","international ages--1","#99D36A",136.2
+"138",47,"Berriasian",NA,139.8,145,"age","international ages--1","#8CCD60",142.4
+"139",50,"Tithonian",NA,145,149.2,"age","international ages--1","#D9F1F7",147.1
+"140",51,"Kimmeridgian",NA,149.2,154.8,"age","international ages--1","#CCECF4",152
+"141",52,"Oxfordian",NA,154.8,161.5,"age","international ages--1","#BFE7F1",158.15
+"142",54,"Callovian",NA,161.5,165.3,"age","international ages--1","#BFE7E5",163.4
+"143",55,"Bathonian",NA,165.3,168.2,"age","international ages--1","#B3E2E3",166.75
+"144",56,"Bajocian",NA,168.2,170.9,"age","international ages--1","#A6DDE0",169.55
+"145",57,"Aalenian",NA,170.9,174.7,"age","international ages--1","#9AD9DD",172.8
+"146",59,"Toarcian",NA,174.7,184.2,"age","international ages--1","#99CEE3",179.45
+"147",60,"Pliensbachian",NA,184.2,192.9,"age","international ages--1","#80C5DD",188.55
+"148",61,"Sinemurian",NA,192.9,199.5,"age","international ages--1","#67BCD8",196.2
+"149",62,"Hettangian",NA,199.5,201.4,"age","international ages--1","#4EB3D3",200.45
+"150",65,"Rhaetian",NA,201.4,208.5,"age","international ages--1","#E3B9DB",204.95
+"151",66,"Norian",NA,208.5,227,"age","international ages--1","#D6AAD3",217.75
+"152",67,"Carnian",NA,227,237,"age","international ages--1","#C99BCB",232
+"153",69,"Ladinian",NA,237,242,"age","international ages--1","#C983BF",239.5
+"154",70,"Anisian",NA,242,247.2,"age","international ages--1","#BC75B7",244.6
+"155",72,"Olenekian",NA,247.2,251.2,"age","international ages--1","#B051A5",249.2
+"156",73,"Induan",NA,251.2,251.902,"age","international ages--1","#A4469F",251.551
+"157",221,"Changhsingian",NA,251.902,254.14,"age","international ages--1","#FCC0B2",253.021
+"158",222,"Wuchiapingian",NA,254.14,259.51,"age","international ages--1","#FCB4A2",256.825
+"159",224,"Capitanian",NA,259.51,264.28,"age","international ages--1","#FB9A85",261.895
+"160",225,"Wordian",NA,264.28,266.9,"age","international ages--1","#FB8D76",265.59
+"161",226,"Roadian",NA,266.9,273.01,"age","international ages--1","#FB8069",269.955
+"162",79,"Kungurian",NA,273.01,283.5,"age","international ages--1","#E38776",278.255
+"163",81,"Artinskian",NA,283.5,290.1,"age","international ages--1","#E37B68",286.8
+"164",82,"Sakmarian",NA,290.1,293.52,"age","international ages--1","#E36F5C",291.81
+"165",83,"Asselian",NA,293.52,298.9,"age","international ages--1","#E36350",296.21
+"166",86,"Gzhelian",NA,298.9,303.7,"age","international ages--1","#CCD4C7",301.3
+"167",87,"Kasimovian",NA,303.7,307,"age","international ages--1","#BFD0C5",305.35
+"168",88,"Moscovian",NA,307,315.2,"age","international ages--1","#C7CBB9",311.1
+"169",89,"Bashkirian",NA,315.2,323.2,"age","international ages--1","#99C2B5",319.2
+"170",91,"Serpukhovian",NA,323.2,330.9,"age","international ages--1","#BFC26B",327.05
+"171",92,"Visean",NA,330.9,346.7,"age","international ages--1","#A6B96C",338.8
+"172",93,"Tournaisian",NA,346.7,358.9,"age","international ages--1","#8CB06C",352.8
+"173",96,"Famennian",NA,358.9,372.2,"age","international ages--1","#F2EDC5",365.55
+"174",97,"Frasnian",NA,372.2,382.7,"age","international ages--1","#F2EDAD",377.45
+"175",99,"Givetian",NA,382.7,387.7,"age","international ages--1","#F1E185",385.2
+"176",100,"Eifelian",NA,387.7,393.3,"age","international ages--1","#F1D576",390.5
+"177",102,"Emsian",NA,393.3,407.6,"age","international ages--1","#E5D075",400.45
+"178",228,"Pragian",NA,407.6,410.8,"age","international ages--1","#E5C468",409.2
+"179",229,"Lochkovian",NA,410.8,419.2,"age","international ages--1","#E5B75A",415
+"180",107,"Pridoli",NA,419.2,423,"epoch","international ages--1","#E6F5E1",421.1
+"181",230,"Ludfordian",NA,423,425.6,"age","international ages--1","#D9F0DF",424.3
+"182",231,"Gorstian",NA,425.6,427.4,"age","international ages--1","#CCECDD",426.5
+"183",232,"Homerian",NA,427.4,430.5,"age","international ages--1","#CCEBD1",428.95
+"184",233,"Sheinwoodian",NA,430.5,433.4,"age","international ages--1","#BFE6C3",431.95
+"185",234,"Telychian",NA,433.4,438.5,"age","international ages--1","#BFE6CF",435.95
+"186",235,"Aeronian",NA,438.5,440.8,"age","international ages--1","#B3E1C2",439.65
+"187",236,"Rhuddanian",NA,440.8,443.8,"age","international ages--1","#A6DCB5",442.3
+"188",237,"Hirnantian",NA,443.8,445.2,"age","international ages--1","#A6DBAB",444.5
+"189",238,"Katian",NA,445.2,453,"age","international ages--1","#99D69F",449.1
+"190",239,"Sandbian",NA,453,458.4,"age","international ages--1","#8CD094",455.7
+"191",240,"Darriwilian",NA,458.4,467.3,"age","international ages--1","#74C69C",462.85
+"192",241,"Dapingian",NA,467.3,470,"age","international ages--1","#66C092",468.65
+"193",242,"Floian",NA,470,477.7,"age","international ages--1","#41B087",473.85
+"194",121,"Tremadocian",NA,477.7,485.4,"age","international ages--1","#33A97E",481.55
+"195",247,"Stage 10",NA,485.4,489.5,"age","international ages--1","#E6F5C9",487.45
+"196",248,"Jiangshanian",NA,489.5,494,"age","international ages--1","#D9F0BB",491.75
+"197",249,"Paibian",NA,494,497,"age","international ages--1","#CCEBAE",495.5
+"198",250,"Guzhangian",NA,497,500.5,"age","international ages--1","#CCDFAA",498.75
+"199",251,"Drumian",NA,500.5,504.5,"age","international ages--1","#BFD99D",502.5
+"200",252,"Wuliuan",NA,504.5,509,"age","international ages--1","#B3D492",506.75
+"201",253,"Stage 4",NA,509,514,"age","international ages--1","#B3CA8E",511.5
+"202",254,"Stage 3",NA,514,521,"age","international ages--1","#A6C583",517.5
+"203",255,"Stage 2",NA,521,529,"age","international ages--1","#A6BA80",525
+"204",256,"Fortunian",NA,529,538.8,"age","international ages--1","#99B575",533.9
+"205",3,"Holocene","",0,0.0117,"epoch","international epochs--2","#FEF2E0",0.00585
+"206",4,"Pleistocene","Ple",0.0117,2.58,"epoch","international epochs--2","#FFF2AE",1.29585
+"207",10,"Pliocene","Pli",2.58,5.333,"epoch","international epochs--2","#FFFF99",3.9565
+"208",13,"Miocene","Mio",5.333,23.03,"epoch","international epochs--2","#FFFF00",14.1815
+"209",21,"Oligocene","Ol",23.03,33.9,"epoch","international epochs--2","#FDC07A",28.465
+"210",24,"Eocene","Eo",33.9,56,"epoch","international epochs--2","#FDB46C",44.95
+"211",29,"Paleocene","Pal",56,66,"epoch","international epochs--2","#FDA75F",61
+"212",34,"Late Cretaceous","",66,100.5,"epoch","international epochs--2","#A6D84A",83.25
+"213",41,"Early Cretaceous","",100.5,145,"epoch","international epochs--2","#8CCD57",122.75
+"214",49,"Late Jurassic","",145,161.5,"epoch","international epochs--2","#B3E3EE",153.25
+"215",53,"Middle Jurassic","",161.5,174.7,"epoch","international epochs--2","#80CFD8",168.1
+"216",58,"Early Jurassic","",174.7,201.4,"epoch","international epochs--2","#42AED0",188.05
+"217",64,"Late Triassic","",201.4,237,"epoch","international epochs--2","#BD8CC3",219.2
+"218",68,"Middle Triassic","",237,247.2,"epoch","international epochs--2","#B168B1",242.1
+"219",213,"Early Triassic","",247.2,251.902,"epoch","international epochs--2","#983999",249.551
+"220",223,"Lopingian","",251.902,259.51,"epoch","international epochs--2","#FBA794",255.706
+"221",134,"Guadalupian","",259.51,273.01,"epoch","international epochs--2","#FB745C",266.26
+"222",227,"Cisuralian","",273.01,298.9,"epoch","international epochs--2","#EF5845",285.955
+"223",85,"Pennsylvanian","",298.9,323.2,"epoch","international epochs--2","#99C2B5",311.05
+"224",90,"Mississippian","",323.2,358.9,"epoch","international epochs--2","#678F66",341.05
+"225",95,"Late Devonian","",358.9,382.7,"epoch","international epochs--2","#F1E19D",370.8
+"226",98,"Middle Devonian","",382.7,393.3,"epoch","international epochs--2","#F1C868",388
+"227",101,"Early Devonian","",393.3,419.2,"epoch","international epochs--2","#E5AC4D",406.25
+"228",107,"Pridoli","",419.2,423,"epoch","international epochs--2","#E6F5E1",421.1
+"229",108,"Ludlow","",423,427.4,"epoch","international epochs--2","#BFE6CF",425.2
+"230",109,"Wenlock","",427.4,433.4,"epoch","international epochs--2","#B3E1C2",430.4
+"231",111,"Llandovery","",433.4,443.8,"epoch","international epochs--2","#99D7B3",438.6
+"232",113,"Late Ordovician","",443.8,458.4,"epoch","international epochs--2","#7FCA93",451.1
+"233",116,"Middle Ordovician","",458.4,470,"epoch","international epochs--2","#4DB47E",464.2
+"234",119,"Early Ordovician","",470,485.4,"epoch","international epochs--2","#1A9D6F",477.7
+"235",243,"Furongian","",485.4,497,"epoch","international epochs--2","#B3E095",491.2
+"236",500,"Miaolingian","",497,509,"epoch","international epochs--2","#A6CF86",503
+"237",501,"Series 2","",509,521,"epoch","international epochs--2","#99C078",515
+"238",246,"Terreneuvian","",521,538.8,"epoch","international epochs--2","#8CB06C",529.9
+"239",421,"Quaternary","Q",0,2.58,"period","international periods--3","#F9F97F",1.29
+"240",2,"Neogene","Ng",2.58,23.03,"period","international periods--3","#FFE619",12.805
+"241",20,"Paleogene","Pg",23.03,66,"period","international periods--3","#FD9A52",44.515
+"242",33,"Cretaceous","K",66,145,"period","international periods--3","#7FC64E",105.5
+"243",48,"Jurassic","J",145,201.4,"period","international periods--3","#34B2C9",173.2
+"244",63,"Triassic","Tr",201.4,251.902,"period","international periods--3","#812B92",226.651
+"245",75,"Permian","P",251.902,298.9,"period","international periods--3","#F04028",275.401
+"246",84,"Carboniferous","C",298.9,358.9,"period","international periods--3","#67A599",328.9
+"247",94,"Devonian","D",358.9,419.2,"period","international periods--3","#CB8C37",389.05
+"248",105,"Silurian","S",419.2,443.8,"period","international periods--3","#B3E1B6",431.5
+"249",112,"Ordovician","O",443.8,485.4,"period","international periods--3","#009270",464.6
+"250",122,"Cambrian","Cm",485.4,538.8,"period","international periods--3","#7FA056",512.1
+"251",263,"Ediacaran","E",538.8,635,"period","international periods--3","#FFC3E1",586.9
+"252",264,"Cryogenian","Cr",635,720,"period","international periods--3","#FFAFD7",677.5
+"253",265,"Tonian","T",720,1000,"period","international periods--3","#FFA5D2",860
+"254",266,"Stenian","St",1000,1200,"period","international periods--3","#FFA5D2",1100
+"255",267,"Ectasian","Ec",1200,1400,"period","international periods--3","#FF98CC",1300
+"256",268,"Calymmian","Ca",1400,1600,"period","international periods--3","#FF8BC5",1500
+"257",269,"Statherian","St",1600,1800,"period","international periods--3","#EE93C1",1700
+"258",270,"Orosirian","Or",1800,2050,"period","international periods--3","#E874AF",1925
+"259",271,"Rhyacian","R",2050,2300,"period","international periods--3","#EB84B8",2175
+"260",272,"Siderian","Sd",2300,2500,"period","international periods--3","#E874AF",2400
+"261",278,"NN21",NA,0,0.3,"zone","calcareous nannoplankton zones--5","#FFF2DC",0.15
+"262",279,"NN20",NA,0.3,0.5,"zone","calcareous nannoplankton zones--5","#FFF2D8",0.4
+"263",280,"NN19",NA,0.5,2,"zone","calcareous nannoplankton zones--5","#FFF0C0",1.25
+"264",281,"NN18",NA,2,2.5,"zone","calcareous nannoplankton zones--5","#FFEFBA",2.25
+"265",282,"NN17",NA,2.5,2.6,"zone","calcareous nannoplankton zones--5","#FFF6B9",2.55
+"266",283,"NN16",NA,2.6,3.75,"zone","calcareous nannoplankton zones--5","#FFFFBD",3.175
+"267",284,"NN15",NA,3.75,4,"zone","calcareous nannoplankton zones--5","#FFFFBA",3.875
+"268",285,"NN14",NA,4,4.15,"zone","calcareous nannoplankton zones--5","#FFFFB8",4.075
+"269",286,"NN13",NA,4.15,5,"zone","calcareous nannoplankton zones--5","#FFFFB5",4.575
+"270",287,"NN12",NA,5,5.6,"zone","calcareous nannoplankton zones--5","#FFFF93",5.3
+"271",288,"NN11",NA,5.6,8.6,"zone","calcareous nannoplankton zones--5","#FFFF70",7.1
+"272",289,"NN10",NA,8.6,9.4,"zone","calcareous nannoplankton zones--5","#FFFF6E",9
+"273",290,"NN9",NA,9.4,10.7,"zone","calcareous nannoplankton zones--5","#FFFF6B",10.05
+"274",291,"NN8",NA,10.7,10.9,"zone","calcareous nannoplankton zones--5","#FFFF69",10.8
+"275",292,"NN7",NA,10.9,11.8,"zone","calcareous nannoplankton zones--5","#FFFF62",11.35
+"276",293,"NN6",NA,11.8,13.6,"zone","calcareous nannoplankton zones--5","#FFFF5D",12.7
+"277",294,"NN5",NA,13.6,15.6,"zone","calcareous nannoplankton zones--5","#FFFF53",14.6
+"278",295,"NN4",NA,15.6,18.3,"zone","calcareous nannoplankton zones--5","#FFFF49",16.95
+"279",296,"NN3",NA,18.3,19,"zone","calcareous nannoplankton zones--5","#FFFF45",18.65
+"280",297,"NN2",NA,19,22.2,"zone","calcareous nannoplankton zones--5","#FFFF3A",20.6
+"281",298,"NN1",NA,22.2,23.9,"zone","calcareous nannoplankton zones--5","#FFF75B",23.05
+"282",299,"NP25",NA,23.9,27.5,"zone","calcareous nannoplankton zones--5","#FEE6AA",25.7
+"283",300,"NP24",NA,27.5,29.9,"zone","calcareous nannoplankton zones--5","#FEE3A6",28.7
+"284",301,"NP23",NA,29.9,32.3,"zone","calcareous nannoplankton zones--5","#FEE0A2",31.1
+"285",302,"NP22",NA,32.3,32.8,"zone","calcareous nannoplankton zones--5","#FEDC9E",32.55
+"286",303,"NP21",NA,32.8,34.2,"zone","calcareous nannoplankton zones--5","#FED69C",33.5
+"287",304,"NP19-20",NA,34.2,36,"zone","calcareous nannoplankton zones--5","#FED39E",35.1
+"288",305,"NP18",NA,36,37,"zone","calcareous nannoplankton zones--5","#FDD09F",36.5
+"289",306,"NP17",NA,37,41.2,"zone","calcareous nannoplankton zones--5","#FDC799",39.1
+"290",307,"NP16",NA,41.2,43.4,"zone","calcareous nannoplankton zones--5","#FDBC8C",42.3
+"291",308,"NP15",NA,43.4,47.3,"zone","calcareous nannoplankton zones--5","#FCB887",45.35
+"292",309,"NP14",NA,47.3,49.7,"zone","calcareous nannoplankton zones--5","#FCB280",48.5
+"293",310,"NP13",NA,49.7,50.6,"zone","calcareous nannoplankton zones--5","#FCB07D",50.15
+"294",311,"NP12",NA,50.6,52.85,"zone","calcareous nannoplankton zones--5","#FCAE7B",51.725
+"295",312,"NP11",NA,52.85,53.61,"zone","calcareous nannoplankton zones--5","#FCAB78",53.23
+"296",313,"NP10",NA,53.61,55,"zone","calcareous nannoplankton zones--5","#FCA976",54.305
+"297",314,"NP9",NA,55,56.2,"zone","calcareous nannoplankton zones--5","#FCAC72",55.6
+"298",315,"NP8",NA,56.2,57.3,"zone","calcareous nannoplankton zones--5","#FCB171",56.75
+"299",316,"NP7",NA,57.3,57.5,"zone","calcareous nannoplankton zones--5","#FDB571",57.4
+"300",317,"NP6",NA,57.5,58.4,"zone","calcareous nannoplankton zones--5","#FDBA70",57.95
+"301",318,"NP5",NA,58.4,59.7,"zone","calcareous nannoplankton zones--5","#FEBF6A",59.05
+"302",319,"NP4",NA,59.7,62.2,"zone","calcareous nannoplankton zones--5","#FEBD64",60.95
+"303",320,"NP3",NA,62.2,63.8,"zone","calcareous nannoplankton zones--5","#FEBB64",63
+"304",321,"NP2",NA,63.8,64.5,"zone","calcareous nannoplankton zones--5","#FDB863",64.15
+"305",322,"NP1",NA,64.5,66,"zone","calcareous nannoplankton zones--5","#FDB663",65.25
+"306",323,"CC26",NA,66,67.8,"zone","calcareous nannoplankton zones--5","#F2FA76",66.9
+"307",324,"CC25",NA,67.8,70.2,"zone","calcareous nannoplankton zones--5","#F2FA81",69
+"308",325,"CC24",NA,70.2,72.1,"zone","calcareous nannoplankton zones--5","#F0F98A",71.15
+"309",326,"CC23",NA,72.1,76,"zone","calcareous nannoplankton zones--5","#EFF888",74.05
+"310",327,"CC22",NA,76,76.8,"zone","calcareous nannoplankton zones--5","#EDF786",76.4
+"311",328,"CC21",NA,76.8,77.6,"zone","calcareous nannoplankton zones--5","#EBF785",77.2
+"312",329,"CC20",NA,77.6,79,"zone","calcareous nannoplankton zones--5","#E9F683",78.3
+"313",330,"CC19",NA,79,81,"zone","calcareous nannoplankton zones--5","#E8F581",80
+"314",331,"CC18",NA,81,83.8,"zone","calcareous nannoplankton zones--5","#E3F37C",82.4
+"315",332,"CC17",NA,83.8,84.2,"zone","calcareous nannoplankton zones--5","#E0F27A",84
+"316",333,"CC16",NA,84.2,85,"zone","calcareous nannoplankton zones--5","#DCF077",84.6
+"317",334,"CC15",NA,85,86.3,"zone","calcareous nannoplankton zones--5","#D5ED70",85.65
+"318",335,"CC14",NA,86.3,88,"zone","calcareous nannoplankton zones--5","#D0EB6C",87.15
+"319",336,"CC13",NA,88,89.8,"zone","calcareous nannoplankton zones--5","#C8E764",88.9
+"320",337,"CC12",NA,89.8,91,"zone","calcareous nannoplankton zones--5","#C3E561",90.4
+"321",338,"CC11",NA,91,93.9,"zone","calcareous nannoplankton zones--5","#BBE15A",92.45
+"322",339,"CC10",NA,93.9,95.7,"zone","calcareous nannoplankton zones--5","#B7E056",94.8
+"323",340,"CC9",NA,95.7,103,"zone","calcareous nannoplankton zones--5","#C0E475",99.35
+"324",341,"CC8",NA,103,112.2,"zone","calcareous nannoplankton zones--5","#C6E791",107.6
+"325",342,"CC7",NA,112.2,125.4,"zone","calcareous nannoplankton zones--5","#BBE286",118.8
+"326",343,"CC6",NA,125.4,129,"zone","calcareous nannoplankton zones--5","#B7E183",127.2
+"327",344,"CC5",NA,129,132.7,"zone","calcareous nannoplankton zones--5","#ADDC7A",130.85
+"328",345,"CC4",NA,132.7,137.4,"zone","calcareous nannoplankton zones--5","#A2D771",135.05
+"329",346,"CC3",NA,137.4,139.8,"zone","calcareous nannoplankton zones--5","#9DD56E",138.6
+"330",347,"CC2",NA,139.8,142.4,"zone","calcareous nannoplankton zones--5","#95D167",141.1
+"331",348,"CC1",NA,142.4,144,"zone","calcareous nannoplankton zones--5","#90CF63",143.2
+"332",349,"NJ17",NA,144,149.2,"zone","calcareous nannoplankton zones--5","#D9F1EE",146.6
+"333",350,"NJ16",NA,149.2,151.2,"zone","calcareous nannoplankton zones--5","#D3EFF6",150.2
+"334",351,"NJ15",NA,151.2,159.7,"zone","calcareous nannoplankton zones--5","#C6EAF3",155.45
+"335",352,"NJ14",NA,159.7,161.4,"zone","calcareous nannoplankton zones--5","#BFE7ED",160.55
+"336",353,"NJ13",NA,161.4,163.4,"zone","calcareous nannoplankton zones--5","#BFE7E9",162.4
+"337",354,"NJ12",NA,163.4,165.4,"zone","calcareous nannoplankton zones--5","#B9E5E4",164.4
+"338",355,"NJ11",NA,165.4,168,"zone","calcareous nannoplankton zones--5","#B0E1E2",166.7
+"339",356,"NJ10",NA,168,170.3,"zone","calcareous nannoplankton zones--5","#ADE0E2",169.15
+"340",357,"NJ9",NA,170.3,171.2,"zone","calcareous nannoplankton zones--5","#A9DEE1",170.75
+"341",358,"NJ8",NA,171.2,177.2,"zone","calcareous nannoplankton zones--5","#9AD6DF",174.2
+"342",359,"NJ7",NA,177.2,181,"zone","calcareous nannoplankton zones--5","#9AD4E0",179.1
+"343",360,"NJ6",NA,181,182.8,"zone","calcareous nannoplankton zones--5","#99D1E2",181.9
+"344",361,"NJ5",NA,182.8,185.5,"zone","calcareous nannoplankton zones--5","#91CBE1",184.15
+"345",362,"NJ4",NA,185.5,189,"zone","calcareous nannoplankton zones--5","#88C8DF",187.25
+"346",363,"NJ3",NA,189,193.3,"zone","calcareous nannoplankton zones--5","#74C1DB",191.15
+"347",364,"NJ2",NA,193.3,199.3,"zone","calcareous nannoplankton zones--5","#5FB9D6",196.3
+"348",365,"NJ1",NA,199.3,201.4,"zone","calcareous nannoplankton zones--5","#56B6D5",200.35
+"349",366,"Haweran","Wq",0,0.34,"age","New Zealand ages--6","#FFFA9B",0.17
+"350",367,"Castlecliffian","Wc",0.34,1.63,"age","New Zealand ages--6","#FFF997",0.985
+"351",368,"Nukumaruan","Wn",1.63,2.4,"age","New Zealand ages--6","#FFF994",2.015
+"352",369,"Mangapanian","Wm",2.4,3,"age","New Zealand ages--6","#FFF891",2.7
+"353",370,"Waipipian","Wp",3,3.7,"age","New Zealand ages--6","#FFF88E",3.35
+"354",371,"Opoitian","Wo",3.7,5.33,"age","New Zealand ages--6","#FFF78A",4.515
+"355",372,"Kapitean","Tk",5.33,7.2,"age","New Zealand ages--6","#FEE582",6.265
+"356",373,"Tongaporutuan","Tt",7.2,11.04,"age","New Zealand ages--6","#FED67E",9.12
+"357",374,"Waiauan","Sw",11.04,13.05,"age","New Zealand ages--6","#FDD07C",12.045
+"358",375,"Lillburnian","Sl",13.05,15.1,"age","New Zealand ages--6","#FDCA7B",14.075
+"359",376,"Clifdenian","Sc",15.1,15.9,"age","New Zealand ages--6","#FDCD90",15.5
+"360",377,"Altonian","Pl",15.9,18.7,"age","New Zealand ages--6","#FDD6A7",17.3
+"361",378,"Otaian","Po",18.7,21.7,"age","New Zealand ages--6","#FEDAB4",20.2
+"362",379,"Waitakian","Lw",21.7,25.2,"age","New Zealand ages--6","#FDD5AA",23.45
+"363",380,"Duntroonian","Ld",25.2,27.3,"age","New Zealand ages--6","#FDCFA0",26.25
+"364",381,"Whaingaroan","Lwh",27.3,34.6,"age","New Zealand ages--6","#FCCA96",30.95
+"365",382,"Runangan","Ar",34.6,36.7,"age","New Zealand ages--6","#F4BA83",35.65
+"366",383,"Kaiatan","Ak",36.7,39.1,"age","New Zealand ages--6","#EBB07A",37.9
+"367",384,"Bortonian","Ab",39.1,42.6,"age","New Zealand ages--6","#E3A570",40.85
+"368",385,"Porangan","Dp",42.6,45.7,"age","New Zealand ages--6","#DF9D69",44.15
+"369",386,"Heretaungan","Dh",45.7,48.9,"age","New Zealand ages--6","#E4A06B",47.3
+"370",387,"Mangaorapan","Dm",48.9,52,"age","New Zealand ages--6","#EAA46D",50.45
+"371",388,"Waipawan","Dw",52,56,"age","New Zealand ages--6","#EFA76E",54
+"372",389,"Teurian","Dt",56,66,"age","New Zealand ages--6","#F4AA70",61
+"373",390,"Haumurian","",66,83.6,"age","New Zealand ages--6","#B8DEC2",74.8
+"374",391,"Piripauan","",83.6,86.5,"age","New Zealand ages--6","#AEDABA",85.05
+"375",392,"Teratan","",86.5,90.5,"age","New Zealand ages--6","#9ED3AE",88.5
+"376",393,"Mangaotanean","",90.5,93.7,"age","New Zealand ages--6","#98D1A8",92.1
+"377",394,"Arowhanan","",93.7,95.2,"age","New Zealand ages--6","#91CEA3",94.45
+"378",395,"Ngaterian","",95.2,99.5,"age","New Zealand ages--6","#84C998",97.35
+"379",396,"Motuan","",99.5,103.3,"age","New Zealand ages--6","#7DC693",101.4
+"380",397,"Urutawan","Cu",103.3,108.4,"age","New Zealand ages--6","#77C48E",105.85
+"381",398,"Korangan","Uk",108.4,117.5,"age","New Zealand ages--6","#70C189",112.95
+"382",1032,"Puaroan","",145,150,"age","New Zealand ages--6","#D9F1F7",147.5
+"383",1031,"Ohauan","",150,154.5,"age","New Zealand ages--6","#B3E3EE",152.25
+"384",1030,"Heterian","",154.5,164.3,"age","New Zealand ages--6","#34B2C9",159.4
+"385",1029,"Temaikan","",164.3,176,"age","New Zealand ages--6","#34B2C9",170.15
+"386",1028,"Ururoan","",176,188.9,"age","New Zealand ages--6","#42AED0",182.45
+"387",1027,"Aratauran","",188.9,201.4,"age","New Zealand ages--6","#42AED0",195.15
+"388",1026,"Otapirian","",201.4,208.5,"age","New Zealand ages--6","#E3B9DB",204.95
+"389",1025,"Warepan","",208.5,217,"age","New Zealand ages--6","#D6AAD3",212.75
+"390",1516,"Otamitan","Bm",217,221,"age","New Zealand ages--6","#D6AAD3",219
+"391",1024,"Oretian","",221,227.5,"age","New Zealand ages--6","#D6AAD3",224.25
+"392",1023,"Kaihikuan","",227.5,238,"age","New Zealand ages--6","#812B92",232.75
+"393",1022,"Etalian","",238,246,"age","New Zealand ages--6","#B168B1",242
+"394",1021,"Malakovian","",246,249,"age","New Zealand ages--6","#812B92",247.5
+"395",1020,"Nelsonian","",249,251.5,"age","New Zealand ages--6","#983999",250.25
+"396",1019,"Makarewan","",251.5,253.2,"age","New Zealand ages--6","#FBA794",252.35
+"397",1018,"Waiitian","",253.2,254.2,"age","New Zealand ages--6","#FBA794",253.7
+"398",1017,"Puruhauan","",254.2,259.8,"age","New Zealand ages--6","#FCB4A2",257
+"399",1016,"Flettian","",259.8,266,"age","New Zealand ages--6","#F04028",262.9
+"400",1015,"Barrettian","",266,276,"age","New Zealand ages--6","#F04028",271
+"401",1014,"Mangapirian","",276,285,"age","New Zealand ages--6","#EF5845",280.5
+"402",1013,"Telfordian","",285,288.5,"age","New Zealand ages--6","#E37B68",286.75
+"403",96,"Famennian","",358.9,372.2,"age","New Zealand ages--6","#F2EDC5",365.55
+"404",97,"Frasnian","",372.2,382.7,"age","New Zealand ages--6","#F2EDAD",377.45
+"405",99,"Givetian","",382.7,387.7,"age","New Zealand ages--6","#F1E185",385.2
+"406",100,"Eifelian","",387.7,393.3,"age","New Zealand ages--6","#F1D576",390.5
+"407",102,"Emsian","",393.3,407.6,"age","New Zealand ages--6","#E5D075",400.45
+"408",228,"Pragian","",407.6,410.8,"age","New Zealand ages--6","#E5C468",409.2
+"409",229,"Lochkovian","",410.8,419.2,"age","New Zealand ages--6","#E5B75A",415
+"410",107,"Pridoli","",419.2,423,"epoch","New Zealand ages--6","#E6F5E1",421.1
+"411",230,"Ludfordian","",423,425.6,"age","New Zealand ages--6","#D9F0DF",424.3
+"412",231,"Gorstian","",425.6,427.4,"age","New Zealand ages--6","#CCECDD",426.5
+"413",232,"Homerian","",427.4,430.5,"age","New Zealand ages--6","#CCEBD1",428.95
+"414",233,"Sheinwoodian","",430.5,433.4,"age","New Zealand ages--6","#BFE6C3",431.95
+"415",234,"Telychian","",433.4,438.5,"age","New Zealand ages--6","#BFE6CF",435.95
+"416",235,"Aeronian","",438.5,440.8,"age","New Zealand ages--6","#B3E1C2",439.65
+"417",236,"Rhuddanian","",440.8,443.8,"age","New Zealand ages--6","#A6DCB5",442.3
+"418",1012,"Bolindian","",443.8,448.4,"age","New Zealand ages--6","#7FCA93",446.1
+"419",1011,"Eastonian","",448.4,453,"age","New Zealand ages--6","#99D69F",450.7
+"420",1010,"Gisbornian","",453,458.4,"age","New Zealand ages--6","#8CD094",455.7
+"421",240,"Darriwilian","",458.4,467.3,"age","New Zealand ages--6","#74C69C",462.85
+"422",1009,"Yapeenian","",467.3,468.3,"age","New Zealand ages--6","#66C092",467.8
+"423",1008,"Castlemainian","",468.3,470,"age","New Zealand ages--6","#66C092",469.15
+"424",1007,"Chewtonian","",470,472.4,"age","New Zealand ages--6","#41B087",471.2
+"425",1006,"Bendigonian","",472.4,476,"age","New Zealand ages--6","#41B087",474.2
+"426",1005,"Lancefieldian","",476,484.3,"age","New Zealand ages--6","#1A9D6F",480.15
+"427",1004,"Warendan","",484.3,485.4,"age","New Zealand ages--6","#33A97E",484.85
+"428",1003,"Datsonian","",485.4,486.8,"age","New Zealand ages--6","#E6F5C9",486.1
+"429",1002,"Payntonian","",486.8,489.5,"age","New Zealand ages--6","#E6F5C9",488.15
+"430",1001,"Iverian","",489.5,494,"age","New Zealand ages--6","#D9F0BB",491.75
+"431",1000,"Idamean","",494,497,"age","New Zealand ages--6","#CCEBAE",495.5
+"432",999,"Mindyallan","",497,499,"age","New Zealand ages--6","#CCDFAA",498
+"433",998,"Boomerangian","",499,500.5,"age","New Zealand ages--6","#CCDFAA",499.75
+"434",997,"Undillan","",500.5,503,"age","New Zealand ages--6","#BFD99D",501.75
+"435",996,"Floran","",503,504.5,"age","New Zealand ages--6","#BFD99D",503.75
+"436",995,"Templetonian","",504.5,508,"age","New Zealand ages--6","#B3D492",506.25
+"437",994,"Ordian","",508,511.5,"age","New Zealand ages--6","#7FA056",509.75
+"438",4,"Pleistocene","Ple",0.0117,2.58,"epoch","custom COSUNA--7","#FFF2AE",1.29585
+"439",10,"Pliocene","Pli",2.58,5.333,"epoch","custom COSUNA--7","#FFFF99",3.9565
+"440",14,"Messinian","",5.333,7.246,"age","custom COSUNA--7","#FFFF73",6.2895
+"441",15,"Tortonian","",7.246,11.63,"age","custom COSUNA--7","#FFFF66",9.438
+"442",16,"Serravallian","",11.63,13.82,"age","custom COSUNA--7","#FFFF59",12.725
+"443",17,"Langhian","",13.82,15.98,"age","custom COSUNA--7","#FFFF4D",14.9
+"444",18,"Burdigalian","",15.98,20.44,"age","custom COSUNA--7","#FFFF41",18.21
+"445",19,"Aquitanian","",20.44,23.03,"age","custom COSUNA--7","#FFFF33",21.735
+"446",22,"Chattian","",23.03,27.82,"age","custom COSUNA--7","#FEE6AA",25.425
+"447",23,"Rupelian","",27.82,33.9,"age","custom COSUNA--7","#FED99A",30.86
+"448",25,"Priabonian","",33.9,37.71,"age","custom COSUNA--7","#FDCDA1",35.805
+"449",26,"Bartonian","",37.71,41.2,"age","custom COSUNA--7","#FDC091",39.455
+"450",27,"Lutetian","",41.2,47.8,"age","custom COSUNA--7","#FCB482",44.5
+"451",28,"Ypresian","",47.8,56,"age","custom COSUNA--7","#FCA773",51.9
+"452",402,"Selandian-Thanetian","",56,61.6,"age","custom COSUNA--7","#FEBF6A",58.8
+"453",31,"Danian","",61.6,66,"age","custom COSUNA--7","#FDB462",63.8
+"454",35,"Maastrichtian","",66,72.1,"age","custom COSUNA--7","#F2FA8C",69.05
+"455",36,"Campanian","",72.1,83.6,"age","custom COSUNA--7","#E6F47F",77.85
+"456",37,"Santonian","",83.6,86.3,"age","custom COSUNA--7","#D9EF74",84.95
+"457",38,"Coniacian","",86.3,89.8,"age","custom COSUNA--7","#CCE968",88.05
+"458",39,"Turonian","",89.8,93.9,"age","custom COSUNA--7","#BFE35D",91.85
+"459",40,"Cenomanian","",93.9,100.5,"age","custom COSUNA--7","#B3DE53",97.2
+"460",42,"Albian","",100.5,113,"age","custom COSUNA--7","#CCEA97",106.75
+"461",43,"Aptian","",113,121.4,"age","custom COSUNA--7","#BFE48A",117.2
+"462",44,"Barremian","",121.4,125.77,"age","custom COSUNA--7","#B3DF7F",123.585
+"463",45,"Hauterivian","",125.77,132.6,"age","custom COSUNA--7","#A6D975",129.185
+"464",46,"Valanginian","",132.6,139.8,"age","custom COSUNA--7","#99D36A",136.2
+"465",47,"Berriasian","",139.8,145,"age","custom COSUNA--7","#8CCD60",142.4
+"466",50,"Tithonian","",145,149.2,"age","custom COSUNA--7","#D9F1F7",147.1
+"467",51,"Kimmeridgian","",149.2,154.8,"age","custom COSUNA--7","#CCECF4",152
+"468",52,"Oxfordian","",154.8,161.5,"age","custom COSUNA--7","#BFE7F1",158.15
+"469",54,"Callovian","",161.5,165.3,"age","custom COSUNA--7","#BFE7E5",163.4
+"470",55,"Bathonian","",165.3,168.2,"age","custom COSUNA--7","#B3E2E3",166.75
+"471",56,"Bajocian","",168.2,170.9,"age","custom COSUNA--7","#A6DDE0",169.55
+"472",57,"Aalenian","",170.9,174.7,"age","custom COSUNA--7","#9AD9DD",172.8
+"473",59,"Toarcian","",174.7,184.2,"age","custom COSUNA--7","#99CEE3",179.45
+"474",60,"Pliensbachian","",184.2,192.9,"age","custom COSUNA--7","#80C5DD",188.55
+"475",61,"Sinemurian","",192.9,199.5,"age","custom COSUNA--7","#67BCD8",196.2
+"476",62,"Hettangian","",199.5,201.4,"age","custom COSUNA--7","#4EB3D3",200.45
+"477",65,"Rhaetian","",201.4,208.5,"age","custom COSUNA--7","#E3B9DB",204.95
+"478",66,"Norian","",208.5,227,"age","custom COSUNA--7","#D6AAD3",217.75
+"479",67,"Carnian","",227,237,"age","custom COSUNA--7","#C99BCB",232
+"480",69,"Ladinian","",237,242,"age","custom COSUNA--7","#C983BF",239.5
+"481",70,"Anisian","",242,247.2,"age","custom COSUNA--7","#BC75B7",244.6
+"482",213,"Early Triassic","",247.2,251.902,"epoch","custom COSUNA--7","#983999",249.551
+"483",223,"Lopingian","",251.902,259.51,"epoch","custom COSUNA--7","#FBA794",255.706
+"484",134,"Guadalupian","",259.51,273.01,"epoch","custom COSUNA--7","#FB745C",266.26
+"485",135,"Leonardian","",273.01,282,"age","custom COSUNA--7","#E3816F",277.505
+"486",136,"Wolfcampian","",282,298.9,"age","custom COSUNA--7","#E36956",290.45
+"487",137,"Virgilian","",298.9,303.7,"age","custom COSUNA--7","#C6D2C5",301.3
+"488",138,"Missourian","",303.7,306,"age","custom COSUNA--7","#B9CDC0",304.85
+"489",139,"Desmoinesian","",306,312,"age","custom COSUNA--7","#B3CBBE",309
+"490",140,"Atokan","",312,319,"age","custom COSUNA--7","#ACC9BC",315.5
+"491",141,"Morrowan","",319,323.2,"age","custom COSUNA--7","#9FC4B7",321.1
+"492",142,"Chesterian","",323.2,335,"age","custom COSUNA--7","#B5BE6B",329.1
+"493",143,"Meramecian","",335,343.5,"age","custom COSUNA--7","#ABBB6B",339.25
+"494",144,"Osagean","",343.5,351.5,"age","custom COSUNA--7","#A0B76C",347.5
+"495",145,"Kinderhookian","",351.5,358.9,"age","custom COSUNA--7","#96B46C",355.2
+"496",96,"Famennian","",358.9,372.2,"age","custom COSUNA--7","#F2EDC5",365.55
+"497",97,"Frasnian","",372.2,382.7,"age","custom COSUNA--7","#F2EDAD",377.45
+"498",99,"Givetian","",382.7,387.7,"age","custom COSUNA--7","#F1E185",385.2
+"499",100,"Eifelian","",387.7,393.3,"age","custom COSUNA--7","#F1D576",390.5
+"500",102,"Emsian","",393.3,407.6,"age","custom COSUNA--7","#E5D075",400.45
+"501",103,"Siegenian","",407.6,410.8,"age","custom COSUNA--7","#E5C468",409.2
+"502",104,"Gedinnian","",410.8,419.2,"age","custom COSUNA--7","#E5B75A",415
+"503",107,"Pridoli","",419.2,423,"epoch","custom COSUNA--7","#E6F5E1",421.1
+"504",108,"Ludlow","",423,427.4,"epoch","custom COSUNA--7","#BFE6CF",425.2
+"505",109,"Wenlock","",427.4,433.4,"epoch","custom COSUNA--7","#B3E1C2",430.4
+"506",234,"Telychian","",433.4,438.5,"age","custom COSUNA--7","#BFE6CF",435.95
+"507",235,"Aeronian","",438.5,440.8,"age","custom COSUNA--7","#B3E1C2",439.65
+"508",236,"Rhuddanian","",440.8,443.8,"age","custom COSUNA--7","#A6DCB5",442.3
+"509",399,"Richmondian-Hirnantian","",443.8,450,"age","custom COSUNA--7","#A4DAA9",446.9
+"510",401,"Edenian-Maysvillian","",450,453.5,"age","custom COSUNA--7","#9DD8A3",451.75
+"511",400,"Rocklandian-Shermanian","",453.5,456.5,"age","custom COSUNA--7","#94D49B",455
+"512",166,"Blackriverian","",456.5,458.4,"age","custom COSUNA--7","#8ED195",457.45
+"513",117,"Llandeilo","",458.4,460.5,"age","custom COSUNA--7","#61BD95",459.45
+"514",118,"Llanvirnian","",460.5,465.5,"age","custom COSUNA--7","#3AAC86",463
+"515",120,"Arenigian","",465.5,477.7,"age","custom COSUNA--7","#139B77",471.6
+"516",121,"Tremadocian","",477.7,485.4,"age","custom COSUNA--7","#33A97E",481.55
+"517",124,"Trempealeauan","",485.4,492.5,"age","custom COSUNA--7","#E0F0C1",488.95
+"518",125,"Franconian","",492.5,496.8,"age","custom COSUNA--7","#D9EABA",494.65
+"519",127,"Dresbachian","",496.8,501,"age","custom COSUNA--7","#D3E5B2",498.9
+"520",128,"Middle Cambrian","",501,511,"epoch","custom COSUNA--7","#BFD99D",506
+"521",130,"Early Cambrian","",511,538.8,"epoch","custom COSUNA--7","#8CB06C",524.9
+"522",187,"Rancholabrean",NA,0.0114,0.3,"age","North American land mammal ages--9","#FFF2E1",0.1557
+"523",186,"Irvingtonian",NA,0.3,1.8,"age","North American land mammal ages--9","#FFF0BD",1.05
+"524",420,"Blancan",NA,1.8,4.9,"age","North American land mammal ages--9","#FFFFB9",3.35
+"525",419,"Hemphillian",NA,4.9,10.3,"age","North American land mammal ages--9","#FFFF6D",7.6
+"526",418,"Clarendonian",NA,10.3,13.6,"age","North American land mammal ages--9","#FFFF60",11.95
+"527",417,"Barstovian",NA,13.6,16.3,"age","North American land mammal ages--9","#FFFF47",14.95
+"528",416,"Hemingfordian",NA,16.3,18.6,"age","North American land mammal ages--9","#FFFF3A",17.45
+"529",515,"Arikareean",NA,18.6,29.8,"age","North American land mammal ages--9","#FEE9B2",24.2
+"530",185,"Whitneyan",NA,29.8,32.1,"age","North American land mammal ages--9","#FEE39F",30.95
+"531",184,"Orellan",NA,32.1,33.9,"age","North American land mammal ages--9","#FED39E",33
+"532",412,"Chadronian",NA,33.9,37.71,"age","North American land mammal ages--9","#FDC799",35.805
+"533",411,"Duchesnean",NA,37.71,39.9,"age","North American land mammal ages--9","#FDBC8C",38.805
+"534",410,"Uintan",NA,39.9,47.9,"age","North American land mammal ages--9","#FCB887",43.9
+"535",408,"Bridgerian",NA,47.9,52,"age","North American land mammal ages--9","#FCB07D",49.95
+"536",183,"Wasatchian",NA,52,56,"age","North American land mammal ages--9","#FCAB78",54
+"537",182,"Clarkforkian",NA,56,57.5,"age","North American land mammal ages--9","#FDB371",56.75
+"538",407,"Tiffanian",NA,57.5,62.25,"age","North American land mammal ages--9","#FEBF6A",59.875
+"539",406,"Torrejonian",NA,62.25,64.75,"age","North American land mammal ages--9","#FEBA64",63.5
+"540",188,"Puercan",NA,64.75,66,"age","North American land mammal ages--9","#FDB469",65.375
+"541",1,"Cenozoic","Cz",0,66,"era","international intervals--11","#F2F91D",33
+"542",3,"Holocene","",0,0.0117,"epoch","international intervals--11","#FEF2E0",0.00585
+"543",275,"Phanerozoic","",0,538.8,"eon","international intervals--11","#9AD9DD",269.4
+"544",421,"Quaternary","Q",0,2.58,"period","international intervals--11","#F9F97F",1.29
+"545",1038,"Meghalayan","",0,0.0042,"age","international intervals--11","#FEF2E0",0.0021
+"546",1039,"Northgrippian","",0.0042,0.0082,"age","international intervals--11","#FEF2E0",0.0062
+"547",1040,"Greenlandian","",0.0082,0.0117,"age","international intervals--11","#FEF2E0",0.00995
+"548",4,"Pleistocene","Ple",0.0117,2.58,"epoch","international intervals--11","#FFF2AE",1.29585
+"549",492,"Late Pleistocene","",0.0117,0.129,"age","international intervals--11","#FFF2C7",0.07035
+"550",1688,"Chibanian","",0.129,0.774,"age","international intervals--11","#fff2c7",0.4515
+"551",276,"Calabrian","",0.774,1.8,"age","international intervals--11","#FFF2C7",1.287
+"552",219,"Gelasian","",1.8,2.58,"age","international intervals--11","#FFEDB3",2.19
+"553",2,"Neogene","Ng",2.58,23.03,"period","international intervals--11","#FFE619",12.805
+"554",10,"Pliocene","Pli",2.58,5.333,"epoch","international intervals--11","#FFFF99",3.9565
+"555",11,"Piacenzian","",2.58,3.6,"age","international intervals--11","#FFFFBF",3.09
+"556",12,"Zanclean","",3.6,5.333,"age","international intervals--11","#FFFFB3",4.4665
+"557",13,"Miocene","Mio",5.333,23.03,"epoch","international intervals--11","#FFFF00",14.1815
+"558",14,"Messinian","",5.333,7.246,"age","international intervals--11","#FFFF73",6.2895
+"559",15,"Tortonian","",7.246,11.63,"age","international intervals--11","#FFFF66",9.438
+"560",16,"Serravallian","",11.63,13.82,"age","international intervals--11","#FFFF59",12.725
+"561",17,"Langhian","",13.82,15.98,"age","international intervals--11","#FFFF4D",14.9
+"562",18,"Burdigalian","",15.98,20.44,"age","international intervals--11","#FFFF41",18.21
+"563",19,"Aquitanian","",20.44,23.03,"age","international intervals--11","#FFFF33",21.735
+"564",20,"Paleogene","Pg",23.03,66,"period","international intervals--11","#FD9A52",44.515
+"565",21,"Oligocene","Ol",23.03,33.9,"epoch","international intervals--11","#FDC07A",28.465
+"566",22,"Chattian","",23.03,27.82,"age","international intervals--11","#FEE6AA",25.425
+"567",23,"Rupelian","",27.82,33.9,"age","international intervals--11","#FED99A",30.86
+"568",24,"Eocene","Eo",33.9,56,"epoch","international intervals--11","#FDB46C",44.95
+"569",25,"Priabonian","",33.9,37.71,"age","international intervals--11","#FDCDA1",35.805
+"570",26,"Bartonian","",37.71,41.2,"age","international intervals--11","#FDC091",39.455
+"571",27,"Lutetian","",41.2,47.8,"age","international intervals--11","#FCB482",44.5
+"572",28,"Ypresian","",47.8,56,"age","international intervals--11","#FCA773",51.9
+"573",29,"Paleocene","Pal",56,66,"epoch","international intervals--11","#FDA75F",61
+"574",30,"Thanetian","",56,59.2,"age","international intervals--11","#FDBF6F",57.6
+"575",273,"Selandian","",59.2,61.6,"age","international intervals--11","#FEBF65",60.4
+"576",31,"Danian","",61.6,66,"age","international intervals--11","#FDB462",63.8
+"577",32,"Mesozoic","Mz",66,251.902,"era","international intervals--11","#67C5CA",158.951
+"578",33,"Cretaceous","K",66,145,"period","international intervals--11","#7FC64E",105.5
+"579",34,"Late Cretaceous","",66,100.5,"epoch","international intervals--11","#A6D84A",83.25
+"580",35,"Maastrichtian","",66,72.1,"age","international intervals--11","#F2FA8C",69.05
+"581",36,"Campanian","",72.1,83.6,"age","international intervals--11","#E6F47F",77.85
+"582",37,"Santonian","",83.6,86.3,"age","international intervals--11","#D9EF74",84.95
+"583",38,"Coniacian","",86.3,89.8,"age","international intervals--11","#CCE968",88.05
+"584",39,"Turonian","",89.8,93.9,"age","international intervals--11","#BFE35D",91.85
+"585",40,"Cenomanian","",93.9,100.5,"age","international intervals--11","#B3DE53",97.2
+"586",41,"Early Cretaceous","",100.5,145,"epoch","international intervals--11","#8CCD57",122.75
+"587",42,"Albian","",100.5,113,"age","international intervals--11","#CCEA97",106.75
+"588",43,"Aptian","",113,121.4,"age","international intervals--11","#BFE48A",117.2
+"589",44,"Barremian","",121.4,125.77,"age","international intervals--11","#B3DF7F",123.585
+"590",45,"Hauterivian","",125.77,132.6,"age","international intervals--11","#A6D975",129.185
+"591",46,"Valanginian","",132.6,139.8,"age","international intervals--11","#99D36A",136.2
+"592",47,"Berriasian","",139.8,145,"age","international intervals--11","#8CCD60",142.4
+"593",48,"Jurassic","J",145,201.4,"period","international intervals--11","#34B2C9",173.2
+"594",49,"Late Jurassic","",145,161.5,"epoch","international intervals--11","#B3E3EE",153.25
+"595",50,"Tithonian","",145,149.2,"age","international intervals--11","#D9F1F7",147.1
+"596",51,"Kimmeridgian","",149.2,154.8,"age","international intervals--11","#CCECF4",152
+"597",52,"Oxfordian","",154.8,161.5,"age","international intervals--11","#BFE7F1",158.15
+"598",53,"Middle Jurassic","",161.5,174.7,"epoch","international intervals--11","#80CFD8",168.1
+"599",54,"Callovian","",161.5,165.3,"age","international intervals--11","#BFE7E5",163.4
+"600",55,"Bathonian","",165.3,168.2,"age","international intervals--11","#B3E2E3",166.75
+"601",56,"Bajocian","",168.2,170.9,"age","international intervals--11","#A6DDE0",169.55
+"602",57,"Aalenian","",170.9,174.7,"age","international intervals--11","#9AD9DD",172.8
+"603",58,"Early Jurassic","",174.7,201.4,"epoch","international intervals--11","#42AED0",188.05
+"604",59,"Toarcian","",174.7,184.2,"age","international intervals--11","#99CEE3",179.45
+"605",60,"Pliensbachian","",184.2,192.9,"age","international intervals--11","#80C5DD",188.55
+"606",61,"Sinemurian","",192.9,199.5,"age","international intervals--11","#67BCD8",196.2
+"607",62,"Hettangian","",199.5,201.4,"age","international intervals--11","#4EB3D3",200.45
+"608",63,"Triassic","Tr",201.4,251.902,"period","international intervals--11","#812B92",226.651
+"609",64,"Late Triassic","",201.4,237,"epoch","international intervals--11","#BD8CC3",219.2
+"610",65,"Rhaetian","",201.4,208.5,"age","international intervals--11","#E3B9DB",204.95
+"611",66,"Norian","",208.5,227,"age","international intervals--11","#D6AAD3",217.75
+"612",67,"Carnian","",227,237,"age","international intervals--11","#C99BCB",232
+"613",68,"Middle Triassic","",237,247.2,"epoch","international intervals--11","#B168B1",242.1
+"614",69,"Ladinian","",237,242,"age","international intervals--11","#C983BF",239.5
+"615",70,"Anisian","",242,247.2,"age","international intervals--11","#BC75B7",244.6
+"616",72,"Olenekian","",247.2,251.2,"age","international intervals--11","#B051A5",249.2
+"617",213,"Early Triassic","",247.2,251.902,"epoch","international intervals--11","#983999",249.551
+"618",73,"Induan","",251.2,251.902,"age","international intervals--11","#A4469F",251.551
+"619",74,"Paleozoic","Pz",251.902,538.8,"era","international intervals--11","#99C08D",395.351
+"620",75,"Permian","P",251.902,298.9,"period","international intervals--11","#F04028",275.401
+"621",221,"Changhsingian","",251.902,254.14,"age","international intervals--11","#FCC0B2",253.021
+"622",223,"Lopingian","",251.902,259.51,"epoch","international intervals--11","#FBA794",255.706
+"623",222,"Wuchiapingian","",254.14,259.51,"age","international intervals--11","#FCB4A2",256.825
+"624",134,"Guadalupian","",259.51,273.01,"epoch","international intervals--11","#FB745C",266.26
+"625",224,"Capitanian","",259.51,264.28,"age","international intervals--11","#FB9A85",261.895
+"626",225,"Wordian","",264.28,266.9,"age","international intervals--11","#FB8D76",265.59
+"627",226,"Roadian","",266.9,273.01,"age","international intervals--11","#FB8069",269.955
+"628",79,"Kungurian","",273.01,283.5,"age","international intervals--11","#E38776",278.255
+"629",227,"Cisuralian","",273.01,298.9,"epoch","international intervals--11","#EF5845",285.955
+"630",81,"Artinskian","",283.5,290.1,"age","international intervals--11","#E37B68",286.8
+"631",82,"Sakmarian","",290.1,293.52,"age","international intervals--11","#E36F5C",291.81
+"632",83,"Asselian","",293.52,298.9,"age","international intervals--11","#E36350",296.21
+"633",84,"Carboniferous","C",298.9,358.9,"period","international intervals--11","#67A599",328.9
+"634",85,"Pennsylvanian","",298.9,323.2,"epoch","international intervals--11","#99C2B5",311.05
+"635",86,"Gzhelian","",298.9,303.7,"age","international intervals--11","#CCD4C7",301.3
+"636",87,"Kasimovian","",303.7,307,"age","international intervals--11","#BFD0C5",305.35
+"637",88,"Moscovian","",307,315.2,"age","international intervals--11","#C7CBB9",311.1
+"638",89,"Bashkirian","",315.2,323.2,"age","international intervals--11","#99C2B5",319.2
+"639",90,"Mississippian","",323.2,358.9,"epoch","international intervals--11","#678F66",341.05
+"640",91,"Serpukhovian","",323.2,330.9,"age","international intervals--11","#BFC26B",327.05
+"641",92,"Visean","",330.9,346.7,"age","international intervals--11","#A6B96C",338.8
+"642",93,"Tournaisian","",346.7,358.9,"age","international intervals--11","#8CB06C",352.8
+"643",94,"Devonian","D",358.9,419.2,"period","international intervals--11","#CB8C37",389.05
+"644",95,"Late Devonian","",358.9,382.7,"epoch","international intervals--11","#F1E19D",370.8
+"645",96,"Famennian","",358.9,372.2,"age","international intervals--11","#F2EDC5",365.55
+"646",97,"Frasnian","",372.2,382.7,"age","international intervals--11","#F2EDAD",377.45
+"647",98,"Middle Devonian","",382.7,393.3,"epoch","international intervals--11","#F1C868",388
+"648",99,"Givetian","",382.7,387.7,"age","international intervals--11","#F1E185",385.2
+"649",100,"Eifelian","",387.7,393.3,"age","international intervals--11","#F1D576",390.5
+"650",101,"Early Devonian","",393.3,419.2,"epoch","international intervals--11","#E5AC4D",406.25
+"651",102,"Emsian","",393.3,407.6,"age","international intervals--11","#E5D075",400.45
+"652",228,"Pragian","",407.6,410.8,"age","international intervals--11","#E5C468",409.2
+"653",229,"Lochkovian","",410.8,419.2,"age","international intervals--11","#E5B75A",415
+"654",105,"Silurian","S",419.2,443.8,"period","international intervals--11","#B3E1B6",431.5
+"655",107,"Pridoli","",419.2,423,"epoch","international intervals--11","#E6F5E1",421.1
+"656",108,"Ludlow","",423,427.4,"epoch","international intervals--11","#BFE6CF",425.2
+"657",230,"Ludfordian","",423,425.6,"age","international intervals--11","#D9F0DF",424.3
+"658",231,"Gorstian","",425.6,427.4,"age","international intervals--11","#CCECDD",426.5
+"659",109,"Wenlock","",427.4,433.4,"epoch","international intervals--11","#B3E1C2",430.4
+"660",232,"Homerian","",427.4,430.5,"age","international intervals--11","#CCEBD1",428.95
+"661",233,"Sheinwoodian","",430.5,433.4,"age","international intervals--11","#BFE6C3",431.95
+"662",111,"Llandovery","",433.4,443.8,"epoch","international intervals--11","#99D7B3",438.6
+"663",234,"Telychian","",433.4,438.5,"age","international intervals--11","#BFE6CF",435.95
+"664",235,"Aeronian","",438.5,440.8,"age","international intervals--11","#B3E1C2",439.65
+"665",236,"Rhuddanian","",440.8,443.8,"age","international intervals--11","#A6DCB5",442.3
+"666",112,"Ordovician","O",443.8,485.4,"period","international intervals--11","#009270",464.6
+"667",113,"Late Ordovician","",443.8,458.4,"epoch","international intervals--11","#7FCA93",451.1
+"668",237,"Hirnantian","",443.8,445.2,"age","international intervals--11","#A6DBAB",444.5
+"669",238,"Katian","",445.2,453,"age","international intervals--11","#99D69F",449.1
+"670",239,"Sandbian","",453,458.4,"age","international intervals--11","#8CD094",455.7
+"671",116,"Middle Ordovician","",458.4,470,"epoch","international intervals--11","#4DB47E",464.2
+"672",240,"Darriwilian","",458.4,467.3,"age","international intervals--11","#74C69C",462.85
+"673",241,"Dapingian","",467.3,470,"age","international intervals--11","#66C092",468.65
+"674",119,"Early Ordovician","",470,485.4,"epoch","international intervals--11","#1A9D6F",477.7
+"675",242,"Floian","",470,477.7,"age","international intervals--11","#41B087",473.85
+"676",121,"Tremadocian","",477.7,485.4,"age","international intervals--11","#33A97E",481.55
+"677",122,"Cambrian","Cm",485.4,538.8,"period","international intervals--11","#7FA056",512.1
+"678",243,"Furongian","",485.4,497,"epoch","international intervals--11","#B3E095",491.2
+"679",247,"Stage 10","",485.4,489.5,"age","international intervals--11","#E6F5C9",487.45
+"680",248,"Jiangshanian","",489.5,494,"age","international intervals--11","#D9F0BB",491.75
+"681",249,"Paibian","",494,497,"age","international intervals--11","#CCEBAE",495.5
+"682",250,"Guzhangian","",497,500.5,"age","international intervals--11","#CCDFAA",498.75
+"683",500,"Miaolingian","",497,509,"epoch","international intervals--11","#A6CF86",503
+"684",251,"Drumian","",500.5,504.5,"age","international intervals--11","#BFD99D",502.5
+"685",252,"Wuliuan","",504.5,509,"age","international intervals--11","#B3D492",506.75
+"686",253,"Stage 4","",509,514,"age","international intervals--11","#B3CA8E",511.5
+"687",501,"Series 2","",509,521,"epoch","international intervals--11","#99C078",515
+"688",254,"Stage 3","",514,521,"age","international intervals--11","#A6C583",517.5
+"689",246,"Terreneuvian","",521,538.8,"epoch","international intervals--11","#8CB06C",529.9
+"690",255,"Stage 2","",521,529,"age","international intervals--11","#A6BA80",525
+"691",256,"Fortunian","",529,538.8,"age","international intervals--11","#99B575",533.9
+"692",131,"Proterozoic","Ptz",538.8,2500,"eon","international intervals--11","#FF70B8",1519.4
+"693",257,"Neoproterozoic","Nptz",538.8,1000,"era","international intervals--11","#FF9BCD",769.4
+"694",263,"Ediacaran","E",538.8,635,"period","international intervals--11","#FFC3E1",586.9
+"695",264,"Cryogenian","Cr",635,720,"period","international intervals--11","#FFAFD7",677.5
+"696",265,"Tonian","T",720,1000,"period","international intervals--11","#FFA5D2",860
+"697",258,"Mesoproterozoic","Mptz",1000,1600,"era","international intervals--11","#FF7EBF",1300
+"698",266,"Stenian","St",1000,1200,"period","international intervals--11","#FFA5D2",1100
+"699",267,"Ectasian","Ec",1200,1400,"period","international intervals--11","#FF98CC",1300
+"700",268,"Calymmian","Ca",1400,1600,"period","international intervals--11","#FF8BC5",1500
+"701",259,"Paleoproterozoic","Pptz",1600,2500,"era","international intervals--11","#E665A6",2050
+"702",269,"Statherian","St",1600,1800,"period","international intervals--11","#EE93C1",1700
+"703",270,"Orosirian","Or",1800,2050,"period","international intervals--11","#E874AF",1925
+"704",271,"Rhyacian","R",2050,2300,"period","international intervals--11","#EB84B8",2175
+"705",272,"Siderian","Sd",2300,2500,"period","international intervals--11","#E874AF",2400
+"706",132,"Archean","Arc",2500,4000,"eon","international intervals--11","#FF3399",3250
+"707",260,"Neoarchean","Narc",2500,2800,"era","international intervals--11","#FF5CAD",2650
+"708",261,"Mesoarchean","Marc",2800,3200,"era","international intervals--11","#E62E8A",3000
+"709",262,"Paleoarchean","Parc",3200,3600,"era","international intervals--11","#CC297A",3400
+"710",274,"Eoarchean","Earc",3600,4000,"era","international intervals--11","#B2246B",3800
+"711",3,"Holocene","",0,0.0117,"epoch","COSUNA--12","#FEF2E0",0.00585
+"712",4,"Pleistocene","Ple",0.0117,2.58,"epoch","COSUNA--12","#FFF2AE",1.29585
+"713",11,"Piacenzian","",2.58,3.6,"age","COSUNA--12","#FFFFBF",3.09
+"714",12,"Zanclean","",3.6,5.333,"age","COSUNA--12","#FFFFB3",4.4665
+"715",14,"Messinian","",5.333,7.246,"age","COSUNA--12","#FFFF73",6.2895
+"716",15,"Tortonian","",7.246,11.63,"age","COSUNA--12","#FFFF66",9.438
+"717",16,"Serravallian","",11.63,13.82,"age","COSUNA--12","#FFFF59",12.725
+"718",17,"Langhian","",13.82,15.98,"age","COSUNA--12","#FFFF4D",14.9
+"719",18,"Burdigalian","",15.98,20.44,"age","COSUNA--12","#FFFF41",18.21
+"720",19,"Aquitanian","",20.44,23.03,"age","COSUNA--12","#FFFF33",21.735
+"721",22,"Chattian","",23.03,27.82,"age","COSUNA--12","#FEE6AA",25.425
+"722",23,"Rupelian","",27.82,33.9,"age","COSUNA--12","#FED99A",30.86
+"723",25,"Priabonian","",33.9,37.71,"age","COSUNA--12","#FDCDA1",35.805
+"724",26,"Bartonian","",37.71,41.2,"age","COSUNA--12","#FDC091",39.455
+"725",27,"Lutetian","",41.2,47.8,"age","COSUNA--12","#FCB482",44.5
+"726",28,"Ypresian","",47.8,56,"age","COSUNA--12","#FCA773",51.9
+"727",30,"Thanetian","",56,59.2,"age","COSUNA--12","#FDBF6F",57.6
+"728",273,"Selandian","",59.2,61.6,"age","COSUNA--12","#FEBF65",60.4
+"729",31,"Danian","",61.6,66,"age","COSUNA--12","#FDB462",63.8
+"730",70,"Anisian","",242,247.2,"age","COSUNA--12","#BC75B7",244.6
+"731",71,"Scythian","",247.2,251.902,"age","COSUNA--12","#983999",249.551
+"732",133,"Ochoan","",259,259.51,"age","COSUNA--12","#E27C88",259.255
+"733",134,"Guadalupian","",259.51,273.01,"epoch","COSUNA--12","#FB745C",266.26
+"734",135,"Leonardian","",273.01,282,"age","COSUNA--12","#E3816F",277.505
+"735",136,"Wolfcampian","",282,298.9,"age","COSUNA--12","#E36956",290.45
+"736",137,"Virgilian","",298.9,303.7,"age","COSUNA--12","#C6D2C5",301.3
+"737",138,"Missourian","",303.7,306,"age","COSUNA--12","#B9CDC0",304.85
+"738",139,"Desmoinesian","",306,312,"age","COSUNA--12","#B3CBBE",309
+"739",140,"Atokan","",312,319,"age","COSUNA--12","#ACC9BC",315.5
+"740",141,"Morrowan","",319,323.2,"age","COSUNA--12","#9FC4B7",321.1
+"741",142,"Chesterian","",323.2,335,"age","COSUNA--12","#B5BE6B",329.1
+"742",143,"Meramecian","",335,343.5,"age","COSUNA--12","#ABBB6B",339.25
+"743",144,"Osagean","",343.5,351.5,"age","COSUNA--12","#A0B76C",347.5
+"744",145,"Kinderhookian","",351.5,358.9,"age","COSUNA--12","#96B46C",355.2
+"745",146,"Conewangan","",358.9,365,"age","COSUNA--12","#F2E7B6",361.95
+"746",147,"Cassadagan","",365,372.2,"age","COSUNA--12","#F2E1A6",368.6
+"747",150,"Chemungian","",372.2,379,"age","COSUNA--12","#F2DB97",375.6
+"748",151,"Fingerlakesian","",379,382.7,"age","COSUNA--12","#F1D487",380.85
+"749",99,"Givetian","",382.7,387.7,"age","COSUNA--12","#F1E185",385.2
+"750",100,"Eifelian","",387.7,393.3,"age","COSUNA--12","#F1D576",390.5
+"751",102,"Emsian","",393.3,407.6,"age","COSUNA--12","#E5D075",400.45
+"752",103,"Siegenian","",407.6,410.8,"age","COSUNA--12","#E5C468",409.2
+"753",104,"Gedinnian","",410.8,419.2,"age","COSUNA--12","#E5B75A",415
+"754",155,"Cayugan","",419.2,425.6,"age","COSUNA--12","#E0F3E0",422.4
+"755",503,"Niagaran","",425.6,438.5,"age","COSUNA--12","#BFE6CF",432.05
+"756",159,"Alexandrian","",438.5,443.8,"age","COSUNA--12","#A6DCB5",441.15
+"757",160,"Richmondian","",445.2,449,"age","COSUNA--12","#A2D9A7",447.1
+"758",161,"Maysvillian","",449,450,"age","COSUNA--12","#A0D9A5",449.5
+"759",162,"Edenian","",450,451,"age","COSUNA--12","#9BD7A1",450.5
+"760",163,"Shermanian","",451,454.5,"age","COSUNA--12","#97D59E",452.75
+"761",164,"Kirkfield","",454.5,455.5,"age","COSUNA--12","#96D59C",455
+"762",165,"Rocklandian","",455.5,456.5,"age","COSUNA--12","#91D298",456
+"763",166,"Blackriverian","",456.5,458.4,"age","COSUNA--12","#8ED195",457.45
+"764",168,"Whiterock","",456.5,470,"age","COSUNA--12","#27A37F",463.25
+"765",167,"Chazyan","",458.4,464,"age","COSUNA--12","#4DB58D",461.2
+"766",120,"Arenigian","",465.5,477.7,"age","COSUNA--12","#139B77",471.6
+"767",121,"Tremadocian","",477.7,485.4,"age","COSUNA--12","#33A97E",481.55
+"768",124,"Trempealeauan","",485.4,492.5,"age","COSUNA--12","#E0F0C1",488.95
+"769",125,"Franconian","",492.5,496.8,"age","COSUNA--12","#D9EABA",494.65
+"770",127,"Dresbachian","",496.8,501,"age","COSUNA--12","#D3E5B2",498.9
+"771",128,"Middle Cambrian","",501,511,"epoch","COSUNA--12","#BFD99D",506
+"772",130,"Early Cambrian","",511,538.8,"epoch","COSUNA--12","#8CB06C",524.9
+"773",1,"Cenozoic","Cz",0,66,"era","international eras--13","#F2F91D",33
+"774",32,"Mesozoic","Mz",66,251.902,"era","international eras--13","#67C5CA",158.951
+"775",74,"Paleozoic","Pz",251.902,538.8,"era","international eras--13","#99C08D",395.351
+"776",257,"Neoproterozoic","Nptz",538.8,1000,"era","international eras--13","#FF9BCD",769.4
+"777",258,"Mesoproterozoic","Mptz",1000,1600,"era","international eras--13","#FF7EBF",1300
+"778",259,"Paleoproterozoic","Pptz",1600,2500,"era","international eras--13","#E665A6",2050
+"779",260,"Neoarchean","Narc",2500,2800,"era","international eras--13","#FF5CAD",2650
+"780",261,"Mesoarchean","Marc",2800,3200,"era","international eras--13","#E62E8A",3000
+"781",262,"Paleoarchean","Parc",3200,3600,"era","international eras--13","#CC297A",3400
+"782",274,"Eoarchean","Earc",3600,4000,"era","international eras--13","#B2246B",3800
+"783",275,"Phanerozoic","",0,538.8,"eon","international eons--14","#9AD9DD",269.4
+"784",131,"Proterozoic","Ptz",538.8,2500,"eon","international eons--14","#FF70B8",1519.4
+"785",132,"Archean","Arc",2500,4000,"eon","international eons--14","#FF3399",3250
+"786",540,"Symphysurina bulbosa",NA,484.4,485.4,"zone","Trilobite Zonation - Laurentia--15","#33A97E",484.9
+"787",539,"Symphysurina brevispicata",NA,485.4,486.2,"zone","Trilobite Zonation - Laurentia--15","#E6F5C9",485.8
+"788",538,"Missisquoia",NA,486.2,486.7,"zone","Trilobite Zonation - Laurentia--15","#E6F5C9",486.45
+"789",537,"Eurekia apopsis",NA,486.7,487.1,"zone","Trilobite Zonation - Laurentia--15","#E6F5C9",486.9
+"790",536,"Saukiella serotina",NA,487.1,487.8,"zone","Trilobite Zonation - Laurentia--15","#E6F5C9",487.45
+"791",535,"Saukiella junia/Saukiella pyrene",NA,487.8,490.9,"zone","Trilobite Zonation - Laurentia--15","#B3E095",489.35
+"792",534,"Ellipsocephaloides-Idahoia",NA,490.9,492.3,"zone","Trilobite Zonation - Laurentia--15","#D9F0BB",491.6
+"793",533,"Taenicephalus",NA,492.3,493,"zone","Trilobite Zonation - Laurentia--15","#D9F0BB",492.65
+"794",532,"Elvinia",NA,493,493.9,"zone","Trilobite Zonation - Laurentia--15","#D9F0BB",493.45
+"795",531,"Dunderbergia",NA,493.9,495.2,"zone","Trilobite Zonation - Laurentia--15","#B3E095",494.55
+"796",530,"Aphelaspis",NA,495.2,497,"zone","Trilobite Zonation - Laurentia--15","#CCEBAE",496.1
+"797",529,"Crepicephalus",NA,497,498.5,"zone","Trilobite Zonation - Laurentia--15","#CCDFAA",497.75
+"798",528,"Cedaria",NA,498.5,499.5,"zone","Trilobite Zonation - Laurentia--15","#CCDFAA",499
+"799",527,"Bolaspidella",NA,499.5,504.5,"zone","Trilobite Zonation - Laurentia--15","#BFD99D",502
+"800",526,"Ptychagnostus gibbus",NA,504.5,505.25,"zone","Trilobite Zonation - Laurentia--15","#B3D492",504.875
+"801",525,"Ptychagnostus praecurrens",NA,505.25,506.5,"zone","Trilobite Zonation - Laurentia--15","#B3D492",505.875
+"802",524,"Albertella",NA,506.5,507.3,"zone","Trilobite Zonation - Laurentia--15","#B3D492",506.9
+"803",523,"Plagiura-Poliella",NA,507.3,509,"zone","Trilobite Zonation - Laurentia--15","#B3D492",508.15
+"804",522,"Amecephalus arrojosensis",NA,509,510.5,"zone","Trilobite Zonation - Laurentia--15","#B3CA8E",509.75
+"805",521,"Eokochaspis nodosa",NA,510.5,511.1,"zone","Trilobite Zonation - Laurentia--15","#B3CA8E",510.8
+"806",520,"Olenellus",NA,511.1,515.5,"zone","Trilobite Zonation - Laurentia--15","#99C078",513.3
+"807",519,"Nevadella",NA,515.5,518.5,"zone","Trilobite Zonation - Laurentia--15","#A6C583",517
+"808",518,"Fallotaspis",NA,518.5,520,"zone","Trilobite Zonation - Laurentia--15","#A6C583",519.25
+"809",517,"Fritzaspis",NA,520,521,"zone","Trilobite Zonation - Laurentia--15","#A6C583",520.5
+"810",516,"Wyattia",NA,521,524,"zone","Trilobite Zonation - Laurentia--15","#A6BA80",522.5
+"811",738,"Misikella posternstenini",NA,201.4,201.9,"zone","Conodont Zonation--16","#E3B9DB",201.65
+"812",737,"Norigondolella sp.",NA,201.9,202.3,"zone","Conodont Zonation--16","#E3B9DB",202.1
+"813",736,"Cypriodella mosheri",NA,202.3,208.5,"zone","Conodont Zonation--16","#E3B9DB",205.4
+"814",735,"Cypriodella bidentata",NA,208.5,214,"zone","Conodont Zonation--16","#D6AAD3",211.25
+"815",734,"Cypriodella serrulata",NA,214,214.8,"zone","Conodont Zonation--16","#D6AAD3",214.4
+"816",733,"Cypriodella postera",NA,214.8,216.5,"zone","Conodont Zonation--16","#D6AAD3",215.65
+"817",732,"Cypriodella spiculata",NA,216.5,216.9,"zone","Conodont Zonation--16","#D6AAD3",216.7
+"818",731,"Cypriodella multidentata",NA,216.9,217.4,"zone","Conodont Zonation--16","#D6AAD3",217.15
+"819",730,"Epigondolella triangularis",NA,217.4,221.4,"zone","Conodont Zonation--16","#D6AAD3",219.4
+"820",729,"Epigondolella quadrata",NA,221.4,226.5,"zone","Conodont Zonation--16","#D6AAD3",223.95
+"821",728,"Metapolygnathus primitius",NA,226.5,229.5,"zone","Conodont Zonation--16","#BD8CC3",228
+"822",727,"Metapolygnathus nodosus",NA,229.5,231.4,"zone","Conodont Zonation--16","#C99BCB",230.45
+"823",726,"Metapolygnathus carpathicus",NA,231.4,233,"zone","Conodont Zonation--16","#C99BCB",232.2
+"824",725,"Metapolygnathus polygnathiformis",NA,233,233.5,"zone","Conodont Zonation--16","#C99BCB",233.25
+"825",724,"Metapolygnathus tadpole",NA,233.5,236.5,"zone","Conodont Zonation--16","#C99BCB",235
+"826",723,"Metapolygnathus intermedius",NA,236.5,237,"zone","Conodont Zonation--16","#C99BCB",236.75
+"827",722,"Paragondolella inclinata",NA,237,238,"zone","Conodont Zonation--16","#C983BF",237.5
+"828",721,"Budurovignathus hungaricus",NA,238,240.3,"zone","Conodont Zonation--16","#C983BF",239.15
+"829",720,"Budurovignathus truempyi",NA,240.3,241,"zone","Conodont Zonation--16","#C983BF",240.65
+"830",719,"Paragondolella excelsa",NA,241,244.3,"zone","Conodont Zonation--16","#B168B1",242.65
+"831",718,"Neogondolella? regalis",NA,244.3,246.7,"zone","Conodont Zonation--16","#BC75B7",245.5
+"832",717,"Chiosella timorensis",NA,246.7,247.2,"zone","Conodont Zonation--16","#BC75B7",246.95
+"833",716,"Chiosella gondolelloides",NA,247.2,247.3,"zone","Conodont Zonation--16","#B051A5",247.25
+"834",715,"Triassospathodus sosioensis",NA,247.3,247.4,"zone","Conodont Zonation--16","#B051A5",247.35
+"835",714,"Neospathodus triangularis",NA,247.4,247.6,"zone","Conodont Zonation--16","#B051A5",247.5
+"836",713,"Icriospathodus collinsoni",NA,247.6,248.3,"zone","Conodont Zonation--16","#B051A5",247.95
+"837",712,"Neospathodus pingdingshanensis",NA,248.3,248.4,"zone","Conodont Zonation--16","#B051A5",248.35
+"838",711,"Borinella buurensis-Scythogondolella milleri",NA,248.4,249.3,"zone","Conodont Zonation--16","#B051A5",248.85
+"839",710,"Neospathodus waageni",NA,249.3,251.2,"zone","Conodont Zonation--16","#B051A5",250.25
+"840",709,"Neospathodus dieneri Morph 3",NA,251.2,251.4,"zone","Conodont Zonation--16","#A4469F",251.3
+"841",708,"Sweetospathodus kummeli",NA,251.4,251.6,"zone","Conodont Zonation--16","#A4469F",251.5
+"842",707,"Neogondollela krystyni",NA,251.6,251.7,"zone","Conodont Zonation--16","#983999",251.65
+"843",706,"Isarcicella isarcica",NA,251.7,251.9,"zone","Conodont Zonation--16","#A4469F",251.8
+"844",705,"Hindeodus parvus",NA,251.9,251.902,"zone","Conodont Zonation--16","#A4469F",251.901
+"845",704,"Clarkina zhejiangensis-Clarkina meishanensis",NA,251.902,252.5,"zone","Conodont Zonation--16","#FCC0B2",252.201
+"846",703,"Clarkina deflecta-Clarkina yini",NA,252.5,252.8,"zone","Conodont Zonation--16","#FCC0B2",252.65
+"847",702,"Clarkina changxingensis",NA,252.8,253.1,"zone","Conodont Zonation--16","#FCC0B2",252.95
+"848",701,"Clarkina subarinata",NA,253.1,253.5,"zone","Conodont Zonation--16","#FCC0B2",253.3
+"849",700,"Clarkina wangi",NA,253.5,254.14,"zone","Conodont Zonation--16","#FCC0B2",253.82
+"850",699,"Clarkina longicuspidata",NA,254.14,254.5,"zone","Conodont Zonation--16","#FCB4A2",254.32
+"851",698,"Clarkina orientalis",NA,254.5,255.3,"zone","Conodont Zonation--16","#FCB4A2",254.9
+"852",697,"Clarkina transcaucasica",NA,255.3,256.5,"zone","Conodont Zonation--16","#FCB4A2",255.9
+"853",696,"Clarkina guangyuanensis",NA,256.5,257.2,"zone","Conodont Zonation--16","#FCB4A2",256.85
+"854",695,"Clarkina leveni",NA,257.2,257.7,"zone","Conodont Zonation--16","#FCB4A2",257.45
+"855",694,"Clarkina asymmetrica",NA,257.7,258.5,"zone","Conodont Zonation--16","#FCB4A2",258.1
+"856",693,"Clarkina dukouensis",NA,258.5,259,"zone","Conodont Zonation--16","#FCB4A2",258.75
+"857",692,"Clarkina postitteri postitteri",NA,259,259.51,"zone","Conodont Zonation--16","#FCB4A2",259.255
+"858",691,"Clarkina postitteri hongshuiensis",NA,259.51,260.3,"zone","Conodont Zonation--16","#FB9A85",259.905
+"859",690,"Jinogondolella granti",NA,260.3,261.8,"zone","Conodont Zonation--16","#FB9A85",261.05
+"860",689,"Jinogondolella prexuanhanensis",NA,261.8,263.7,"zone","Conodont Zonation--16","#FB9A85",262.75
+"861",688,"Jinogondolella altudaensis",NA,263.7,264,"zone","Conodont Zonation--16","#FB9A85",263.85
+"862",687,"Jinogondolella shannoni",NA,264,264.5,"zone","Conodont Zonation--16","#FB9A85",264.25
+"863",685,"Jinogondolella aserrata",NA,264.28,266.9,"zone","Conodont Zonation--16","#FB8D76",265.59
+"864",686,"Jinogondolella postserrata",NA,264.5,264.28,"zone","Conodont Zonation--16","#FB9A85",264.39
+"865",684,"Jinogondolella nankingensis",NA,266.9,273.01,"zone","Conodont Zonation--16","#FB8069",269.955
+"866",683,"Mesogondolella lamberti-Neostreptognathodus sulcoplicatus",NA,273.01,273.7,"zone","Conodont Zonation--16","#E38776",273.355
+"867",682,"Sweetognathus guizhouensis",NA,273.7,274.7,"zone","Conodont Zonation--16","#E38776",274.2
+"868",681,"Neostreptognathodus prayi",NA,274.7,275.5,"zone","Conodont Zonation--16","#E38776",275.1
+"869",680,"Neostreptognathodus pnevi",NA,275.5,283.5,"zone","Conodont Zonation--16","#E38776",279.5
+"870",678,"Sweetognathus clarki",NA,282,285,"zone","Conodont Zonation--16","#E37B68",283.5
+"871",679,"Neostreptognathodus pequopensis",NA,283.5,282,"zone","Conodont Zonation--16","#E37B68",282.75
+"872",677,"Sweetognathus whitei",NA,285,290.1,"zone","Conodont Zonation--16","#E37B68",287.55
+"873",676,"Sweetognathus anceps-Mesogondolella bisselli",NA,290.1,293.5,"zone","Conodont Zonation--16","#E36F5C",291.8
+"874",675,"Sweetognathus binodosus",NA,293.5,294.1,"zone","Conodont Zonation--16","#E36F5C",293.8
+"875",673,"Streptognathodus postfusus",NA,293.52,296.5,"zone","Conodont Zonation--16","#E36350",295.01
+"876",674,"Sweetognathus merrilli-Mesogondolella uralensis",NA,294.1,293.52,"zone","Conodont Zonation--16","#E36F5C",293.81
+"877",672,"Streptognathodus fusus",NA,296.5,297,"zone","Conodont Zonation--16","#E36350",296.75
+"878",671,"Streptognathodus constrictus-Mesogondolella belladontae",NA,297,297.5,"zone","Conodont Zonation--16","#E36350",297.25
+"879",670,"Streptognathodus sigmoidalis-Streptognathodus cristellaris",NA,297.5,298,"zone","Conodont Zonation--16","#E36350",297.75
+"880",669,"Streptognathodus isolatus",NA,298,298.9,"zone","Conodont Zonation--16","#E36350",298.45
+"881",668,"Streptognathodus wabaunsensis",NA,298.9,300,"zone","Conodont Zonation--16","#CCD4C7",299.45
+"882",667,"Streptognathodus simplex-Streptognathodus bellus",NA,300,301,"zone","Conodont Zonation--16","#CCD4C7",300.5
+"883",666,"Streptognathodus virgilicus",NA,301,302,"zone","Conodont Zonation--16","#CCD4C7",301.5
+"884",665,"Streptognathodus vitali",NA,302,302.7,"zone","Conodont Zonation--16","#CCD4C7",302.35
+"885",664,"Streptognathodus simulator",NA,302.7,303.7,"zone","Conodont Zonation--16","#CCD4C7",303.2
+"886",663,"Streptognathodus firmus",NA,303.7,304,"zone","Conodont Zonation--16","#BFD0C5",303.85
+"887",662,"Idiognathodus toretzianus",NA,304,304.5,"zone","Conodont Zonation--16","#BFD0C5",304.25
+"888",661,"Streptognathodus cancellosus",NA,304.5,305.2,"zone","Conodont Zonation--16","#BFD0C5",304.85
+"889",660,"Idiognathodus sagittalis",NA,305.2,305.7,"zone","Conodont Zonation--16","#BFD0C5",305.45
+"890",659,"Streptognathodus subexcelsus",NA,305.7,307,"zone","Conodont Zonation--16","#BFD0C5",306.35
+"891",658,"Neoghanthodus round-Streptognathodus cancellosus",NA,307,309,"zone","Conodont Zonation--16","#C7CBB9",308
+"892",657,"Neoghanthodus medexultimus-Streptognathodus-concinnus",NA,309,310.8,"zone","Conodont Zonation--16","#C7CBB9",309.9
+"893",656,"Streptognathodus dissectus",NA,310.8,312.5,"zone","Conodont Zonation--16","#C7CBB9",311.65
+"894",655,"Neognathodus uralicus",NA,312.5,314.5,"zone","Conodont Zonation--16","#C7CBB9",313.5
+"895",654,"Declinognathodus donetzianus",NA,314.5,315.2,"zone","Conodont Zonation--16","#C7CBB9",314.85
+"896",653,"Neognathodus atokaensis",NA,315.2,317,"zone","Conodont Zonation--16","#99C2B5",316.1
+"897",652,"Declinognathodus marginodosus",NA,317,318.6,"zone","Conodont Zonation--16","#99C2B5",317.8
+"898",651,"Idiognathodus sinuosus",NA,318.6,320,"zone","Conodont Zonation--16","#99C2B5",319.3
+"899",650,"Neognathodus askynensis",NA,320,320.8,"zone","Conodont Zonation--16","#99C2B5",320.4
+"900",649,"Idiognathoides sinuatus",NA,320.8,322.5,"zone","Conodont Zonation--16","#99C2B5",321.65
+"901",648,"Declinognathodus noduliferus",NA,322.5,323.2,"zone","Conodont Zonation--16","#99C2B5",322.85
+"902",647,"Gnathodus postbilineatus",NA,323.2,325.5,"zone","Conodont Zonation--16","#BFC26B",324.35
+"903",646,"Gnathodus bollandensis",NA,325.5,327.2,"zone","Conodont Zonation--16","#BFC26B",326.35
+"904",645,"Lochriea cruciformis",NA,327.2,329.5,"zone","Conodont Zonation--16","#BFC26B",328.35
+"905",644,"Lochriea ziegleri",NA,329.5,330.9,"zone","Conodont Zonation--16","#BFC26B",330.2
+"906",643,"Lochriea nodosa",NA,330.9,332,"zone","Conodont Zonation--16","#A6B96C",331.45
+"907",642,"Lochriea mononodosa",NA,332,335,"zone","Conodont Zonation--16","#A6B96C",333.5
+"908",641,"Gnathodus bilineatus",NA,335,336.8,"zone","Conodont Zonation--16","#A6B96C",335.9
+"909",640,"Gnathodus praebillineatus",NA,336.8,340,"zone","Conodont Zonation--16","#A6B96C",338.4
+"910",639,"Gnathodus texanus",NA,340,344,"zone","Conodont Zonation--16","#A6B96C",342
+"911",638,"Gnathodus pseudosemiglaber-Scallioganthus anchoralis",NA,344,346.7,"zone","Conodont Zonation--16","#A6B96C",345.35
+"912",637,"Gnathodus semiglaber-Polygnathus communis",NA,346.7,348,"zone","Conodont Zonation--16","#8CB06C",347.35
+"913",636,"Dollimae bouckaerti",NA,348,349,"zone","Conodont Zonation--16","#8CB06C",348.5
+"914",635,"Gnathodus typicus-Siphonodella isosticha",NA,349,353,"zone","Conodont Zonation--16","#8CB06C",351
+"915",634,"Siphonodella quadruplicata-Patrognathus andersoni",NA,353,355,"zone","Conodont Zonation--16","#8CB06C",354
+"916",633,"Siphonodella sandbergi-Siphonodella belkai",NA,355,357.4,"zone","Conodont Zonation--16","#8CB06C",356.2
+"917",632,"Siphonodella duplicata",NA,357.4,358.4,"zone","Conodont Zonation--16","#8CB06C",357.9
+"918",631,"Siphonodella sulcata",NA,358.4,358.9,"zone","Conodont Zonation--16","#8CB06C",358.65
+"919",630,"Siphonodella praesulcata",NA,358.9,360,"zone","Conodont Zonation--16","#F2EDC5",359.45
+"920",629,"Palmatolepis gracilis expansa",NA,360,362.2,"zone","Conodont Zonation--16","#F2EDC5",361.1
+"921",628,"Palmatolepis perlobata postera",NA,362.2,363,"zone","Conodont Zonation--16","#F2EDC5",362.6
+"922",627,"Palmatolepis rugosa trachytera",NA,363,364,"zone","Conodont Zonation--16","#F2EDC5",363.5
+"923",626,"Palmatolepis marginifera",NA,364,366.5,"zone","Conodont Zonation--16","#F2EDC5",365.25
+"924",625,"Palmatolepis rhomboidea",NA,366.5,367.5,"zone","Conodont Zonation--16","#F2EDC5",367
+"925",624,"Palmatolepis crepida",NA,367.5,370,"zone","Conodont Zonation--16","#F2EDC5",368.75
+"926",623,"Palmatolepis triangularis",NA,370,372.2,"zone","Conodont Zonation--16","#F2EDC5",371.1
+"927",622,"Palmatolepis linguiformis",NA,372.2,373,"zone","Conodont Zonation--16","#F2EDAD",372.6
+"928",621,"Palmatolepis rhenana",NA,373,376.5,"zone","Conodont Zonation--16","#F2EDAD",374.75
+"929",620,"Palmatolepis hassi",NA,376.5,379,"zone","Conodont Zonation--16","#F2EDAD",377.75
+"930",619,"Palmatolepis punctata",NA,379,380.2,"zone","Conodont Zonation--16","#F2EDAD",379.6
+"931",618,"Palmatolepis transitans",NA,380.2,381.2,"zone","Conodont Zonation--16","#F2EDAD",380.7
+"932",617,"Mesotaxis guanwushanensis",NA,381.2,383,"zone","Conodont Zonation--16","#CB8C37",382.1
+"933",616,"Klapperina disparilis",NA,383,384,"zone","Conodont Zonation--16","#F1E185",383.5
+"934",615,"Schmidtognathus hermanni",NA,384,385,"zone","Conodont Zonation--16","#F1E185",384.5
+"935",614,"Polygnathus varcus",NA,385,387.5,"zone","Conodont Zonation--16","#F1E185",386.25
+"936",613,"Polygnathus hemiansatus",NA,387.5,387.7,"zone","Conodont Zonation--16","#F1E185",387.6
+"937",612,"Polygnathus ensensis",NA,387.7,388,"zone","Conodont Zonation--16","#F1D576",387.85
+"938",611,"Tortodus knockelianus knockelianus",NA,388,389.2,"zone","Conodont Zonation--16","#F1D576",388.6
+"939",610,"Polygnathus costatus costatus",NA,389.2,391.5,"zone","Conodont Zonation--16","#F1D576",390.35
+"940",609,"Polygnathus costatus partitus",NA,391.5,393.3,"zone","Conodont Zonation--16","#F1D576",392.4
+"941",608,"Polygnathus costatus patulus",NA,393.3,395,"zone","Conodont Zonation--16","#E5D075",394.15
+"942",607,"Linguipolygnathus serotinus",NA,395,397.5,"zone","Conodont Zonation--16","#E5D075",396.25
+"943",606,"Polygnathus inversus",NA,397.5,401,"zone","Conodont Zonation--16","#E5D075",399.25
+"944",605,"Eocostapolygnathus nothoperbonus",NA,401,403.5,"zone","Conodont Zonation--16","#E5D075",402.25
+"945",604,"Eocostapolygnathus gronbergi",NA,403.5,404.2,"zone","Conodont Zonation--16","#E5D075",403.85
+"946",603,"Eocostapolygnathus excavatus",NA,404.2,406,"zone","Conodont Zonation--16","#E5D075",405.1
+"947",602,"Eocostapolygnathus kitabicus",NA,406,407.6,"zone","Conodont Zonation--16","#E5D075",406.8
+"948",601,"Eocostapolygnathus pireneae",NA,407.6,408.5,"zone","Conodont Zonation--16","#E5C468",408.05
+"949",600,"Gondwania kindlei",NA,408.5,410,"zone","Conodont Zonation--16","#E5C468",409.25
+"950",599,"Gondwania irregularis",NA,410,411,"zone","Conodont Zonation--16","#E5AC4D",410.5
+"951",598,"Pedavis gilberti",NA,411,412,"zone","Conodont Zonation--16","#E5B75A",411.5
+"952",597,"Masaraella pandora morpho. Beta",NA,412,412.5,"zone","Conodont Zonation--16","#E5B75A",412.25
+"953",596,"Ancryodelloides trigonicus",NA,412.5,413.5,"zone","Conodont Zonation--16","#E5B75A",413
+"954",595,"Leanea transitans",NA,413.5,414,"zone","Conodont Zonation--16","#E5B75A",413.75
+"955",594,"Lanea eleanorae",NA,414,414.5,"zone","Conodont Zonation--16","#E5B75A",414.25
+"956",593,"Lanea omoalpha",NA,414.5,415.2,"zone","Conodont Zonation--16","#E5B75A",414.85
+"957",592,"Caudicriodus postwoschmidti",NA,415.2,417.2,"zone","Conodont Zonation--16","#E5B75A",416.2
+"958",591,"Caudicriodus hesperius",NA,417.2,419,"zone","Conodont Zonation--16","#E5B75A",418.1
+"959",590,"Oulodus elegans detortus",NA,419,421.2,"zone","Conodont Zonation--16","#E6F5E1",420.1
+"960",589,"Ozarkodina eosteinhornensis",NA,421.2,423,"zone","Conodont Zonation--16","#E6F5E1",422.1
+"961",588,"Ozarkodina crispa",NA,423,423.6,"zone","Conodont Zonation--16","#D9F0DF",423.3
+"962",587,"Ozarkodina snajdri",NA,423.6,424.8,"zone","Conodont Zonation--16","#D9F0DF",424.2
+"963",586,"Polygnathoides siluricus",NA,424.8,425.2,"zone","Conodont Zonation--16","#D9F0DF",425
+"964",585,"Ancoradella ploeckensis",NA,425.2,425.6,"zone","Conodont Zonation--16","#D9F0DF",425.4
+"965",584,"Kockelella variabilis variabilis",NA,425.6,427,"zone","Conodont Zonation--16","#CCECDD",426.3
+"966",583,"Kockelella crassa",NA,427,427.4,"zone","Conodont Zonation--16","#CCECDD",427.2
+"967",582,"Kockelella ortus obsidata",NA,427.4,428.3,"zone","Conodont Zonation--16","#CCEBD1",427.85
+"968",581,"Ozarkodina bohemica longa",NA,428.3,429.4,"zone","Conodont Zonation--16","#CCEBD1",428.85
+"969",580,"Ozarkodina sagitta sagitta",NA,429.4,430.5,"zone","Conodont Zonation--16","#CCEBD1",429.95
+"970",579,"Kockelella ortus ortus",NA,430.5,431.2,"zone","Conodont Zonation--16","#BFE6C3",430.85
+"971",578,"Kockelella walliseri",NA,431.2,431.8,"zone","Conodont Zonation--16","#BFE6C3",431.5
+"972",577,"Ozarkodina sagitta rhenana",NA,431.8,432.3,"zone","Conodont Zonation--16","#BFE6C3",432.05
+"973",576,"Kockelella ranuliformis",NA,432.3,432.6,"zone","Conodont Zonation--16","#BFE6C3",432.45
+"974",575,"Pterospathodus pennatus procerus",NA,432.6,433.4,"zone","Conodont Zonation--16","#BFE6C3",433
+"975",574,"Pterospathodus amorphognathoides amorphognathoides",NA,433.4,435.2,"zone","Conodont Zonation--16","#BFE6CF",434.3
+"976",573,"Pterospathodus amorphognathoides lithuanicus",NA,435.2,435.5,"zone","Conodont Zonation--16","#BFE6CF",435.35
+"977",572,"Pterospathodus amorphognathoides lennarti",NA,435.5,435.8,"zone","Conodont Zonation--16","#BFE6CF",435.65
+"978",571,"Pterospathodus amorphognathoides angulatus",NA,435.8,436.4,"zone","Conodont Zonation--16","#BFE6CF",436.1
+"979",570,"Pterospathodus eopennatus",NA,436.4,437.5,"zone","Conodont Zonation--16","#BFE6CF",436.95
+"980",569,"Distomodus staurognathoides",NA,437.5,439.4,"zone","Conodont Zonation--16","#99D7B3",438.45
+"981",568,"Pterospathodus tenuis",NA,439.4,440.5,"zone","Conodont Zonation--16","#B3E1C2",439.95
+"982",567,"Aspelunda expansa",NA,440.5,441.1,"zone","Conodont Zonation--16","#99D7B3",440.8
+"983",566,"Distomodus kentuckyensis",NA,441.1,443.8,"zone","Conodont Zonation--16","#A6DCB5",442.45
+"984",565,"Aphelognathus shatzeri",NA,443.8,445.5,"zone","Conodont Zonation--16","#7FCA93",444.65
+"985",564,"Aphelognathus divergens",NA,445.5,447,"zone","Conodont Zonation--16","#99D69F",446.25
+"986",563,"Aphelognathus grandis",NA,447,449,"zone","Conodont Zonation--16","#99D69F",448
+"987",562,"Oulodus robustus",NA,449,449.7,"zone","Conodont Zonation--16","#99D69F",449.35
+"988",561,"Oulodus velicuspis",NA,449.7,450,"zone","Conodont Zonation--16","#99D69F",449.85
+"989",560,"Belodina confluens",NA,450,452.3,"zone","Conodont Zonation--16","#99D69F",451.15
+"990",559,"Plectodina tenuis",NA,452.3,453,"zone","Conodont Zonation--16","#99D69F",452.65
+"991",558,"Phragmodus undatus",NA,453,453.7,"zone","Conodont Zonation--16","#8CD094",453.35
+"992",557,"Belodina compressa",NA,453.7,454.7,"zone","Conodont Zonation--16","#8CD094",454.2
+"993",556,"Erismodus quadridactylus",NA,454.7,455.8,"zone","Conodont Zonation--16","#8CD094",455.25
+"994",555,"Plectodina aculeata",NA,455.8,456.6,"zone","Conodont Zonation--16","#8CD094",456.2
+"995",554,"Cahabagnathus sweeti",NA,456.6,461.2,"zone","Conodont Zonation--16","#009270",458.9
+"996",553,"Cahabagnathus friendsvillensis",NA,461.2,462.4,"zone","Conodont Zonation--16","#74C69C",461.8
+"997",552,"Phragmodus polonicus",NA,462.4,463.7,"zone","Conodont Zonation--16","#74C69C",463.05
+"998",551,"Histiodella holodentata",NA,463.7,464.4,"zone","Conodont Zonation--16","#74C69C",464.05
+"999",550,"Histiodella sinuosa",NA,464.4,467.4,"zone","Conodont Zonation--16","#4DB47E",465.9
+"1000",549,"Histiodella altifrons",NA,467.4,468.7,"zone","Conodont Zonation--16","#66C092",468.05
+"1001",548,"Microzarkodina flabellum/Tripodus laevus",NA,468.7,470.3,"zone","Conodont Zonation--16","#009270",469.5
+"1002",547,"Reutterodus andinus",NA,470.3,473.7,"zone","Conodont Zonation--16","#41B087",472
+"1003",546,"Oepikodus communis",NA,473.7,477.5,"zone","Conodont Zonation--16","#41B087",475.6
+"1004",545,"Acodus delatus/Oneotodus costatus",NA,477.5,479.8,"zone","Conodont Zonation--16","#1A9D6F",478.65
+"1005",544,"Macerodus dianae",NA,479.8,480,"zone","Conodont Zonation--16","#33A97E",479.9
+"1006",543,"Rossodus manitouensis",NA,480,480.3,"zone","Conodont Zonation--16","#33A97E",480.15
+"1007",542,"Cordylodus angulatus",NA,480.3,484.4,"zone","Conodont Zonation--16","#33A97E",482.35
+"1008",541,"Iapetognathus fluctivagus",NA,484.4,485.4,"zone","Conodont Zonation--16","#33A97E",484.9
+"1009",187,"Rancholabrean",NA,0.0114,0.3,"age","North American Regional--17","#FFF2E1",0.1557
+"1010",186,"Irvingtonian",NA,0.3,1.8,"age","North American Regional--17","#FFF0BD",1.05
+"1011",420,"Blancan",NA,1.8,4.9,"age","North American Regional--17","#FFFFB9",3.35
+"1012",419,"Hemphillian",NA,4.9,10.3,"age","North American Regional--17","#FFFF6D",7.6
+"1013",418,"Clarendonian",NA,10.3,13.6,"age","North American Regional--17","#FFFF60",11.95
+"1014",417,"Barstovian",NA,13.6,16.3,"age","North American Regional--17","#FFFF47",14.95
+"1015",416,"Hemingfordian",NA,16.3,18.6,"age","North American Regional--17","#FFFF3A",17.45
+"1016",515,"Arikareean",NA,18.6,29.8,"age","North American Regional--17","#FEE9B2",24.2
+"1017",185,"Whitneyan",NA,29.8,32.1,"age","North American Regional--17","#FEE39F",30.95
+"1018",184,"Orellan",NA,32.1,33.9,"age","North American Regional--17","#FED39E",33
+"1019",412,"Chadronian",NA,33.9,37.71,"age","North American Regional--17","#FDC799",35.805
+"1020",411,"Duchesnean",NA,37.71,39.9,"age","North American Regional--17","#FDBC8C",38.805
+"1021",410,"Uintan",NA,39.9,47.9,"age","North American Regional--17","#FCB887",43.9
+"1022",408,"Bridgerian",NA,47.9,52,"age","North American Regional--17","#FCB07D",49.95
+"1023",183,"Wasatchian",NA,52,56,"age","North American Regional--17","#FCAB78",54
+"1024",182,"Clarkforkian",NA,56,57.5,"age","North American Regional--17","#FDB371",56.75
+"1025",407,"Tiffanian",NA,57.5,62.25,"age","North American Regional--17","#FEBF6A",59.875
+"1026",406,"Torrejonian",NA,62.25,64.75,"age","North American Regional--17","#FEBA64",63.5
+"1027",188,"Puercan",NA,64.75,66,"age","North American Regional--17","#FDB469",65.375
+"1028",35,"Maastrichtian",NA,66,72.1,"age","North American Regional--17","#F2FA8C",69.05
+"1029",36,"Campanian",NA,72.1,83.6,"age","North American Regional--17","#E6F47F",77.85
+"1030",37,"Santonian",NA,83.6,86.3,"age","North American Regional--17","#D9EF74",84.95
+"1031",38,"Coniacian",NA,86.3,89.8,"age","North American Regional--17","#CCE968",88.05
+"1032",39,"Turonian",NA,89.8,93.9,"age","North American Regional--17","#BFE35D",91.85
+"1033",40,"Cenomanian",NA,93.9,100.5,"age","North American Regional--17","#B3DE53",97.2
+"1034",42,"Albian",NA,100.5,113,"age","North American Regional--17","#CCEA97",106.75
+"1035",43,"Aptian",NA,113,121.4,"age","North American Regional--17","#BFE48A",117.2
+"1036",44,"Barremian",NA,121.4,125.77,"age","North American Regional--17","#B3DF7F",123.585
+"1037",45,"Hauterivian",NA,125.77,132.6,"age","North American Regional--17","#A6D975",129.185
+"1038",46,"Valanginian",NA,132.6,139.8,"age","North American Regional--17","#99D36A",136.2
+"1039",47,"Berriasian",NA,139.8,145,"age","North American Regional--17","#8CCD60",142.4
+"1040",50,"Tithonian",NA,145,149.2,"age","North American Regional--17","#D9F1F7",147.1
+"1041",51,"Kimmeridgian",NA,149.2,154.8,"age","North American Regional--17","#CCECF4",152
+"1042",52,"Oxfordian",NA,154.8,161.5,"age","North American Regional--17","#BFE7F1",158.15
+"1043",54,"Callovian",NA,161.5,165.3,"age","North American Regional--17","#BFE7E5",163.4
+"1044",55,"Bathonian",NA,165.3,168.2,"age","North American Regional--17","#B3E2E3",166.75
+"1045",56,"Bajocian",NA,168.2,170.9,"age","North American Regional--17","#A6DDE0",169.55
+"1046",57,"Aalenian",NA,170.9,174.7,"age","North American Regional--17","#9AD9DD",172.8
+"1047",59,"Toarcian",NA,174.7,184.2,"age","North American Regional--17","#99CEE3",179.45
+"1048",60,"Pliensbachian",NA,184.2,192.9,"age","North American Regional--17","#80C5DD",188.55
+"1049",61,"Sinemurian",NA,192.9,199.5,"age","North American Regional--17","#67BCD8",196.2
+"1050",62,"Hettangian",NA,199.5,201.4,"age","North American Regional--17","#4EB3D3",200.45
+"1051",65,"Rhaetian",NA,201.4,208.5,"age","North American Regional--17","#E3B9DB",204.95
+"1052",750,"Sevatian",NA,208.5,214,"sub-age","North American Regional--17","#D6AAD3",211.25
+"1053",749,"Alaunian",NA,214,216,"sub-age","North American Regional--17","#D6AAD3",215
+"1054",748,"Lacian",NA,216,227,"sub-age","North American Regional--17","#D6AAD3",221.5
+"1055",747,"Tuvalian",NA,227,230.5,"sub-age","North American Regional--17","#C99BCB",228.75
+"1056",746,"Julian",NA,230.5,237,"sub-age","North American Regional--17","#C99BCB",233.75
+"1057",69,"Ladinian",NA,237,242,"age","North American Regional--17","#C983BF",239.5
+"1058",70,"Anisian",NA,242,247.2,"age","North American Regional--17","#BC75B7",244.6
+"1059",207,"Spathian",NA,247.2,248.5,"sub-age","North American Regional--17","#C276AF",247.85
+"1060",206,"Smithian",NA,248.5,251.2,"age","North American Regional--17","#B051A5",249.85
+"1061",208,"Dienerian",NA,251.2,251.6,"age","North American Regional--17","#A4469E",251.4
+"1062",202,"Griesbachian",NA,251.6,251.902,"sub-age","North American Regional--17","#983999",251.751
+"1063",133,"Ochoan",NA,259,259.51,"age","North American Regional--17","#E27C88",259.255
+"1064",224,"Capitanian",NA,259.51,264.28,"age","North American Regional--17","#FB9A85",261.895
+"1065",225,"Wordian",NA,264.28,266.9,"age","North American Regional--17","#FB8D76",265.59
+"1066",226,"Roadian",NA,266.9,273.01,"age","North American Regional--17","#FB8069",269.955
+"1067",135,"Leonardian",NA,273.01,282,"age","North American Regional--17","#E3816F",277.505
+"1068",136,"Wolfcampian",NA,282,298.9,"age","North American Regional--17","#E36956",290.45
+"1069",137,"Virgilian",NA,298.9,303.7,"age","North American Regional--17","#C6D2C5",301.3
+"1070",138,"Missourian",NA,303.7,306,"age","North American Regional--17","#B9CDC0",304.85
+"1071",139,"Desmoinesian",NA,306,312,"age","North American Regional--17","#B3CBBE",309
+"1072",140,"Atokan",NA,312,319,"age","North American Regional--17","#ACC9BC",315.5
+"1073",141,"Morrowan",NA,319,323.2,"age","North American Regional--17","#9FC4B7",321.1
+"1074",142,"Chesterian",NA,323.2,335,"age","North American Regional--17","#B5BE6B",329.1
+"1075",143,"Meramecian",NA,335,343.5,"age","North American Regional--17","#ABBB6B",339.25
+"1076",144,"Osagean",NA,343.5,351.5,"age","North American Regional--17","#A0B76C",347.5
+"1077",145,"Kinderhookian",NA,351.5,358.9,"age","North American Regional--17","#96B46C",355.2
+"1078",745,"Chatauquan",NA,358.9,370,"age","North American Regional--17","#F2EDC5",364.45
+"1079",149,"Senecan",NA,370,385,"age","North American Regional--17","#F1CE78",377.5
+"1080",744,"Erian",NA,385,393.3,"age","North American Regional--17","#F1C868",389.15
+"1081",743,"Ulsterian",NA,393.3,419.2,"age","North American Regional--17","#E5AC4D",406.25
+"1082",155,"Cayugan",NA,419.2,425.6,"age","North American Regional--17","#E0F3E0",422.4
+"1083",503,"Niagaran",NA,425.6,438.5,"age","North American Regional--17","#BFE6CF",432.05
+"1084",159,"Alexandrian",NA,438.5,443.8,"age","North American Regional--17","#A6DCB5",441.15
+"1085",742,"Gamachian",NA,443.8,445.2,"age","North American Regional--17","#A6DBAB",444.5
+"1086",160,"Richmondian",NA,445.2,449,"age","North American Regional--17","#A2D9A7",447.1
+"1087",161,"Maysvillian",NA,449,450,"age","North American Regional--17","#A0D9A5",449.5
+"1088",162,"Edenian",NA,450,451,"age","North American Regional--17","#9BD7A1",450.5
+"1089",741,"Mohawkian",NA,451,456.5,"age","North American Regional--17","#7FCA93",453.75
+"1090",168,"Whiterock",NA,456.5,470,"age","North American Regional--17","#27A37F",463.25
+"1091",740,"Blackhillsian",NA,470,475,"age","North American Regional--17","#41B087",472.5
+"1092",739,"Tulean",NA,475,479.5,"age","North American Regional--17","#1A9D6F",477.25
+"1093",514,"Stairsian",NA,479.5,480,"age","North American Regional--17","#33A97E",479.75
+"1094",513,"Skullrockian",NA,480,486.7,"age","North American Regional--17","#35b083",483.35
+"1095",512,"Sunwaptan",NA,486.7,493,"age","North American Regional--17","#B3E095",489.85
+"1096",511,"Steptoean",NA,493,497,"age","North American Regional--17","#B3E095",495
+"1097",510,"Marjuman",NA,497,504.5,"age","North American Regional--17","#A6CF86",500.75
+"1098",509,"Topazan",NA,504.5,506.5,"supereon","North American Regional--17","#B3D492",505.5
+"1099",508,"Delamaran",NA,506.5,511,"age","North American Regional--17","#BFD99D",508.75
+"1100",507,"Dyeran",NA,511,515.5,"age","North American Regional--17","#99C078",513.25
+"1101",506,"Montezuman",NA,515.5,520,"age","North American Regional--17","#A6C583",517.75
+"1102",505,"Begadean",NA,520,538.8,"age","North American Regional--17","#8CB06C",529.4
+"1103",203,"Hadrynian",NA,538.8,850,"period","North American Regional--17","#FF9BCD",694.4
+"1104",904,"Mantelliceras dixoni",NA,97.5,98.5,"zone","Ammonite Zonation - Boreal--18","#B3DE53",98
+"1105",903,"Mantelliceras mantelli",NA,98.5,100.2,"zone","Ammonite Zonation - Boreal--18","#B3DE53",99.35
+"1106",902,"Arrhaphoceras briacensis",NA,100.2,100.8,"zone","Ammonite Zonation - Boreal--18","#B3DE55",100.5
+"1107",901,"Mortoniceras perinflatum",NA,100.8,101.3,"zone","Ammonite Zonation - Boreal--18","#CCEA97",101.05
+"1108",900,"Mortoniceras rostratum",NA,101.3,101.7,"zone","Ammonite Zonation - Boreal--18","#CCEA97",101.5
+"1109",899,"Mortoniceras fallax",NA,101.7,104.1,"zone","Ammonite Zonation - Boreal--18","#CCEA97",102.9
+"1110",898,"Mortoniceras inflatum",NA,104.1,104.9,"zone","Ammonite Zonation - Boreal--18","#CCEA97",104.5
+"1111",897,"Mortoniceras pricei",NA,104.9,107,"zone","Ammonite Zonation - Boreal--18","#CCEA97",105.95
+"1112",896,"Diploceras cristatum",NA,107,107.5,"zone","Ammonite Zonation - Boreal--18","#CCEA97",107.25
+"1113",895,"Euhoplites lautus",NA,107.5,108.3,"zone","Ammonite Zonation - Boreal--18","#CCEA97",107.9
+"1114",894,"Euhoplites loricatus",NA,108.3,109.5,"zone","Ammonite Zonation - Boreal--18","#CCEA97",108.9
+"1115",893,"Hoplites dentatus",NA,109.5,110.3,"zone","Ammonite Zonation - Boreal--18","#CCEA97",109.9
+"1116",892,"Douvilleiceras mammillatum",NA,110.3,111.3,"zone","Ammonite Zonation - Boreal--18","#CCEA97",110.8
+"1117",891,"Leymeriella schrammeni",NA,111.3,113,"zone","Ammonite Zonation - Boreal--18","#CCEA97",112.15
+"1118",890,"Hypacanthoplites jacobi",NA,113,116.8,"zone","Ammonite Zonation - Boreal--18","#BFE48A",114.9
+"1119",889,"Parahoplites nutfieldiensis",NA,116.8,118,"zone","Ammonite Zonation - Boreal--18","#BFE48A",117.4
+"1120",888,"Epicheloniceras martinoides",NA,118,123,"zone","Ammonite Zonation - Boreal--18","#BFE48A",120.5
+"1121",884,"Parancyloceras bidentatum/Parancyloceras scalare",NA,121.4,125.5,"zone","Ammonite Zonation - Boreal--18","#B3DF7F",123.45
+"1122",887,"Tropaeum bowerbanki",NA,123,124,"zone","Ammonite Zonation - Boreal--18","#BFE48A",123.5
+"1123",886,"Deshayesites deshayesi",NA,124,124.5,"zone","Ammonite Zonation - Boreal--18","#BFE48A",124.25
+"1124",885,"Deshayesites forbesi",NA,124.5,121.4,"zone","Ammonite Zonation - Boreal--18","#BFE48A",122.95
+"1125",883,"Simanocyloceras stolleyi",NA,125.5,127.3,"zone","Ammonite Zonation - Boreal--18","#B3DF7F",126.4
+"1126",882,"Ancyloceras inexum/S. pingue",NA,127.3,127.8,"zone","Ammonite Zonation - Boreal--18","#B3DF7F",127.55
+"1127",881,"Paracrioceras denckmanni",NA,127.8,128.2,"zone","Ammonite Zonation - Boreal--18","#B3DF7F",128
+"1128",880,"Paracrioceras elegans",NA,128.2,128.8,"zone","Ammonite Zonation - Boreal--18","#B3DF7F",128.5
+"1129",879,"Haplocrioceras fissicostatum",NA,128.8,129,"zone","Ammonite Zonation - Boreal--18","#B3DF7F",128.9
+"1130",878,"Paracrioceras rarocinctum",NA,129,129.4,"zone","Ammonite Zonation - Boreal--18","#B3DF7F",129.2
+"1131",877,"Simbirskites variabilis",NA,129.4,132.3,"zone","Ammonite Zonation - Boreal--18","#A6D975",130.85
+"1132",876,"Simbirskites marginatus",NA,132.3,132.5,"zone","Ammonite Zonation - Boreal--18","#A6D975",132.4
+"1133",875,"Craspedodiscus gottschei",NA,132.5,132.8,"zone","Ammonite Zonation - Boreal--18","#A6D975",132.65
+"1134",874,"Milanowskia speetonensis",NA,132.8,133,"zone","Ammonite Zonation - Boreal--18","#8CCD57",132.9
+"1135",873,"Speetoniceras inversum",NA,133,133.4,"zone","Ammonite Zonation - Boreal--18","#99D36A",133.2
+"1136",872,"Endemoceras regale",NA,133.4,133.5,"zone","Ammonite Zonation - Boreal--18","#99D36A",133.45
+"1137",871,"Endemoceras noricum",NA,133.5,133.85,"zone","Ammonite Zonation - Boreal--18","#99D36A",133.675
+"1138",870,"Endemoceras amblygonium",NA,133.85,133.95,"zone","Ammonite Zonation - Boreal--18","#99D36A",133.9
+"1139",869,"Eleniceras paucinodum",NA,133.95,134.3,"zone","Ammonite Zonation - Boreal--18","#99D36A",134.125
+"1140",868,"Stolcoceras tuberulatum",NA,134.3,135,"zone","Ammonite Zonation - Boreal--18","#99D36A",134.65
+"1141",867,"Dichotomites",NA,135,135.6,"zone","Ammonite Zonation - Boreal--18","#99D36A",135.3
+"1142",866,"Prodichotomites",NA,135.6,136.8,"zone","Ammonite Zonation - Boreal--18","#99D36A",136.2
+"1143",865,"Polyptychites",NA,136.8,137.6,"zone","Ammonite Zonation - Boreal--18","#99D36A",137.2
+"1144",864,"Paratollia/Platylenticeras",NA,137.6,138.5,"zone","Ammonite Zonation - Boreal--18","#99D36A",138.05
+"1145",863,"Peregrinoceras albidum",NA,138.5,139.8,"zone","Ammonite Zonation - Boreal--18","#99D36A",139.15
+"1146",862,"Surites stenomphalus",NA,139.8,140.2,"zone","Ammonite Zonation - Boreal--18","#8CCD60",140
+"1147",861,"Surites icenii",NA,140.2,141,"zone","Ammonite Zonation - Boreal--18","#8CCD60",140.6
+"1148",860,"Hectoroceras kochi",NA,141,141.6,"zone","Ammonite Zonation - Boreal--18","#8CCD60",141.3
+"1149",859,"Runctonia runctoni",NA,141.6,144,"zone","Ammonite Zonation - Boreal--18","#8CCD60",142.8
+"1150",858,"Subcraspedites lamplughi",NA,144,144.6,"zone","Ammonite Zonation - Boreal--18","#8CCD60",144.3
+"1151",857,"Subcraspedites preplicomphalus",NA,144.6,146,"zone","Ammonite Zonation - Boreal--18","#D9F1F7",145.3
+"1152",856,"Subcraspedites primitivus",NA,146,146.4,"zone","Ammonite Zonation - Boreal--18","#D9F1F7",146.2
+"1153",855,"Paracraspedites oppressus",NA,146.4,146.7,"zone","Ammonite Zonation - Boreal--18","#D9F1F7",146.55
+"1154",854,"Titanites anguiformes",NA,146.7,147,"zone","Ammonite Zonation - Boreal--18","#D9F1F7",146.85
+"1155",853,"Galbanites kerberus",NA,147,147.2,"zone","Ammonite Zonation - Boreal--18","#D9F1F7",147.1
+"1156",852,"Galbanites okusensis",NA,147.2,147.4,"zone","Ammonite Zonation - Boreal--18","#D9F1F7",147.3
+"1157",851,"Glaucolithites glaucolithus",NA,147.4,147.6,"zone","Ammonite Zonation - Boreal--18","#D9F1F7",147.5
+"1158",850,"Progalbanites albani",NA,147.6,148,"zone","Ammonite Zonation - Boreal--18","#D9F1F7",147.8
+"1159",849,"Virgatopavlovia fittoni",NA,148,148.3,"zone","Ammonite Zonation - Boreal--18","#D9F1F7",148.15
+"1160",848,"Pavlovia rotunda",NA,148.3,149,"zone","Ammonite Zonation - Boreal--18","#D9F1F7",148.65
+"1161",847,"Pavlovia pallasioides",NA,149,150.2,"zone","Ammonite Zonation - Boreal--18","#D9F1F7",149.6
+"1162",846,"Pectinatites hudlestoni",NA,150.2,150.7,"zone","Ammonite Zonation - Boreal--18","#D9F1F7",150.45
+"1163",845,"Pectinatites wheatleyensis",NA,150.7,151,"zone","Ammonite Zonation - Boreal--18","#D9F1F7",150.85
+"1164",844,"Pectinatites scitulus",NA,151,151.5,"zone","Ammonite Zonation - Boreal--18","#D9F1F7",151.25
+"1165",843,"Pectinatites elegans",NA,151.5,152,"zone","Ammonite Zonation - Boreal--18","#D9F1F7",151.75
+"1166",842,"Aulacostephanus autissiodorensis",NA,152,152.4,"zone","Ammonite Zonation - Boreal--18","#CCECF4",152.2
+"1167",841,"Aulacostephanus eudoxus",NA,152.4,153.7,"zone","Ammonite Zonation - Boreal--18","#CCECF4",153.05
+"1168",840,"Aulacostephanus mutabilis",NA,153.7,154.7,"zone","Ammonite Zonation - Boreal--18","#CCECF4",154.2
+"1169",839,"Rasenia cymodoce",NA,154.7,156,"zone","Ammonite Zonation - Boreal--18","#CCECF4",155.35
+"1170",837,"Ringsteadia pseudocordata",NA,154.8,159,"zone","Ammonite Zonation - Boreal--18","#BFE7F1",156.9
+"1171",838,"Pictonia baylei",NA,156,154.8,"zone","Ammonite Zonation - Boreal--18","#CCECF4",155.4
+"1172",836,"Perisphinctes cautisnigrae",NA,159,159.7,"zone","Ammonite Zonation - Boreal--18","#BFE7F1",159.35
+"1173",835,"Perisphinctes pumilus",NA,159.7,160.1,"zone","Ammonite Zonation - Boreal--18","#BFE7F1",159.9
+"1174",834,"Perisphinctes plicatilis",NA,160.1,160.8,"zone","Ammonite Zonation - Boreal--18","#BFE7F1",160.45
+"1175",833,"Cardioceras cordatum",NA,160.8,161.4,"zone","Ammonite Zonation - Boreal--18","#BFE7F1",161.1
+"1176",832,"Quenstedtoceras mariae",NA,161.4,161.5,"zone","Ammonite Zonation - Boreal--18","#BFE7F1",161.45
+"1177",831,"Quenstedtoceras lamberti",NA,161.5,163.8,"zone","Ammonite Zonation - Boreal--18","#BFE7E5",162.65
+"1178",830,"Peltoceras athleta",NA,163.8,164.2,"zone","Ammonite Zonation - Boreal--18","#BFE7E5",164
+"1179",829,"Erymnoceras coronatum",NA,164.2,164.5,"zone","Ammonite Zonation - Boreal--18","#BFE7E5",164.35
+"1180",828,"Kosmoceras jason",NA,164.5,164.6,"zone","Ammonite Zonation - Boreal--18","#BFE7E5",164.55
+"1181",827,"Sigloceras calloviense",NA,164.6,165,"zone","Ammonite Zonation - Boreal--18","#BFE7E5",164.8
+"1182",826,"Prolanulites koenigi",NA,165,165.5,"zone","Ammonite Zonation - Boreal--18","#BFE7E5",165.25
+"1183",825,"Macrocephalites herveyi",NA,165.5,166.1,"zone","Ammonite Zonation - Boreal--18","#BFE7E5",165.8
+"1184",824,"Clydoniceras discus",NA,166.1,166.2,"zone","Ammonite Zonation - Boreal--18","#B3E2E3",166.15
+"1185",823,"Oxycerites orbis",NA,166.2,166.4,"zone","Ammonite Zonation - Boreal--18","#B3E2E3",166.3
+"1186",822,"Procerites hodsoni",NA,166.4,166.6,"zone","Ammonite Zonation - Boreal--18","#B3E2E3",166.5
+"1187",821,"Morrisiceras morrisi",NA,166.6,166.8,"zone","Ammonite Zonation - Boreal--18","#B3E2E3",166.7
+"1188",820,"Tulites subcontractus",NA,166.8,167,"zone","Ammonite Zonation - Boreal--18","#B3E2E3",166.9
+"1189",819,"Procerites progracilis",NA,167,167.3,"zone","Ammonite Zonation - Boreal--18","#B3E2E3",167.15
+"1190",818,"Zigzagiceras zigzag",NA,167.3,168.3,"zone","Ammonite Zonation - Boreal--18","#B3E2E3",167.8
+"1191",817,"Parkinsonia parkinsoni",NA,168.3,168.6,"zone","Ammonite Zonation - Boreal--18","#A6DDE0",168.45
+"1192",816,"Garantiana garantiana",NA,168.6,169,"zone","Ammonite Zonation - Boreal--18","#A6DDE0",168.8
+"1193",815,"Strenoceras niortense",NA,169,169.5,"zone","Ammonite Zonation - Boreal--18","#A6DDE0",169.25
+"1194",814,"Stephanoceras humphriesianum",NA,169.5,169.8,"zone","Ammonite Zonation - Boreal--18","#A6DDE0",169.65
+"1195",813,"Witchellia laeviuscula",NA,169.8,170,"zone","Ammonite Zonation - Boreal--18","#A6DDE0",169.9
+"1196",812,"Hyperlioceras discites",NA,170,170.3,"zone","Ammonite Zonation - Boreal--18","#A6DDE0",170.15
+"1197",811,"Graphoceras concavum",NA,170.3,170.9,"zone","Ammonite Zonation - Boreal--18","#9AD9DD",170.6
+"1198",810,"Brasilia bradfordensis",NA,170.9,171.3,"zone","Ammonite Zonation - Boreal--18","#9AD9DD",171.1
+"1199",809,"Ludwigia murchisonae",NA,171.3,172.2,"zone","Ammonite Zonation - Boreal--18","#9AD9DD",171.75
+"1200",808,"Leioceras opalinum",NA,172.2,174.7,"zone","Ammonite Zonation - Boreal--18","#9AD9DD",173.45
+"1201",806,"Dumortieria levesquei",NA,174.4,175,"zone","Ammonite Zonation - Boreal--18","#99CEE3",174.7
+"1202",807,"Pleydellia aalensis",NA,174.7,174.4,"zone","Ammonite Zonation - Boreal--18","#9AD9DD",174.55
+"1203",805,"Grammoceras thouarsense",NA,175,176.4,"zone","Ammonite Zonation - Boreal--18","#99CEE3",175.7
+"1204",804,"Haugia variabilis",NA,176.4,178.4,"zone","Ammonite Zonation - Boreal--18","#99CEE3",177.4
+"1205",803,"Hildoceras bifrons",NA,178.4,180.4,"zone","Ammonite Zonation - Boreal--18","#99CEE3",179.4
+"1206",802,"Harpoceras falciferum",NA,180.4,180.7,"zone","Ammonite Zonation - Boreal--18","#99CEE3",180.55
+"1207",801,"Dactylioceras tenuicostatum",NA,180.7,182.7,"zone","Ammonite Zonation - Boreal--18","#99CEE3",181.7
+"1208",800,"Pleuroceras spinatum",NA,182.7,184.2,"zone","Ammonite Zonation - Boreal--18","#80C5DD",183.45
+"1209",799,"Amaltheus margaritatus",NA,184.2,187.5,"zone","Ammonite Zonation - Boreal--18","#80C5DD",185.85
+"1210",798,"Prodactylioceras davoei",NA,187.5,188.5,"zone","Ammonite Zonation - Boreal--18","#80C5DD",188
+"1211",797,"Tragophylloceras ibex",NA,188.5,189.5,"zone","Ammonite Zonation - Boreal--18","#80C5DD",189
+"1212",796,"Uptonia jamesoni",NA,189.5,190.8,"zone","Ammonite Zonation - Boreal--18","#80C5DD",190.15
+"1213",795,"Echinoceras raricostatum",NA,190.8,192.8,"zone","Ammonite Zonation - Boreal--18","#67BCD8",191.8
+"1214",794,"Oxynoticeras oxynotum",NA,192.8,193.8,"zone","Ammonite Zonation - Boreal--18","#67BCD8",193.3
+"1215",793,"Asteroceras obtusum",NA,193.8,195.4,"zone","Ammonite Zonation - Boreal--18","#67BCD8",194.6
+"1216",792,"Caenisites turneri",NA,195.4,196.4,"zone","Ammonite Zonation - Boreal--18","#67BCD8",195.9
+"1217",791,"Arnioceras semicostatum",NA,196.4,197.8,"zone","Ammonite Zonation - Boreal--18","#67BCD8",197.1
+"1218",790,"Arietites bucklandi",NA,197.8,199.3,"zone","Ammonite Zonation - Boreal--18","#67BCD8",198.55
+"1219",789,"Schlotheimia angulata",NA,199.3,200.2,"zone","Ammonite Zonation - Boreal--18","#4EB3D3",199.75
+"1220",788,"Alsatites liasicus",NA,200.2,201.1,"zone","Ammonite Zonation - Boreal--18","#4EB3D3",200.65
+"1221",787,"Psiloceras planorbis",NA,201.1,201.4,"zone","Ammonite Zonation - Boreal--18","#4EB3D3",201.25
+"1222",786,"Choristoceras crickmayi",NA,201.4,202.2,"zone","Ammonite Zonation - Boreal--18","#E3B9DB",201.8
+"1223",785,"Chochloceras amoenum",NA,202.2,208.5,"zone","Ammonite Zonation - Boreal--18","#E3B9DB",205.35
+"1224",784,"Gnomohalorites cordilleranus",NA,208.5,214,"zone","Ammonite Zonation - Boreal--18","#D6AAD3",211.25
+"1225",783,"Mesohimavatites columbianus",NA,214,217,"zone","Ammonite Zonation - Boreal--18","#D6AAD3",215.5
+"1226",782,"Drepanites rutherfordi",NA,217,217.5,"zone","Ammonite Zonation - Boreal--18","#D6AAD3",217.25
+"1227",781,"Juvavites magnus",NA,217.5,218.3,"zone","Ammonite Zonation - Boreal--18","#D6AAD3",217.9
+"1228",780,"Malayites dawsoni",NA,218.3,224.5,"zone","Ammonite Zonation - Boreal--18","#D6AAD3",221.4
+"1229",779,"Stikinoceras kerri",NA,224.5,227,"zone","Ammonite Zonation - Boreal--18","#D6AAD3",225.75
+"1230",778,"Klamathites macrolobatus",NA,227,229.7,"zone","Ammonite Zonation - Boreal--18","#C99BCB",228.35
+"1231",777,"Tropites welleri",NA,229.7,232.6,"zone","Ammonite Zonation - Boreal--18","#C99BCB",231.15
+"1232",776,"Tropites dilleri",NA,232.6,233.5,"zone","Ammonite Zonation - Boreal--18","#C99BCB",233.05
+"1233",775,"Sirenites nanseni",NA,233.5,234,"zone","Ammonite Zonation - Boreal--18","#C99BCB",233.75
+"1234",774,"Austrotrachyceras obesum",NA,234,234.6,"zone","Ammonite Zonation - Boreal--18","#C99BCB",234.3
+"1235",773,"Tachyceras desatoyense",NA,234.6,236.3,"zone","Ammonite Zonation - Boreal--18","#C99BCB",235.45
+"1236",772,"Daxatina canadensis",NA,236.3,237,"zone","Ammonite Zonation - Boreal--18","#C99BCB",236.65
+"1237",771,"Frankites sutherlandi",NA,237,238,"zone","Ammonite Zonation - Boreal--18","#C983BF",237.5
+"1238",770,"Macl. maclearni",NA,238,238.3,"zone","Ammonite Zonation - Boreal--18","#C983BF",238.15
+"1239",769,"Meginoceras meginae",NA,238.3,239,"zone","Ammonite Zonation - Boreal--18","#C983BF",238.65
+"1240",768,"Tuchodiceras poseidon",NA,239,240.4,"zone","Ammonite Zonation - Boreal--18","#C983BF",239.7
+"1241",767,"Eoprotrachyceras matutinum",NA,240.4,242,"zone","Ammonite Zonation - Boreal--18","#C983BF",241.2
+"1242",766,"Frechites chischa",NA,242,243.5,"zone","Ammonite Zonation - Boreal--18","#BC75B7",242.75
+"1243",765,"Eogymnotoceras deleeni",NA,243.5,244,"zone","Ammonite Zonation - Boreal--18","#BC75B7",243.75
+"1244",764,"Anagymnotoceras varium",NA,244,246.3,"zone","Ammonite Zonation - Boreal--18","#BC75B7",245.15
+"1245",763,"Lenotropites caurus",NA,246.3,246.5,"zone","Ammonite Zonation - Boreal--18","#BC75B7",246.4
+"1246",762,"Siberlingites mulleri",NA,246.5,246.8,"zone","Ammonite Zonation - Boreal--18","#BC75B7",246.65
+"1247",761,"Olenikites pilaticus",NA,247.7,248,"zone","Ammonite Zonation - Boreal--18","#B051A5",247.85
+"1248",760,"Bajarunia eumphala",NA,248,248.5,"zone","Ammonite Zonation - Boreal--18","#B051A5",248.25
+"1249",759,"Anawasatchites tardus",NA,248.5,248.55,"zone","Ammonite Zonation - Boreal--18","#B051A5",248.525
+"1250",758,"Euflemingites romunderi",NA,248.55,249.3,"zone","Ammonite Zonation - Boreal--18","#B051A5",248.925
+"1251",757,"Hedenstroemia hedenstroemi",NA,249.3,251.2,"zone","Ammonite Zonation - Boreal--18","#B051A5",250.25
+"1252",756,"Vavilovites sverdrupi",NA,251.2,251.3,"zone","Ammonite Zonation - Boreal--18","#A4469F",251.25
+"1253",755,"Proptychites candidus",NA,251.3,251.6,"zone","Ammonite Zonation - Boreal--18","#A4469F",251.45
+"1254",754,"Proptychites rosenkrantzi strigatus",NA,251.6,251.8,"zone","Ammonite Zonation - Boreal--18","#A4469F",251.7
+"1255",753,"Ophiceras commune",NA,251.8,251.9,"zone","Ammonite Zonation - Boreal--18","#A4469F",251.85
+"1256",752,"upper Otoceras boreale",NA,251.9,251.902,"zone","Ammonite Zonation - Boreal--18","#A4469F",251.901
+"1257",751,"lower Otoceras boreale",NA,251.902,252.4,"zone","Ammonite Zonation - Boreal--18","#FCC0B2",252.151
+"1258",973,"Jeletzkytes nebrascensis",NA,68.69,69.3,"zone","Ammonite Zonation - Western Interior--19","#F2FA8C",68.995
+"1259",972,"Hoploscaphites nicolleti",NA,69.3,69.91,"zone","Ammonite Zonation - Western Interior--19","#F2FA8C",69.605
+"1260",971,"Hoploscaphites birkelundae",NA,69.91,70,"zone","Ammonite Zonation - Western Interior--19","#F2FA8C",69.955
+"1261",970,"Baculites clinolobatus",NA,70,70.44,"zone","Ammonite Zonation - Western Interior--19","#F2FA8C",70.22
+"1262",988,"Baculites grandis",NA,70.44,71.2,"zone","Ammonite Zonation - Western Interior--19","#F2FA8C",70.82
+"1263",969,"Baculites baculus",NA,71.2,72.1,"zone","Ammonite Zonation - Western Interior--19","#A6D84A",71.65
+"1264",968,"Baculites eliasi",NA,72.1,73.27,"zone","Ammonite Zonation - Western Interior--19","#E6F47F",72.685
+"1265",967,"Baculites jenseni",NA,73.27,73.63,"zone","Ammonite Zonation - Western Interior--19","#E6F47F",73.45
+"1266",966,"Baculites reesidei",NA,73.63,73.91,"zone","Ammonite Zonation - Western Interior--19","#E6F47F",73.77
+"1267",965,"Baculites cuneatus",NA,73.91,74.21,"zone","Ammonite Zonation - Western Interior--19","#E6F47F",74.06
+"1268",964,"Baculites compressus",NA,74.21,74.6,"zone","Ammonite Zonation - Western Interior--19","#E6F47F",74.405
+"1269",963,"Didymoceras cheyennense",NA,74.6,75.08,"zone","Ammonite Zonation - Western Interior--19","#E6F47F",74.84
+"1270",962,"Exiteloceras jenneyi",NA,75.08,75.64,"zone","Ammonite Zonation - Western Interior--19","#E6F47F",75.36
+"1271",961,"Didymoceras stevensoni",NA,75.64,76.27,"zone","Ammonite Zonation - Western Interior--19","#E6F47F",75.955
+"1272",960,"Didymoceras nebrascense",NA,76.27,76.94,"zone","Ammonite Zonation - Western Interior--19","#E6F47F",76.605
+"1273",959,"Baculites scotti",NA,76.94,77.63,"zone","Ammonite Zonation - Western Interior--19","#E6F47F",77.285
+"1274",958,"Baculites reduncus",NA,77.63,78.34,"zone","Ammonite Zonation - Western Interior--19","#E6F47F",77.985
+"1275",957,"Baculites gregoryensis",NA,78.34,79.01,"zone","Ammonite Zonation - Western Interior--19","#E6F47F",78.675
+"1276",956,"Baculites perplexus",NA,79.01,79.64,"zone","Ammonite Zonation - Western Interior--19","#E6F47F",79.325
+"1277",955,"Baculites sp. (smooth II)",NA,79.64,80.21,"zone","Ammonite Zonation - Western Interior--19","#E6F47F",79.925
+"1278",953,"Baculites asperiformis",NA,80.21,80.67,"zone","Ammonite Zonation - Western Interior--19","#E6F47F",80.44
+"1279",952,"Baculites maclearni",NA,80.67,80.97,"zone","Ammonite Zonation - Western Interior--19","#E6F47F",80.82
+"1280",951,"Baculites obtusus",NA,80.97,81.13,"zone","Ammonite Zonation - Western Interior--19","#E6F47F",81.05
+"1281",954,"Baculites sp. (weak flank ribs)",NA,81.13,81.28,"zone","Ammonite Zonation - Western Interior--19","#E6F47F",81.205
+"1282",950,"Baculites sp. (smooth)",NA,81.28,81.53,"zone","Ammonite Zonation - Western Interior--19","#E6F47F",81.405
+"1283",949,"Scaphites hippocrepis III",NA,81.53,82,"zone","Ammonite Zonation - Western Interior--19","#E6F47F",81.765
+"1284",948,"Scaphites hippocrepis II",NA,82,82.7,"zone","Ammonite Zonation - Western Interior--19","#E6F47F",82.35
+"1285",947,"Scaphites hippocrepis",NA,82.7,83.64,"zone","Ammonite Zonation - Western Interior--19","#A6D84A",83.17
+"1286",946,"Scaphites leei",NA,83.64,84.08,"zone","Ammonite Zonation - Western Interior--19","#D9EF74",83.86
+"1287",945,"Desmoscaphites bassleri",NA,84.08,84.52,"zone","Ammonite Zonation - Western Interior--19","#D9EF74",84.3
+"1288",944,"Desmoscaphites erdmanni",NA,84.52,85.23,"zone","Ammonite Zonation - Western Interior--19","#D9EF74",84.875
+"1289",943,"Clioscaphites choteauensis",NA,85.23,85.56,"zone","Ammonite Zonation - Western Interior--19","#D9EF74",85.395
+"1290",942,"Clioscaphites vermiformis",NA,85.56,86.26,"zone","Ammonite Zonation - Western Interior--19","#D9EF74",85.91
+"1291",941,"Clioscaphites saxitonianus",NA,86.26,87.86,"zone","Ammonite Zonation - Western Interior--19","#A6D84A",87.06
+"1292",940,"Scaphites depressus",NA,87.86,88.77,"zone","Ammonite Zonation - Western Interior--19","#CCE968",88.315
+"1293",939,"Scaphites ventricosus",NA,88.77,89.77,"zone","Ammonite Zonation - Western Interior--19","#CCE968",89.27
+"1294",938,"Scaphites preventricosus",NA,89.77,89.87,"zone","Ammonite Zonation - Western Interior--19","#A6D84A",89.82
+"1295",937,"Scaphites mariasensis",NA,89.87,89.98,"zone","Ammonite Zonation - Western Interior--19","#BFE35D",89.925
+"1296",936,"Prionocyclus germari",NA,89.98,90.24,"zone","Ammonite Zonation - Western Interior--19","#BFE35D",90.11
+"1297",935,"Scaphites nigricollensis",NA,90.24,90.65,"zone","Ammonite Zonation - Western Interior--19","#BFE35D",90.445
+"1298",934,"Scaphites whitfieldi",NA,90.65,91.34,"zone","Ammonite Zonation - Western Interior--19","#BFE35D",90.995
+"1299",933,"Scaphites warreni",NA,91.34,91.41,"zone","Ammonite Zonation - Western Interior--19","#BFE35D",91.375
+"1300",932,"Prionocyclus macombi",NA,91.41,91.6,"zone","Ammonite Zonation - Western Interior--19","#BFE35D",91.505
+"1301",931,"Prionocyclus hyatti",NA,91.6,92.08,"zone","Ammonite Zonation - Western Interior--19","#BFE35D",91.84
+"1302",930,"Collingnoniceras praecox",NA,92.08,92.9,"zone","Ammonite Zonation - Western Interior--19","#BFE35D",92.49
+"1303",929,"Collingnoniceras woollgari",NA,92.9,93.35,"zone","Ammonite Zonation - Western Interior--19","#BFE35D",93.125
+"1304",928,"Mammites nodosoides",NA,93.35,93.45,"zone","Ammonite Zonation - Western Interior--19","#BFE35D",93.4
+"1305",927,"Vascoceras birchbyi",NA,93.45,93.55,"zone","Ammonite Zonation - Western Interior--19","#BFE35D",93.5
+"1306",926,"Pseudaspidoceras flexuosum",NA,93.55,93.9,"zone","Ammonite Zonation - Western Interior--19","#BFE35D",93.725
+"1307",925,"Watinoceras devonense",NA,93.9,93.98,"zone","Ammonite Zonation - Western Interior--19","#B3DE53",93.94
+"1308",924,"Nigericeras scotti",NA,93.98,94.15,"zone","Ammonite Zonation - Western Interior--19","#B3DE53",94.065
+"1309",923,"Neocardioceras juddii",NA,94.15,94.27,"zone","Ammonite Zonation - Western Interior--19","#B3DE53",94.21
+"1310",922,"Burroceras clydense",NA,94.27,94.39,"zone","Ammonite Zonation - Western Interior--19","#B3DE53",94.33
+"1311",921,"Sciponoceras gracile (Euomphaloceras septemseriatum)",NA,94.39,94.57,"zone","Ammonite Zonation - Western Interior--19","#B3DE53",94.48
+"1312",920,"Sciponoceras gracile (Vasoceras diartianum)",NA,94.57,94.78,"zone","Ammonite Zonation - Western Interior--19","#B3DE53",94.675
+"1313",919,"Dunveganoceras conditum",NA,94.78,95.01,"zone","Ammonite Zonation - Western Interior--19","#B3DE53",94.895
+"1314",918,"Dunveganoceras albertense",NA,95.01,95.24,"zone","Ammonite Zonation - Western Interior--19","#B3DE53",95.125
+"1315",917,"Dunveganoceras problematicum",NA,95.24,95.47,"zone","Ammonite Zonation - Western Interior--19","#B3DE53",95.355
+"1316",916,"Dunveganoceras pondi",NA,95.47,95.67,"zone","Ammonite Zonation - Western Interior--19","#B3DE53",95.57
+"1317",915,"Pleisacanthoceras wyomingense",NA,95.67,95.81,"zone","Ammonite Zonation - Western Interior--19","#B3DE53",95.74
+"1318",914,"Acanthoceras amphibolum",NA,95.81,95.9,"zone","Ammonite Zonation - Western Interior--19","#B3DE53",95.855
+"1319",913,"Acanthoceras bellense",NA,95.9,95.98,"zone","Ammonite Zonation - Western Interior--19","#B3DE53",95.94
+"1320",912,"Acanthoceras muldoonense",NA,95.98,96.08,"zone","Ammonite Zonation - Western Interior--19","#B3DE53",96.03
+"1321",911,"Acanthoceras granerosense",NA,96.08,96.24,"zone","Ammonite Zonation - Western Interior--19","#B3DE53",96.16
+"1322",910,"Conlinoceras tarrantense - Conlinoceras gilberti",NA,96.24,97.26,"zone","Ammonite Zonation - Western Interior--19","#B3DE53",96.75
+"1323",909,"Neogastroplites maclearni",NA,97.76,98.19,"zone","Ammonite Zonation - Western Interior--19","#B3DE53",97.975
+"1324",908,"Neogastroplites americanus",NA,98.19,98.75,"zone","Ammonite Zonation - Western Interior--19","#B3DE53",98.47
+"1325",907,"Neogastroplites muelleri",NA,98.75,99.17,"zone","Ammonite Zonation - Western Interior--19","#B3DE53",98.96
+"1326",906,"Neogastroplites cornutus",NA,99.17,99.81,"zone","Ammonite Zonation - Western Interior--19","#B3DE53",99.49
+"1327",905,"Neogastroplites haasi",NA,99.81,100.25,"zone","Ammonite Zonation - Western Interior--19","#B3DE53",100.03
+"1328",421,"Quaternary","Q",0,2.58,"period","international intervals covering all time--20","#F9F97F",1.29
+"1329",2,"Neogene","Ng",2.58,23.03,"period","international intervals covering all time--20","#FFE619",12.805
+"1330",20,"Paleogene","Pg",23.03,66,"period","international intervals covering all time--20","#FD9A52",44.515
+"1331",33,"Cretaceous","K",66,145,"period","international intervals covering all time--20","#7FC64E",105.5
+"1332",48,"Jurassic","J",145,201.4,"period","international intervals covering all time--20","#34B2C9",173.2
+"1333",63,"Triassic","Tr",201.4,251.902,"period","international intervals covering all time--20","#812B92",226.651
+"1334",75,"Permian","P",251.902,298.9,"period","international intervals covering all time--20","#F04028",275.401
+"1335",84,"Carboniferous","C",298.9,358.9,"period","international intervals covering all time--20","#67A599",328.9
+"1336",94,"Devonian","D",358.9,419.2,"period","international intervals covering all time--20","#CB8C37",389.05
+"1337",105,"Silurian","S",419.2,443.8,"period","international intervals covering all time--20","#B3E1B6",431.5
+"1338",112,"Ordovician","O",443.8,485.4,"period","international intervals covering all time--20","#009270",464.6
+"1339",122,"Cambrian","Cm",485.4,538.8,"period","international intervals covering all time--20","#7FA056",512.1
+"1340",257,"Neoproterozoic","Nptz",538.8,1000,"era","international intervals covering all time--20","#FF9BCD",769.4
+"1341",258,"Mesoproterozoic","Mptz",1000,1600,"era","international intervals covering all time--20","#FF7EBF",1300
+"1342",259,"Paleoproterozoic","Pptz",1600,2500,"era","international intervals covering all time--20","#E665A6",2050
+"1343",132,"Archean","Arc",2500,4000,"eon","international intervals covering all time--20","#FF3399",3250
+"1344",3,"Holocene","",0,0.0117,"epoch","Scotese Reconstruction--21","#FEF2E0",0.00585
+"1345",4,"Pleistocene","Ple",0.0117,2.58,"epoch","Scotese Reconstruction--21","#FFF2AE",1.29585
+"1346",10,"Pliocene","Pli",2.58,5.333,"epoch","Scotese Reconstruction--21","#FFFF99",3.9565
+"1347",488,"Late Miocene","",5.333,11.63,"age","Scotese Reconstruction--21","#FFFF66",8.4815
+"1348",487,"Middle Miocene","",11.63,15.98,"age","Scotese Reconstruction--21","#FFFF4D",13.805
+"1349",486,"Early Miocene","",15.98,23.03,"age","Scotese Reconstruction--21","#FFFF33",19.505
+"1350",485,"Late Oligocene","",23.03,27.82,"age","Scotese Reconstruction--21","#FEE6AA",25.425
+"1351",484,"Early Oligocene","",27.82,33.9,"age","Scotese Reconstruction--21","#FED99A",30.86
+"1352",483,"Late Eocene","",33.9,37.71,"age","Scotese Reconstruction--21","#FED99A",35.805
+"1353",482,"Middle Eocene","",37.71,47.8,"age","Scotese Reconstruction--21","#FCB482",42.755
+"1354",481,"Early Eocene","",47.8,56,"age","Scotese Reconstruction--21","#FCA773",51.9
+"1355",29,"Paleocene","Pal",56,66,"epoch","Scotese Reconstruction--21","#FDA75F",61
+"1356",35,"Maastrichtian","",66,72.1,"age","Scotese Reconstruction--21","#F2FA8C",69.05
+"1357",36,"Campanian","",72.1,83.6,"age","Scotese Reconstruction--21","#E6F47F",77.85
+"1358",39,"Turonian","",89.8,93.9,"age","Scotese Reconstruction--21","#BFE35D",91.85
+"1359",40,"Cenomanian","",93.9,100.5,"age","Scotese Reconstruction--21","#B3DE53",97.2
+"1360",42,"Albian","",100.5,113,"age","Scotese Reconstruction--21","#CCEA97",106.75
+"1361",1143,"C1",NA,0,1.778,"chron","Geomagnetic Polarity Chron--22","#F9F97F",0.889
+"1362",1142,"C2",NA,1.778,2.581,"chron","Geomagnetic Polarity Chron--22","#FFF2AE",2.1795
+"1363",1141,"C2A",NA,2.581,4.187,"chron","Geomagnetic Polarity Chron--22","#F9F97F",3.384
+"1364",1140,"C3",NA,4.187,6.033,"chron","Geomagnetic Polarity Chron--22","#FFE619",5.11
+"1365",1139,"C3A",NA,6.033,7.14,"chron","Geomagnetic Polarity Chron--22","#FFFF73",6.5865
+"1366",1138,"C3B",NA,7.14,7.528,"chron","Geomagnetic Polarity Chron--22","#FFFF00",7.334
+"1367",1137,"C4",NA,7.528,8.771,"chron","Geomagnetic Polarity Chron--22","#FFFF66",8.1495
+"1368",1136,"C4A",NA,8.771,9.786,"chron","Geomagnetic Polarity Chron--22","#FFFF66",9.2785
+"1369",1135,"C5",NA,9.786,12.049,"chron","Geomagnetic Polarity Chron--22","#FFFF00",10.9175
+"1370",1134,"C5A",NA,12.049,13.032,"chron","Geomagnetic Polarity Chron--22","#FFFF59",12.5405
+"1371",1133,"C5AA",NA,13.032,13.363,"chron","Geomagnetic Polarity Chron--22","#FFFF59",13.1975
+"1372",1132,"C5AB",NA,13.363,13.739,"chron","Geomagnetic Polarity Chron--22","#FFFF59",13.551
+"1373",1131,"C5AC",NA,13.739,14.163,"chron","Geomagnetic Polarity Chron--22","#FFFF00",13.951
+"1374",1130,"C5AD",NA,14.163,14.775,"chron","Geomagnetic Polarity Chron--22","#FFFF4D",14.469
+"1375",1129,"C5B",NA,14.775,15.974,"chron","Geomagnetic Polarity Chron--22","#FFFF00",15.3745
+"1376",1128,"C5C",NA,15.974,17.235,"chron","Geomagnetic Polarity Chron--22","#FFFF41",16.6045
+"1377",1127,"C5D",NA,17.235,18.056,"chron","Geomagnetic Polarity Chron--22","#FFFF41",17.6455
+"1378",1126,"C5E",NA,18.056,18.748,"chron","Geomagnetic Polarity Chron--22","#FFFF41",18.402
+"1379",1125,"C6",NA,18.748,20.04,"chron","Geomagnetic Polarity Chron--22","#FFFF41",19.394
+"1380",1124,"C6A",NA,20.04,21.083,"chron","Geomagnetic Polarity Chron--22","#FFFF00",20.5615
+"1381",1123,"C6AA",NA,21.083,21.767,"chron","Geomagnetic Polarity Chron--22","#FFFF33",21.425
+"1382",1122,"C6B",NA,21.767,22.564,"chron","Geomagnetic Polarity Chron--22","#FFFF33",22.1655
+"1383",1121,"C6C",NA,22.564,23.692,"chron","Geomagnetic Polarity Chron--22","#F4B470",23.128
+"1384",1120,"C7",NA,23.692,24.761,"chron","Geomagnetic Polarity Chron--22","#FEE6AA",24.2265
+"1385",1119,"C7A",NA,24.761,25.099,"chron","Geomagnetic Polarity Chron--22","#FEE6AA",24.93
+"1386",1118,"C8",NA,25.099,26.42,"chron","Geomagnetic Polarity Chron--22","#FEE6AA",25.7595
+"1387",1117,"C9",NA,26.42,27.859,"chron","Geomagnetic Polarity Chron--22","#FEE6AA",27.1395
+"1388",1116,"C10",NA,27.859,29.183,"chron","Geomagnetic Polarity Chron--22","#FDC07A",28.521
+"1389",1115,"C11",NA,29.183,30.591,"chron","Geomagnetic Polarity Chron--22","#FED99A",29.887
+"1390",1114,"C12",NA,30.591,33.157,"chron","Geomagnetic Polarity Chron--22","#FED99A",31.874
+"1391",1113,"C13",NA,33.157,34.999,"chron","Geomagnetic Polarity Chron--22","#FD9A52",34.078
+"1392",1112,"C15",NA,34.999,35.706,"chron","Geomagnetic Polarity Chron--22","#FDCDA1",35.3525
+"1393",1111,"C16",NA,35.706,36.969,"chron","Geomagnetic Polarity Chron--22","#FDCDA1",36.3375
+"1394",1110,"C17",NA,36.969,38.615,"chron","Geomagnetic Polarity Chron--22","#FDB46C",37.792
+"1395",1109,"C18",NA,38.615,41.154,"chron","Geomagnetic Polarity Chron--22","#FDC091",39.8845
+"1396",1108,"C19",NA,41.154,42.301,"chron","Geomagnetic Polarity Chron--22","#FDB46C",41.7275
+"1397",1107,"C20",NA,42.301,45.724,"chron","Geomagnetic Polarity Chron--22","#FCB482",44.0125
+"1398",1106,"C21",NA,45.724,48.566,"chron","Geomagnetic Polarity Chron--22","#FDB46C",47.145
+"1399",1105,"C22",NA,48.566,50.628,"chron","Geomagnetic Polarity Chron--22","#FCA773",49.597
+"1400",1104,"C23",NA,50.628,52.62,"chron","Geomagnetic Polarity Chron--22","#FCA773",51.624
+"1401",1103,"C24",NA,52.62,57.101,"chron","Geomagnetic Polarity Chron--22","#FD9A52",54.8605
+"1402",1102,"C25",NA,57.101,58.959,"chron","Geomagnetic Polarity Chron--22","#FDBF6F",58.03
+"1403",1101,"C26",NA,58.959,62.221,"chron","Geomagnetic Polarity Chron--22","#FDA75F",60.59
+"1404",1100,"C27",NA,62.221,63.394,"chron","Geomagnetic Polarity Chron--22","#FDB462",62.8075
+"1405",1099,"C28",NA,63.394,64.958,"chron","Geomagnetic Polarity Chron--22","#FDB462",64.176
+"1406",1098,"C29",NA,64.958,66.398,"chron","Geomagnetic Polarity Chron--22","#D2C055",65.678
+"1407",1097,"C30",NA,66.398,68.369,"chron","Geomagnetic Polarity Chron--22","#F2FA8C",67.3835
+"1408",1096,"C31",NA,68.369,71.449,"chron","Geomagnetic Polarity Chron--22","#F2FA8C",69.909
+"1409",1095,"C32",NA,71.449,74.309,"chron","Geomagnetic Polarity Chron--22","#A6D84A",72.879
+"1410",1094,"C33",NA,74.309,83.64,"chron","Geomagnetic Polarity Chron--22","#A6D84A",78.9745
+"1411",1093,"C34",NA,83.64,125.93,"chron","Geomagnetic Polarity Chron--22","#7FC64E",104.785
+"1412",1092,"M0",NA,125.93,126.3,"chron","Geomagnetic Polarity Chron--22","#B3DF7F",126.115
+"1413",1091,"M1",NA,126.3,128.66,"chron","Geomagnetic Polarity Chron--22","#B3DF7F",127.48
+"1414",1090,"M3",NA,128.66,130.6,"chron","Geomagnetic Polarity Chron--22","#8CCD57",129.63
+"1415",1089,"M5",NA,130.6,131.74,"chron","Geomagnetic Polarity Chron--22","#A6D975",131.17
+"1416",1088,"M6",NA,131.74,132.04,"chron","Geomagnetic Polarity Chron--22","#A6D975",131.89
+"1417",1087,"M7",NA,132.04,132.55,"chron","Geomagnetic Polarity Chron--22","#A6D975",132.295
+"1418",1086,"M8",NA,132.55,133.05,"chron","Geomagnetic Polarity Chron--22","#8CCD57",132.8
+"1419",1085,"M9",NA,133.05,133.58,"chron","Geomagnetic Polarity Chron--22","#99D36A",133.315
+"1420",1084,"M10",NA,133.58,134.22,"chron","Geomagnetic Polarity Chron--22","#99D36A",133.9
+"1421",1083,"M10N",NA,134.22,135.32,"chron","Geomagnetic Polarity Chron--22","#99D36A",134.77
+"1422",1082,"M11",NA,135.32,136.29,"chron","Geomagnetic Polarity Chron--22","#99D36A",135.805
+"1423",1081,"M11A",NA,136.29,136.87,"chron","Geomagnetic Polarity Chron--22","#99D36A",136.58
+"1424",1080,"M12",NA,136.87,137.94,"chron","Geomagnetic Polarity Chron--22","#99D36A",137.405
+"1425",1079,"M12A",NA,137.94,138.25,"chron","Geomagnetic Polarity Chron--22","#99D36A",138.095
+"1426",1078,"M13",NA,138.25,138.66,"chron","Geomagnetic Polarity Chron--22","#99D36A",138.455
+"1427",1077,"M14",NA,138.66,139.54,"chron","Geomagnetic Polarity Chron--22","#99D36A",139.1
+"1428",1076,"M15",NA,139.54,140.42,"chron","Geomagnetic Polarity Chron--22","#8CCD57",139.98
+"1429",1075,"M16",NA,140.42,142.22,"chron","Geomagnetic Polarity Chron--22","#8CCD60",141.32
+"1430",1074,"M17",NA,142.22,144,"chron","Geomagnetic Polarity Chron--22","#8CCD60",143.11
+"1431",1073,"M18",NA,144,145.01,"chron","Geomagnetic Polarity Chron--22","#5ABC8C",144.505
+"1432",1072,"M19",NA,145.01,146.54,"chron","Geomagnetic Polarity Chron--22","#D9F1F7",145.775
+"1433",1071,"M20",NA,146.54,148.44,"chron","Geomagnetic Polarity Chron--22","#D9F1F7",147.49
+"1434",1070,"M21",NA,148.44,149.8,"chron","Geomagnetic Polarity Chron--22","#D9F1F7",149.12
+"1435",1069,"M22",NA,149.8,151.92,"chron","Geomagnetic Polarity Chron--22","#D9F1F7",150.86
+"1436",1068,"M22A",NA,151.92,152.64,"chron","Geomagnetic Polarity Chron--22","#B3E3EE",152.28
+"1437",1067,"M23",NA,152.64,153.62,"chron","Geomagnetic Polarity Chron--22","#CCECF4",153.13
+"1438",1066,"M24",NA,153.62,154.59,"chron","Geomagnetic Polarity Chron--22","#CCECF4",154.105
+"1439",1065,"M24A",NA,154.59,155.01,"chron","Geomagnetic Polarity Chron--22","#CCECF4",154.8
+"1440",1064,"M24B",NA,155.01,155.54,"chron","Geomagnetic Polarity Chron--22","#CCECF4",155.275
+"1441",1063,"M25",NA,155.54,156.04,"chron","Geomagnetic Polarity Chron--22","#CCECF4",155.79
+"1442",1062,"M25A",NA,156.04,156.56,"chron","Geomagnetic Polarity Chron--22","#CCECF4",156.3
+"1443",1061,"M26",NA,156.56,157.25,"chron","Geomagnetic Polarity Chron--22","#CCECF4",156.905
+"1444",1060,"M27",NA,157.25,157.57,"chron","Geomagnetic Polarity Chron--22","#B3E3EE",157.41
+"1445",1059,"M28",NA,157.57,158.89,"chron","Geomagnetic Polarity Chron--22","#BFE7F1",158.23
+"1446",1058,"M29",NA,158.89,159.38,"chron","Geomagnetic Polarity Chron--22","#BFE7F1",159.135
+"1447",1057,"M30",NA,159.38,159.78,"chron","Geomagnetic Polarity Chron--22","#BFE7F1",159.58
+"1448",1056,"M31",NA,159.78,160.15,"chron","Geomagnetic Polarity Chron--22","#BFE7F1",159.965
+"1449",1055,"M32",NA,160.15,160.73,"chron","Geomagnetic Polarity Chron--22","#BFE7F1",160.44
+"1450",1054,"M33",NA,160.73,161.81,"chron","Geomagnetic Polarity Chron--22","#BFE7F1",161.27
+"1451",1053,"M34",NA,161.81,162.49,"chron","Geomagnetic Polarity Chron--22","#BFE7F1",162.15
+"1452",1052,"M35",NA,162.49,162.7,"chron","Geomagnetic Polarity Chron--22","#BFE7F1",162.595
+"1453",1051,"M36",NA,162.7,163.29,"chron","Geomagnetic Polarity Chron--22","#BFE7F1",162.995
+"1454",1050,"M37",NA,163.29,163.88,"chron","Geomagnetic Polarity Chron--22","#34B2C9",163.585
+"1455",1049,"M38",NA,163.88,165.04,"chron","Geomagnetic Polarity Chron--22","#BFE7E5",164.46
+"1456",1048,"M39",NA,165.04,166.72,"chron","Geomagnetic Polarity Chron--22","#80CFD8",165.88
+"1457",1047,"M40",NA,166.72,167.47,"chron","Geomagnetic Polarity Chron--22","#B3E2E3",167.095
+"1458",1046,"M41",NA,167.47,168.15,"chron","Geomagnetic Polarity Chron--22","#B3E2E3",167.81
+"1459",1045,"M42",NA,168.15,169.24,"chron","Geomagnetic Polarity Chron--22","#80CFD8",168.695
+"1460",1044,"M43",NA,169.24,169.99,"chron","Geomagnetic Polarity Chron--22","#A6DDE0",169.615
+"1461",1043,"M44",NA,169.99,170.76,"chron","Geomagnetic Polarity Chron--22","#80CFD8",170.375
