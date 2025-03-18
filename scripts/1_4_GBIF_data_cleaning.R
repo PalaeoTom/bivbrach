@@ -317,66 +317,38 @@ GBIF_biv[OIS.stages,"formation"] <- "Red Sea Coastal Plain"
 GBIF_biv[which(GBIF_biv$earliestAgeOrLowestStage == "Dogger alpha"),"formation"] <- "Brown Jura"
 GBIF_biv[which(GBIF_biv$earliestAgeOrLowestStage == "Dogger alpha"),"earliestAgeOrLowestStage"] <- "Aalenian-Callovian"
 
+## Fixing location for entries I've spotted
+GBIF_biv[which(GBIF_biv$earliestAgeOrLowestStage == "Headonian"),"locality"] <- "Thorness Bay, Isle of Wight, UK"
+
 ## Clean stages - might move this to main cleaning scripts
 ## First, read in stages
-stage_names <- read.csv("data/metadata/cleaned_stages.csv", row.names = 1, header = T)$name
+stage_names <- unique(read.csv("data/metadata/macrostrat_raw.csv", row.names = 1, header = T)$name)
+View(data.frame(stage.names))
 
 ## Now clean
 source("functions/clean.stage.names.R")
 GBIF_biv <- clean.stage.names(data = GBIF_biv, columns = c("latestAgeOrHighestStage", "earliestAgeOrLowestStage"), stages = stage_names)
 
-##### Resume here - look to see if there is an automated way to leverage macrostrat stratigraphy.
-
-## get stages
-strat.names <- c("international ages", "international epochs", "international periods", "calcareous nannoplankton zones", "New Zealand ages", "custom COSUNA", "North American land mammal ages",
-                 "international intervals", "COSUNA", "international eras", "international eons", "Trilobite Zonation - Laurentia", "Conodont Zonation", "North American Regional", "Ammonite Zonation - Boreal",
-                 "Ammonite Zonation - Western Interior", "international intervals covering all time", "Scotese Reconstruction", "Geomagnetic Polarity Chron", "Geomagnetic Polarity Subchron", "Planktic foraminiferal Primary Biozones",
-                 "Planktic foraminiferal Secondary Biozones", "Planktic foraminiferal datums", "Cretaceous Planktic foraminifer zonations", "Low latitude radiolarian zonation",
-                 "Neogene North Pacific Diatom Biochronology", "Neogene North Pacific Diatom Biochronology Subzones", "Siberian Regional", "Australian Regional", "Western Europe Regional",
-                 "Russian Platform Regional Stages", "Russian Precambrian Eras", "Russian Precambrian Eons", "Russian Epochs", "Russian Stages")
-## Get all terrestrial stratigraphic schemes from Macrostrat
-schemes <- downloadTime(strat.names[1])
-for(i in strat.names){
-  schemes <- rbind(schemes, downloadTime(i))
-}
-rownames(schemes) <- NULL
-write.csv(schemes, file = "data/metadata/macrostrat_raw.csv")
-
-## Now check bivalves
+## Now check bivalves against Macrostrat names
 View(data.frame(table(GBIF_biv$earliestAgeOrLowestStage)))
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Albian/Cenomamian")] <- "Albian-Cenomanian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Alexandrian")] <- "Rhuddanian-Aeronian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Altonian")] <- "Burdigalian-Langhian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Waiauan")] <- "Tortonian-Serravallian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Altonian/Waiauan")] <- "Burdigalian-Tortonian"
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Anversian")] <- "Langhian-Serravallian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Arikareean")] <- "Rupelian-Burdigalian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Arikareean Upper")] <- "Rupelian-Aquitanian"
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Astian")] <- "Zanclean-Piacenzian"
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Astiense")] <- "Zanclean-Piacenzian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Atokan")] <- "Bashkirian-Moscovian"
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Badenian")] <- "Serravallian"
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Badenian/Burdigalian")] <- "Serravallian-Burdigalian"
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Balcombian")] <- "Langhian"
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Baventian")] <- "Gelasian"
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Berriassian")] <- "Berriasian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Blackriverian")] <- "Sandbian-Katian"
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Bolderian")] <- "Burdigalian-Serravallian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Bortonian")] <- "Bartonian-Lutetian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Bridgerian")] <- "Lutetian-Ypresian"
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Bruxelian")] <- "Lutetian"
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Bruxellian")] <- "Lutetian"
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Canadian")] <- "Tremadocian-Sandbian"
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Caradocian")] <- "Sandbian-Katian"
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Carixian")] <- "Pliensbachian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Castlecliffian")] <- "Chibanian-Calabrian"
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Cazenovian")] <- "Givetian-Eifelian"
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Cerithian")] <- "Serravallian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Chadronian")] <- "Priabonian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Chautauquan")] <- "Famennian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Chazyan")] <- "Darriwilian-Dapingian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Chemungian")] <- "Frasnian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Chesterian")] <- "Visean-Serpukhovian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Chautauquan")] <- "Chatauquan"
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Cincinnatian")] <- "Katian-Hirnantian"
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Claibornian")] <- "Lutetian-Bartonian"
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Coblenzian")] <- "Emsian-Pragian"
@@ -385,23 +357,84 @@ GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Co
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Cuisian")] <- "Ypresian"
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Cuisian/Lutetian")] <- "Ypresian-Lutetian"
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Cuisien")] <- "Ypresian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Desmoinesian")] <- "Moscovian-Kasimovian"
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Dordonian")] <- "Maastrichtian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Duntronian")] <- "Chattian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Duntronian")] <- "Duntroonian"
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Early-Pleistocene")] <- "Early Pleistocene"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Edenian")] <- "Katian"
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Eemian")] <- "Late Pleistocene"
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Egerian")] <- "Chattian-Aquitanian"
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Eggenburgian")] <- "Burdigalian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Falunian")] <- ""
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Falunian")] <- "Langhian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Fuvelian")] <- "Campanian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Gearyan")] <- "Wolfcampian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Gothlandian")] <- "Silurian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Gramian")] <- "Serravallian-Messinian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Graysian")] <- "Serravallian-Messinian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Gulfian")] <- "Late Cretaceous"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Gulfian?")] <- "Late Cretaceous"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Hallian")] <- "Calabrian-Chibanian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Hamiltonian")] <- "Eifelian-Givetian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Eutyrrhenian")] <- "Late Pleistocene"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Headonian")] <- "Priabonian-Rupelian"
+GBIF_biv[intersect(which(GBIF_biv[,"countryCode"] == "US"),which(GBIF_biv[,"earliestAgeOrLowestStage"] == "Helderbergian")),"earliestAgeOrLowestStage"] <- "Pridoli-Emsian"
+GBIF_biv[intersect(which(GBIF_biv[,"countryCode"] == "CA"),which(GBIF_biv[,"earliestAgeOrLowestStage"] == "Helderbergian")),"earliestAgeOrLowestStage"] <- "Pridoli-Emsian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Helvetian")] <- "Burdigalian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Hemmoorian")] <- "Burdigalian-Langhian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Homerian (Wenlock)")] <- "Homerian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Ionian")] <- "Chibanian-Late Pleistocene"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Jacksonian")] <- "Bartonian-Priabonian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Janjukian")] <- "Rupelian-Chattian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Juanian")] <- "Chattian-Aquitanian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "L. Asghillian (Kralodvorian)")] <- "Katian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "L. Ashgillian (Berounian)")] <- "Katian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "L. Ashgillian (Kralodvorian)")] <- "Katian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "L. Darriwilian (Dobrotivian)")] <- "Darriwilian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Langhian-Serravallien")] <- "Langhian-Serravallian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Langsettian")] <- "Pennsylvanian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Late-Miocene")] <- "Late Miocene"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Late-Pleistocene")] <- "Late Pleistocene"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Late(?) Oligocene")] <- "Late Oligocene"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Latorfian")] <- "Rupelian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Lattorfian")] <- "Rupelian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Ledian")] <- "Lutetian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Lias")] <- "Rhaetian-Aalenian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Llandeilian")] <- "Llandeilo"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Llandoverian")] <- "Llandovery"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Longfordian")] <- "Chattian-Burdigalian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "lower Comanchean")] <- "Albian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Lower Dogger")] <- "Middle Jurassic"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Lower Lias")] <- "Rhaetian-Aalenian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Ludian")] <- "Late Eocene"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Ludlovian")] <- "Ludlow"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Malm")] <- "Oxfordian-Tithonian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Martinez")] <- "Thanetian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Middle Dogger")] <- "Middle Jurassic"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Moclipsian")] <- "Piacenzian-Gelasian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Montanan")] <- "Santonian-Maastrichtian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Muschelkalk")] <- "Anisian-Ladinian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Namurian")] <- "Mississippian-Pennsylvanian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Namurian A")] <- "Mississippian-Pennsylvanian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Narizian")] <- "Lutetian-Priabonian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Neocomian")] <- "Berriasian-Hauterivian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Newportian")] <- "Aquitanian-Serravallian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "OIS 5")] <- "Chibanian-Late Pleistocene"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "OIS 7")] <- "Chibanian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Onondagan")] <- "Siegenian-Eifelian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Osagian Stage")] <- "Osagean"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Oxfordian-Kimmeridgien")] <- "Oxfordian-Kimmeridgian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Paspotansan")] <- "Maastrichtian-Chattian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Piacenzian (Waltonian)")] <- "Piacenzian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Pillarian")] <- "Aquitanian-Serravallian"
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Plaisancian")] <- ""
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "")] <- ""
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "")] <- ""
+GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "")] <- ""
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "")] <- ""
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "")] <- ""
 GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "")] <- ""
 
 
 
-
-
+View(GBIF_biv[which(GBIF_biv$earliestAgeOrLowestStage == "Plaisancian"),])
 
 
 

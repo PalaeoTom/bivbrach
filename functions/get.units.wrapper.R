@@ -1,5 +1,5 @@
 get.units.wrapper <- function(forms, addenda = c("limestone", "limestones", "shale", "shales", "clay", "clays", "dolomite", "dolomites", "chalk", "chalks", "marble", "marbles", "schist", "schists", "chert", "cherts", "conglomerate", "conglomerates", "sandstone", "sandstones")){
-  ms <- data.frame(forms,forms)
+  ms <- data.frame(forms,forms,forms)
   ## Assign categories
   rank <- rep("Fm", nrow(ms))
   rank[which(str_detect(ms[,1], " group$"))] <- "Gp"
@@ -12,12 +12,15 @@ get.units.wrapper <- function(forms, addenda = c("limestone", "limestones", "sha
   ms[,2] <- str_replace(ms[,2], " group$", "")
   ## Combine
   ms <- cbind(ms, rank, rank)
-  colnames(ms) <- c("verbatim_name", "name", "recorded_rank", "updated_rank")
+  colnames(ms) <- c("verbatim_name", "name", "updated_name", "rank", "updated_rank")
   ## Add additional output columns
   ms$t_age <- NA
   ms$b_age <- NA
   ms$lithology <- ""
   ms$environment <- ""
+  ms$name_updated <- F
+  ms$rank_updated <- F
+  ms$both_updated <- F
   ms$check <- ""
   ## Pull data and populate
   for(i in 1:nrow(ms)){
@@ -44,9 +47,13 @@ get.units.wrapper <- function(forms, addenda = c("limestone", "limestones", "sha
     if(any(str_detect(unlist(unit[,c(8:11)]), pattern = regex(paste0("^",ms[i,"name"],"$"), ignore_case = T)))){
       ref <- unit[str_detect(unit[,ms[i,"updated_rank"]], pattern = regex(paste0("^",ms[i,"name"],"$"), ignore_case = T)),]
       if(nrow(ref)==0){
-        ## look at other ranks
+        ## look at other ranks and assign
         ms[i,"updated_rank"] <- colnames(unit[,c(8:11)])[which(apply(unit[,c(8:11)], 2, function(x) any(str_detect(x, pattern = regex(paste0("^",ms[i,"name"],"$"), ignore_case = T)))))]
-        ## now get ref using new rank
+        ## set ranks updated to T
+        ms[i,"rank_updated"] <- T
+        ## update name
+        ms[i,"updated_name"] <- paste0(ms[i,"name"]," ", ms[i,"updated_rank"])
+        ## get
         ref <- unit[str_detect(unit[,ms[i,"updated_rank"]], pattern = regex(paste0("^",ms[i,"name"],"$"), ignore_case = T)),]
       }
     } else {
@@ -66,8 +73,11 @@ get.units.wrapper <- function(forms, addenda = c("limestone", "limestones", "sha
           rm(unit)
           next
         } else {
-          ## Otherwise, if one match, update name and get ref
+          ## Otherwise, if one match, update name, mark tracker, and get ref
           ms[i,"name"] <- ad.match
+          ms[i,"updated_name"] <- paste0(ad.match, " ", ms[i,"updated_rank"])
+          ## update tracker
+          ms[i,"name_updated"] <- T
           ## Get ref
           ref <- unit[str_detect(unit[,ms[i,"updated_rank"]], pattern = regex(paste0("^",ms[i,"name"],"$"), ignore_case = T)),]
         }
@@ -88,6 +98,11 @@ get.units.wrapper <- function(forms, addenda = c("limestone", "limestones", "sha
             ms[i,"updated_rank"] <- colnames(unit[,c(8:11)])[which(apply(unit[,c(8:11)], 2, function(x) any(str_detect(x, pattern = regex(paste0("^",ad.match,"$"), ignore_case = T)))))]
             ## Update name
             ms[i,"name"] <- ad.match
+            ms[i,"updated_name"] <- paste0(ad.match, " ", ms[i,"updated_rank"])
+            ## Update trackers
+            ms[i,"updated_name"] <- T
+            ms[i,"rank_updated"] <- T
+            ms[i,"both_updated"] <- T
             ## Get ref
             ref <- unit[str_detect(unit[,ms[i,"updated_rank"]], pattern = regex(paste0("^",ms[i,"name"],"$"), ignore_case = T)),]
           }
@@ -107,6 +122,11 @@ get.units.wrapper <- function(forms, addenda = c("limestone", "limestones", "sha
     ms[i,"environment"] <- str_flatten(unique(as.vector(unlist(sapply(1:length(ref[,"environ"]), function(x) ref$environ[[x]]$name)))), ",")
     rm(unit)
   }
+  ## Pass over updated name, replacing abbreviations with full names
+  ms[,"updated_name"] <- str_replace_all(ms[,"updated_name"], pattern = ". Gp$", " group")
+  ms[,"updated_name"] <- str_replace_all(ms[,"updated_name"], pattern = ". SGp$", " supergroup")
+  ms[,"updated_name"] <- str_replace_all(ms[,"updated_name"], pattern = ". Fm$", " formation")
+  ms[,"updated_name"] <- str_replace_all(ms[,"updated_name"], pattern = ". Mbr$", " member")
   ## return ms
   return(ms)
 }
