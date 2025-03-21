@@ -109,7 +109,9 @@ home <- getwd()
 
 ## Read in key
 setwd("~/Library/CloudStorage/OneDrive-Nexus365/Bivalve_brachiopod/data")
-key <- read_csv(file = "incomplete_formation_key_v2.csv", col_names = T)
+key <- read_csv(file = "incomplete_formation_key_v2.csv", col_names = T, show_col_types = F)
+key$change_to[is.na(key$change_to)] <- ""
+key$member[is.na(key$member)] <- ""
 setwd(home)
 
 ## Split into PBDB and non PBDB

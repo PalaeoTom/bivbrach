@@ -276,12 +276,17 @@ GBIF_biv[which(GBIF_biv$latestAgeOrHighestStage == "Upper Ludlow, Pragian, Zlich
 #saveRDS(GBIF_biv, file = "data/GBIF/GBIF_biv_milestone.Rds")
 GBIF_biv <- readRDS("data/GBIF/GBIF_biv_milestone.Rds")
 
+## Parition out original stage data for record
+orig_biv_stages <- GBIF_biv[,c(25,26)]
+colnames(orig_biv_stages) <- paste0(colnames(orig_biv_stages), "_OLD")
+
 ## Clean up stages
 noLate <- c()
 noLate <-c(noLate, which(GBIF_biv$latestAgeOrHighestStage == "early"))
 noLate <-c(noLate, which(GBIF_biv$latestAgeOrHighestStage == "Early"))
 noLate <-c(noLate, which(GBIF_biv$latestAgeOrHighestStage == "early late"))
 noLate <-c(noLate, which(GBIF_biv$latestAgeOrHighestStage == "early to middle"))
+noLate <-c(noLate, which(GBIF_biv$latestAgeOrHighestStage == "early Middle"))
 noLate <-c(noLate, which(GBIF_biv$latestAgeOrHighestStage == "Early to Middle"))
 noLate <-c(noLate, which(GBIF_biv$latestAgeOrHighestStage == "early-middle"))
 noLate <-c(noLate, which(GBIF_biv$latestAgeOrHighestStage == "late"))
@@ -301,6 +306,7 @@ noEarly <-c(noEarly, which(GBIF_biv$earliestAgeOrLowestStage == "Lower/Early"))
 noEarly <-c(noEarly, which(GBIF_biv$earliestAgeOrLowestStage == "middle"))
 noEarly <-c(noEarly, which(GBIF_biv$earliestAgeOrLowestStage == "Middle"))
 noEarly <-c(noEarly, which(GBIF_biv$earliestAgeOrLowestStage == "Unnamed"))
+noEarly <-c(noEarly, which(GBIF_biv$earliestAgeOrLowestStage == "Early to Middle"))
 noEarly <- unique(noEarly)
 GBIF_biv$earliestAgeOrLowestStage[noEarly] <- ""
 
@@ -317,126 +323,41 @@ GBIF_biv[OIS.stages,"formation"] <- "Red Sea Coastal Plain"
 GBIF_biv[which(GBIF_biv$earliestAgeOrLowestStage == "Dogger alpha"),"formation"] <- "Brown Jura"
 GBIF_biv[which(GBIF_biv$earliestAgeOrLowestStage == "Dogger alpha"),"earliestAgeOrLowestStage"] <- "Aalenian-Callovian"
 
-## Fixing location for entries I've spotted
+## Fixing location for problem entries spotted along the way
 GBIF_biv[which(GBIF_biv$earliestAgeOrLowestStage == "Headonian"),"locality"] <- "Thorness Bay, Isle of Wight, UK"
 
 ## Clean stages - might move this to main cleaning scripts
 ## First, read in stages
-stage_names <- unique(read.csv("data/metadata/macrostrat_raw.csv", row.names = 1, header = T)$name)
-View(data.frame(stage.names))
+stages <- read.csv("data/metadata/macrostrat_raw.csv", row.names = 1, header = T)
+stages <- stages[!duplicated(stages[,c("name", "t_age", "b_age")]),]
+stage_names <- stages$name
+#View(data.frame(stage_names))
 
 ## Now clean
 source("functions/clean.stage.names.R")
 GBIF_biv <- clean.stage.names(data = GBIF_biv, columns = c("latestAgeOrHighestStage", "earliestAgeOrLowestStage"), stages = stage_names)
 
 ## Now check bivalves against Macrostrat names
-View(data.frame(table(GBIF_biv$earliestAgeOrLowestStage)))
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Albian/Cenomamian")] <- "Albian-Cenomanian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Anversian")] <- "Langhian-Serravallian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Astian")] <- "Zanclean-Piacenzian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Astiense")] <- "Zanclean-Piacenzian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Badenian")] <- "Serravallian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Badenian/Burdigalian")] <- "Serravallian-Burdigalian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Balcombian")] <- "Langhian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Baventian")] <- "Gelasian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Berriassian")] <- "Berriasian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Bolderian")] <- "Burdigalian-Serravallian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Bruxelian")] <- "Lutetian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Bruxellian")] <- "Lutetian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Canadian")] <- "Tremadocian-Sandbian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Caradocian")] <- "Sandbian-Katian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Carixian")] <- "Pliensbachian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Cazenovian")] <- "Givetian-Eifelian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Cerithian")] <- "Serravallian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Chautauquan")] <- "Chatauquan"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Cincinnatian")] <- "Katian-Hirnantian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Claibornian")] <- "Lutetian-Bartonian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Coblenzian")] <- "Emsian-Pragian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Comanchean")] <- "Albian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Corallian")] <- "Oxfordian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Cuisian")] <- "Ypresian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Cuisian/Lutetian")] <- "Ypresian-Lutetian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Cuisien")] <- "Ypresian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Dordonian")] <- "Maastrichtian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Duntronian")] <- "Duntroonian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Early-Pleistocene")] <- "Early Pleistocene"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Eemian")] <- "Late Pleistocene"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Egerian")] <- "Chattian-Aquitanian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Eggenburgian")] <- "Burdigalian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Falunian")] <- "Langhian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Fuvelian")] <- "Campanian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Gearyan")] <- "Wolfcampian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Gothlandian")] <- "Silurian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Gramian")] <- "Serravallian-Messinian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Graysian")] <- "Serravallian-Messinian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Gulfian")] <- "Late Cretaceous"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Gulfian?")] <- "Late Cretaceous"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Hallian")] <- "Calabrian-Chibanian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Hamiltonian")] <- "Eifelian-Givetian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Eutyrrhenian")] <- "Late Pleistocene"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Headonian")] <- "Priabonian-Rupelian"
-GBIF_biv[intersect(which(GBIF_biv[,"countryCode"] == "US"),which(GBIF_biv[,"earliestAgeOrLowestStage"] == "Helderbergian")),"earliestAgeOrLowestStage"] <- "Pridoli-Emsian"
-GBIF_biv[intersect(which(GBIF_biv[,"countryCode"] == "CA"),which(GBIF_biv[,"earliestAgeOrLowestStage"] == "Helderbergian")),"earliestAgeOrLowestStage"] <- "Pridoli-Emsian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Helvetian")] <- "Burdigalian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Hemmoorian")] <- "Burdigalian-Langhian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Homerian (Wenlock)")] <- "Homerian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Ionian")] <- "Chibanian-Late Pleistocene"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Jacksonian")] <- "Bartonian-Priabonian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Janjukian")] <- "Rupelian-Chattian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Juanian")] <- "Chattian-Aquitanian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "L. Asghillian (Kralodvorian)")] <- "Katian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "L. Ashgillian (Berounian)")] <- "Katian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "L. Ashgillian (Kralodvorian)")] <- "Katian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "L. Darriwilian (Dobrotivian)")] <- "Darriwilian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Langhian-Serravallien")] <- "Langhian-Serravallian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Langsettian")] <- "Pennsylvanian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Late-Miocene")] <- "Late Miocene"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Late-Pleistocene")] <- "Late Pleistocene"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Late(?) Oligocene")] <- "Late Oligocene"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Latorfian")] <- "Rupelian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Lattorfian")] <- "Rupelian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Ledian")] <- "Lutetian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Lias")] <- "Rhaetian-Aalenian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Llandeilian")] <- "Llandeilo"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Llandoverian")] <- "Llandovery"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Longfordian")] <- "Chattian-Burdigalian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "lower Comanchean")] <- "Albian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Lower Dogger")] <- "Middle Jurassic"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Lower Lias")] <- "Rhaetian-Aalenian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Ludian")] <- "Late Eocene"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Ludlovian")] <- "Ludlow"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Malm")] <- "Oxfordian-Tithonian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Martinez")] <- "Thanetian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Middle Dogger")] <- "Middle Jurassic"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Moclipsian")] <- "Piacenzian-Gelasian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Montanan")] <- "Santonian-Maastrichtian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Muschelkalk")] <- "Anisian-Ladinian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Namurian")] <- "Mississippian-Pennsylvanian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Namurian A")] <- "Mississippian-Pennsylvanian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Narizian")] <- "Lutetian-Priabonian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Neocomian")] <- "Berriasian-Hauterivian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Newportian")] <- "Aquitanian-Serravallian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "OIS 5")] <- "Chibanian-Late Pleistocene"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "OIS 7")] <- "Chibanian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Onondagan")] <- "Siegenian-Eifelian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Osagian Stage")] <- "Osagean"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Oxfordian-Kimmeridgien")] <- "Oxfordian-Kimmeridgian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Paspotansan")] <- "Maastrichtian-Chattian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Piacenzian (Waltonian)")] <- "Piacenzian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Pillarian")] <- "Aquitanian-Serravallian"
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "Plaisancian")] <- ""
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "")] <- ""
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "")] <- ""
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "")] <- ""
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "")] <- ""
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "")] <- ""
-GBIF_biv$earliestAgeOrLowestStage[which(GBIF_biv$earliestAgeOrLowestStage == "")] <- ""
+## Run bulk.update.stages (aggregation of all specific name changes identified thus far), then check for other errors
+source("functions/bulk.update.stages.R")
+GBIF_biv$earliestAgeOrLowestStage <- bulk.update.stages(GBIF_biv$earliestAgeOrLowestStage)
 
+## Inspect and update function
+#View(data.frame(table(GBIF_biv$earliestAgeOrLowestStage)))
 
+## Load function and run again
+#source("functions/bulk.update.stages.R")
+#GBIF_biv$earliestAgeOrLowestStage <- bulk.update.stages(GBIF_biv$earliestAgeOrLowestStage)
 
-View(GBIF_biv[which(GBIF_biv$earliestAgeOrLowestStage == "Plaisancian"),])
+## Now run for late stages, then check
+GBIF_biv$latestAgeOrHighestStage <- bulk.update.stages(GBIF_biv$latestAgeOrHighestStage)
 
+## Then inspect and add to function
+#View(data.frame(table(GBIF_biv$latestAgeOrHighestStage)))
 
+## re-load function and run again
+#source("functions/bulk.update.stages.R")
+#GBIF_biv$latestAgeOrHighestStage <- bulk.update.stages(GBIF_biv$latestAgeOrHighestStage)
 
 ## Now unusuable records have been dropped, split stages and formations
 ## Start with stages
@@ -454,12 +375,11 @@ earlyPunct <- c(earlyPunct, GBIF_biv$earliestAgeOrLowestStage[which(str_detect(G
 earlyPunct <- c(earlyPunct, GBIF_biv$earliestAgeOrLowestStage[which(str_detect(GBIF_biv$earliestAgeOrLowestStage, pattern = "[|]"))])
 earlyPunct <- unique(earlyPunct)
 
-View(data.frame(latePunct))
-latePunct <- latePunct[c(8, 10, 26, 28, 30, 31, 33, 34, 35, 36, 42, 43, 44, 46, 47, 50, 53, 56, 58, 61, 62, 63)]
+#View(data.frame(latePunct))
+latePunct <- latePunct[-c(7, 8, 17, 19:21, 23:29, 35, 40:41, 47, 50, 53:54, 56, 59)]
 
-View(data.frame(earlyPunct))
-earlyPunct <- earlyPunct[c(1, 2, 5, 6, 12, 14, 16, 22, 23, 30, 33, 35, 38, 39, 40, 41, 42, 43, 46, 47, 48, 49, 50, 51, 52,
-                           53, 54, 57, 58, 59, 60, 62, 63, 77, 80, 82, 83, 86, 87, 88)]
+#View(data.frame(earlyPunct))
+earlyPunct <- earlyPunct[-c(20:21, 32:35, 40, 44:47, 49:50, 54, 57, 64, 75:76, 84, 88:100, 106, 109, 111)]
 
 ## get ages to be split
 splitLate <- c()
@@ -482,44 +402,21 @@ colnames(earlyStage) <- "earliestAgeOrLowestStage1"
 ## Only 2 stages for late, 3 for early
 lateStage$latestAgeOrHighestStage2 <- ""
 earlyStage$earliestAgeOrLowestStage2 <- ""
-earlyStage$earliestAgeOrLowestStage3 <- ""
 
-## Specify punctuation
-p <- c('-', ',' , '/', ' to ')
-
-## define new formations list
-newEarly <- as.list(earlyStage$earliestAgeOrLowestStage1)
+## Specify characters to split by
+p <- c('-', ',' , '/', ' to ', ' or ', '|')
 
 ## Split early stages
 for(i in splitEarly){
   for(m in p){
-    if(length(newEarly[[i]]) == 1){
-      if(str_detect(newEarly[[i]], pattern = fixed(m))){
-        ## get new formation
-        newEarly[[i]] <- unlist(str_split(newEarly[[i]], pattern = fixed(m)))
-      }
-    } else {
-      if(any(str_detect(newEarly[[i]], pattern = fixed(m)))){
-        ## get which
-        tbSplit <- newEarly[[i]][which(str_detect(newEarly[[i]], pattern = fixed(m)))]
-        ## to keep
-        tbKept <- newEarly[[i]][which(!str_detect(newEarly[[i]], pattern = fixed(m)))]
-        ## split tbSplit
-        split <- unlist(str_split(tbSplit, pattern = fixed(m)))
-        ## if any half equals "", drop
-        if(any(split == "")){
-          split <- split[-which(split == "")]
-        }
-        newEarly[[i]] <- c(tbKept, split)
+    if(str_detect(earlyStage$earliestAgeOrLowestStage1[i], pattern = fixed(m))){
+      ## extract stages
+      ageVec <- unlist(str_split(earlyStage$earliestAgeOrLowestStage1[i], pattern = fixed(m)))
+      ## assign to new columns
+      for(f in 1:length(ageVec)){
+        earlyStage[i,f] <- ageVec[f]
       }
     }
-  }
-}
-
-## populations earlyStage object for attachment
-for(r in 1:nrow(earlyStage)){
-  for(c in 1:length(newEarly[[r]])){
-    earlyStage[r,c] <- newEarly[[r]][c]
   }
 }
 
@@ -537,12 +434,27 @@ for(i in splitLate){
   }
 }
 
-## delete original stage data columns
+## Finally, pass over each entry, only retaining Macrostrat compatible strings
+stages <- read.csv("data/metadata/macrostrat_raw.csv", row.names = 1, header = T)
+stages <- stages[!duplicated(stages[,c("name", "t_age", "b_age")]),]
+source("functions/stage.checker.R")
+
+## Run stage checker
+earlyStage$earliestAgeOrLowestStage1 <- stage.checker(earlyStage$earliestAgeOrLowestStage1, stages)
+earlyStage$earliestAgeOrLowestStage2 <- stage.checker(earlyStage$earliestAgeOrLowestStage2, stages)
+lateStage$latestAgeOrHighestStage1 <- stage.checker(lateStage$latestAgeOrHighestStage1, stages)
+lateStage$latestAgeOrHighestStage2 <- stage.checker(lateStage$latestAgeOrHighestStage2, stages)
+
+## Combine new stage objects and update names
+new_biv_stages <- cbind(earlyStage, lateStage)
+colnames(new_biv_stages) <- paste0("Macrostrat_unit", 1:4)
+
+## delete old stages
 GBIF_biv$earliestAgeOrLowestStage <- NULL
 GBIF_biv$latestAgeOrHighestStage <- NULL
 
 ## Attach to dataset
-GBIF_biv <- cbind(GBIF_biv, earlyStage, lateStage)
+GBIF_biv <- cbind(GBIF_biv, new_biv_stages, orig_biv_stages)
 
 ##### Splitting formations #####
 ## Now to do the same for formations
@@ -625,29 +537,19 @@ GBIF_biv <- cbind(GBIF_biv, formations)
 source("functions/misspell.R")
 GBIF_biv$genus <- misspell(GBIF_biv$genus)
 
-## Drop punctuation from formations and stages (fossilbrush will clean taxa)
+## Drop punctuation from formations and genus names
 GBIF_biv$genus <- str_replace_all(GBIF_biv$genus, pattern = "[:punct:]", replacement = "")
-GBIF_biv$earliestAgeOrLowestStage1 <- str_replace_all(GBIF_biv$earliestAgeOrLowestStage1, pattern = "[:punct:]", replacement = "")
-GBIF_biv$earliestAgeOrLowestStage2 <- str_replace_all(GBIF_biv$earliestAgeOrLowestStage2, pattern = "[:punct:]", replacement = "")
-GBIF_biv$earliestAgeOrLowestStage3 <- str_replace_all(GBIF_biv$earliestAgeOrLowestStage3, pattern = "[:punct:]", replacement = "")
-GBIF_biv$latestAgeOrHighestStage1 <- str_replace_all(GBIF_biv$latestAgeOrHighestStage1, pattern = "[:punct:]", replacement = "")
-GBIF_biv$latestAgeOrHighestStage2 <- str_replace_all(GBIF_biv$latestAgeOrHighestStage2, pattern = "[:punct:]", replacement = "")
 GBIF_biv$formation1 <- str_replace_all(GBIF_biv$formation1, pattern = "[:punct:]", replacement = "")
 GBIF_biv$formation2 <- str_replace_all(GBIF_biv$formation2, pattern = "[:punct:]", replacement = "")
 GBIF_biv$formation3 <- str_replace_all(GBIF_biv$formation3, pattern = "[:punct:]", replacement = "")
 GBIF_biv$formation4 <- str_replace_all(GBIF_biv$formation4, pattern = "[:punct:]", replacement = "")
 
-## Correct capitalization
+## Correct capitalization for genera and formations
 GBIF_biv$genus <- str_to_title(GBIF_biv$genus)
 GBIF_biv$formation1 <- str_to_title(GBIF_biv$formation1)
 GBIF_biv$formation2 <- str_to_title(GBIF_biv$formation2)
 GBIF_biv$formation3 <- str_to_title(GBIF_biv$formation3)
 GBIF_biv$formation4 <- str_to_title(GBIF_biv$formation4)
-GBIF_biv$earliestAgeOrLowestStage1 <- str_to_title(GBIF_biv$earliestAgeOrLowestStage1)
-GBIF_biv$earliestAgeOrLowestStage2 <- str_to_title(GBIF_biv$earliestAgeOrLowestStage2)
-GBIF_biv$earliestAgeOrLowestStage3 <- str_to_title(GBIF_biv$earliestAgeOrLowestStage3)
-GBIF_biv$latestAgeOrHighestStage1 <- str_to_title(GBIF_biv$latestAgeOrHighestStage1)
-GBIF_biv$latestAgeOrHighestStage2 <- str_to_title(GBIF_biv$latestAgeOrHighestStage2)
 
 ## Tidy up species
 #View(data.frame(table(GBIF_biv$species)))
@@ -668,23 +570,52 @@ gen.level <- c()
 gen.level <- c(gen.level,which(GBIF_biv$species == ""))
 GBIF_biv[gen.level, "species"] <- "sp."
 
-## Finally, drop recent entries
+## Finally, drop entries that could conceivably fall within Meghalayan
 recent <- c()
-recent <- c(recent, which(GBIF_biv$earliestAgeOrLowestStage1 == regex("Recent", ignore_case = T)))
-recent <- c(recent, which(GBIF_biv$earliestAgeOrLowestStage1== regex("Holocene", ignore_case = T)))
-recent <- c(recent, which(GBIF_biv$earliestAgeOrLowestStage2 == regex("Recent", ignore_case = T)))
-recent <- c(recent, which(GBIF_biv$earliestAgeOrLowestStage2== regex("Holocene", ignore_case = T)))
-recent <- c(recent, which(GBIF_biv$earliestAgeOrLowestStage3 == regex("Recent", ignore_case = T)))
-recent <- c(recent, which(GBIF_biv$earliestAgeOrLowestStage3== regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit1 == regex("Meghalayan", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit1 == regex("Haweran", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit1 == regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit1 == regex("Quaternary", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit1 == regex("NN21", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit1 == regex("Cenozoic", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit1 == regex("Phanerozoic", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit1 == regex("C1", ignore_case = T)))
+
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit2 == regex("Meghalayan", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit2 == regex("Haweran", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit2 == regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit2 == regex("Quaternary", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit2 == regex("NN21", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit2 == regex("Cenozoic", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit2 == regex("Phanerozoic", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit2 == regex("C1", ignore_case = T)))
+
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit3 == regex("Meghalayan", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit3 == regex("Haweran", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit3 == regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit3 == regex("Quaternary", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit3 == regex("NN21", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit3 == regex("Cenozoic", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit3 == regex("Phanerozoic", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit3 == regex("C1", ignore_case = T)))
+
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit4 == regex("Meghalayan", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit4 == regex("Haweran", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit4 == regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit4 == regex("Quaternary", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit4 == regex("NN21", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit4 == regex("Cenozoic", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit4 == regex("Phanerozoic", ignore_case = T)))
+recent <- c(recent, which(GBIF_biv$Macrostrat_unit4 == regex("C1", ignore_case = T)))
 recent <- unique(recent)
 if(length(recent) > 0){
   GBIF_biv <- GBIF_biv[-recent,]
 }
 
-## No punctuation or anything else
+## Export
+saveRDS(GBIF_biv, file = "data/GBIF/GBIF_biv_end_1_4.Rds")
 
 #### Brachiopods ####
-##### Manually inspecting taxonomy #####
 #View(data.frame(table(GBIF_brach$genus)))
 ## 6 gaps
 #View(GBIF_brach[which(GBIF_brach$genus == ""),])
@@ -734,17 +665,6 @@ GBIF_brach <- GBIF_brach[-droppers,]
 #saveRDS(GBIF_brach, file = "data/GBIF/GBIF_brach_milestone.Rds")
 GBIF_brach <- readRDS("data/GBIF/GBIF_brach_milestone.Rds")
 
-## Check for formations or stage or age
-recent <- c()
-recent <- c(recent, which(GBIF_brach$latestAgeOrHighestStage == regex("Recent", ignore_case = T)))
-recent <- c(recent, which(GBIF_brach$earliestAgeOrLowestStage == regex("Recent", ignore_case = T)))
-recent <- c(recent, which(GBIF_brach$latestAgeOrHighestStage == regex("Holocene", ignore_case = T)))
-recent <- c(recent, which(GBIF_brach$earliestAgeOrLowestStage == regex("Holocene", ignore_case = T)))
-recent <- unique(recent)
-if(length(recent) > 0){
-  GBIF_brach <- GBIF_brach[-recent,]
-}
-
 ## First, check for incomplete age categories.
 ## First, early
 #View(data.frame(table(GBIF_brach$earliestAgeOrLowestStage)))
@@ -763,7 +683,6 @@ noLate <-c(noLate, which(GBIF_brach$latestAgeOrHighestStage == ""))
 noLate <-c(noLate, which(GBIF_brach$latestAgeOrHighestStage == "early"))
 noLate <-c(noLate, which(GBIF_brach$latestAgeOrHighestStage == "late"))
 noLate <-c(noLate, which(GBIF_brach$latestAgeOrHighestStage == "middle"))
-noLate <-c(noLate, which(GBIF_brach$latestAgeOrHighestStage == "second stage"))
 noLate <- unique(noLate)
 
 ## Get no stage
@@ -810,25 +729,92 @@ noForm <- unique(noForm)
 droppers <- intersect(noForm, noStage)
 GBIF_brach <- GBIF_brach[-droppers, ]
 
+## Parition out original stage data for record
+orig_brach_stages <- GBIF_brach[,c(25,26)]
+colnames(orig_brach_stages) <- paste0(colnames(orig_brach_stages), "_OLD")
+
+#### Cleaning up stages #####
+## Clean up stages
+#View(data.frame(table(GBIF_brach$latestAgeOrHighestStage)))
+noLate <- c()
+noLate <-c(noLate, which(GBIF_brach$latestAgeOrHighestStage == "early"))
+noLate <-c(noLate, which(GBIF_brach$latestAgeOrHighestStage == "late"))
+noLate <-c(noLate, which(GBIF_brach$latestAgeOrHighestStage == "middle"))
+noLate <- unique(noLate)
+GBIF_brach$latestAgeOrHighestStage[noLate] <- ""
+
+#View(data.frame(table(GBIF_brach$earliestAgeOrLowestStage)))
+noEarly <-c()
+noEarly <-c(noEarly, which(GBIF_brach$earliestAgeOrLowestStage == "Early"))
+noEarly <-c(noEarly, which(GBIF_brach$earliestAgeOrLowestStage == "Middle"))
+noEarly <-c(noEarly, which(GBIF_brach$earliestAgeOrLowestStage == "Late"))
+noEarly <-c(noEarly, which(GBIF_brach$earliestAgeOrLowestStage == "Unnamed"))
+noEarly <-c(noEarly, which(GBIF_brach$earliestAgeOrLowestStage == "indet."))
+noEarly <- unique(noEarly)
+GBIF_brach$earliestAgeOrLowestStage[noEarly] <- ""
+
+## Clean stages - might move this to main cleaning scripts
+## First, read in stages
+stages <- read.csv("data/metadata/macrostrat_raw.csv", row.names = 1, header = T)
+stages <- stages[!duplicated(stages[,c("name", "t_age", "b_age")]),]
+stage_names <- stages$name
+
+## Now clean
+source("functions/clean.stage.names.R")
+GBIF_brach <- clean.stage.names(data = GBIF_brach, columns = c("latestAgeOrHighestStage", "earliestAgeOrLowestStage"), stages = stage_names)
+
+## Manual updates (spotted along the way)
+GBIF_brach[which(GBIF_brach$earliestAgeOrLowestStage == "New Scotland Ls"),"formation"] <- "New Scotland Ls"
+GBIF_brach[which(GBIF_brach$earliestAgeOrLowestStage == "Oolite"),"formation"] <- "Inferior Oolite"
+GBIF_brach[which(GBIF_brach$earliestAgeOrLowestStage == "White Jura"),"formation"] <- "White Jura"
+
+## Now check bivalves against Macrostrat names
+## Run bulk.update.stages (aggregation of all specific name changes identified thus far), then check for other errors
+source("functions/bulk.update.stages.R")
+GBIF_brach$earliestAgeOrLowestStage <- bulk.update.stages(GBIF_brach$earliestAgeOrLowestStage)
+
+## Inspect and update function
+#View(data.frame(table(GBIF_brach$earliestAgeOrLowestStage)))
+#View(data.frame(stage_names))
+
+## Load function and run again
+#source("functions/bulk.update.stages.R")
+#GBIF_brach$earliestAgeOrLowestStage <- bulk.update.stages(GBIF_brach$earliestAgeOrLowestStage)
+
+## Now run for late stages, then check
+GBIF_brach$latestAgeOrHighestStage <- bulk.update.stages(GBIF_brach$latestAgeOrHighestStage)
+
+## Then inspect and add to function
+#View(data.frame(table(GBIF_brach$latestAgeOrHighestStage)))
+#View(data.frame(stage_names))
+
+## re-load function and run again
+#source("functions/bulk.update.stages.R")
+#GBIF_brach$latestAgeOrHighestStage <- bulk.update.stages(GBIF_brach$latestAgeOrHighestStage)
+
 ##### Splitting ages #####
 #View(data.frame(table(GBIF_brach$latestAgeOrHighestStage)))
 latePunct <- c()
 latePunct <- c(latePunct, unique(GBIF_brach$latestAgeOrHighestStage[which(str_detect(GBIF_brach$latestAgeOrHighestStage, pattern = "[:punct:]"))]))
 latePunct <- c(latePunct, GBIF_brach$latestAgeOrHighestStage[which(str_detect(GBIF_brach$latestAgeOrHighestStage, pattern = " to "))])
+latePunct <- c(latePunct, GBIF_brach$latestAgeOrHighestStage[which(str_detect(GBIF_brach$latestAgeOrHighestStage, pattern = " or "))])
+latePunct <- c(latePunct, GBIF_brach$latestAgeOrHighestStage[which(str_detect(GBIF_brach$latestAgeOrHighestStage, pattern = "[|]"))])
 latePunct <- unique(latePunct)
 
 #View(data.frame(table(GBIF_brach$earliestAgeOrLowestStage)))
 earlyPunct <- c()
 earlyPunct <- c(earlyPunct, unique(GBIF_brach$earliestAgeOrLowestStage[which(str_detect(GBIF_brach$earliestAgeOrLowestStage, pattern = "[:punct:]"))]))
 earlyPunct <- c(earlyPunct, GBIF_brach$earliestAgeOrLowestStage[which(str_detect(GBIF_brach$earliestAgeOrLowestStage, pattern = " to "))])
+earlyPunct <- c(earlyPunct, GBIF_brach$earliestAgeOrLowestStage[which(str_detect(GBIF_brach$earliestAgeOrLowestStage, pattern = " or "))])
+earlyPunct <- c(earlyPunct, GBIF_brach$earliestAgeOrLowestStage[which(str_detect(GBIF_brach$earliestAgeOrLowestStage, pattern = "[|]"))])
 earlyPunct <- unique(earlyPunct)
 
 ## Wittle down to those to be split
-latePunct
-latePunct <- latePunct[c(4, 16, 17, 18, 19, 20, 22)]
+#View(data.frame(latePunct))
+latePunct <- latePunct[-c(1, 3, 9:11, 13:14, 16:17, 26)]
 
-earlyPunct
-earlyPunct <- earlyPunct[c(3, 5, 9, 13, 17, 25:32, 34:43, 49:50, 52:54, 59:60)]
+#View(data.frame(earlyPunct))
+earlyPunct <- earlyPunct[-c(1, 15, 32, 36:38, 40:42, 44:45, 48, 55, 69, 71, 74:76, 81, 85:88)]
 
 ## get entries to be split
 splitLate <- c()
@@ -853,7 +839,7 @@ lateStage$latestAgeOrHighestStage2 <- ""
 earlyStage$earliestAgeOrLowestStage2 <- ""
 
 ## Specify splitting strings/characters
-p <- c('-', '/', ',', ' to ')
+p <- c('-', ',' , '/', ' to ', ' or ', '|')
 
 ## Split late stages
 for(i in splitLate){
@@ -883,12 +869,27 @@ for(i in splitEarly){
   }
 }
 
+## Finally, pass over each entry, only retaining Macrostrat compatible strings
+stages <- read.csv("data/metadata/macrostrat_raw.csv", row.names = 1, header = T)
+stages <- stages[!duplicated(stages[,c("name", "t_age", "b_age")]),]
+source("functions/stage.checker.R")
+
+## Run stage checker
+earlyStage$earliestAgeOrLowestStage1 <- stage.checker(earlyStage$earliestAgeOrLowestStage1, stages)
+earlyStage$earliestAgeOrLowestStage2 <- stage.checker(earlyStage$earliestAgeOrLowestStage2, stages)
+lateStage$latestAgeOrHighestStage1 <- stage.checker(lateStage$latestAgeOrHighestStage1, stages)
+lateStage$latestAgeOrHighestStage2 <- stage.checker(lateStage$latestAgeOrHighestStage2, stages)
+
+## Combine new stage objects and update names
+new_brach_stages <- cbind(earlyStage, lateStage)
+colnames(new_brach_stages) <- paste0("Macrostrat_unit", 1:4)
+
 ## delete original stage data columns
 GBIF_brach$earliestAgeOrLowestStage <- NULL
 GBIF_brach$latestAgeOrHighestStage <- NULL
 
 ## Attach to dataset
-GBIF_brach <- cbind(GBIF_brach, earlyStage, lateStage)
+GBIF_brach <- cbind(GBIF_brach, new_brach_stages, orig_brach_stages)
 
 ##### Splitting formations #####
 ## First, update one problem formation
@@ -948,10 +949,6 @@ GBIF_brach$genus <- misspell(GBIF_brach$genus)
 
 ## Drop punctuation from formations and stages (fossilbrush will clean taxa)
 GBIF_brach$genus <- str_replace_all(GBIF_brach$genus, pattern = "[:punct:]", replacement = "")
-GBIF_brach$earliestAgeOrLowestStage1 <- str_replace_all(GBIF_brach$earliestAgeOrLowestStage1, pattern = "[:punct:]", replacement = "")
-GBIF_brach$earliestAgeOrLowestStage2 <- str_replace_all(GBIF_brach$earliestAgeOrLowestStage2, pattern = "[:punct:]", replacement = "")
-GBIF_brach$latestAgeOrHighestStage1 <- str_replace_all(GBIF_brach$latestAgeOrHighestStage1, pattern = "[:punct:]", replacement = "")
-GBIF_brach$latestAgeOrHighestStage2 <- str_replace_all(GBIF_brach$latestAgeOrHighestStage2, pattern = "[:punct:]", replacement = "")
 GBIF_brach$formation1 <- str_replace_all(GBIF_brach$formation1, pattern = "[:punct:]", replacement = "")
 GBIF_brach$formation2 <- str_replace_all(GBIF_brach$formation2, pattern = "[:punct:]", replacement = "")
 
@@ -959,10 +956,6 @@ GBIF_brach$formation2 <- str_replace_all(GBIF_brach$formation2, pattern = "[:pun
 GBIF_brach$genus <- str_to_title(GBIF_brach$genus)
 GBIF_brach$formation1 <- str_to_title(GBIF_brach$formation1)
 GBIF_brach$formation2 <- str_to_title(GBIF_brach$formation2)
-GBIF_brach$earliestAgeOrLowestStage1 <- str_to_title(GBIF_brach$earliestAgeOrLowestStage1)
-GBIF_brach$earliestAgeOrLowestStage2 <- str_to_title(GBIF_brach$earliestAgeOrLowestStage2)
-GBIF_brach$latestAgeOrHighestStage1 <- str_to_title(GBIF_brach$latestAgeOrHighestStage1)
-GBIF_brach$latestAgeOrHighestStage2 <- str_to_title(GBIF_brach$latestAgeOrHighestStage2)
 
 ## Tidy up species - first, reduce to species name alone
 splitSpecies <- str_split(GBIF_brach$species, pattern = fixed(" "))
@@ -977,35 +970,119 @@ GBIF_brach$species <- unlist(splitSpecies)
 
 ## Now to tidy up unknowns
 View(data.frame(table(GBIF_brach$species)))
-gen.level <- c()
+#gen.level <- c()
 gen.level <- c(gen.level,which(GBIF_brach$species == ""))
 GBIF_brach[gen.level, "species"] <- "sp."
 
 ## No punctuation or anything else
 
+## Finally, drop entries that could conceivably fall within Meghalayan
+recent <- c()
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit1 == regex("Meghalayan", ignore_case = T)))
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit1 == regex("Haweran", ignore_case = T)))
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit1 == regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit1 == regex("Quaternary", ignore_case = T)))
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit1 == regex("NN21", ignore_case = T)))
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit1 == regex("Cenozoic", ignore_case = T)))
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit1 == regex("Phanerozoic", ignore_case = T)))
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit1 == regex("C1", ignore_case = T)))
+
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit2 == regex("Meghalayan", ignore_case = T)))
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit2 == regex("Haweran", ignore_case = T)))
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit2 == regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit2 == regex("Quaternary", ignore_case = T)))
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit2 == regex("NN21", ignore_case = T)))
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit2 == regex("Cenozoic", ignore_case = T)))
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit2 == regex("Phanerozoic", ignore_case = T)))
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit2 == regex("C1", ignore_case = T)))
+
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit3 == regex("Meghalayan", ignore_case = T)))
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit3 == regex("Haweran", ignore_case = T)))
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit3 == regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit3 == regex("Quaternary", ignore_case = T)))
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit3 == regex("NN21", ignore_case = T)))
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit3 == regex("Cenozoic", ignore_case = T)))
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit3 == regex("Phanerozoic", ignore_case = T)))
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit3 == regex("C1", ignore_case = T)))
+
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit4 == regex("Meghalayan", ignore_case = T)))
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit4 == regex("Haweran", ignore_case = T)))
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit4 == regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit4 == regex("Quaternary", ignore_case = T)))
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit4 == regex("NN21", ignore_case = T)))
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit4 == regex("Cenozoic", ignore_case = T)))
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit4 == regex("Phanerozoic", ignore_case = T)))
+recent <- c(recent, which(GBIF_brach$Macrostrat_unit4 == regex("C1", ignore_case = T)))
+recent <- unique(recent)
+if(length(recent) > 0){
+  GBIF_brach <- GBIF_brach[-recent,]
+}
+
+## Export final version of brachiopods
+saveRDS(GBIF_brach, file = "data/GBIF/GBIF_brach_end_1_4.Rds")
+
+#### Combining GBIF datasets ####
+GBIF_brach <- readRDS("data/GBIF/GBIF_brach_end_1_4.Rds")
+GBIF_biv <- readRDS("data/GBIF/GBIF_biv_end_1_4.Rds")
+
 ## Standardise columns, rearrange, combine
-colnames(GBIF_biv)
-colnames(GBIF_brach)
 GBIF_brach$formation3 <- ""
 GBIF_brach$formation4 <- ""
-GBIF_brach$earliestAgeOrLowestStage3 <- ""
 
 ## Rearrange
-View(data.frame(colnames(GBIF_biv)))
-GBIF_biv <- GBIF_biv[,c(25, 2, 3, 4, 5, 6, 7, 8, 29, 30, 31, 32, 33, 21, 34, 35, 36, 37, 22, 23, 10, 11, 12, 28, 15, 16, 17, 18, 19, 20, 26, 24)]
+## Rearrange columns
+#View(data.frame(colnames(GBIF_biv)))
+GBIF_biv <- GBIF_biv[,c(25, 2, 3, 4, 5, 6, 7, 8, 29, 30, 31, 32, 21, 35, 36, 37, 38, 22, 23, 10, 11, 12, 28, 15, 16, 17, 18, 19, 20, 33, 34, 26, 24)]
 
-View(data.frame(colnames(GBIF_brach)))
-GBIF_brach <- GBIF_brach[,c(25, 2, 3, 4, 5, 6, 7, 8, 29, 30, 37, 31, 32, 21, 33, 34, 35, 36, 22, 23, 10, 11, 12, 28, 15, 16, 17, 18, 19, 20, 26, 24)]
+#View(data.frame(colnames(GBIF_brach)))
+GBIF_brach <- GBIF_brach[,c(25, 2, 3, 4, 5, 6, 7, 8, 29, 30, 31, 32, 21, 35, 36, 37, 38, 22, 23, 10, 11, 12, 28, 15, 16, 17, 18, 19, 20, 33, 34, 26, 24)]
 
 ## Recombine and export
 GBIF <- rbind(GBIF_biv, GBIF_brach)
 
-#### Final tweaks ####
 ## Get rid of all spaces outside of string
 GBIF$formation1 <- str_trim(GBIF$formation1)
 GBIF$formation2 <- str_trim(GBIF$formation2)
 GBIF$formation3 <- str_trim(GBIF$formation3)
 GBIF$formation4 <- str_trim(GBIF$formation4)
+
+## Finally, combine or stages into a single string
+units <- GBIF[,c(9:12)]
+chronostratigraphy <- sapply(1:nrow(units), function(x){
+  ## get unique units
+  strat <- unique(unlist(units[x,]))
+  ## remove gaps if present and concatenate with a comma
+  if(all(strat == "")){
+    out <- ""
+  } else {
+    ## Drop any gaps left. Identify then drop
+    if(any(strat == "")){
+      ## drop
+      strat <- strat[-which(strat == "")]
+      if(length(strat)>1){
+        out <- str_flatten(strat, collapse = ",")
+      } else {
+        out <- strat
+      }
+    } else {
+      if(length(strat)>1){
+        out <- str_flatten(strat, collapse = ",")
+      } else {
+        out <- strat
+      }
+    }
+  }
+  return(out)
+})
+
+## delete old strings
+GBIF <- GBIF[,-c(9:12)]
+GBIF <- cbind(GBIF, chronostratigraphy)
+
+## Re-order
+#View(data.frame(colnames(GBIF)))
+GBIF <- GBIF[,c(1:8, 30, 9:29)]
+#View(data.frame(colnames(GBIF)))
 
 ## Export
 saveRDS(GBIF, file = "data/GBIF/GBIF.Rds")
