@@ -274,8 +274,11 @@ if(any(str_detect(NMS_brach[,"genus"], pattern = "\\?"))){
 
 ## Drop entries that don't have stage data and don't have usable formations (only brachiopod has stage data)
 ## first, get no stage
-#View(data.frame(table(NMS_brach$stage)))
-noStage <- c(which(NMS_brach[,"stage"] == ""), which(NMS_brach[,"stage"] == "?"))
+View(data.frame(table(NMS_brach$stage)))
+noStage <- c()
+noStage <- c(noStage, which(NMS_brach[,"stage"] == ""))
+noStage <- c(noStage, which(NMS_brach[,"stage"] == "unknown"))
+noStage <- unique(noStage)
 #View(data.frame(table(NMS_brach$formation)))
 noForm <- c()
 noForm <- c(noForm, which(NMS_brach[,"formation"] == ""))
@@ -328,6 +331,35 @@ noForm <- c(noForm, which(NMS_brach[,"formation"] == "Zone with Holaster planus"
 droppers <- c(droppers, intersect(noStage, noForm))
 droppers <- unique(droppers)
 NMS_brach <- NMS_brach[-droppers,]
+
+#### Cleaning up stages #####
+#View(data.frame(table(NMS_brach$stage)))
+noStage <- c()
+noStage <- c(noStage, which(NMS_brach[,"stage"] == "unknown"))
+noStage <- unique(noStage)
+NMS_brach[noStage,"stage"] <- ""
+
+## Section reserves for manual cleaning
+
+
+
+
+## Clean stages
+## First, read in stages
+stages <- read.csv("data/metadata/macrostrat_raw.csv", row.names = 1, header = T)
+stages <- stages[!duplicated(stages[,c("name", "t_age", "b_age")]),]
+stage_names <- stages$name
+#View(data.frame(stage_names))
+
+## Now clean
+source("functions/clean.stage.names.R")
+NMS_brach <- clean.stage.names(data = NMS_brach, columns = "stage")
+
+## Now to manually correct those that need it
+
+
+
+
 
 ## Isolate formation data and split into 3
 formations <- data.frame(NMS_brach$formation)

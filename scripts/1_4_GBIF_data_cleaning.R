@@ -78,8 +78,8 @@ GBIF_biv <- readRDS("data/unclean_data/raw_GBIF_biv_18Oct24.Rds")
 GBIF_brach <- readRDS("data/unclean_data/raw_GBIF_brach_18Oct24.Rds")
 
 #### Dropping useless columns ####
-GBIF_biv <- GBIF_biv[,-c(9, 10, 13, 14, 15, 18, 35, 37)]
-GBIF_brach <- GBIF_brach[,-c(9, 10, 13, 14, 15, 18, 35, 37)]
+GBIF_biv <- GBIF_biv[,-c(9, 10, 13, 14, 15, 18, 35)]
+GBIF_brach <- GBIF_brach[,-c(9, 10, 13, 14, 15, 18, 35)]
 
 #### Dropping unusable rows ####
 ## Drop data with taxonRank not genus, species, or lower
@@ -335,7 +335,7 @@ stage_names <- stages$name
 
 ## Now clean
 source("functions/clean.stage.names.R")
-GBIF_biv <- clean.stage.names(data = GBIF_biv, columns = c("latestAgeOrHighestStage", "earliestAgeOrLowestStage"), stages = stage_names)
+GBIF_biv <- clean.stage.names(data = GBIF_biv, columns = c("latestAgeOrHighestStage", "earliestAgeOrLowestStage"))
 
 ## Now check bivalves against Macrostrat names
 ## Run bulk.update.stages (aggregation of all specific name changes identified thus far), then check for other errors
@@ -399,7 +399,7 @@ colnames(lateStage) <- "latestAgeOrHighestStage1"
 earlyStage <- data.frame(GBIF_biv$earliestAgeOrLowestStage)
 colnames(earlyStage) <- "earliestAgeOrLowestStage1"
 
-## Only 2 stages for late, 3 for early
+## Max 2 stages for all.
 lateStage$latestAgeOrHighestStage2 <- ""
 earlyStage$earliestAgeOrLowestStage2 <- ""
 
@@ -647,7 +647,7 @@ noLoc <- unique(noLoc)
 source("functions/cleanCoordinates.R")
 
 ## Read in ISOconversion (go from 2 digit codes to 3)
-ISO.codes <- read.csv("data/ISO_conversion.csv", row.names = 1)
+ISO.codes <- read.csv("data/metadata/ISO_conversion.csv", row.names = 1)
 colnames(ISO.codes) <- c("lang.code", "ISO2", "ISO3")
 
 ## Run the function
@@ -761,7 +761,7 @@ stage_names <- stages$name
 
 ## Now clean
 source("functions/clean.stage.names.R")
-GBIF_brach <- clean.stage.names(data = GBIF_brach, columns = c("latestAgeOrHighestStage", "earliestAgeOrLowestStage"), stages = stage_names)
+GBIF_brach <- clean.stage.names(data = GBIF_brach, columns = c("latestAgeOrHighestStage", "earliestAgeOrLowestStage"))
 
 ## Manual updates (spotted along the way)
 GBIF_brach[which(GBIF_brach$earliestAgeOrLowestStage == "New Scotland Ls"),"formation"] <- "New Scotland Ls"
@@ -811,10 +811,12 @@ earlyPunct <- unique(earlyPunct)
 
 ## Wittle down to those to be split
 #View(data.frame(latePunct))
-latePunct <- latePunct[-c(1, 3, 9:11, 13:14, 16:17, 26)]
+latePunct <- latePunct[c(1:2, 4, 6:9, 13, 16, 19:24, 26:32)]
+#View(data.frame(latePunct))
 
 #View(data.frame(earlyPunct))
-earlyPunct <- earlyPunct[-c(1, 15, 32, 36:38, 40:42, 44:45, 48, 55, 69, 71, 74:76, 81, 85:88)]
+earlyPunct <- earlyPunct[c(1:2, 4:16, 18:30, 32:35, 39, 43, 46:47, 49:54, 56:67, 69, 71:74, 77:80, 83:87)]
+#View(data.frame(earlyPunct))
 
 ## get entries to be split
 splitLate <- c()
@@ -892,8 +894,9 @@ GBIF_brach$latestAgeOrHighestStage <- NULL
 GBIF_brach <- cbind(GBIF_brach, new_brach_stages, orig_brach_stages)
 
 ##### Splitting formations #####
-## First, update one problem formation
+## First, update two problem formations
 GBIF_brach$formation[which(GBIF_brach$formation == "Upper and Lower Fezouata formations, undifferentiated")] <- "Upper Fezouata formation and Lower Fezouata formation"
+GBIF_brach$formation[which(GBIF_brach$formation == "Bradforidien-Ferrugineus-Schichten")] <- "Bradforidian Ferrugineus Schichten"
 
 ## Now find formations to split
 forms <- unique(GBIF_brach$formation[which(str_detect(GBIF_brach$formation, pattern = "[:punct:]"))])
@@ -903,8 +906,9 @@ forms <- c(forms, GBIF_brach$formation[which(str_detect(GBIF_brach$formation, pa
 forms <- unique(forms)
 
 ## Wittle down to those to split
-View(data.frame(forms))
-forms <- forms[c(11, 17, 29, 49, 117, 125, 147, 192, 243, 245, 251, 270, 310, 317, 326, 349, 353, 359, 371:373, 375:377, 380, 384, 390, 399, 402:409)]
+#View(data.frame(forms))
+forms <- forms[c(14, 16, 67, 122, 130, 153, 198, 205, 257, 259, 272, 299, 311, 318, 328, 348, 351, 361, 363, 369, 372:379)]
+#View(data.frame(forms))
 
 ## get ages to be split
 splitForms <- c()
@@ -969,8 +973,8 @@ splitSpecies <- lapply(1:length(splitSpecies), function(x){
 GBIF_brach$species <- unlist(splitSpecies)
 
 ## Now to tidy up unknowns
-View(data.frame(table(GBIF_brach$species)))
-#gen.level <- c()
+#View(data.frame(table(GBIF_brach$species)))
+gen.level <- c()
 gen.level <- c(gen.level,which(GBIF_brach$species == ""))
 GBIF_brach[gen.level, "species"] <- "sp."
 
@@ -1032,10 +1036,10 @@ GBIF_brach$formation4 <- ""
 ## Rearrange
 ## Rearrange columns
 #View(data.frame(colnames(GBIF_biv)))
-GBIF_biv <- GBIF_biv[,c(25, 2, 3, 4, 5, 6, 7, 8, 29, 30, 31, 32, 21, 35, 36, 37, 38, 22, 23, 10, 11, 12, 28, 15, 16, 17, 18, 19, 20, 33, 34, 26, 24)]
+GBIF_biv <- GBIF_biv[,c(25, 2, 3, 4, 5, 6, 7, 8, 30, 31, 32, 33, 21, 36, 37, 38, 39, 22, 23, 10, 11, 12, 29, 15, 16, 17, 18, 19, 20, 34, 35, 26, 24, 27)]
 
 #View(data.frame(colnames(GBIF_brach)))
-GBIF_brach <- GBIF_brach[,c(25, 2, 3, 4, 5, 6, 7, 8, 29, 30, 31, 32, 21, 35, 36, 37, 38, 22, 23, 10, 11, 12, 28, 15, 16, 17, 18, 19, 20, 33, 34, 26, 24)]
+GBIF_brach <- GBIF_brach[,c(25, 2, 3, 4, 5, 6, 7, 8, 30, 31, 32, 33, 21, 36, 37, 38, 39, 22, 23, 10, 11, 12, 29, 15, 16, 17, 18, 19, 20, 34, 35, 26, 24, 27)]
 
 ## Recombine and export
 GBIF <- rbind(GBIF_biv, GBIF_brach)
@@ -1081,8 +1085,17 @@ GBIF <- cbind(GBIF, chronostratigraphy)
 
 ## Re-order
 #View(data.frame(colnames(GBIF)))
-GBIF <- GBIF[,c(1:8, 30, 9:29)]
+GBIF <- GBIF[,c(1:8, 31, 9:30)]
 #View(data.frame(colnames(GBIF)))
+
+## Whoops - forgot to check for NMS, AMNH, and Peabody occurrences. Final check and prune.
+View(data.frame(table(GBIF$publisher)))
+droppers <- which(GBIF$publisher == "American Museum of Natural History")
+droppers <- c(droppers, which(GBIF$publisher == "Yale University Peabody Museum"))
+droppers <- unique(droppers)
+
+## Drop
+GBIF <- GBIF[-droppers,]
 
 ## Export
 saveRDS(GBIF, file = "data/GBIF/GBIF.Rds")

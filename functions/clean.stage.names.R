@@ -1,4 +1,4 @@
-clean.stage.names <- function(data, columns, stages){
+clean.stage.names <- function(data, columns){
   for(i in columns){
     ## strip accents
     data[,i] <- stringi::stri_trans_general(data[,i], "Latin-ASCII")
