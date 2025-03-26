@@ -117,42 +117,32 @@ droppers <- c(droppers, which(NMS_biv[,"formation"] == "Ga"))
 droppers <- unique(droppers)
 NMS_biv <- NMS_biv[-droppers,]
 
-## Tidy up formations
-formations <- data.frame(NMS_biv$formation)
-NMS_biv$formation <- NULL
-colnames(formations) <- "formation1"
+#### Splitting formations #####
+## Manually inspect
+#View(data.frame(table(NMS_biv$formation)))
 
-## Get maximum number of formations within a single record
 ## Find all punctuation
-p <- unique(unlist(str_extract_all(formations$formation1, pattern = "[[:punct:]]")))
-p
+p <- unique(unlist(str_extract_all(NMS_biv$formation, pattern = "[[:punct:]]")))
 
-## Check entries associated with each punctuation
-#View(data.frame(table(formations$formation1[which(str_detect(formations$formation1, pattern = "\\."))])))
-## No splitting required, can clean up all.
-p <- paste0('\\', p)
+## Check to see if any spliting required.
+#View(data.frame(table(NMS_biv$formation[which(str_detect(NMS_biv$formation, pattern = fixed(p[5])))])))
+
+## No splitting required. Can clean up all
 for(c in p){
-  formations$formation1 <- str_replace_all(formations$formation1, pattern = c, replacement = " ")
+  NMS_biv$formation <- str_replace_all(NMS_biv$formation, pattern = fixed(c), replacement = " ")
 }
 
-## Re-attach to dataset
-NMS_biv <- cbind(NMS_biv, formations)
-
+#### Tidying up locality info ####
 ## No lat/long - need locality data
 #View(data.frame(table(NMS_biv$locality)))
 noLoc <- c()
 noLoc <- c(noLoc, which(NMS_biv$locality == "unknown locality"))
 NMS_biv <- NMS_biv[-noLoc, ]
 
+#### Tidying up taxonomy ####
 ## Use misspell to address dipthongs
 source("functions/misspell.R")
 NMS_biv$genus <- misspell(NMS_biv$genus)
-
-## Tidy up genera and formations
-NMS_biv$genus <- str_replace_all(NMS_biv$genus, pattern = "[:punct:]", replacement = "")
-NMS_biv$formation1 <- str_replace_all(NMS_biv$formation1, pattern = "[:punct:]", replacement = "")
-NMS_biv$genus <- str_to_title(NMS_biv$genus)
-NMS_biv$formation1 <- str_to_title(NMS_biv$formation1)
 
 ## Tidy up undetermined/indeterminate
 #View(data.frame(table(NMS_biv$species)))
@@ -212,7 +202,13 @@ if(any(which(str_detect(NMS_biv$species, pattern = "[[:punct:]]")))){
 NMS_biv[gen.level,"species"] <- "sp."
 NMS_biv$phylum <- "Mollusca"
 
-## Finally, tidy up main columns
+## Clean up punctuation
+NMS_biv$genus <- str_replace_all(NMS_biv$genus, pattern = "[:punct:]", replacement = "")
+NMS_biv$formation <- str_replace_all(NMS_biv$formation, pattern = "[:punct:]", replacement = "")
+
+## Format capitalization
+NMS_biv$genus <- str_to_title(NMS_biv$genus)
+NMS_biv$formation <- str_to_title(NMS_biv$formation)
 NMS_biv$species <- tolower(NMS_biv$species)
 
 #### Brachiopods ####
@@ -274,7 +270,7 @@ if(any(str_detect(NMS_brach[,"genus"], pattern = "\\?"))){
 
 ## Drop entries that don't have stage data and don't have usable formations (only brachiopod has stage data)
 ## first, get no stage
-View(data.frame(table(NMS_brach$stage)))
+#View(data.frame(table(NMS_brach$stage)))
 noStage <- c()
 noStage <- c(noStage, which(NMS_brach[,"stage"] == ""))
 noStage <- c(noStage, which(NMS_brach[,"stage"] == "unknown"))
@@ -333,88 +329,157 @@ droppers <- unique(droppers)
 NMS_brach <- NMS_brach[-droppers,]
 
 #### Cleaning up stages #####
+## Isolate original
+orig_brach_stages <- NMS_brach[,"stage"]
+
 #View(data.frame(table(NMS_brach$stage)))
 noStage <- c()
 noStage <- c(noStage, which(NMS_brach[,"stage"] == "unknown"))
 noStage <- unique(noStage)
 NMS_brach[noStage,"stage"] <- ""
 
-## Section reserves for manual cleaning
-
-
-
-
 ## Clean stages
 ## First, read in stages
 stages <- read.csv("data/metadata/macrostrat_raw.csv", row.names = 1, header = T)
 stages <- stages[!duplicated(stages[,c("name", "t_age", "b_age")]),]
 stage_names <- stages$name
-#View(data.frame(stage_names))
 
 ## Now clean
 source("functions/clean.stage.names.R")
 NMS_brach <- clean.stage.names(data = NMS_brach, columns = "stage")
 
-## Now to manually correct those that need it
+## Now check against Macrostrat names
+## Run bulk.update.stages (aggregation of all specific name changes identified thus far), then check for other errors
+source("functions/bulk.update.stages.R")
+NMS_brach$stage <- bulk.update.stages(NMS_brach$stage)
 
+## Inspect and update function
+#View(data.frame(table(NMS_brach$stage)))
+#View(data.frame(stage_names))
 
+## Re-load and run function again after updates
+#source("functions/bulk.update.stages.R")
+#NMS_brach$stage <- bulk.update.stages(NMS_brach$stage)
 
+## Split stages
+#View(data.frame(table(NMS_brach$stage)))
+splitStages <- c()
+splitStages <- c(splitStages, unique(NMS_brach$stage[which(str_detect(NMS_brach$stage, pattern = "[:punct:]"))]))
+splitStages <- unique(splitStages)
 
+## Weed out those that don't need splitting
+#View(data.frame(splitStages))
+splitStages <- splitStages[c(1:2, 4:11, 14:29, 31:32)]
+#View(data.frame(splitStages))
 
-## Isolate formation data and split into 3
+## get intervals to be split
+splitters <- c()
+for(i in 1:length(splitStages)){
+  splitters <- c(splitters, which(NMS_brach$stage == splitStages[i]))
+}
+
+## Isolate stages
+newStage <- data.frame(NMS_brach$stage)
+colnames(newStage) <- "Macrostrat_unit1"
+newStage$Macrostrat_unit2 <- ""
+
+## Specify characters to split by
+p <- c('-', ',')
+
+## Split early stages
+for(i in splitters){
+  for(m in p){
+    if(str_detect(NMS_brach$stage[i], pattern = fixed(m))){
+      ## extract stages
+      ageVec <- unlist(str_split(NMS_brach$stage[i], pattern = fixed(m)))
+      ## assign to new columns
+      for(f in 1:length(ageVec)){
+        newStage[i,f] <- ageVec[f]
+      }
+    }
+  }
+}
+
+## Finally, pass over each entry, only retaining Macrostrat compatible strings
+stages <- read.csv("data/metadata/macrostrat_raw.csv", row.names = 1, header = T)
+stages <- stages[!duplicated(stages[,c("name", "t_age", "b_age")]),]
+source("functions/stage.checker.R")
+
+## Run stage checker
+newStage$Macrostrat_unit1 <- stage.checker(newStage$Macrostrat_unit1, stages)
+newStage$Macrostrat_unit2 <- stage.checker(newStage$Macrostrat_unit2, stages)
+
+## delete old stages
+NMS_brach$stage <- NULL
+
+## Attach to dataset
+NMS_brach <- cbind(NMS_brach, newStage, "stage_OLD" = orig_brach_stages)
+
+#### Splitting formations ####
+## Manually inspect
+#View(data.frame(table(NMS_brach$formation)))
+
+## Manual correction of two formations split by 'or'. Leave one with hyphen None split by ' and ' or '|'
+NMS_brach[which(NMS_brach$formation == "3rd rudist Zone of d'Orbigny, Chloritische Kreide (?=Lower Chalk; or ?Upper Greensand)"),"formation"] <- "Lower Chalk-Upper Greensand"
+NMS_brach[which(NMS_brach$formation == "shales associated with Corbie Craig or North Coal, Lower Limestone Group"),"formation"] <- "Lower Limestone"
+
+## Find all punctuation
+p <- unique(unlist(str_extract_all(NMS_brach$formation, pattern = "[[:punct:]]")))
+
+## Check entries associated with each
+#View(data.frame(table(NMS_brach$formation[which(str_detect(NMS_brach$formation, pattern = fixed(p[1])))])))
+
+## Split by hyphen and
+p <-p[-c(3)]
+
+## Remove punctuation without hyphen or semi colon
+for(c in p){
+  NMS_brach$formation <- str_replace_all(NMS_brach$formation, pattern = fixed(c), replacement = " ")
+}
+
+## Find formations to be split
+## Now find formations to be split
+forms <- unique(NMS_brach$formation[which(str_detect(NMS_brach$formation, pattern = "[:punct:]"))])
+forms <- c(forms, NMS_brach$formation[which(str_detect(NMS_brach$formation, pattern = regex(" or ", ignore_case = T)))])
+forms <- unique(forms)
+
+## Wittle down to those to split
+#View(data.frame(forms))
+forms <- forms[c(1, 2, 3, 4, 13)]
+#View(data.frame(forms))
+
+## get ages to be split
+splitForms <- c()
+for(i in 1:length(forms)){
+  splitForms <- c(splitForms, which(NMS_brach$formation == forms[i]))
+}
+
+## Isolate formation
 formations <- data.frame(NMS_brach$formation)
-NMS_brach$formation <- NULL
 colnames(formations) <- "formation1"
 
-## Get maximum number of formations within a single record
-## Find all punctuation
-p <- unique(unlist(str_extract_all(formations$formation1, pattern = "[[:punct:]]")))
-p
-
-## 9 total
-## Check entries associated with each
-#View(data.frame(table(formations$formation1[which(str_detect(formations$formation1, pattern = '\"'))])))
-## Split by hyphen and semi-colon
-p <- paste0('\\', p[-c(3, 10)])
-p
-for(c in p){
-  formations$formation1 <- str_replace_all(formations$formation1, pattern = c, replacement = " ")
-}
-## get split formations - maximum of 2.
-split.forms <- c(str_split(formations$formation1, pattern = "\\-"), str_split(formations$formation1, pattern = "\\;"))
-max.forms <- max(sapply(1:length(split.forms), function(x) length(split.forms[[x]])))
-## maximum 3 formations
+## max 2 formations
 formations$formation2 <- ""
 
-## Now to find offending rows
-splitters <- c()
-splitters <- c(splitters, which(str_detect(formations$formation1, pattern = '\\;')))
-splitters <- c(splitters, which(str_detect(formations$formation1, pattern = '\\-')))
-splitters <- unique(splitters)
+## Specify string to split by
+p <- c('-')
 
-## Remove keepers and check again
-formations$formation1[splitters]
-splitters <- splitters[-c(16:33)]
-formations$formation1[splitters]
-
-for(i in splitters){
-  if(str_detect(formations$formation1[i], pattern = "\\;")){
-    ## extract formations
-    formVec <- unlist(str_split(formations$formation1[i], pattern = "\\;"))
-    ## assign to new columns
-    for(f in 1:length(formVec)){
-      formations[i,f] <- formVec[f]
-    }
-  }
-  if(str_detect(formations$formation1[i], pattern = "\\-")){
-    ## extract formations
-    formVec <- unlist(str_split(formations$formation1[i], pattern = "\\-"))
-    ## assign to new columns
-    for(f in 1:length(formVec)){
-      formations[i,f] <- formVec[f]
+## Split formations
+for(i in splitForms){
+  for(m in p){
+    if(str_detect(formations$formation1[i], pattern = fixed(m))){
+      ## extract forms
+      formVec <- unlist(str_split(formations$formation1[i], pattern = fixed(m)))
+      ## assign to new columns
+      for(f in 1:length(formVec)){
+        formations[i,f] <- formVec[f]
+      }
     }
   }
 }
+
+## delete original stage data columns
+NMS_brach$formation <- NULL
 
 ## Re-attach to dataset
 NMS_brach <- cbind(NMS_brach, formations)
@@ -434,12 +499,10 @@ NMS_brach$genus <- misspell(NMS_brach$genus)
 NMS_brach$genus <- str_replace_all(NMS_brach$genus, pattern = "[:punct:]", replacement = "")
 NMS_brach$formation1 <- str_replace_all(NMS_brach$formation1, pattern = "[:punct:]", replacement = "")
 NMS_brach$formation2 <- str_replace_all(NMS_brach$formation2, pattern = "[:punct:]", replacement = "")
-NMS_brach$stage <- str_replace_all(NMS_brach$stage, pattern = "[:punct:]", replacement = "")
 
 NMS_brach$genus <- str_to_title(NMS_brach$genus)
 NMS_brach$formation1 <- str_to_title(NMS_brach$formation1)
 NMS_brach$formation2 <- str_to_title(NMS_brach$formation2)
-NMS_brach$stage <- str_to_title(NMS_brach$stage)
 
 ## Tidy up undetermined/indeterminate species
 #View(data.frame(table(NMS_brach$species)))
@@ -504,43 +567,89 @@ NMS_brach$species <- tolower(NMS_brach$species)
 ## Finally, check and drop holocene/recent entries
 ## Brachiopod first
 recent <- c()
-recent <- c(recent, which(NMS_brach$stage == regex("Recent", ignore_case = T)))
-recent <- c(recent, which(NMS_brach$stage == regex("Holocene", ignore_case = T)))
-recent <- c(recent, which(NMS_brach$period == regex("Recent", ignore_case = T)))
-recent <- c(recent, which(NMS_brach$period == regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(NMS_brach$Macrostrat_unit1 == regex("Meghalayan", ignore_case = T)))
+recent <- c(recent, which(NMS_brach$Macrostrat_unit1 == regex("Haweran", ignore_case = T)))
+recent <- c(recent, which(NMS_brach$Macrostrat_unit1 == regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(NMS_brach$Macrostrat_unit1 == regex("Quaternary", ignore_case = T)))
+recent <- c(recent, which(NMS_brach$Macrostrat_unit1 == regex("NN21", ignore_case = T)))
+recent <- c(recent, which(NMS_brach$Macrostrat_unit1 == regex("Cenozoic", ignore_case = T)))
+recent <- c(recent, which(NMS_brach$Macrostrat_unit1 == regex("Phanerozoic", ignore_case = T)))
+recent <- c(recent, which(NMS_brach$Macrostrat_unit1 == regex("C1", ignore_case = T)))
+
+recent <- c(recent, which(NMS_brach$Macrostrat_unit2 == regex("Meghalayan", ignore_case = T)))
+recent <- c(recent, which(NMS_brach$Macrostrat_unit2 == regex("Haweran", ignore_case = T)))
+recent <- c(recent, which(NMS_brach$Macrostrat_unit2 == regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(NMS_brach$Macrostrat_unit2 == regex("Quaternary", ignore_case = T)))
+recent <- c(recent, which(NMS_brach$Macrostrat_unit2 == regex("NN21", ignore_case = T)))
+recent <- c(recent, which(NMS_brach$Macrostrat_unit2 == regex("Cenozoic", ignore_case = T)))
+recent <- c(recent, which(NMS_brach$Macrostrat_unit2 == regex("Phanerozoic", ignore_case = T)))
+recent <- c(recent, which(NMS_brach$Macrostrat_unit2 == regex("C1", ignore_case = T)))
 recent <- unique(recent)
 if(length(recent) > 0){
   NMS_brach <- NMS_brach[-recent,]
 }
 
-recent <- c()
-recent <- c(recent, which(NMS_biv$stage == regex("Recent", ignore_case = T)))
-recent <- c(recent, which(NMS_biv$stage == regex("Holocene", ignore_case = T)))
-recent <- c(recent, which(NMS_biv$period == regex("Recent", ignore_case = T)))
-recent <- c(recent, which(NMS_biv$period == regex("Holocene", ignore_case = T)))
-recent <- unique(recent)
-if(length(recent) > 0){
-  NMS_biv <- NMS_biv[-recent,]
-}
+#### Combining datasets ####
+## Change NMS_biv formation column name to formation1
+colnames(NMS_biv) <- c("accessionNumber", "genus", "species", "locality", "period", "formation1", "phylum")
 
-## Add formation 2 and stage columns to bivalves
+## Standardise columns
 NMS_biv$formation2 <- ""
-NMS_biv$stage <- ""
+NMS_biv$Macrostrat_unit1 <- ""
+NMS_biv$Macrostrat_unit2 <- ""
+NMS_biv$stage_OLD <- ""
 
 ## Rearrange
 colnames(NMS_biv)
-NMS_biv <- NMS_biv[,c(1,7, 2, 3, 5, 9, 6, 8, 4)]
+NMS_biv <- NMS_biv[,c(1,7, 2, 3, 5, 9, 10, 11, 6, 8, 4)]
 
 colnames(NMS_brach)
-NMS_brach <- NMS_brach[,c(3, 9, 1, 2, 6, 5, 7, 8, 4)]
+NMS_brach <- NMS_brach[,c(3, 11, 1, 2, 5, 6, 7, 8, 9, 10, 4)]
 
 ## Combine
 NMS <- rbind(NMS_biv, NMS_brach)
 
-#### Final tweaks ####
 ## Get rid of all spaces outside of string
 NMS$formation1 <- str_trim(NMS$formation1)
 NMS$formation2 <- str_trim(NMS$formation2)
 
-#### Export ####
+## Finally, combine or stages into a single string
+units <- NMS[,c(6:7)]
+chronostratigraphy <- sapply(1:nrow(units), function(x){
+  ## get unique units
+  strat <- unique(unlist(units[x,]))
+  ## remove gaps if present and concatenate with a comma
+  if(all(strat == "")){
+    out <- ""
+  } else {
+    ## Drop any gaps left. Identify then drop
+    if(any(strat == "")){
+      ## drop
+      strat <- strat[-which(strat == "")]
+      if(length(strat)>1){
+        out <- str_flatten(strat, collapse = ",")
+      } else {
+        out <- strat
+      }
+    } else {
+      if(length(strat)>1){
+        out <- str_flatten(strat, collapse = ",")
+      } else {
+        out <- strat
+      }
+    }
+  }
+  return(out)
+})
+
+## delete old strings
+NMS <- NMS[,-c(6:7)]
+NMS <- cbind(NMS, chronostratigraphy)
+
+## Re-order
+#View(data.frame(colnames(NMS)))
+NMS <- NMS[,c(1:5, 10, 6:9)]
+#View(data.frame(colnames(NMS)))
+
+## Export
 saveRDS(NMS, file = "data/museum/NMS.Rds")

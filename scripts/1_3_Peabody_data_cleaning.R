@@ -139,82 +139,139 @@ droppers <- c(droppers, intersect(noLL, noLoc))
 droppers <- unique(droppers)
 Peabody_biv <- Peabody_biv[-droppers,]
 
-## Split and clean stages
-## Ages to be split
-splitAge <- c()
-splitAge <- c(splitAge, which(Peabody_biv$age == "Cenomanian-Turonian"))
+#### Splitting stages ####
+## Isolate original
+orig_biv_stages <- Peabody_biv$age
+
+## Convert unknowns to blanks
+## All unknowns already blank!
+
+## Read in stages
+stages <- read.csv("data/metadata/macrostrat_raw.csv", row.names = 1, header = T)
+stages <- stages[!duplicated(stages[,c("name", "t_age", "b_age")]),]
+stage_names <- stages$name
+
+## Now clean - remove accents and swap iens for ians
+source("functions/clean.stage.names.R")
+Peabody_biv <- clean.stage.names(data = Peabody_biv, columns = "age")
+
+## Now check against Macrostrat names
+## Run bulk.update.stages (aggregation of all specific name changes identified thus far), then check for other errors
+source("functions/bulk.update.stages.R")
+Peabody_biv$age <- bulk.update.stages(Peabody_biv$age)
+
+## Inspect and update function
+#View(data.frame(table(Peabody_biv$age)))
+#View(data.frame(stage_names))
+
+## Once checked, re-load and re-run
+#source("functions/bulk.update.stages.R")
+#Peabody_biv$age <- bulk.update.stages(Peabody_biv$age)
+
+## Check how double stages are noted
+#View(data.frame(table(Peabody_biv$age)))
+
+## Only dashes used
+splitStages <- c(Peabody_biv$age[which(str_detect(Peabody_biv$age, pattern = "-"))])
+
+#View(data.frame(splitStages))
+## No need to wittle these down, all need splitting
+
+## get intervals to be split
+splitters <- c()
+for(i in 1:length(splitStages)){
+  splitters <- c(splitters, which(Peabody_biv$age == splitStages[i]))
+}
 
 ## Isolate stages
-stages <- data.frame(Peabody_biv$age)
-Peabody_biv$age <- NULL
-colnames(stages) <- "stage1"
+newStage <- data.frame(Peabody_biv$age)
+colnames(newStage) <- "Macrostrat_unit1"
+newStage$Macrostrat_unit2 <- ""
 
-## Only 2 stages max
-stages$stage2 <- ""
+## Specify characters to split by
+p <- c('-')
 
-## Specify splitting punctuation
-p <- c("-")
-
-## Split stages
-for(i in splitAge){
+## Split early stages
+for(i in splitters){
   for(m in p){
-    if(str_detect(stages$stage1[i], pattern = fixed(m))){
+    if(str_detect(Peabody_biv$age[i], pattern = fixed(m))){
       ## extract stages
-      formVec <- unlist(str_split(stages$stage1[i], pattern = fixed(m)))
+      ageVec <- unlist(str_split(Peabody_biv$age[i], pattern = fixed(m)))
       ## assign to new columns
-      for(f in 1:length(formVec)){
-        stages[i,f] <- formVec[f]
+      for(f in 1:length(ageVec)){
+        newStage[i,f] <- ageVec[f]
       }
     }
   }
 }
 
-## Re-attach to dataset
-Peabody_biv <- cbind(Peabody_biv, stages)
+## Finally, pass over each entry, only retaining Macrostrat compatible strings
+stages <- read.csv("data/metadata/macrostrat_raw.csv", row.names = 1, header = T)
+stages <- stages[!duplicated(stages[,c("name", "t_age", "b_age")]),]
+source("functions/stage.checker.R")
 
-## Now do the same for formations
+## Run stage checker
+newStage$Macrostrat_unit1 <- stage.checker(newStage$Macrostrat_unit1, stages)
+newStage$Macrostrat_unit2 <- stage.checker(newStage$Macrostrat_unit2, stages)
+
+## Delete old stages
+Peabody_biv$age <- NULL
+
+## Re-attach to dataset
+Peabody_biv <- cbind(Peabody_biv, newStage, "age_OLD" = orig_biv_stages)
+
+#### Splitting formations ####
+## Manually inspect formations
+#View(data.frame(table(Peabody_biv$formation)))
+## No ambersand, _and_, _or_, or | separating formations
+
+## Manually correct problem entries
+Peabody_biv[which(Peabody_biv$formation == "Kahleberg-Sandstein"),"formation"] <- "Kahleberg"
+
+## Let's check all punctuation
+## Find all punctuation
+p <- unique(unlist(str_extract_all(Peabody_biv$formation, pattern = "[[:punct:]]")))
+
+## Check entries associated with each
+#View(data.frame(table(Peabody_biv$formation[which(str_detect(Peabody_biv$formation, pattern = fixed(p[4])))])))
+
+## Just split by hyphen. Clean up rest.
+p <- p[-3]
+for(c in p){
+  Peabody_biv$formation <- str_replace_all(Peabody_biv$formation, pattern = fixed(c), replacement = " ")
+}
+
+## Find formations to be split
+## Now find formations to be split
+forms <- unique(Peabody_biv$formation[which(str_detect(Peabody_biv$formation, pattern = "[:punct:]"))])
+forms <- c(forms, Peabody_biv$formation[which(str_detect(Peabody_biv$formation, pattern = regex(" and ", ignore_case = T)))])
+forms <- c(forms, Peabody_biv$formation[which(str_detect(Peabody_biv$formation, pattern = regex(" or ", ignore_case = T)))])
+forms <- c(forms, Peabody_biv$formation[which(str_detect(Peabody_biv$formation, pattern = "[|]"))])
+forms <- unique(forms)
+
+## No need to wittle down. Already ready for splitting.
+
+## get ages to be split
+splitForms <- c()
+for(i in 1:length(forms)){
+  splitForms <- c(splitForms, which(Peabody_biv$formation == forms[i]))
+}
+
+## Isolate formation
 formations <- data.frame(Peabody_biv$formation)
-Peabody_biv$formation <- NULL
 colnames(formations) <- "formation1"
 
-## Get maximum number of formations within a single record
-## Find all punctuation
-p <- unique(unlist(str_extract_all(formations$formation1, pattern = "[[:punct:]]")))
-p
-
-## 9 total
-## Check entries associated with each
-#View(data.frame(table(formations$formation1[which(str_detect(formations$formation1, pattern = fixed('-')))])))
-
-## Manually correct one formation
-formations$formation1[which(formations$formation1 == "Kahleberg-Sandstein")] <- "Kahleberg"
-#View(data.frame(table(formations$formation1[which(str_detect(formations$formation1, pattern = fixed('-')))])))
-
-## Split by hyphen alone
-p <- paste0('\\', p[-c(3)])
-p
-for(c in p){
-  formations$formation1 <- str_replace_all(formations$formation1, pattern = c, replacement = " ")
-}
-## get split formations - maximum of 2.
-split.forms <- c(str_split(formations$formation1, pattern = fixed("-")))
-max.forms <- max(sapply(1:length(split.forms), function(x) length(split.forms[[x]])))
-
-## maximum 2 formations
+## max 2 formations
 formations$formation2 <- ""
 
-## Now to find offending rows
-splitters <- c()
-splitters <- c(splitters, which(str_detect(formations$formation1, pattern = fixed('-'))))
-
-## Specify splitting punctuation
-p <- c("-")
+## Specify string to split by
+p <- c('-')
 
 ## Split formations
-for(i in splitters){
+for(i in splitForms){
   for(m in p){
     if(str_detect(formations$formation1[i], pattern = fixed(m))){
-      ## extract formation
+      ## extract forms
       formVec <- unlist(str_split(formations$formation1[i], pattern = fixed(m)))
       ## assign to new columns
       for(f in 1:length(formVec)){
@@ -224,9 +281,13 @@ for(i in splitters){
   }
 }
 
+## delete original stage data columns
+Peabody_biv$formation <- NULL
+
 ## Re-attach to dataset
 Peabody_biv <- cbind(Peabody_biv, formations)
 
+#### Cleaning up taxonomy ####
 ## Tidy up classes
 #View(data.frame(table(Peabody_biv$class)))
 #View(Peabody_biv[which(!Peabody_biv$class == "Bivalvia"),])
@@ -315,8 +376,6 @@ Peabody_biv$genus <- misspell(Peabody_biv$genus)
 
 ## Clean out punctuation
 Peabody_biv$genus <- str_replace_all(Peabody_biv$genus, pattern = "[:punct:]", replacement = "")
-Peabody_biv$stage1 <- str_replace_all(Peabody_biv$stage1, pattern = "[:punct:]", replacement = "")
-Peabody_biv$stage2 <- str_replace_all(Peabody_biv$stage2, pattern = "[:punct:]", replacement = "")
 Peabody_biv$formation1 <- str_replace_all(Peabody_biv$formation1, pattern = "[:punct:]", replacement = "")
 Peabody_biv$formation2 <- str_replace_all(Peabody_biv$formation2, pattern = "[:punct:]", replacement = "")
 
@@ -324,8 +383,6 @@ Peabody_biv$formation2 <- str_replace_all(Peabody_biv$formation2, pattern = "[:p
 Peabody_biv$genus <- str_to_title(Peabody_biv$genus)
 Peabody_biv$formation1 <- str_to_title(Peabody_biv$formation1)
 Peabody_biv$formation2 <- str_to_title(Peabody_biv$formation2)
-Peabody_biv$stage1 <- str_to_title(Peabody_biv$stage1)
-Peabody_biv$stage2 <- str_to_title(Peabody_biv$stage2)
 
 ## Then convert all uncertain species to "sp."
 ## Tidy up undetermined/indeterminate species
@@ -384,6 +441,30 @@ Peabody_biv[gen.level,"species"] <- "sp."
 ## Then fix capitalization for species
 Peabody_biv$species <- tolower(Peabody_biv$species)
 
+## Finally, drop recent taxa
+recent <- c()
+recent <- c(recent, which(Peabody_biv$Macrostrat_unit1 == regex("Meghalayan", ignore_case = T)))
+recent <- c(recent, which(Peabody_biv$Macrostrat_unit1 == regex("Haweran", ignore_case = T)))
+recent <- c(recent, which(Peabody_biv$Macrostrat_unit1 == regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(Peabody_biv$Macrostrat_unit1 == regex("Quaternary", ignore_case = T)))
+recent <- c(recent, which(Peabody_biv$Macrostrat_unit1 == regex("NN21", ignore_case = T)))
+recent <- c(recent, which(Peabody_biv$Macrostrat_unit1 == regex("Cenozoic", ignore_case = T)))
+recent <- c(recent, which(Peabody_biv$Macrostrat_unit1 == regex("Phanerozoic", ignore_case = T)))
+recent <- c(recent, which(Peabody_biv$Macrostrat_unit1 == regex("C1", ignore_case = T)))
+
+recent <- c(recent, which(Peabody_biv$Macrostrat_unit2 == regex("Meghalayan", ignore_case = T)))
+recent <- c(recent, which(Peabody_biv$Macrostrat_unit2 == regex("Haweran", ignore_case = T)))
+recent <- c(recent, which(Peabody_biv$Macrostrat_unit2 == regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(Peabody_biv$Macrostrat_unit2 == regex("Quaternary", ignore_case = T)))
+recent <- c(recent, which(Peabody_biv$Macrostrat_unit2 == regex("NN21", ignore_case = T)))
+recent <- c(recent, which(Peabody_biv$Macrostrat_unit2 == regex("Cenozoic", ignore_case = T)))
+recent <- c(recent, which(Peabody_biv$Macrostrat_unit2 == regex("Phanerozoic", ignore_case = T)))
+recent <- c(recent, which(Peabody_biv$Macrostrat_unit2 == regex("C1", ignore_case = T)))
+recent <- unique(recent)
+if(length(recent) > 0){
+  Peabody_biv <- Peabody_biv[-recent,]
+}
+
 #### Brachiopods ####
 ## Now to clean up brachiopods
 ## Drop rows with no genera, phylum/class, formation/age, or latitude+longtitude/locality
@@ -438,7 +519,6 @@ droppers <- c()
 ## No punctuation!
 noAge <- c()
 noAge <- c(noAge, which(Peabody_brach$age == ""))
-Peabody_brach$age[which(Peabody_brach$age == "Recent")] <- "Holocene"
 
 #View(data.frame(table(Peabody_brach$formation)))
 ## Some punctuation
@@ -464,70 +544,137 @@ droppers <- c(droppers, intersect(noLL, noLoc))
 droppers <- unique(droppers)
 Peabody_brach <- Peabody_brach[-droppers,]
 
-## Split and clean stages
-## Ages to be split
-splitAge <- c()
-splitAge <- c(splitAge, which(Peabody_brach$age == "Missourian to Virgilian"))
+#### Splitting stages ####
+## Isolate original
+orig_brach_stages <- Peabody_brach$age
+
+## Convert unknowns into blanks - all are already blank
+#View(data.frame(table(Peabody_brach$age)))
+
+## Read in stages
+stages <- read.csv("data/metadata/macrostrat_raw.csv", row.names = 1, header = T)
+stages <- stages[!duplicated(stages[,c("name", "t_age", "b_age")]),]
+stage_names <- stages$name
+
+## Now clean - remove accents and swap iens for ians
+source("functions/clean.stage.names.R")
+Peabody_brach <- clean.stage.names(data = Peabody_brach, columns = "age")
+
+## Now check against Macrostrat names
+## Run bulk.update.stages (aggregation of all specific name changes identified thus far), then check for other errors
+source("functions/bulk.update.stages.R")
+Peabody_brach$age <- bulk.update.stages(Peabody_brach$age)
+
+## Inspect and update function
+#View(data.frame(table(Peabody_brach$age)))
+#View(data.frame(stage_names))
+
+## Once function updates are complete, re-load and re-run
+#source("functions/bulk.update.stages.R")
+#Peabody_brach$age <- bulk.update.stages(Peabody_brach$age)
+
+## Hyphens + one _to_
+splitStages <- c()
+splitStages <- c(splitStages, unique(Peabody_brach$age[which(str_detect(Peabody_brach$age, pattern = "[:punct:]"))]))
+splitStages <- c(splitStages, Peabody_brach$age[which(str_detect(Peabody_brach$age, pattern = regex(" to ", ignore_case = T)))])
+splitStages <- unique(splitStages)
+
+## Wittle down to those that should be split
+#View(data.frame(splitStages))
+## Split all!
+
+## get intervals to be split
+splitters <- c()
+for(i in 1:length(splitStages)){
+  splitters <- c(splitters, which(Peabody_brach$age == splitStages[i]))
+}
 
 ## Isolate stages
-stages <- data.frame(Peabody_brach$age)
-Peabody_brach$age <- NULL
-colnames(stages) <- "stage1"
+newStage <- data.frame(Peabody_brach$age)
+colnames(newStage) <- "Macrostrat_unit1"
+newStage$Macrostrat_unit2 <- ""
 
-## Only 2 stages max
-stages$stage2 <- ""
+## Specify characters to split by
+p <- c('-', ' to ')
 
-## Specify string to split by
-p <- c(" to ")
-
-## Split stages
-for(i in splitAge){
+## Split early stages
+for(i in splitters){
   for(m in p){
-    if(str_detect(stages$stage1[i], pattern = fixed(m))){
+    if(str_detect(Peabody_brach$age[i], pattern = fixed(m))){
       ## extract stages
-      formVec <- unlist(str_split(stages$stage1[i], pattern = fixed(m)))
+      ageVec <- unlist(str_split(Peabody_brach$age[i], pattern = fixed(m)))
       ## assign to new columns
-      for(f in 1:length(formVec)){
-        stages[i,f] <- formVec[f]
+      for(f in 1:length(ageVec)){
+        newStage[i,f] <- ageVec[f]
       }
     }
   }
 }
 
+## Finally, pass over each entry, only retaining Macrostrat compatible strings
+stages <- read.csv("data/metadata/macrostrat_raw.csv", row.names = 1, header = T)
+stages <- stages[!duplicated(stages[,c("name", "t_age", "b_age")]),]
+source("functions/stage.checker.R")
+
+## Run stage checker
+newStage$Macrostrat_unit1 <- stage.checker(newStage$Macrostrat_unit1, stages)
+newStage$Macrostrat_unit2 <- stage.checker(newStage$Macrostrat_unit2, stages)
+
+## Delete old stages
+Peabody_brach$age <- NULL
+
 ## Re-attach to dataset
-Peabody_brach <- cbind(Peabody_brach, stages)
+Peabody_brach <- cbind(Peabody_brach, newStage, "age_OLD" = orig_brach_stages)
 
-## Formations to be split
-splitForm <- c()
-splitForm <- c(splitForm, which(Peabody_brach$formation == "Upper and Lower Fezouata formations, undifferentiated"))
+#### Splitting formations ####
+## Manually inspect formations
+#View(data.frame(table(Peabody_brach$formation)))
 
-## Now do the same for formations
+## Correct one formation that needs splitting
+Peabody_brach[which(Peabody_brach$formation == "Upper and Lower Fezouata formations, undifferentiated"),"formation"] <- "Upper Fezouata and Lower Fezouata"
+
+## Initial tidy of punctuation
+p <- unique(unlist(str_extract_all(Peabody_brach$formation, pattern = "[[:punct:]]")))
+
+## Check each
+#View(data.frame(table(Peabody_brach$formation[which(str_detect(Peabody_brach$formation, pattern = fixed(p[1])))])))
+
+## No need to split by punctuation. Clean up.
+for(c in p){
+  Peabody_brach$formation <- str_replace_all(Peabody_brach$formation, pattern = fixed(c), replacement = " ")
+}
+
+## Now find formations to be split
+forms <- unique(Peabody_brach$formation[which(str_detect(Peabody_brach$formation, pattern = "[:punct:]"))])
+forms <- c(forms, Peabody_brach$formation[which(str_detect(Peabody_brach$formation, pattern = regex(" and ", ignore_case = T)))])
+forms <- c(forms, Peabody_brach$formation[which(str_detect(Peabody_brach$formation, pattern = " & "))])
+forms <- c(forms, Peabody_brach$formation[which(str_detect(Peabody_brach$formation, pattern = regex(" or ", ignore_case = T)))])
+forms <- c(forms, Peabody_brach$formation[which(str_detect(Peabody_brach$formation, pattern = "[|]"))])
+forms <- unique(forms)
+
+## No need to wittle down - only one!
+
+## get ages to be split
+splitForms <- c()
+for(i in 1:length(forms)){
+  splitForms <- c(splitForms, which(Peabody_brach$formation == forms[i]))
+}
+
+## Isolate formation
 formations <- data.frame(Peabody_brach$formation)
-Peabody_brach$formation <- NULL
 colnames(formations) <- "formation1"
 
-## Get maximum number of formations within a single record
-## Find all punctuation
-p <- unique(unlist(str_extract_all(formations$formation1, pattern = "[[:punct:]]")))
-p
-
-## Split by " and " alone
-p <- paste0('\\', p)
-p
-for(c in p){
-  formations$formation1 <- str_replace_all(formations$formation1, pattern = c, replacement = " ")
-}
-## maximum 2 formations
+## max 2 formations
 formations$formation2 <- ""
 
-## Specify splitting string
-p <- c(" and ")
+## Specify string to split by
+p <- c(' and ')
 
 ## Split formations
-for(i in splitForm){
+for(i in splitForms){
   for(m in p){
     if(str_detect(formations$formation1[i], pattern = fixed(m))){
-      ## extract formation
+      ## extract forms
       formVec <- unlist(str_split(formations$formation1[i], pattern = fixed(m)))
       ## assign to new columns
       for(f in 1:length(formVec)){
@@ -537,9 +684,13 @@ for(i in splitForm){
   }
 }
 
+## delete original stage data columns
+Peabody_brach$formation <- NULL
+
 ## Re-attach to dataset
 Peabody_brach <- cbind(Peabody_brach, formations)
 
+#### Cleaning localities and taxonomy ####
 ## Clean up localities
 ## First, refresh noLL
 noLL <- union(which(Peabody_brach$latitude == ""),which(Peabody_brach$longitude == ""))
@@ -617,8 +768,6 @@ Peabody_brach$genus <- misspell(Peabody_brach$genus)
 
 ## Remove punctuation from genera, stages, and formations
 Peabody_brach$genus <- str_replace_all(Peabody_brach$genus, pattern = "[:punct:]", replacement = "")
-Peabody_brach$stage1 <- str_replace_all(Peabody_brach$stage1, pattern = "[:punct:]", replacement = "")
-Peabody_brach$stage2 <- str_replace_all(Peabody_brach$stage2, pattern = "[:punct:]", replacement = "")
 Peabody_brach$formation1 <- str_replace_all(Peabody_brach$formation1, pattern = "[:punct:]", replacement = "")
 Peabody_brach$formation2 <- str_replace_all(Peabody_brach$formation2, pattern = "[:punct:]", replacement = "")
 
@@ -626,8 +775,6 @@ Peabody_brach$formation2 <- str_replace_all(Peabody_brach$formation2, pattern = 
 Peabody_brach$genus <- str_to_title(Peabody_brach$genus)
 Peabody_brach$formation1 <- str_to_title(Peabody_brach$formation1)
 Peabody_brach$formation2 <- str_to_title(Peabody_brach$formation2)
-Peabody_brach$stage1 <- str_to_title(Peabody_brach$stage1)
-Peabody_brach$stage2 <- str_to_title(Peabody_brach$stage2)
 
 ## Then convert all uncertain species to "sp."
 ## Tidy up undetermined/indeterminate species
@@ -684,51 +831,79 @@ Peabody_brach[gen.level,"species"] <- "sp."
 ## Then fix capitalization for species
 Peabody_brach$species <- tolower(Peabody_brach$species)
 
-## Finally, check and drop holocene/recent entries
-## Brachiopod first
+## Finally, drop recent entries
 recent <- c()
-recent <- c(recent, which(Peabody_brach$stage1 == regex("Recent", ignore_case = T)))
-recent <- c(recent, which(Peabody_brach$stage1 == regex("Holocene", ignore_case = T)))
-recent <- c(recent, which(Peabody_brach$stage2 == regex("Recent", ignore_case = T)))
-recent <- c(recent, which(Peabody_brach$stage2 == regex("Holocene", ignore_case = T)))
-recent <- c(recent, which(Peabody_brach$period == regex("Recent", ignore_case = T)))
-recent <- c(recent, which(Peabody_brach$period == regex("Holocene", ignore_case = T)))
-recent <- c(recent, which(Peabody_brach$epoch == regex("Recent", ignore_case = T)))
-recent <- c(recent, which(Peabody_brach$epoch == regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(Peabody_brach$Macrostrat_unit1 == regex("Meghalayan", ignore_case = T)))
+recent <- c(recent, which(Peabody_brach$Macrostrat_unit1 == regex("Haweran", ignore_case = T)))
+recent <- c(recent, which(Peabody_brach$Macrostrat_unit1 == regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(Peabody_brach$Macrostrat_unit1 == regex("Quaternary", ignore_case = T)))
+recent <- c(recent, which(Peabody_brach$Macrostrat_unit1 == regex("NN21", ignore_case = T)))
+recent <- c(recent, which(Peabody_brach$Macrostrat_unit1 == regex("Cenozoic", ignore_case = T)))
+recent <- c(recent, which(Peabody_brach$Macrostrat_unit1 == regex("Phanerozoic", ignore_case = T)))
+recent <- c(recent, which(Peabody_brach$Macrostrat_unit1 == regex("C1", ignore_case = T)))
+
+recent <- c(recent, which(Peabody_brach$Macrostrat_unit2 == regex("Meghalayan", ignore_case = T)))
+recent <- c(recent, which(Peabody_brach$Macrostrat_unit2 == regex("Haweran", ignore_case = T)))
+recent <- c(recent, which(Peabody_brach$Macrostrat_unit2 == regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(Peabody_brach$Macrostrat_unit2 == regex("Quaternary", ignore_case = T)))
+recent <- c(recent, which(Peabody_brach$Macrostrat_unit2 == regex("NN21", ignore_case = T)))
+recent <- c(recent, which(Peabody_brach$Macrostrat_unit2 == regex("Cenozoic", ignore_case = T)))
+recent <- c(recent, which(Peabody_brach$Macrostrat_unit2 == regex("Phanerozoic", ignore_case = T)))
+recent <- c(recent, which(Peabody_brach$Macrostrat_unit2 == regex("C1", ignore_case = T)))
 recent <- unique(recent)
 if(length(recent) > 0){
   Peabody_brach <- Peabody_brach[-recent,]
 }
 
-## Now bivalves
-recent <- c()
-recent <- c(recent, which(Peabody_biv$stage1 == regex("Recent", ignore_case = T)))
-recent <- c(recent, which(Peabody_biv$stage1 == regex("Holocene", ignore_case = T)))
-recent <- c(recent, which(Peabody_biv$stage2 == regex("Recent", ignore_case = T)))
-recent <- c(recent, which(Peabody_biv$stage2 == regex("Holocene", ignore_case = T)))
-recent <- c(recent, which(Peabody_biv$period == regex("Recent", ignore_case = T)))
-recent <- c(recent, which(Peabody_biv$period == regex("Holocene", ignore_case = T)))
-recent <- c(recent, which(Peabody_biv$epoch == regex("Recent", ignore_case = T)))
-recent <- c(recent, which(Peabody_biv$epoch == regex("Holocene", ignore_case = T)))
-recent <- unique(recent)
-if(length(recent) > 0){
-  Peabody_biv <- Peabody_biv[-recent,]
-}
-
-## Combine then standardise
+#### Preparing final version for export
+## Combine
 Peabody <- rbind(Peabody_biv, Peabody_brach)
 
-## Rearrange
+## Rearrange columns
 colnames(Peabody)
-Peabody <- Peabody[,c(1, 11, 12, 13, 14,15,16, 19, 6, 4, 20, 21, 22, 23, 5, 8, 9, 10, 7, 3, 17, 24, 18)]
+Peabody <- Peabody[,c(1, 11, 12, 13, 14, 15, 16, 19, 6, 4, 20, 21, 22, 23, 24, 5, 8, 9, 10, 7, 3, 17, 25, 18)]
 
-#### Final tweaks ####
 ## Get rid of all spaces outside of string
 Peabody$formation1 <- str_trim(Peabody$formation1)
 Peabody$formation2 <- str_trim(Peabody$formation2)
 
+## Finally, combine or stages into a single string
+units <- Peabody[,c(11:12)]
+chronostratigraphy <- sapply(1:nrow(units), function(x){
+  ## get unique units
+  strat <- unique(unlist(units[x,]))
+  ## remove gaps if present and concatenate with a comma
+  if(all(strat == "")){
+    out <- ""
+  } else {
+    ## Drop any gaps left. Identify then drop
+    if(any(strat == "")){
+      ## drop
+      strat <- strat[-which(strat == "")]
+      if(length(strat)>1){
+        out <- str_flatten(strat, collapse = ",")
+      } else {
+        out <- strat
+      }
+    } else {
+      if(length(strat)>1){
+        out <- str_flatten(strat, collapse = ",")
+      } else {
+        out <- strat
+      }
+    }
+  }
+  return(out)
+})
+
+## delete old strings
+Peabody <- Peabody[,-c(11:12)]
+Peabody <- cbind(Peabody, chronostratigraphy)
+
+## Re-order
+#View(data.frame(colnames(Peabody)))
+Peabody <- Peabody[,c(1:10, 23, 11:22)]
+#View(data.frame(colnames(Peabody)))
+
 ## Export
 saveRDS(Peabody, file = "data/museum/Peabody.Rds")
-
-
-

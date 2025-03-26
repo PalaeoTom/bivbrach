@@ -457,12 +457,20 @@ GBIF_biv$latestAgeOrHighestStage <- NULL
 GBIF_biv <- cbind(GBIF_biv, new_biv_stages, orig_biv_stages)
 
 ##### Splitting formations #####
+## Inspect
+#View(data.frame(table(GBIF_biv$formation)))
+
+## Modify problem formations
+GBIF_biv[which(GBIF_biv$formation == "Pierre  Sh  |  Fox Hills  Fm contact"),"formation"] <- "Pierre Shale | Fox Hills"
+GBIF_biv[which(GBIF_biv$formation == "Pierre  Sh  |  Fox Hills  Fm TRANSITION"),"formation"] <- "Pierre Shale | Fox Hills"
+
 ## Now to do the same for formations
 #View(data.frame(table(GBIF_biv$formation)))
 forms <- unique(GBIF_biv$formation[which(str_detect(GBIF_biv$formation, pattern = "[:punct:]"))])
-forms <- c(forms, GBIF_biv$formation[which(str_detect(GBIF_biv$formation, pattern = " and "))])
+forms <- c(forms, GBIF_biv$formation[which(str_detect(GBIF_biv$formation, pattern = regex(" and ", ignore_case = T)))])
 forms <- c(forms, GBIF_biv$formation[which(str_detect(GBIF_biv$formation, pattern = " & "))])
-forms <- c(forms, GBIF_biv$formation[which(str_detect(GBIF_biv$formation, pattern = " or "))])
+forms <- c(forms, GBIF_biv$formation[which(str_detect(GBIF_biv$formation, pattern = regex(" or ", ignore_case = T)))])
+forms <- c(forms, GBIF_biv$formation[which(str_detect(GBIF_biv$formation, pattern = '[|]'))])
 forms <- unique(forms)
 
 ## Wittle down to formations to be split
@@ -470,7 +478,7 @@ forms <- unique(forms)
 forms <- forms[c(18, 19, 69, 111, 138, 139, 153, 159, 180, 183, 187, 188, 206, 209, 235, 240, 264, 265, 269,
                  275, 276, 281, 286, 287, 288, 289, 294, 299, 310, 321, 327, 329, 334, 335, 336, 338, 342, 345, 349, 350,
                  361, 366, 368, 370, 372, 373, 386, 387, 389, 390, 391, 392, 394, 397, 398, 399, 401, 402, 404, 406, 413,
-                 414, 418, 428, 434:457)]
+                 414, 418, 428, 434:458)]
 
 ## get ages to be split
 splitForms <- c()
@@ -493,7 +501,7 @@ p <- c('-', ',' , '/', ' or ', ' and ', ' & ')
 ## define new formations list
 newForms <- as.list(formations$formation1)
 
-## Split stages
+## Split formations
 for(i in splitForms){
   for(m in p){
     if(length(newForms[[i]]) == 1){
@@ -796,16 +804,16 @@ GBIF_brach$latestAgeOrHighestStage <- bulk.update.stages(GBIF_brach$latestAgeOrH
 #View(data.frame(table(GBIF_brach$latestAgeOrHighestStage)))
 latePunct <- c()
 latePunct <- c(latePunct, unique(GBIF_brach$latestAgeOrHighestStage[which(str_detect(GBIF_brach$latestAgeOrHighestStage, pattern = "[:punct:]"))]))
-latePunct <- c(latePunct, GBIF_brach$latestAgeOrHighestStage[which(str_detect(GBIF_brach$latestAgeOrHighestStage, pattern = " to "))])
-latePunct <- c(latePunct, GBIF_brach$latestAgeOrHighestStage[which(str_detect(GBIF_brach$latestAgeOrHighestStage, pattern = " or "))])
+latePunct <- c(latePunct, GBIF_brach$latestAgeOrHighestStage[which(str_detect(GBIF_brach$latestAgeOrHighestStage, pattern = regex(" to ", ignore_case = T)))])
+latePunct <- c(latePunct, GBIF_brach$latestAgeOrHighestStage[which(str_detect(GBIF_brach$latestAgeOrHighestStage, pattern = regex(" or ", ignore_case = T)))])
 latePunct <- c(latePunct, GBIF_brach$latestAgeOrHighestStage[which(str_detect(GBIF_brach$latestAgeOrHighestStage, pattern = "[|]"))])
 latePunct <- unique(latePunct)
 
 #View(data.frame(table(GBIF_brach$earliestAgeOrLowestStage)))
 earlyPunct <- c()
 earlyPunct <- c(earlyPunct, unique(GBIF_brach$earliestAgeOrLowestStage[which(str_detect(GBIF_brach$earliestAgeOrLowestStage, pattern = "[:punct:]"))]))
-earlyPunct <- c(earlyPunct, GBIF_brach$earliestAgeOrLowestStage[which(str_detect(GBIF_brach$earliestAgeOrLowestStage, pattern = " to "))])
-earlyPunct <- c(earlyPunct, GBIF_brach$earliestAgeOrLowestStage[which(str_detect(GBIF_brach$earliestAgeOrLowestStage, pattern = " or "))])
+earlyPunct <- c(earlyPunct, GBIF_brach$earliestAgeOrLowestStage[which(str_detect(GBIF_brach$earliestAgeOrLowestStage, pattern = regex(" to ", ignore_case = T)))])
+earlyPunct <- c(earlyPunct, GBIF_brach$earliestAgeOrLowestStage[which(str_detect(GBIF_brach$earliestAgeOrLowestStage, pattern = regex(" or ", ignore_case = T)))])
 earlyPunct <- c(earlyPunct, GBIF_brach$earliestAgeOrLowestStage[which(str_detect(GBIF_brach$earliestAgeOrLowestStage, pattern = "[|]"))])
 earlyPunct <- unique(earlyPunct)
 
@@ -894,15 +902,18 @@ GBIF_brach$latestAgeOrHighestStage <- NULL
 GBIF_brach <- cbind(GBIF_brach, new_brach_stages, orig_brach_stages)
 
 ##### Splitting formations #####
+## Manually inspect
+#View(data.frame(table(GBIF_brach$formation)))
+
 ## First, update two problem formations
 GBIF_brach$formation[which(GBIF_brach$formation == "Upper and Lower Fezouata formations, undifferentiated")] <- "Upper Fezouata formation and Lower Fezouata formation"
 GBIF_brach$formation[which(GBIF_brach$formation == "Bradforidien-Ferrugineus-Schichten")] <- "Bradforidian Ferrugineus Schichten"
 
 ## Now find formations to split
 forms <- unique(GBIF_brach$formation[which(str_detect(GBIF_brach$formation, pattern = "[:punct:]"))])
-forms <- c(forms, GBIF_brach$formation[which(str_detect(GBIF_brach$formation, pattern = " and "))])
+forms <- c(forms, GBIF_brach$formation[which(str_detect(GBIF_brach$formation, pattern = regex(" and ", ignore_case = T)))])
 forms <- c(forms, GBIF_brach$formation[which(str_detect(GBIF_brach$formation, pattern = " & "))])
-forms <- c(forms, GBIF_brach$formation[which(str_detect(GBIF_brach$formation, pattern = " or "))])
+forms <- c(forms, GBIF_brach$formation[which(str_detect(GBIF_brach$formation, pattern = regex(" or ", ignore_case = T)))])
 forms <- unique(forms)
 
 ## Wittle down to those to split
@@ -978,7 +989,7 @@ gen.level <- c()
 gen.level <- c(gen.level,which(GBIF_brach$species == ""))
 GBIF_brach[gen.level, "species"] <- "sp."
 
-## No punctuation or anything else
+## No punctuation or anything else needed
 
 ## Finally, drop entries that could conceivably fall within Meghalayan
 recent <- c()
@@ -1089,7 +1100,7 @@ GBIF <- GBIF[,c(1:8, 31, 9:30)]
 #View(data.frame(colnames(GBIF)))
 
 ## Whoops - forgot to check for NMS, AMNH, and Peabody occurrences. Final check and prune.
-View(data.frame(table(GBIF$publisher)))
+#View(data.frame(table(GBIF$publisher)))
 droppers <- which(GBIF$publisher == "American Museum of Natural History")
 droppers <- c(droppers, which(GBIF$publisher == "Yale University Peabody Museum"))
 droppers <- unique(droppers)

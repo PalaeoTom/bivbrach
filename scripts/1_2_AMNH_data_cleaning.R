@@ -101,6 +101,14 @@ noStage <- c(noStage, which(AMNH$age == "Upper"))
 noStage <- c(noStage, which(AMNH$age == "Upper ?"))
 noStage <- c(noStage, which(AMNH$age == "W. Facies"))
 noStage <- c(noStage, which(AMNH$age == "West Facies"))
+noStage <- c(noStage, which(AMNH$age == "Conglomerate"))
+noStage <- c(noStage, which(AMNH$age == "Florida"))
+noStage <- c(noStage, which(AMNH$age == "Lower"))
+noStage <- c(noStage, which(AMNH$age == "Middle"))
+noStage <- c(noStage, which(AMNH$age == "Post"))
+noStage <- c(noStage, which(AMNH$age == "San Pablo"))
+noStage <- c(noStage, which(AMNH$age == "ARISAIG"))
+
 ## Now for noForm
 #View(data.frame(table(AMNH$formation)))
 noForm <- c()
@@ -141,123 +149,212 @@ droppers <- c(droppers, intersect(noLL, noLoc))
 droppers <- unique(droppers)
 AMNH <- AMNH[-droppers,]
 
-## Split and clean stages
-stageDoub <- c()
-stageDoub <- c(stageDoub, which(AMNH$age == "Anisian | Ladinian, Upper"))
-stageDoub <- c(stageDoub, which(AMNH$age == "Anisian-Ladinian"))
-stageDoub <- c(stageDoub, which(AMNH$age == "Campanian | Maastrichtian"))
-stageDoub <- c(stageDoub, which(AMNH$age == "CINCINNATIAN | RICHMONDIAN"))
-stageDoub <- c(stageDoub, which(AMNH$age == "CLARKFORKIAN - WASATCHIAN"))
-stageDoub <- c(stageDoub, which(AMNH$age == "EIFELIAN|GIVETIAN"))
-stageDoub <- c(stageDoub, which(AMNH$age == "Gulfian_Early Late Maastrichtian"))
-stageDoub <- c(stageDoub, which(AMNH$age == "Maastrichtian | Campanian"))
-stageDoub <- c(stageDoub, which(AMNH$age == "PENNSYLVANIAN, M |DESMOINESIAN"))
-stageDoub <- c(stageDoub, which(AMNH$age == "Quadraten-Senonian"))
+#### Cleaning up stages ####
+## Isolate original
+orig_stages <- AMNH$age
 
-## Split and clean stages
-stages <- data.frame(AMNH$age)
-AMNH$age <- NULL
-colnames(stages) <- "stage1"
+## Convert unknowns to blanks
+#View(data.frame(table(AMNH$age)))
+noStage <- c()
+noStage <- c(noStage, which(AMNH$age == ""))
+noStage <- c(noStage, which(AMNH$age == "(E)"))
+noStage <- c(noStage, which(AMNH$age == "A"))
+noStage <- c(noStage, which(AMNH$age == "Late, Or Permian"))
+noStage <- c(noStage, which(AMNH$age == "Lower-Middle"))
+noStage <- c(noStage, which(AMNH$age == "Lower/Middle"))
+noStage <- c(noStage, which(AMNH$age == "P."))
+noStage <- c(noStage, which(AMNH$age == "P.P.?"))
+noStage <- c(noStage, which(AMNH$age == "Sub"))
+noStage <- c(noStage, which(AMNH$age == "Recent"))
+noStage <- c(noStage, which(AMNH$age == "Top"))
+noStage <- c(noStage, which(AMNH$age == "Upper"))
+noStage <- c(noStage, which(AMNH$age == "Upper ?"))
+noStage <- c(noStage, which(AMNH$age == "W. Facies"))
+noStage <- c(noStage, which(AMNH$age == "West Facies"))
+noStage <- c(noStage, which(AMNH$age == "Conglomerate"))
+noStage <- c(noStage, which(AMNH$age == "Florida"))
+noStage <- c(noStage, which(AMNH$age == "Lower"))
+noStage <- c(noStage, which(AMNH$age == "Middle"))
+noStage <- c(noStage, which(AMNH$age == "Post"))
+noStage <- c(noStage, which(AMNH$age == "San Pablo"))
+noStage <- c(noStage, which(AMNH$age == "ARISAIG"))
+noStage <- unique(noStage)
+AMNH[noStage, "age"] <- ""
 
-## Only 2 stages max
-stages$stage2 <- ""
+## Manual updates
+AMNH[which(AMNH$age == "CASSIAN"),"formation"] <- "Cassian"
+AMNH[which(AMNH$age == "Domengine"),"formation"] <- "Domengine"
+AMNH[which(AMNH$age == "Ii Mediterran Stufe"),"formation"] <- "Eggenburg group"
+AMNH[which(AMNH$age == "Med. Stf."),"formation"] <- "Eggenburg group"
+AMNH[which(AMNH$age == "Med. Stuf."),"formation"] <- "Eggenburg group"
+AMNH[which(AMNH$age == "Mediterranstuffe Ii."),"formation"] <- "Eggenburg group"
+AMNH[which(AMNH$age == "Ithaca"),"formation"] <- "Chemung"
+AMNH[which(AMNH$age == "Lincoln"),"formation"] <- "Pittsburg Bluff"
+AMNH[which(AMNH$age == "MUSCHELKALK"),"formation"] <- "Muschelkalk"
+AMNH[which(AMNH$age == "Wilcox"),"formation"] <- "Tuscahoma"
 
-## Specify splitting punctuation
-p <- c("|", "-", "_")
+## Read in stages
+stages <- read.csv("data/metadata/macrostrat_raw.csv", row.names = 1, header = T)
+stages <- stages[!duplicated(stages[,c("name", "t_age", "b_age")]),]
+stage_names <- stages$name
+
+## Now clean - remove accents and swap iens for ians
+source("functions/clean.stage.names.R")
+AMNH <- clean.stage.names(data = AMNH, columns = "age")
+
+## Now check against Macrostrat names
+## Run bulk.update.stages (aggregation of all specific name changes identified thus far), then check for other errors
+source("functions/bulk.update.stages.R")
+AMNH$age <- bulk.update.stages(AMNH$age)
+
+## Inspect and update function
+#View(data.frame(table(AMNH$age)))
+#View(data.frame(stage_names))
+
+## Once function updated, load again and re-run
+#source("functions/bulk.update.stages.R")
+#AMNH$age <- bulk.update.stages(AMNH$age)
+
+## Re-load and run function again after updates
+#source("functions/bulk.update.stages.R")
+#AMNH$age <- bulk.update.stages(AMNH$age)
 
 ## Split stages
-for(i in stageDoub){
+#View(data.frame(table(AMNH$age)))
+
+## No &s, ands, tos, or ors. Just refine punctuation
+splitStages <- c()
+splitStages <- c(splitStages, unique(AMNH$age[which(str_detect(AMNH$age, pattern = "[:punct:]"))]))
+splitStages <- c(splitStages, AMNH$age[which(str_detect(AMNH$age, pattern = "[|]"))])
+splitStages <- unique(splitStages)
+
+## Wittle down to those that should be split
+#View(data.frame(splitStages))
+splitStages <- splitStages[c(1:10, 13:15, 18:20, 24, 30, 37, 46:48)]
+
+## get intervals to be split
+splitters <- c()
+for(i in 1:length(splitStages)){
+  splitters <- c(splitters, which(AMNH$age == splitStages[i]))
+}
+
+## Isolate stages
+newStage <- data.frame(AMNH$age)
+colnames(newStage) <- "Macrostrat_unit1"
+newStage$Macrostrat_unit2 <- ""
+
+## Specify characters to split by
+p <- c('-', '|')
+
+## Split early stages
+for(i in splitters){
   for(m in p){
-    if(str_detect(stages$stage1[i], pattern = fixed(m))){
+    if(str_detect(AMNH$age[i], pattern = fixed(m))){
       ## extract stages
-      formVec <- unlist(str_split(stages$stage1[i], pattern = fixed(m)))
+      ageVec <- unlist(str_split(AMNH$age[i], pattern = fixed(m)))
       ## assign to new columns
-      for(f in 1:length(formVec)){
-        stages[i,f] <- formVec[f]
+      for(f in 1:length(ageVec)){
+        newStage[i,f] <- ageVec[f]
       }
     }
   }
 }
 
-## Re-attach to dataset
-AMNH <- cbind(AMNH, stages)
+## Finally, pass over each entry, only retaining Macrostrat compatible strings
+stages <- read.csv("data/metadata/macrostrat_raw.csv", row.names = 1, header = T)
+stages <- stages[!duplicated(stages[,c("name", "t_age", "b_age")]),]
+source("functions/stage.checker.R")
 
-## Now do the same for formations
+## Run stage checker
+newStage$Macrostrat_unit1 <- stage.checker(newStage$Macrostrat_unit1, stages)
+newStage$Macrostrat_unit2 <- stage.checker(newStage$Macrostrat_unit2, stages)
+
+## Delete old stages
+AMNH$age <- NULL
+
+## Re-attach to dataset
+AMNH <- cbind(AMNH, newStage, "age_OLD" = orig_stages)
+
+#### Splitting formations ####
+## Manually inspect formations
+#View(data.frame(table(AMNH$formation)))
+
+## Manually sort problem formations
+AMNH[which(AMNH$formation == "Denison Or Ft. Worth Beds"),"formation"] <- "Denison formation or Fort Worth formation"
+AMNH[which(AMNH$formation == "Liberty or Whitewater"),"formation"] <- "Liberty formation or Whitewater formation"
+AMNH[which(AMNH$formation == "D-10-Tebo Shale,Erving Pit;D-11-Lexington Coal Shideler Pit;D-12-Lexigton Coal Lear Pit"),"formation"] <- "Tebo Shale-Lexington Coal"
+AMNH[which(AMNH$formation == "Pierre  Sh  |  Fox Hills  Fm contact"),"formation"] <- "Pierre Shale | Fox Hills"
+AMNH[which(AMNH$formation == "Pierre  Sh  |  Fox Hills  Fm TRANSITION"),"formation"] <- "Pierre Shale | Fox Hills"
+AMNH[which(AMNH$formation == "ZOHAR | MATMOR FM"),"formation"] <- "Zohar | Matmor"
+AMNH[which(AMNH$formation == "TOP OF TINTON FM AND BASE OF HORNERSTOWN FM"),"formation"] <- "Tinton | Hornerstown"
+AMNH[which(AMNH$formation == "WARSAW LS OR SECOND ARCHIMEDES LS"),"formation"] <- "Warsaw Limestone"
+AMNH[which(AMNH$formation == "Upper Or Pliocene"),"formation"] <- ""
+
+## Initially, tidy up punctuation
+p <- unique(unlist(str_extract_all(AMNH$formation, pattern = "[[:punct:]]")))
+
+## Check to see whether type of punctuation indicates two or more formations
+#View(data.frame(table(AMNH$formation[which(str_detect(AMNH$formation, pattern = fixed(p[1])))])))
+
+## Replace all non-hyphens, ambersands, and backslashes with spaces
+p <- p[-c(6, 7, 12)]
+
+## Clean up punctuation not in use
+for(c in p){
+  AMNH$formation <- str_replace_all(AMNH$formation, pattern = fixed(c), replacement = " ")
+}
+
+## Find formations to be split
+## Now find formations to be split
+forms <- unique(AMNH$formation[which(str_detect(AMNH$formation, pattern = "[:punct:]"))])
+forms <- c(forms, AMNH$formation[which(str_detect(AMNH$formation, pattern = regex(" and ", ignore_case = T)))])
+forms <- c(forms, AMNH$formation[which(str_detect(AMNH$formation, pattern = " & "))])
+forms <- c(forms, AMNH$formation[which(str_detect(AMNH$formation, pattern = regex(" or ", ignore_case = T)))])
+forms <- c(forms, AMNH$formation[which(str_detect(AMNH$formation, pattern = "[|]"))])
+forms <- unique(forms)
+
+## Wittle down to those to split
+#View(data.frame(forms))
+forms <- forms[c(3:6, 12:22, 25:29, 31:39)]
+#View(data.frame(forms))
+
+## get ages to be split
+splitForms <- c()
+for(i in 1:length(forms)){
+  splitForms <- c(splitForms, which(AMNH$formation == forms[i]))
+}
+
+## Isolate formation
 formations <- data.frame(AMNH$formation)
-AMNH$formation <- NULL
 colnames(formations) <- "formation1"
 
-## Get maximum number of formations within a single record
-## Find all punctuation
-p <- unique(unlist(str_extract_all(formations$formation1, pattern = "[[:punct:]]")))
-p
-
-## 9 total
-## Check entries associated with each
-#View(data.frame(table(formations$formation1[which(str_detect(formations$formation1, pattern = fixed('\"')))])))
-## Split by hyphen, ambersand, and backslash
-p <- paste0('\\', p[-c(6, 7, 12)])
-p
-for(c in p){
-  formations$formation1 <- str_replace_all(formations$formation1, pattern = c, replacement = " ")
-}
-## get split formations - maximum of 2.
-split.forms <- c(str_split(formations$formation1, pattern = fixed("-")), str_split(formations$formation1, pattern = fixed("&")), str_split(formations$formation1, pattern = fixed("/")))
-max.forms <- max(sapply(1:length(split.forms), function(x) length(split.forms[[x]])))
-
-## One rogue entry with 7 elements - will resolve manually then re-run
-formations$formation1[which(max.forms == 7)] <- "Tebo Shale-Lexington Coal"
-
-## Re-run
-split.forms <- c(str_split(formations$formation1, pattern = fixed("-")), str_split(formations$formation1, pattern = fixed("&")), str_split(formations$formation1, pattern = fixed("/")))
-max.forms <- max(sapply(1:length(split.forms), function(x) length(split.forms[[x]])))
-
-## maximum 2 formations
+## max 2 formations
 formations$formation2 <- ""
 
-## Now to find offending rows
-splitters <- c()
-splitters <- c(splitters, which(str_detect(formations$formation1, pattern = fixed('-'))))
-splitters <- c(splitters, which(str_detect(formations$formation1, pattern = fixed('&'))))
-splitters <- c(splitters, which(str_detect(formations$formation1, pattern = fixed('/'))))
-splitters <- unique(splitters)
+## Specify string to split by
+p <- c('/', '-', '&', ' or ', '|')
 
-## Remove keepers and check again
-formations$formation1[splitters]
-splitters <- splitters[-c(3:14, 25:27, 29:30, 42, 50:55)]
-formations$formation1[splitters]
-
-## Split splitters
-for(i in splitters){
-  if(str_detect(formations$formation1[i], pattern = fixed('&'))){
-    ## extract formations
-    formVec <- unlist(str_split(formations$formation1[i], pattern = fixed('&')))
-    ## assign to new columns
-    for(f in 1:length(formVec)){
-      formations[i,f] <- formVec[f]
-    }
-  }
-  if(str_detect(formations$formation1[i], pattern = fixed('/'))){
-    ## extract formations
-    formVec <- unlist(str_split(formations$formation1[i], pattern = fixed('/')))
-    ## assign to new columns
-    for(f in 1:length(formVec)){
-      formations[i,f] <- formVec[f]
-    }
-  }
-  if(str_detect(formations$formation1[i], pattern = fixed('-'))){
-    ## extract formations
-    formVec <- unlist(str_split(formations$formation1[i], pattern = fixed('-')))
-    ## assign to new columns
-    for(f in 1:length(formVec)){
-      formations[i,f] <- formVec[f]
+## Split formations
+for(i in splitForms){
+  for(m in p){
+    if(str_detect(formations$formation1[i], pattern = fixed(m))){
+      ## extract forms
+      formVec <- unlist(str_split(formations$formation1[i], pattern = fixed(m)))
+      ## assign to new columns
+      for(f in 1:length(formVec)){
+        formations[i,f] <- formVec[f]
+      }
     }
   }
 }
+
+## delete original stage data columns
+AMNH$formation <- NULL
 
 ## Re-attach to dataset
 AMNH <- cbind(AMNH, formations)
 
+#### Tidy up taxonomy and localities ####
 ## Tidy up phylum and classifications
 #View(data.frame(table(AMNH$phylum)))
 AMNH$phylum[which(AMNH$phylum == "Brachiopoda-articulata")] <- "Brachiopoda"
@@ -271,7 +368,6 @@ AMNH$phylum[which(AMNH$class == "Brachiopoda")] <- "Brachiopoda"
 AMNH$class[which(AMNH$class == "Brachiopoda")] <- ""
 AMNH <- AMNH[-which(AMNH$class == "Gastropoda"),]
 
-#### FROM HERE ####
 ## Refresh noLL
 noLL <- union(which(is.na(AMNH$latitudeDecimal)),which(is.na(AMNH$longitudeDecimal)))
 
@@ -362,15 +458,11 @@ AMNH$genus <- misspell(AMNH$genus)
 AMNH$genus <- str_replace_all(AMNH$genus, pattern = "[:punct:]", replacement = "")
 AMNH$formation1 <- str_replace_all(AMNH$formation1, pattern = "[:punct:]", replacement = "")
 AMNH$formation2 <- str_replace_all(AMNH$formation2, pattern = "[:punct:]", replacement = "")
-AMNH$stage1 <- str_replace_all(AMNH$stage1, pattern = "[:punct:]", replacement = "")
-AMNH$stage2 <- str_replace_all(AMNH$stage2, pattern = "[:punct:]", replacement = "")
 
 ## Tidy up genus, stage, and formation capitalization
 AMNH$genus <- str_to_title(AMNH$genus)
 AMNH$formation1 <- str_to_title(AMNH$formation1)
 AMNH$formation2 <- str_to_title(AMNH$formation2)
-AMNH$stage1 <- str_to_title(AMNH$stage1)
-AMNH$stage2 <- str_to_title(AMNH$stage2)
 
 ## Then convert all uncertain species to "sp."
 ## Tidy up undetermined/indeterminate species
@@ -473,23 +565,74 @@ AMNH$species <- tolower(AMNH$species)
 
 ## Finally, check and drop holocene/recent entries
 recent <- c()
-recent <- c(recent, which(AMNH$epoch == regex("Recent", ignore_case = T)))
-recent <- c(recent, which(AMNH$epoch == regex("Holocene", ignore_case = T)))
-recent <- c(recent, which(AMNH$stage1 == regex("Recent", ignore_case = T)))
-recent <- c(recent, which(AMNH$stage1 == regex("Holocene", ignore_case = T)))
-recent <- c(recent, which(AMNH$stage2 == regex("Recent", ignore_case = T)))
-recent <- c(recent, which(AMNH$stage2 == regex("Holocene", ignore_case = T)))
-recent <- unique(recent)
-AMNH <- AMNH[-recent,]
+recent <- c(recent, which(AMNH$Macrostrat_unit1 == regex("Meghalayan", ignore_case = T)))
+recent <- c(recent, which(AMNH$Macrostrat_unit1 == regex("Haweran", ignore_case = T)))
+recent <- c(recent, which(AMNH$Macrostrat_unit1 == regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(AMNH$Macrostrat_unit1 == regex("Quaternary", ignore_case = T)))
+recent <- c(recent, which(AMNH$Macrostrat_unit1 == regex("NN21", ignore_case = T)))
+recent <- c(recent, which(AMNH$Macrostrat_unit1 == regex("Cenozoic", ignore_case = T)))
+recent <- c(recent, which(AMNH$Macrostrat_unit1 == regex("Phanerozoic", ignore_case = T)))
+recent <- c(recent, which(AMNH$Macrostrat_unit1 == regex("C1", ignore_case = T)))
 
+recent <- c(recent, which(AMNH$Macrostrat_unit2 == regex("Meghalayan", ignore_case = T)))
+recent <- c(recent, which(AMNH$Macrostrat_unit2 == regex("Haweran", ignore_case = T)))
+recent <- c(recent, which(AMNH$Macrostrat_unit2 == regex("Holocene", ignore_case = T)))
+recent <- c(recent, which(AMNH$Macrostrat_unit2 == regex("Quaternary", ignore_case = T)))
+recent <- c(recent, which(AMNH$Macrostrat_unit2 == regex("NN21", ignore_case = T)))
+recent <- c(recent, which(AMNH$Macrostrat_unit2 == regex("Cenozoic", ignore_case = T)))
+recent <- c(recent, which(AMNH$Macrostrat_unit2 == regex("Phanerozoic", ignore_case = T)))
+recent <- c(recent, which(AMNH$Macrostrat_unit2 == regex("C1", ignore_case = T)))
+recent <- unique(recent)
+if(length(recent) > 0){
+  AMNH <- AMNH[-recent,]
+}
+
+#### Preparing final version for export ####
 ## Rearrange and re-label
 colnames(AMNH)
-AMNH <- AMNH[,c(1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 16, 15, 23, 24, 28, 29, 13, 14, 30, 31, 25, 26, 27, 17, 18, 19, 20, 21, 22, 12)]
+AMNH <- AMNH[,c(1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 16, 15, 23, 24, 28, 29, 30, 13, 14, 31, 32, 25, 26, 27, 17, 18, 19, 20, 21, 22, 12)]
 
-#### Final tweaks ####
-## Get rid of all spaces outside of string
+## Get rid of all spaces outside of string for formations
 AMNH$formation1 <- str_trim(AMNH$formation1)
 AMNH$formation2 <- str_trim(AMNH$formation2)
+
+## Finally, combine or stages into a single string
+units <- AMNH[,c(15:16)]
+chronostratigraphy <- sapply(1:nrow(units), function(x){
+  ## get unique units
+  strat <- unique(unlist(units[x,]))
+  ## remove gaps if present and concatenate with a comma
+  if(all(strat == "")){
+    out <- ""
+  } else {
+    ## Drop any gaps left. Identify then drop
+    if(any(strat == "")){
+      ## drop
+      strat <- strat[-which(strat == "")]
+      if(length(strat)>1){
+        out <- str_flatten(strat, collapse = ",")
+      } else {
+        out <- strat
+      }
+    } else {
+      if(length(strat)>1){
+        out <- str_flatten(strat, collapse = ",")
+      } else {
+        out <- strat
+      }
+    }
+  }
+  return(out)
+})
+
+## delete old strings
+AMNH <- AMNH[,-c(15:16)]
+AMNH <- cbind(AMNH, chronostratigraphy)
+
+## Re-order
+#View(data.frame(colnames(AMNH)))
+AMNH <- AMNH[,c(1:14, 30, 15:29)]
+#View(data.frame(colnames(AMNH)))
 
 ## Export
 saveRDS(AMNH, file = "data/museum/AMNH.Rds")
