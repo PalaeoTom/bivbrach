@@ -13,8 +13,13 @@ library(velociraptr)
 library(dplyr)
 library(plyr)
 library(parallel)
+library(divDyn)
 
- ## Load data
+## Use time binning scheme of Kocsis (minus final bin as not including Holocene data)
+## See https://besjournals.onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1111%2F2041-210X.13161&file=mee313161-sup-0001-Supinfo.pdf for tutorial
+data(stages)
+
+## Load data
 setwd("~/R_packages/bivbrach")
 genera <- readRDS("data/genera_200.Rds")
 species <- readRDS("data/species_200.Rds")

@@ -14,6 +14,7 @@ get.units.wrapper <- function(forms, addenda = c("limestone", "limestones", "sha
   ms <- cbind(ms, rank, rank)
   colnames(ms) <- c("verbatim_name", "name", "updated_name", "rank", "updated_rank")
   ## Add additional output columns
+  ms$interval <- NA
   ms$t_age <- NA
   ms$b_age <- NA
   ms$lithology <- ""
@@ -100,7 +101,7 @@ get.units.wrapper <- function(forms, addenda = c("limestone", "limestones", "sha
             ms[i,"name"] <- ad.match
             ms[i,"updated_name"] <- paste0(ad.match, " ", ms[i,"updated_rank"])
             ## Update trackers
-            ms[i,"updated_name"] <- T
+            ms[i,"name_updated"] <- T
             ms[i,"rank_updated"] <- T
             ms[i,"both_updated"] <- T
             ## Get ref
@@ -114,7 +115,15 @@ get.units.wrapper <- function(forms, addenda = c("limestone", "limestones", "sha
         }
       }
     }
+    ## Get intervals
+    interval <- c(ref[which(ref[,"t_age"] == min(ref[,"t_age"])),"t_int_name"],ref[which(ref[,"b_age"] == max(ref[,"b_age"])),"b_int_name"])
+    interval <- unique(interval)
+    ## if length of interval above 1, flatten
+    if(length(interval)>1){
+      interval <- str_flatten(interval, collapse = ",")
+    }
     ## Populate rows
+    ms[i,"interval"] <- interval
     ms[i,"t_age"] <- min(ref[,"t_age"])
     ms[i,"b_age"] <- max(ref[,"b_age"])
     ## Get lith
@@ -123,10 +132,10 @@ get.units.wrapper <- function(forms, addenda = c("limestone", "limestones", "sha
     rm(unit)
   }
   ## Pass over updated name, replacing abbreviations with full names
-  ms[,"updated_name"] <- str_replace_all(ms[,"updated_name"], pattern = ". Gp$", " group")
-  ms[,"updated_name"] <- str_replace_all(ms[,"updated_name"], pattern = ". SGp$", " supergroup")
-  ms[,"updated_name"] <- str_replace_all(ms[,"updated_name"], pattern = ". Fm$", " formation")
-  ms[,"updated_name"] <- str_replace_all(ms[,"updated_name"], pattern = ". Mbr$", " member")
+  ms[,"updated_name"] <- str_replace_all(ms[,"updated_name"], pattern = " Gp$", " group")
+  ms[,"updated_name"] <- str_replace_all(ms[,"updated_name"], pattern = " SGp$", " supergroup")
+  ms[,"updated_name"] <- str_replace_all(ms[,"updated_name"], pattern = " Fm$", " formation")
+  ms[,"updated_name"] <- str_replace_all(ms[,"updated_name"], pattern = " Mbr$", " member")
   ## return ms
   return(ms)
 }

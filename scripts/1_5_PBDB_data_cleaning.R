@@ -2,88 +2,247 @@
 ## Started by TJS on 08/01/2024
 
 ## If packages aren't installed, install them, then load them
-packages <- c("fossilbrush", "rnaturalearth", "rnaturalearthdata", "divvy", "stringr", "divDyn")
+packages <- c("fossilbrush", "stringr", "divDyn")
 if(length(packages[!packages %in% installed.packages()[,"Package"]]) > 0){
   install.packages(packages[!packages %in% installed.packages()[,"Package"]])
 }
 library(fossilbrush)
-library(rnaturalearth)
-library(rnaturalearthdata)
 library(stringr)
-library(divvy)
 library(divDyn)
-
-## install divvyCompanion from github and load
-#library(remotes)
-#install_github("PalaeoTom/divvyCompanion")
-library(divvyCompanion)
 
 ## Clean directory
 rm(list = ls())
 
-#### Cleaning PBDB ####
+#### Loading data ####
+## Option A: November 2023 dataset
 ## Load raw PBDB data
-raw_PBDB <- readRDS("data/unclean_data/PBDB_Nov23.Rds")
+#raw_PBDB <- readRDS("data/unclean_data/PBDB_Nov23.Rds")
 
-## Clean time data
 ## Isolate bivalve and brachiopod data
-raw_PBDB <- raw_PBDB[c(which(raw_PBDB$phylum == "Brachiopoda"),which(raw_PBDB$class == "Bivalvia")),]
+#PBDB <- raw_PBDB[c(which(raw_PBDB$phylum == "Brachiopoda"),which(raw_PBDB$class == "Bivalvia")),]
+#rm(raw_PBDB)
 
+## Download latest version
+#library(paleobioDB)
+#raw_PBDB_bivalves <- pbdb_occurrences(limit = "all", vocab = "pbdb", base_name = "Bivalvia",
+#                                      show = c("coll", "class", "coords", "paleoloc", "strat", "stratext", "lith", "env"))
+
+#raw_PBDB_brachiopods <- pbdb_occurrences(limit = "all", vocab = "pbdb", base_name = "Brachiopoda",
+#                                      show = c("coll", "class", "coords", "paleoloc", "strat", "stratext", "lith", "env"))
+
+## combine
+#PBDB <- rbind(raw_PBDB_bivalves, raw_PBDB_brachiopods)
+
+## trim down to necessary columns
+#PBDB <- PBDB[,c(which(colnames(PBDB) %in% colnames(raw_PBDB)),37)]
+
+## Export
+#saveRDS(PBDB, "data/unclean_data/PBDB_biv_brach_Apr25.Rds")
+
+## Or, load data that was used for these analyses
+PBDB <- readRDS("data/unclean_data/PBDB_biv_brach_Apr25.Rds")
+
+#### Taxonomic filtering and cleaning ####
+## First, check accepted ranks
+#View(data.frame(table(PBDB$accepted_rank)))
+
+## Only retain those of genus, species, subgenus, and subspecies
+PBDB <- PBDB[PBDB$accepted_rank %in% c("genus", "species", "subgenus", "subspecies"),]
+
+## Replace PBDB default missing data entry with NA for other taxonomic levels
+PBDB[grep("NO_", PBDB[,"class"]),"class"] <- ""
+PBDB[grep("NO_", PBDB[,"order"]), "order"] <- ""
+PBDB[grep("NO_", PBDB[,"family"]), "family"] <- ""
+PBDB[grep("NO_", PBDB[,"genus"]), "genus"] <- ""
+
+## Drop all genera with no information
+PBDB <- PBDB[-which(PBDB$genus == ""),]
+
+## Stip out subgenera in brackets
+PBDB$genus <- str_split_i(PBDB$genus, pattern = ' ', i = 1)
+
+## Standardise dipthongs for genera
+source("functions/misspell.R")
+PBDB$genus <- misspell(PBDB$genus)
+
+#### Adding environmental covariates ####
+## Define lithology, bathymetric, and reefal categories
+data(keys)
+PBDB$lithCat <- categorize(PBDB$lithology1, keys$lith)
+PBDB$bathCat <- categorize(PBDB$environment, keys$bath)
+PBDB$reefCat <- categorize(PBDB$environment, keys$reefs)
+PBDB$reefCat[PBDB$lithCat == "siliciclastic" & PBDB$environment == "marine indet."] <- "non-reef"
+
+## Drop unlithified sediments - effort to reduce sampling bias
+PBDB <- PBDB[-which(PBDB$lithification1=="unlithified"),]
+
+#### Updating chronostratigraphy and temporal filtering ####
+## Adding stages of Kocsis et al. (2019)
+dat <- PBDB
+data(stages)
+
+## Set column to use as label to 'name'
+colnames(stages)[colnames(stages)=="stage"] <- "name"
+
+## Update names of stages to match PBDB
+stages[8, "name"] <- "Wuliuan"
+stages[13, "name"] <- "Stage 10"
+
+## Categorise occurrences using stage intervals, both early and late. Gives stage ID numbers according to Kocsis et al.
+stgMin <- categorize(dat[ ,"early_interval"], keys$stgInt)
+stgMax <- categorize(dat[ ,"late_interval"], keys$stgInt)
+
+## convert to numeric
+stgMin <- as.numeric(stgMin)
+stgMax <- as.numeric(stgMax)
+
+## initialise empty container
+dat$stg <- rep(NA, nrow(dat))
+
+## select entries, where
+stgCondition <- c(
+  # the early and late interval fields indicate the same stage
+  which(stgMax==stgMin),
+  # or the late_interval field is empty
+  which(stgMax==-1))
+
+## in these entries, use the stg indicated by the early_interval
+dat$stg[stgCondition] <- stgMin[stgCondition]
+
+## Correcting Cambrian and Ordovician collections
+## Load updated Cambrian collection labels. Collection numbers are names, stage numbers are values.
+load(url("https://github.com/divDyn/ddPhanero/raw/master/data/Stratigraphy/2018-08-31/cambStrat.RData"))
+
+## Get collection numbers
+colls <- as.character(dat$collection_no)
+
+## Which are Cambrian?
+bool <- colls%in%names(camb)
+
+## Isolate the Cambrian collections
+subColls <- colls[bool]
+
+## Use collection number names to get stage ID numbers
+subStg <- camb[subColls]
+
+## Create a copy of original object
+newStg <- dat$stg
+
+## replace the missing entries and reattach
+newStg[bool]  <- subStg
+dat$stg <- newStg
+
+## Now to update intervals - first, delete old entries
+dat[which(bool),"early_interval"] <- ""
+dat[which(bool),"late_interval"] <- ""
+
+## Then add updated intervals to early interval
+dat[which(bool),"early_interval"] <- stages[subStg,"name"]
+
+## Now to do same with Ordovician collections
+load(url("https://github.com/divDyn/ddPhanero/raw/master/data/Stratigraphy/2018-08-31/ordStrat.RData"))
+
+## Create new data frame to record new stage data - only get those missing stages
+new <- unique(dat[is.na(dat$stg), c("collection_no", "early_interval", "late_interval", "zone", "formation", "max_ma", "min_ma", "stg")])
+## Total 72066 have not been assigned stages yet
+
+## For each row in format(ions), check for matches between new formations and row formation. Add stg if match
+for (i in 1:nrow(format)){
+  ix <- which((as.character(new$formation) == as.character(format$formation[i])))
+  new$stg[ix] <- format$stg[i]
+}
+
+## For each row in max.int(ervals), check for match with early_interval of data. Record ID if so.
+for (i in 1:nrow(max.int)){
+  ix <- which(as.character(new$early_interval) == as.character(max.int$Max.int[i]))
+  new$stg[ix] <- max.int$stg.1[i]
+}
+
+## Now to check do the same with late intervals, and check for differences
+## Create blank case
+stg2 <- rep(NA, nrow(new))
+## Now check late intervals
+for (i in 1:nrow(max.int)){
+  ix <- which(as.character(new$late_interval) == as.character(max.int$Max.int[i]))
+  stg2[ix] <- max.int$stg.1[i]
+}
+
+## Bigger the number, the younger the interval
+## Late interval can only be bigger
+## So if bigger, straddles multiple intervals. Should ignore.
+ix <- which(new$stg<stg2)
+new$stg[ix] <- NA
+
+## Now matching to zones
+for (i in 1:nrow(zones)){
+  ix <- which(as.character(new$zone) == as.character(zones$zone[i]))
+  new$stg[ix] <- zones$stg[i]
+}
+
+# distill to collections with stage data
+new2 <- new[!is.na(new$stg),]
+
+## Get named vector of stg numbers, names = collection numbers
+ord <- new2$stg
+names(ord) <- new2$collection_no
+
+## Get the collection identifiers of occurrences in the total dataset
+colls <- as.character(dat$collection_no)
+
+## Get which are present in the newly gathered data?
+bool <- colls%in%names(ord)
+
+## collection identifiers of the occurrences of only these collections
+subColls <- colls[bool]
+
+## order/assign the stg accordingly
+subStg <- ord[subColls]
+
+## copy original
+newStg <- dat$stg
+
+## replace the missing entries
+newStg[bool] <- subStg
+
+## make sure things are OK
+origTab <- table(dat$stg)
+newTab <- table(newStg)
+sum(newTab)-sum(origTab)
+sum(newTab)
+
+## add to the full table
+dat$stg <- newStg
+
+## Update intervals again - first, remove
+dat[which(bool),"early_interval"] <- ""
+dat[which(bool),"late_interval"] <- ""
+
+## Then add updated intervals to early interval
+dat[which(bool),"early_interval"] <- stages[subStg,"name"]
+
+## Once finished, update PBDB object
+PBDB <- dat
+
+## Remove Stg column - will time bin separately as one.
+PBDB$stg <- NULL
+
+### Cleaning up rest of Chronostratigraphy
 ## use fossilbrush to update Chronostratigraphy
-PBDB <- chrono_scale(raw_PBDB,  tscale = "GTS2020", srt = "early_interval", end = "late_interval",
+PBDB <- chrono_scale(PBDB,  tscale = "GTS2020", srt = "early_interval", end = "late_interval",
                      max_ma = "max_ma", min_ma = "min_ma", verbose = FALSE)
 
 ## set new chronostratigraphy as "max_ma" and "min_ma", then remove added columns newFAD and newLAD
 PBDB$max_ma <- PBDB$newFAD
 PBDB$min_ma <- PBDB$newLAD
-PBDB <- PBDB[,-c(29,30)]
+PBDB <- PBDB[,c(1:28)]
 
 ## check for and remove any entries with nonsensical entries (LAD older than FAD)
 if(any(PBDB$max_ma < PBDB$min_ma)){
   PBDB <- PBDB[-which(PBDB$max_ma < PBDB$min_ma),]
 }
 
-#### Checking ages and coordinates ####
-#View(data.frame(table(PBDB$paleolat)))
-#View(data.frame(table(PBDB$paleolng)))
-#View(data.frame(table(PBDB$max_ma)))
-#View(data.frame(table(PBDB$min_ma)))
-## All good!
-
-#### Cleaning taxonomy ####
-## Replace PBDB default missing data entry with NA for other taxonomic levels
-PBDB[grep("NO_", PBDB[,"class"]),"class"] <- NA
-PBDB[grep("NO_", PBDB[,"order"]), "order"] <- NA
-PBDB[grep("NO_", PBDB[,"family"]), "family"] <- NA
-PBDB[grep("NO_", PBDB[,"genus"]), "genus"] <- NA
-
-## Check all classes with NA are Brachiopoda
-all(PBDB[which(is.na(PBDB$class)),"phylum"] == "Brachiopoda")
-## All good!
-
-## Drop all genera with NA
-PBDB <- PBDB[-which(is.na(PBDB$genus)), ]
-
-## Manually inspect genera
-#View(data.frame(table(PBDB$genus)))
-## Only issue - subgenera in brackets. Should be stripped out. Use Regex search to reduce to first string.
-PBDB$genus <- str_split_i(PBDB$genus, pattern = ' ', i = 1)
-
-## Use misspell function to update genus, family, and order designations
-source("functions/misspell.R")
-PBDB$genus <- misspell(PBDB$genus)
-
-## Check for punctuation and capitalisation
-PBDB$genus <- str_replace_all(PBDB$genus, pattern = "[:punct:]", replacement = "")
-PBDB$genus <- str_to_title(PBDB$genus)
-
-#### Adding environmental covariates ####
-## Define categories
-data(keys)
-PBDB$lithCat <- categorize(PBDB$lithology1, keys$lith)
-PBDB$bathCat <- categorize(PBDB$environment, keys$bath)
-PBDB$reefCat <- categorize(PBDB$environment, keys$reefs)
-PBDB$reefCat[PBDB$lithCat == "siliciclastic" & PBDB$environment == "marine indet."] <- "non-reef"
+## Remove entries with intervals that terminate at present
+PBDB <- PBDB[-which(PBDB$min_ma == 0),]
 
 #### Add ecological data based on Guo et al. (2023) ####
 ## Read in depth categories
@@ -126,5 +285,10 @@ key <- rbind(brachiopod.ecology, bivalve.ecology)
 source("functions/add.ecology.IDs.R")
 PBDB <- add.ecology.IDs(data = PBDB, key)
 
+#### Rearrange and export ####
+## Rearrange
+PBDB <- PBDB[,c(1, 10, 4, 5, 2, 3, 6, 23, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 25, 21, 24, 22, 26:30)]
+
 ## Export data
 saveRDS(PBDB, "data/PBDB/PBDB.Rds")
+
