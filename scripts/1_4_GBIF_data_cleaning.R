@@ -56,7 +56,7 @@ rm(list = ls())
 #                 "countryCode", "stateProvince", "county", "municipality", "higherGeography", "locality", "verbatimLocality",
 #                 "group", "formation", "member", "bed",
 #                 "earliestAgeOrLowestStage", "latestAgeOrHighestStage",
-#                 "collectionCode", "gbifID", "bibliographicCitation", "references", "publisher")
+#                 "collectionCode", "gbifID", "bibliographicCitation", "references", "publisher", "verbatimSRS", "footprintSRS")
 
 ## define output directory
 #out.dir <- "/Users/tjs/R_packages/bivbrach/data"
@@ -69,17 +69,13 @@ rm(list = ls())
 #GBIF_biv <- data.frame(import.raw.GBIF(bivalve.download.path, columns.TBR, out.dir, export = T, export.name = "GBIF_biv_Oct24"))
 #GBIF_brach <- data.frame(import.raw.GBIF(brachiopod.download.path, columns.TBR, out.dir, export = T, export.name = "GBIF_brach_Oct24"))
 
-## Export raw GBIF
-#saveRDS(GBIF_biv, file = "data/raw_GBIF_biv_18Oct24.Rds")
-#saveRDS(GBIF_brach, file = "data/raw_GBIF_brach_18Oct24.Rds")
-
 ## Load raw GBIF
-GBIF_biv <- readRDS("data/unclean_data/raw_GBIF_biv_18Oct24.Rds")
-GBIF_brach <- readRDS("data/unclean_data/raw_GBIF_brach_18Oct24.Rds")
+GBIF_biv <- readRDS("data/unclean_data/raw_GBIF_biv_Oct24.Rds")
+GBIF_brach <- readRDS("data/unclean_data/raw_GBIF_brach_Oct24.Rds")
 
 #### Dropping useless columns ####
-GBIF_biv <- GBIF_biv[,-c(9, 10, 13, 14, 15, 18, 35)]
-GBIF_brach <- GBIF_brach[,-c(9, 10, 13, 14, 15, 18, 35)]
+GBIF_biv <- GBIF_biv[,-c(9, 10, 13, 14, 15, 18, 35, 37, 38)]
+GBIF_brach <- GBIF_brach[,-c(9, 10, 13, 14, 15, 18, 35, 37, 38)]
 
 #### Dropping unusable rows ####
 ## Drop data with taxonRank not genus, species, or lower
@@ -1110,31 +1106,3 @@ GBIF <- GBIF[-droppers,]
 
 ## Export
 saveRDS(GBIF, file = "data/GBIF/GBIF.Rds")
-
-#### Time calibration ####
-## Split data into with time and without.
-
-#### Georeferencing GBIF ####
-## Register google maps API keys
-gMAPIKey <- "AIzaSyAeUFGhS8Inob5ByMIPTokWg076qmStEV0"
-
-## First, partition datasets. Those with lat/long, those without.
-
-## Concatenate higherGeography [19] and locality [26]. Potentially do this with country, county, and township strings?
-biv_genera_locations <- data.frame(apply(, 1, function(x) paste0(x[26], ", ", x[19])))
-colnames(biv_genera_locations) <- "locations"
-brach_genera_locations <- data.frame(apply(, 1, function(x) paste0(x[26], ", ", x[19])))
-colnames(brach_genera_locations) <- "locations"
-
-## Get lat/long using mutate_geocode - DO NOT RUN UNTIL BILLING SORTED FOR GOOGLE CLOUD
-#biv_locations_geo <- mutate_geocode(biv_locations, locations)
-#brach_locations_geo <- mutate_geocode(brach_locations, locations)
-
-## Get rid of nearest named place
-test_set <- biv_locations[1:10,]
-test_set <- gsub("Nearest Named Place:", "", test_set)
-
-## Run test with dismo - works!
-test_dismo <- dismo::geocode(test_set, oneRecord = F, geocode_key = gMAPIKey)
-test_dismo_2 <- dismo::geocode(test_set, oneRecord = T, geocode_key = gMAPIKey)
-

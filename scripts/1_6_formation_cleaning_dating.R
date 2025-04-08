@@ -488,122 +488,28 @@ saveRDS(AMNH, file = "data/museum/AMNH.Rds")
 saveRDS(Peabody, file = "data/museum/Peabody.Rds")
 saveRDS(GBIF, file = "data/GBIF/GBIF.Rds")
 
-#### Filling in chronostratigraphy gaps ####
+#### Filling in chronostratigraphy gaps using Macrostrat ####
 ## Read in updated databases
 PBDB <- readRDS("data/PBDB/PBDB.Rds")
 NMS <- readRDS("data/museum/NMS.Rds")
 AMNH <- readRDS("data/museum/AMNH.Rds")
 Peabody <- readRDS("data/museum/Peabody.Rds")
 GBIF <- readRDS("data/GBIF/GBIF.Rds")
-
-## Fill in gaps within datasets
-## Then using PBDB
-## Then (finally) using macrostrat
+macrostrat <- readRDS("data/metadata/macrostrat_output.Rds")
 
 ##### GBIF #####
 ## Create column to track where age data comes from
 GBIF$chronostratigraphySource <- NA
 GBIF[which(!GBIF$chronostratigraphy == ""),"chronostratigraphySource"] <- "record"
 
-###### PBDB gap filling ######
-## Get starting point
-missing <- which(GBIF$chronostratigraphy == "")
-n.usable <- nrow(GBIF)-length(missing)
-prop.usable <- (nrow(GBIF)-length(missing))/nrow(GBIF)
-
-## Cycle through each row, updating to match PBDB
-for(i in 1:nrow(GBIF)){
-  print(i)
-  ## get formations
-  form <- c(GBIF[i, "formation1"],GBIF[i, "formation2"],GBIF[i, "formation3"],GBIF[i, "formation4"])
-  ## if all gaps, skip
-  if(all(form == "")){
-    next
-  } else {
-    ## if at least one is not blank, cut down
-    if(any(form == "")){
-      form <- form[-which(form == "")]
-    }
-    ## if more than one formation, do something
-    if(length(form) > 1){
-      ## initialise
-      chronos.f <- c()
-      for(f in form){
-        ## Step 1: check within PBDB
-        hits <- which(PBDB$formation == f)
-        ## If hits has at least one number, proceed
-        if(length(hits)>0){
-          ## get unique intervals
-          chronos <- unique(PBDB[hits,"early_interval"],PBDB[hits,"late_interval"])
-          ## drop NAs if any
-          if(any(is.na(chronos))){
-            chronos <- chronos[!is.na(chronos)]
-          }
-          ## record
-          chronos.f <- c(chronos.f, chronos)
-        } else {
-          next
-        }
-      }
-      if(length(chronos.f) > 0){
-        ## Get unique
-        chronos.f <- unique(chronos.f)
-        ## If 2 or more unique elements, flatten into one.
-        if(length(chronos.f) > 1){
-          chronos.f <- str_flatten(chronos.f, collapse = ",")
-          GBIF[i,"chronostratigraphy"] <- chronos.f
-          GBIF[i,"chronostratigraphySource"] <- "PBDB"
-        } else {
-          GBIF[i,"chronostratigraphy"] <- chronos.f
-          GBIF[i,"chronostratigraphySource"] <- "PBDB"
-        }
-      } else {
-        next
-      }
-    } else {
-      ## Step 1: check within PBDB
-      hits <- which(PBDB$formation == form)
-      ## If hits has at least one number, proceed
-      if(length(hits)>0){
-        ## get unique intervals
-        chronos <- unique(PBDB[hits,"early_interval"],PBDB[hits,"late_interval"])
-        ## drop NAs if any
-        if(any(is.na(chronos))){
-          chronos <- chronos[!is.na(chronos)]
-        }
-        ## if length is more than one, combine with commas
-        if(length(chronos)>1){
-          chronos <- str_flatten(chronos, collapse = ",")
-          GBIF[i,"chronostratigraphy"] <- chronos
-          GBIF[i,"chronostratigraphySource"] <- "PBDB"
-        } else {
-          ## only 1 hit - just use that
-          GBIF[i,"chronostratigraphy"] <- chronos
-          GBIF[i,"chronostratigraphySource"] <- "PBDB"
-        }
-      } else {
-        next
-      }
-    }
-  }
-}
-
-## Export updated GBIF
-saveRDS(GBIF, file = "data/GBIF/GBIF_1_6_1.Rds")
-
-###### Macrostrat gap filling ######
-## Load version
-GBIF <- readRDS("data/GBIF/GBIF_1_6_1.Rds")
-macrostrat <- readRDS("data/metadata/macrostrat_output.Rds")
-
 ## Get missing entries
 missing <- which(GBIF$chronostratigraphy == "")
-n.usable.pPBDB <- nrow(GBIF)-length(missing)
-prop.usable.pPBDB <- (nrow(GBIF)-length(missing))/nrow(GBIF)
+GBIF.n.usable <- nrow(GBIF)-length(missing)
+GBIF.prop.usable <- (nrow(GBIF)-length(missing))/nrow(GBIF)
 
-## Cycle through missing
-for(i in missing){
-  print(which(missing == i))
+## Cycle through all rows
+for(i in 1:nrow(GBIF)){
+  print(i)
   ## get formations
   form <- c(GBIF[i, "formation1"],GBIF[i, "formation2"],GBIF[i, "formation3"],GBIF[i, "formation4"])
   ## if all gaps, skip
@@ -669,7 +575,7 @@ for(i in missing){
           ## can only be 1 hit - just use that
           GBIF[i,"chronostratigraphy"] <- chronos
           GBIF[i,"chronostratigraphySource"] <- "Macrostrat"
-      }
+        }
       } else {
         next
       }
@@ -677,23 +583,32 @@ for(i in missing){
   }
 }
 
-## Export updated GBIF
-saveRDS(GBIF, file = "data/GBIF/GBIF_1_6_2.Rds")
+## Get remaining missing
+missing <- which(GBIF$chronostratigraphy == "")
+GBIF.n.usable.pMacro <- nrow(GBIF)-length(missing)
+GBIF.prop.usable.pMacro <- (nrow(GBIF)-length(missing))/nrow(GBIF)
 
-###### Within dataset ######
-## Load latest version
-GBIF <- readRDS("data/GBIF/GBIF_1_6_2.Rds")
+## Drop missing
+GBIF <- GBIF[-missing,]
+
+## Export updated GBIF
+saveRDS(GBIF, file = "data/GBIF/GBIF_1_6_1.Rds")
+
+##### AMNH #####
+## Create column to track where age data comes from
+AMNH$chronostratigraphySource <- NA
+AMNH[which(!AMNH$chronostratigraphy == ""),"chronostratigraphySource"] <- "record"
 
 ## Get missing entries
-missing <- which(GBIF$chronostratigraphy == "")
-n.usable.pMacrostrat <- nrow(GBIF)-length(missing)
-prop.usable.pMacrostrat <- (nrow(GBIF)-length(missing))/nrow(GBIF)
+missing <- which(AMNH$chronostratigraphy == "")
+AMNH.n.usable <- nrow(AMNH)-length(missing)
+AMNH.prop.usable <- (nrow(AMNH)-length(missing))/nrow(AMNH)
 
-## Cycle through missing
-for(i in missing){
-  print(which(missing == i))
+## Cycle through all rows
+for(i in 1:nrow(AMNH)){
+  print(i)
   ## get formations
-  form <- c(GBIF[i, "formation1"],GBIF[i, "formation2"],GBIF[i, "formation3"],GBIF[i, "formation4"])
+  form <- c(AMNH[i, "formation1"],AMNH[i, "formation2"])
   ## if all gaps, skip
   if(all(form == "")){
     next
@@ -707,81 +622,56 @@ for(i in missing){
       ## initialise
       chronos.f <- c()
       for(f in form){
-        ## Step 1: check within dataset
-        hit.in <- unique(c(which(GBIF$formation1 == f),which(GBIF$formation2 == f),which(GBIF$formation3 == f),which(GBIF$formation4 == f)))
-        ## If any hits don't match i, try
-        if(any(!hit.in == i)){
-          ## get hits
-          hits <- hit.in[which(!hit.in == i)]
-          ## get chronostratigraphies
-          chronos <- unique(GBIF[hits,"chronostratigraphy"])
-          ## if all gaps, skip
-          if(all(chronos == "")){
+        ## Step 1: check within macrostrat data
+        hits <- which(macrostrat$verbatim_name == f)
+        ## If there is a hit, proceed
+        if(length(hits)>0){
+          ## get interval
+          chronos <- macrostrat[hits, "interval"]
+          ## if interval is NA, skip
+          if(is.na(chronos)){
             next
           } else {
-            ## drop gaps if any
-            if(any(chronos == "")){
-              chronos <- chronos[-which(chronos == "")]
-            }
-            ## Check for commas. Split if necessary
-            if(any(str_detect(chronos, ","))){
-              ## split that which needs to be split and add to output
+            ## Split if there is punctuation
+            if(any(str_detect(chronos, pattern = ","))){
               chronos <- unique(unlist(str_split(chronos, pattern = ",")))
-              chronos.f <- c(chronos.f, chronos)
-            } else {
-              ## Add to output vector
-              chronos.f <- c(chronos.f, chronos)
             }
+            ## record
+            chronos.f <- c(chronos.f, chronos)
           }
         } else {
           next
         }
       }
-      ## If length of chronos.f above 0, attach
       if(length(chronos.f) > 0){
+        ## Get unique
         chronos.f <- unique(chronos.f)
-        ## If length above 1, flatten
+        ## If 2 or more unique elements, flatten into one.
         if(length(chronos.f) > 1){
           chronos.f <- str_flatten(chronos.f, collapse = ",")
-          GBIF[i,"chronostratigraphy"] <- chronos.f
-          GBIF[i,"chronostratigraphySource"] <- "GBIF"
+          AMNH[i,"chronostratigraphy"] <- chronos.f
+          AMNH[i,"chronostratigraphySource"] <- "Macrostrat"
         } else {
-          GBIF[i,"chronostratigraphy"] <- chronos.f
-          GBIF[i,"chronostratigraphySource"] <- "GBIF"
+          AMNH[i,"chronostratigraphy"] <- chronos.f
+          AMNH[i,"chronostratigraphySource"] <- "Macrostrat"
         }
       } else {
         next
       }
     } else {
-      ## Step 1: check within dataset
-      hit.in <- unique(c(which(GBIF$formation1 == form),which(GBIF$formation2 == form),which(GBIF$formation3 == form),which(GBIF$formation4 == form)))
-      ## If any hits don't match i, try
-      if(any(!hit.in == i)){
-        ## get hits
-        hits <- hit.in[which(!hit.in == i)]
-        ## get chronostratigraphies
-        chronos <- unique(GBIF[hits,"chronostratigraphy"])
-        ## if all gaps, skip
-        if(all(chronos == "")){
+      ## Step 1: check within PBDB
+      hits <- which(macrostrat$verbatim_name == form)
+      ## If hits has at least one number, proceed
+      if(length(hits)>0){
+        ## get interval
+        chronos <- macrostrat[hits,"interval"]
+        ## if NA, skip
+        if(is.na(chronos)){
           next
         } else {
-          ## drop gaps if any and retain unique
-          if(any(chronos == "")){
-            chronos <- chronos[-which(chronos == "")]
-          }
-          ## Check for commas. Split if necessary
-          if(any(str_detect(chronos, ","))){
-            chronos <- unique(unlist(str_split(chronos, pattern = ",")))
-          }
-          ## If length above 1, combine and record
-          if(length(chronos)>1){
-            chronos <- str_flatten(chronos, ",")
-            GBIF[i,"chronostratigraphy"] <- chronos
-            GBIF[i,"chronostratigraphySource"] <- "GBIF"
-          } else {
-            GBIF[i,"chronostratigraphy"] <- chronos
-            GBIF[i,"chronostratigraphySource"] <- "GBIF"
-          }
+          ## can only be 1 hit - just use that
+          AMNH[i,"chronostratigraphy"] <- chronos
+          AMNH[i,"chronostratigraphySource"] <- "Macrostrat"
         }
       } else {
         next
@@ -790,21 +680,258 @@ for(i in missing){
   }
 }
 
-## Get missing entries last time
-missing <- which(GBIF$chronostratigraphy == "")
-n.usable.pGBIF <- nrow(GBIF)-length(missing)
-prop.usable.pGBIF <- (nrow(GBIF)-length(missing))/nrow(GBIF)
+## Get missing entries
+missing <- which(AMNH$chronostratigraphy == "")
+AMNH.n.usable.pMacro <- nrow(AMNH)-length(missing)
+AMNH.prop.usable.pMacro <- (nrow(AMNH)-length(missing))/nrow(AMNH)
 
-## drop missing entries
-GBIF <- GBIF[-missing,]
+## Drop remaining missing
+AMNH <- AMNH[-missing,]
 
-## Export final version of GBIF
-saveRDS(GBIF, file = "data/GBIF/GBIF_1_6_3.Rds")
+## Export updated AMNH
+saveRDS(AMNH, file = "data/museum/AMNH_1_6_1.Rds")
 
+##### Peabody #####
+## Create column to track where age data comes from
+Peabody$chronostratigraphySource <- NA
+Peabody[which(!Peabody$chronostratigraphy == ""),"chronostratigraphySource"] <- "record"
 
+## Get missing entries
+missing <- which(Peabody$chronostratigraphy == "")
+Peabody.n.usable <- nrow(Peabody)-length(missing)
+Peabody.prop.usable <- (nrow(Peabody)-length(missing))/nrow(Peabody)
 
+## Cycle through all rows
+for(i in 1:nrow(Peabody)){
+  print(i)
+  ## get formations
+  form <- c(Peabody[i, "formation1"],Peabody[i, "formation2"])
+  ## if all gaps, skip
+  if(all(form == "")){
+    next
+  } else {
+    ## if at least one is not blank, cut down
+    if(any(form == "")){
+      form <- form[-which(form == "")]
+    }
+    ## if more than one formation, do something
+    if(length(form) > 1){
+      ## initialise
+      chronos.f <- c()
+      for(f in form){
+        ## Step 1: check within macrostrat data
+        hits <- which(macrostrat$verbatim_name == f)
+        ## If there is a hit, proceed
+        if(length(hits)>0){
+          ## get interval
+          chronos <- macrostrat[hits, "interval"]
+          ## if interval is NA, skip
+          if(is.na(chronos)){
+            next
+          } else {
+            ## Split if there is punctuation
+            if(any(str_detect(chronos, pattern = ","))){
+              chronos <- unique(unlist(str_split(chronos, pattern = ",")))
+            }
+            ## record
+            chronos.f <- c(chronos.f, chronos)
+          }
+        } else {
+          next
+        }
+      }
+      if(length(chronos.f) > 0){
+        ## Get unique
+        chronos.f <- unique(chronos.f)
+        ## If 2 or more unique elements, flatten into one.
+        if(length(chronos.f) > 1){
+          chronos.f <- str_flatten(chronos.f, collapse = ",")
+          Peabody[i,"chronostratigraphy"] <- chronos.f
+          Peabody[i,"chronostratigraphySource"] <- "Macrostrat"
+        } else {
+          Peabody[i,"chronostratigraphy"] <- chronos.f
+          Peabody[i,"chronostratigraphySource"] <- "Macrostrat"
+        }
+      } else {
+        next
+      }
+    } else {
+      ## Step 1: check within PBDB
+      hits <- which(macrostrat$verbatim_name == form)
+      ## If hits has at least one number, proceed
+      if(length(hits)>0){
+        ## get interval
+        chronos <- macrostrat[hits,"interval"]
+        ## if NA, skip
+        if(is.na(chronos)){
+          next
+        } else {
+          ## can only be 1 hit - just use that
+          Peabody[i,"chronostratigraphy"] <- chronos
+          Peabody[i,"chronostratigraphySource"] <- "Macrostrat"
+        }
+      } else {
+        next
+      }
+    }
+  }
+}
 
+## Get missing entries
+missing <- which(Peabody$chronostratigraphy == "")
+Peabody.n.usable.pMacro <- nrow(Peabody)-length(missing)
+Peabody.prop.usable.pMacro <- (nrow(Peabody)-length(missing))/nrow(Peabody)
 
+## Drop remaining missing
+Peabody <- Peabody[-missing,]
 
+## Export updated Peabody
+saveRDS(Peabody, file = "data/museum/Peabody_1_6_1.Rds")
 
+##### NMS #####
+## Create column to track where age data comes from
+NMS$chronostratigraphySource <- NA
+NMS[which(!NMS$chronostratigraphy == ""),"chronostratigraphySource"] <- "record"
+
+## Get missing entries
+missing <- which(NMS$chronostratigraphy == "")
+NMS.n.usable <- nrow(NMS)-length(missing)
+NMS.prop.usable <- (nrow(NMS)-length(missing))/nrow(NMS)
+
+## Cycle through all rows
+for(i in 1:nrow(NMS)){
+  print(i)
+  ## get formations
+  form <- c(NMS[i, "formation1"],NMS[i, "formation2"])
+  ## if all gaps, skip
+  if(all(form == "")){
+    next
+  } else {
+    ## if at least one is not blank, cut down
+    if(any(form == "")){
+      form <- form[-which(form == "")]
+    }
+    ## if more than one formation, do something
+    if(length(form) > 1){
+      ## initialise
+      chronos.f <- c()
+      for(f in form){
+        ## Step 1: check within macrostrat data
+        hits <- which(macrostrat$verbatim_name == f)
+        ## If there is a hit, proceed
+        if(length(hits)>0){
+          ## get interval
+          chronos <- macrostrat[hits, "interval"]
+          ## if interval is NA, skip
+          if(is.na(chronos)){
+            next
+          } else {
+            ## Split if there is punctuation
+            if(any(str_detect(chronos, pattern = ","))){
+              chronos <- unique(unlist(str_split(chronos, pattern = ",")))
+            }
+            ## record
+            chronos.f <- c(chronos.f, chronos)
+          }
+        } else {
+          next
+        }
+      }
+      if(length(chronos.f) > 0){
+        ## Get unique
+        chronos.f <- unique(chronos.f)
+        ## If 2 or more unique elements, flatten into one.
+        if(length(chronos.f) > 1){
+          chronos.f <- str_flatten(chronos.f, collapse = ",")
+          NMS[i,"chronostratigraphy"] <- chronos.f
+          NMS[i,"chronostratigraphySource"] <- "Macrostrat"
+        } else {
+          NMS[i,"chronostratigraphy"] <- chronos.f
+          NMS[i,"chronostratigraphySource"] <- "Macrostrat"
+        }
+      } else {
+        next
+      }
+    } else {
+      ## Step 1: check within PBDB
+      hits <- which(macrostrat$verbatim_name == form)
+      ## If hits has at least one number, proceed
+      if(length(hits)>0){
+        ## get interval
+        chronos <- macrostrat[hits,"interval"]
+        ## if NA, skip
+        if(is.na(chronos)){
+          next
+        } else {
+          ## can only be 1 hit - just use that
+          NMS[i,"chronostratigraphy"] <- chronos
+          NMS[i,"chronostratigraphySource"] <- "Macrostrat"
+        }
+      } else {
+        next
+      }
+    }
+  }
+}
+
+## Get missing entries
+missing <- which(NMS$chronostratigraphy == "")
+NMS.n.usable.pMacro <- nrow(NMS)-length(missing)
+NMS.prop.usable.pMacro <- (nrow(NMS)-length(missing))/nrow(NMS)
+
+## Drop remaining missing entries
+NMS <- NMS[-missing,]
+
+## Export updated NMS
+saveRDS(NMS, file = "data/museum/NMS_1_6_1.Rds")
+
+#### Checking formations ####
+GBIF.f <- c(GBIF$formation1, GBIF$formation2, GBIF$formation3, GBIF$formation4)
+GBIF.f <- unique(GBIF.f)
+
+AMNH.f <- c(AMNH$formation1, AMNH$formation2)
+AMNH.f <- unique(AMNH.f)
+
+Peabody.f <- c(Peabody$formation1, Peabody$formation2)
+Peabody.f <- unique(Peabody.f)
+
+NMS.f <- c(NMS$formation1, NMS$formation2)
+NMS.f <- unique(NMS.f)
+
+PBDB.f <- unique(PBDB$formation)
+
+length(which(!GBIF.f %in% PBDB.f))
+length(which(!GBIF.f %in% PBDB.f))/length(GBIF.f)
+
+length(which(!AMNH.f %in% PBDB.f))
+length(which(!AMNH.f %in% PBDB.f))/length(AMNH.f)
+
+length(which(!NMS.f %in% PBDB.f))
+length(which(!NMS.f %in% PBDB.f))/length(NMS.f)
+
+length(which(!Peabody.f %in% PBDB.f))
+length(which(!Peabody.f %in% PBDB.f))/length(Peabody.f)
+
+#### Checking occurrences ####
+GBIF.occs <- which(GBIF$formation1 %in% GBIF.f[(!GBIF.f %in% PBDB.f)])
+GBIF.occs <- c(GBIF.occs,which(GBIF$formation2 %in% GBIF.f[(!GBIF.f %in% PBDB.f)]))
+GBIF.occs <- c(GBIF.occs,which(GBIF$formation3 %in% GBIF.f[(!GBIF.f %in% PBDB.f)]))
+GBIF.occs <- c(GBIF.occs,which(GBIF$formation4 %in% GBIF.f[(!GBIF.f %in% PBDB.f)]))
+GBIF.occs <- unique(GBIF.occs)
+length(GBIF.occs)/nrow(GBIF)
+
+AMNH.occs <- which(AMNH$formation1 %in% AMNH.f[(!AMNH.f %in% PBDB.f)])
+AMNH.occs <- c(AMNH.occs,which(AMNH$formation2 %in% AMNH.f[(!AMNH.f %in% PBDB.f)]))
+AMNH.occs <- unique(AMNH.occs)
+length(AMNH.occs)/nrow(AMNH)
+
+NMS.occs <- which(NMS$formation1 %in% NMS.f[(!NMS.f %in% PBDB.f)])
+NMS.occs <- c(NMS.occs,which(NMS$formation2 %in% NMS.f[(!NMS.f %in% PBDB.f)]))
+NMS.occs <- unique(NMS.occs)
+length(NMS.occs)/nrow(NMS)
+
+Peabody.occs <- which(Peabody$formation1 %in% Peabody.f[(!Peabody.f %in% PBDB.f)])
+Peabody.occs <- c(Peabody.occs,which(Peabody$formation2 %in% Peabody.f[(!Peabody.f %in% PBDB.f)]))
+Peabody.occs <- unique(Peabody.occs)
+length(Peabody.occs)/nrow(Peabody)
 

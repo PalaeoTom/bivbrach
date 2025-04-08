@@ -285,6 +285,20 @@ key <- rbind(brachiopod.ecology, bivalve.ecology)
 source("functions/add.ecology.IDs.R")
 PBDB <- add.ecology.IDs(data = PBDB, key)
 
+#### Drop terrestrial records (if any) ####
+omitEnv <- c(
+  "\"floodplain\"", "alluvial fan", "cave", "\"channel\"", "channel lag" ,
+  "coarse channel fill", "crater lake", "crevasse splay", "dry floodplain",
+  "delta plain", "dune", "eolian indet.", "fine channel fill", "fissure fill",
+  "fluvial indet.", "fluvial-lacustrine indet.", "fluvial-deltaic indet.",
+  "glacial", "interdune", "karst indet.", "lacustrine - large",
+  "lacustrine - small", "lacustrine delta front", "lacustrine delta plain",
+  "lacustrine deltaic indet.", "lacustrine indet.",
+  "lacustrine interdistributary bay", "lacustrine prodelta", "levee", "loess",
+  "mire/swamp", "pond", "sinkhole", "spring", "tar", "terrestrial indet.",
+  "wet floodplain")
+PBDB <- PBDB[!PBDB$environment%in%omitEnv,]
+
 #### Rearrange and export ####
 ## Rearrange
 PBDB <- PBDB[,c(1, 10, 4, 5, 2, 3, 6, 23, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 25, 21, 24, 22, 26:30)]
