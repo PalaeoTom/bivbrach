@@ -1,7 +1,7 @@
 ## 1.7 Geocoding
 
 ## Load libraries
-packages <- c("stringr", "dismo", "terra", "countrycode", "gptr")
+packages <- c("stringr", "dismo", "terra", "countrycode", "gptr", "stringi", "readr")
 if(length(packages[!packages %in% installed.packages()[,"Package"]]) > 0){
   install.packages(packages[!packages %in% installed.packages()[,"Package"]])
 }
@@ -10,6 +10,8 @@ library(dismo)
 library(terra)
 library(countrycode)
 library(gptr)
+library(stringi)
+library(readr)
 
 ##  Clean directory
 rm(list = ls())
@@ -348,17 +350,34 @@ droppers <- unique(droppers)
 GBIF_TBC <- GBIF_TBC[-droppers,]
 GBIF.loc <- GBIF.loc[-droppers]
 
+## Remove individual problematic substrings and punctuation
+GBIF.loc <- str_replace(GBIF.loc, regex("nearest named place", ignore_case = T), "")
+GBIF.loc <- str_replace(GBIF.loc, regex("unspecified county", ignore_case = T), "")
+GBIF.loc <- str_replace(GBIF.loc, regex("unknown location", ignore_case = T), "")
+GBIF.loc <- str_replace(GBIF.loc, regex("unknown locality", ignore_case = T), "")
+GBIF.loc <- str_replace(GBIF.loc, regex("unspecified location", ignore_case = T), "")
+GBIF.loc <- str_replace(GBIF.loc, regex("location unspecified", ignore_case = T), "")
+GBIF.loc <- str_replace(GBIF.loc, regex("redacted", ignore_case = T), "")
+GBIF.loc <- str_replace(GBIF.loc, regex("unspecified", ignore_case = T), "")
+GBIF.loc <- str_replace(GBIF.loc, fixed('['), " ")
+GBIF.loc <- str_replace(GBIF.loc, fixed(']'), " ")
+GBIF.loc <- str_replace(GBIF.loc, fixed(';'), " ")
+GBIF.loc <- str_replace(GBIF.loc, fixed('*'), " ")
+GBIF.loc <- str_replace(GBIF.loc, fixed('?'), " ")
+GBIF.loc <- str_replace(GBIF.loc, fixed(':'), " ")
+GBIF.loc <- str_replace(GBIF.loc, fixed(':'), " ")
+GBIF.loc <- str_replace(GBIF.loc, fixed('"'), " ")
+
 ## finalise
 geocode_GBIF <- unique(GBIF.loc)
 
-#### Cleaning locality strings using ChatGPT (!) ####
-## Doesn't work particularly well - messes up special characters, quality of formatting seems to diminish at higher throughputs
+#### Preparing key ####
 ## Set API key
 gptKey <- "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"
 Sys.setenv(OPENAI_API_KEY = gptKey)
 
 ## Define instruction string
-instruct <- "Re-write this description of a geographic location for clarity, removing all references to rock beds, stratigraphic units, and geological time units. Do not return anything other than the updated locality string. Description to be re-written: "
+instruct <- "Re-write this locality string for clarity, removing all references to rock beds, stratigraphic units, and geological time units. Remove all duplicates of substrings. Do not return anything other than the updated locality string. Locality string to be re-written: "
 
 ## Combine instruction string with each locality string
 ## AMNH
@@ -397,6 +416,7 @@ for(r in 1:nrow(NMS_key)){
 }
 NMS_key$response <- ""
 
+#### Cleaning locality strings using ChatGPT (!) ####
 ## Start with Peabody
 for(r in 1:nrow(Peabody_key)){
   skip_to_next <- F
@@ -431,7 +451,7 @@ saveRDS(AMNH_key, file = "data/museum/AMNH_GPT_output.Rds")
 saveRDS(NMS_key, file = "data/museum/NMS_GPT_output.Rds")
 saveRDS(Peabody_key, file = "data/museum/Peabody_GPT_output.Rds")
 
-##### Tidying up chatGPT outputs ####
+#### Tidying up chatGPT outputs ####
 ### Read them in
 GBIF_key <- readRDS("data/GBIF/GBIF_GPT_output.Rds")
 Peabody_key <- readRDS("data/museum/Peabody_GPT_output.Rds")
@@ -439,49 +459,149 @@ AMNH_key <- readRDS("data/museum/AMNH_GPT_output.Rds")
 NMS_key <- readRDS("data/museum/NMS_GPT_output.Rds")
 
 ## Find gaps - use original
-GBIF_geostring <- GBIF_key[,"response"]
-GBIF_geostring[which(GBIF_geostring == "")] <- GBIF_key[which(GBIF_geostring == ""),"original"]
+if(any(GBIF_key$response=="")){
+  GBIF_key$response[which(GBIF_key$response == "")] <- GBIF_key[which(GBIF_key$response == ""),"original"]
+}
 
-AMNH_geostring <- AMNH_key[,"response"]
-AMNH_geostring[which(AMNH_geostring == "")] <- AMNH_key[which(AMNH_geostring == ""),"original"]
+if(any(AMNH_key$response=="")){
+  AMNH_key$response[which(AMNH_key$response == "")] <- AMNH_key[which(AMNH_key$response == ""),"original"]
+}
 
-NMS_geostring <- NMS_key[,"response"]
-NMS_geostring[which(NMS_geostring == "")] <- NMS_key[which(NMS_geostring == ""),"original"]
+if(any(NMS_key$response=="")){
+  NMS_key$response[which(NMS_key$response == "")] <- NMS_key[which(NMS_key$response == ""),"original"]
+}
 
-Peabody_geostring <- Peabody_key[,"response"]
-Peabody_geostring[which(Peabody_geostring == "")] <- Peabody_key[which(Peabody_geostring == ""),"original"]
+if(any(Peabody_key$response=="")){
+  Peabody_key$response[which(Peabody_key$response == "")] <- Peabody_key[which(Peabody_key$response == ""),"original"]
+}
 
+## Find single word original entries - use these in place of new strings
+if(any(!str_detect(GBIF_key[,"original"], " "))){
+  GBIF_key$response[!str_detect(GBIF_key[,"original"], " ")] <- GBIF_key[!str_detect(GBIF_key[,"original"], " "),"original"]
+}
 
-#### Resume from here ####
+if(any(!str_detect(AMNH_key[,"original"], " "))){
+  AMNH_key$response[!str_detect(AMNH_key[,"original"], " ")] <- AMNH_key[!str_detect(AMNH_key[,"original"], " "),"original"]
+}
 
+if(any(!str_detect(NMS_key[,"original"], " "))){
+  NMS_key$response[!str_detect(NMS_key[,"original"], " ")] <- NMS_key[!str_detect(NMS_key[,"original"], " "),"original"]
+}
 
-## Find
-
-View(data.frame(GBIF_geostring))
-GBIF_geostring[which(grepl("[^ -~]", GBIF_geostring))]
+if(any(!str_detect(Peabody_key[,"original"], " "))){
+  Peabody_key$response[!str_detect(Peabody_key[,"original"], " ")] <- Peabody_key[!str_detect(Peabody_key[,"original"], " "),"original"]
+}
 
 ## Find new entries with special characters - drop and use original string (gptr::get_response returns rubbish characters when dealing with accents)
-GBIF_geostring[which(grepl("[^ -~]", GBIF_geostring))] <- GBIF_key[which(grepl("[^ -~]", GBIF_geostring)),"original"]
-Peabody_geostring[which(grepl("[^ -~]", Peabody_geostring))] <- Peabody_key[which(grepl("[^ -~]", Peabody_geostring)),"original"]
-NMS_geostring[which(grepl("[^ -~]", NMS_geostring))] <- NMS_key[which(grepl("[^ -~]", NMS_geostring)),"original"]
-AMNH_geostring[which(grepl("[^ -~]", AMNH_geostring))] <- AMNH_key[which(grepl("[^ -~]", AMNH_geostring)),"original"]
+if(any(grepl("[^ -~]", GBIF_key$response))){
+  GBIF_key$response[which(grepl("[^ -~]", GBIF_key$response))] <- GBIF_key[which(grepl("[^ -~]", GBIF_key$response)),"original"]
+}
+
+if(any(grepl("[^ -~]", Peabody_key$response))){
+  Peabody_key$response[which(grepl("[^ -~]", Peabody_key$response))] <- Peabody_key[which(grepl("[^ -~]", Peabody_key$response)),"original"]
+}
+
+if(any(grepl("[^ -~]", AMNH_key$response))){
+  AMNH_key$response[which(grepl("[^ -~]", AMNH_key$response))] <- AMNH_key[which(grepl("[^ -~]", AMNH_key$response)),"original"]
+}
+
+if(any(grepl("[^ -~]", NMS_key$response))){
+  NMS_key$response[which(grepl("[^ -~]", NMS_key$response))] <- NMS_key[which(grepl("[^ -~]", NMS_key$response)),"original"]
+}
+
+## Finally, strip accents (geocoding function can't handle them)
+GBIF_key[,"response"] <- stringi::stri_trans_general(GBIF_key[,"response"], "Latin-ASCII")
+Peabody_key[,"response"] <- stringi::stri_trans_general(Peabody_key[,"response"], "Latin-ASCII")
+AMNH_key[,"response"] <- stringi::stri_trans_general(AMNH_key[,"response"], "Latin-ASCII")
+NMS_key[,"response"] <- stringi::stri_trans_general(NMS_key[,"response"], "Latin-ASCII")
+
+## And strip all non-comma, non-period, non-apostrophe, non-hyphen punctuation
+GBIF_key[,"response"] <- gsub("[^[:alnum:][:space:]',.-]", "", GBIF_key[,"response"])
+NMS_key[,"response"] <- gsub("[^[:alnum:][:space:]',.-]", "", NMS_key[,"response"])
+AMNH_key[,"response"] <- gsub("[^[:alnum:][:space:]',.-]", "", AMNH_key[,"response"])
+Peabody_key[,"response"] <- gsub("[^[:alnum:][:space:]',.-]", "", Peabody_key[,"response"])
+
+## Somehow missed japanese characters
+GBIF_key[which(stringi::stri_enc_mark(GBIF_key[,"response"])=="UTF-8"),"response"] <- "Naruha Town, Takahashi City, Okayama Prefecture, Japan"
+
+## Export
+saveRDS(GBIF_key, file = "data/GBIF/GBIF_GPT_output.Rds")
+saveRDS(AMNH_key, file = "data/museum/AMNH_GPT_output.Rds")
+saveRDS(NMS_key, file = "data/museum/NMS_GPT_output.Rds")
+saveRDS(Peabody_key, file = "data/museum/Peabody_GPT_output.Rds")
 
 #### Georeferencing GBIF ####
+### Read in keys
+GBIF_key <- readRDS("data/GBIF/GBIF_GPT_output.Rds")
+Peabody_key <- readRDS("data/museum/Peabody_GPT_output.Rds")
+AMNH_key <- readRDS("data/museum/AMNH_GPT_output.Rds")
+NMS_key <- readRDS("data/museum/NMS_GPT_output.Rds")
+
+## Isolate geostrings
+GBIF_geostring <- GBIF_key[,"response"]
+AMNH_geostring <- AMNH_key[,"response"]
+NMS_geostring <- NMS_key[,"response"]
+Peabody_geostring <- Peabody_key[,"response"]
+
+## Final inspection for obvious errors
+#View(data.frame(unique(GBIF_geostring)))
+#View(data.frame(unique(NMS_geostring)))
+#View(data.frame(unique(AMNH_geostring)))
+#View(data.frame(unique(Peabody_geostring)))
+
 ## Register google maps API keys
 gMAPIKey <- "AIzaSyAeUFGhS8Inob5ByMIPTokWg076qmStEV0"
 
 ## Run test with dismo - works!
-test_dismo <- dismo::geocode(NMS_geostring[1:10], oneRecord = F, geocode_key = gMAPIKey)
-test_dismo_2 <- dismo::geocode(NMS_geostring[1:10], oneRecord = T, geocode_key = gMAPIKey)
+#test_dismo <- dismo::geocode(NMS_geostring[1:10], oneRecord = F, geocode_key = gMAPIKey)
+#test_dismo_2 <- dismo::geocode(NMS_geostring[1:10], oneRecord = T, geocode_key = gMAPIKey)
 
 ## Run final geocoding and export
-NMS_TBC_coords <- dismo::geocode(NMS_geostring, oneRecord = T, geocode_key = gMAPIKey)
-AMNH_TBC_coords <- dismo::geocode(AMNH_geostring, oneRecord = T, geocode_key = gMAPIKey)
-Peabody_TBC_coords <- dismo::geocode(Peabody_geostring, oneRecord = T, geocode_key = gMAPIKey)
-GBIF_TBC_coords <- dismo::geocode(GBIF_geostring, oneRecord = T, geocode_key = gMAPIKey)
+NMS_TBC_coords <- dismo::geocode(NMS_geostring, oneRecord = F, geocode_key = gMAPIKey)
+AMNH_TBC_coords <- dismo::geocode(AMNH_geostring, oneRecord = F, geocode_key = gMAPIKey)
+Peabody_TBC_coords <- dismo::geocode(Peabody_geostring, oneRecord = F, geocode_key = gMAPIKey)
+GBIF_TBC_coords <- dismo::geocode(GBIF_geostring, oneRecord = F, geocode_key = gMAPIKey)
 
-## Export
-saveRDS(NMS_TBC_coords, "data/museum/NMS_dismo_coords.Rds")
-saveRDS(AMNH_TBC_coords, "data/museum/AMNH_dismo_coords.Rds")
-saveRDS(Peabody_TBC_coords, "data/museum/Peabody_dismo_coords.Rds")
-saveRDS(GBIF_TBC_coords, "data/GBIF/GBIF_dismo_coords.Rds")
+## Label
+NMS_TBC_coords$number <- NA
+for(i in 1:length(NMS_geostring)){
+  NMS_TBC_coords[which(NMS_TBC_coords$originalPlace == NMS_geostring[i]),"number"] <- i
+}
+
+AMNH_TBC_coords$number <- NA
+for(i in 1:length(AMNH_geostring)){
+  AMNH_TBC_coords[which(AMNH_TBC_coords$originalPlace == AMNH_geostring[i]),"number"] <- i
+}
+
+Peabody_TBC_coords$number <- NA
+for(i in 1:length(Peabody_geostring)){
+  Peabody_TBC_coords[which(Peabody_TBC_coords$originalPlace == Peabody_geostring[i]),"number"] <- i
+}
+
+GBIF_TBC_coords$number <- NA
+for(i in 1:length(GBIF_geostring)){
+  GBIF_TBC_coords[which(GBIF_TBC_coords$originalPlace == GBIF_geostring[i]),"number"] <- i
+}
+
+## Export as CSV for manual checking
+write_excel_csv(NMS_TBC_coords, file = "data/museum/NMS_TBC_coords_raw.csv")
+write_excel_csv(Peabody_TBC_coords, file = "data/museum/Peabody_TBC_coords_raw.csv")
+write_excel_csv(AMNH_TBC_coords, file = "data/museum/AMNH_TBC_coords_raw.csv")
+write_excel_csv(GBIF_TBC_coords, file = "data/GBIF/GBIF_TBC_coords_raw.csv")
+
+#### Refining georeferencing ####
+## Read in
+NMS_TBC_coords <- read_csv("data/museum/NMS_TBC_coords_cleaned.csv", col_names = 1, show_col_types = F)
+AMNH_TBC_coords <- read_csv("data/museum/AMNH_TBC_coords_cleaned.csv", col_names = 1, show_col_types = F)
+Peabody_TBC_coords <- read_csv("data/museum/Peabody_TBC_coords_cleaned.csv", col_names = 1, show_col_types = F)
+GBIF_TBC_coords <- read_csv("data/GBIF/GBIF_TBC_coords_cleaned.csv", col_names = 1, show_col_types = F)
+
+## Match TBC_coords "original place" to key "response". Combine outputs.
+
+## Match "original" of key to localities in TBC objects. Add interpreted locality, lat, long, and uncertainty.
+
+## Apply GBIF coordinates cleaner
+
+## Filter out 10km uncertainties
+
+## Combine and export - geocoding done!

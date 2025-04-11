@@ -1,0 +1,868 @@
+﻿"originalPlace","interpretedPlace","longitude","latitude","xmin","xmax","ymin","ymax","uncertainty","number"
+"Rouen, Normandy, France","Rouen, Seine-Maritime, Normandy, France",1.0984309,49.4435261,1.0302484,1.1521206,49.4172245,49.4652469,4581,1
+"Aust Cliff, Gloucestershire, England, Northern Europe","Aust, Bristol, South Gloucestershire, England, United Kingdom, BS35",-2.6202643,51.59919559999999,-2.6319965,-2.6120765,51.59455639999999,51.6018238,638,2
+"Aust Cliff, Gloucestershire, England, Northern Europe","Gloucestershire, England, United Kingdom",-2.2257856,51.74677399999999,-2.6871585,-1.6152024,51.5775571,52.1125655,37062,2
+"Aust Cliff, Gloucestershire, England, Northern Europe","Mitcheldean, Mitcheldean, Gloucestershire, England, United Kingdom, GL17",-2.489453,51.862693,-2.5038485,-2.4773783,51.840938800000004,51.8741261,1520,2
+"Redland, Bristol, Avon, England, Northern Europe","Redland, Bristol, Bristol City, England, United Kingdom",-2.6062403,51.4677204,-2.6159402,-2.593241,51.46080019999999,51.47856650000001,1023,3
+"Macon, Saone et Loire, France","Mâcon, Saône-et-Loire, Bourgogne-Franche-Comté, France, 71000",4.8293535,46.3079587,4.7579899,4.8586816,46.2734283,46.3796478,6706,4
+"France, Western Europe","France",2.213749,46.227638,-109.2967524,11.4548613,10.2676819,51.3682119,886364,5
+"Beuval, Somme, France, Western Europe","Beauval, Somme, Hauts-de-France, France, 80630",2.329942,50.10606199999999,2.2897654,2.3725315,50.06746,50.1364723,4552,6
+"Redland, Bristol, Gloucestershire, England, Northern Europe","Redland, Bristol, Bristol City, England, United Kingdom",-2.6062403,51.4677204,-2.6159402,-2.593241,51.46080019999999,51.47856650000001,1023,7
+"Redland, Bristol, Gloucestershire, England, Northern Europe","Gloucestershire, England, United Kingdom",-2.2257856,51.74677399999999,-2.6871585,-1.6152024,51.5775571,52.1125655,37062,7
+"Monhoulien, Herault, France, England, Northern Europe","Hérault, Occitanie, France",3.2583626,43.5912356,2.5395564,4.1945463,43.2102012,43.9727532,71991,8
+"Monhoulien, Herault, France, England, Northern Europe","England, United Kingdom",-1.1743197,52.3555177,-6.4185458,1.7629159,49.8647411,55.81165979999999,429950,8
+"Essen, Germany, Western Europe","Essen, Mettmann, Düsseldorf, North Rhine-Westphalia, Germany, 45",7.0224632,51.4575573,6.894360199999999,7.1376762,51.3476021,51.53421239999999,11694,9
+"Escales, Aude, Occitaine, France, Western Europe","Escales, Aude, Occitanie, France, 11200",2.696366,43.223945,2.6777091,2.7289919,43.2060322,43.2403331,2502,10
+"Ciply, Var., France, Western Europe","Var, Provence-Alpes-Côte d'Azur, France",6.2375947,43.46764599999999,5.6559051,6.933569299999999,42.9820047,43.80888170000001,67759,11
+"Ciply, Var., France, Western Europe","Ciply, Mons, Hainaut, Wallonia, Belgium",3.9462109,50.4219839,3.9291888,3.9588847,50.4032162,50.4233482,913,11
+"Malplaquet, France, Western Europe","Taisnières-sur-Hon, Nord, Hauts-de-France, France, 59570",3.839768,50.318349,3.8053801,3.890468199999999,50.2990246,50.3477688,3259,12
+"Breteuil, Oise, France, Western Europe","Breteuil, Oise, Hauts-de-France, France, 60120",2.29562,49.6340519,2.2347666,2.3401235,49.6116503,49.6603748,4348,13
+"Tarrant County, Texas, USA, NORTH AND CENTRAL AMERICA","Tarrant County, Texas, United States",-97.35165579999999,32.7732044,-97.550582,-97.031007,32.548666,32.994194,31117,14
+"Chocktaw Creek, Texas, USA, NORTH AND CENTRAL AMERICA","Choctaw Creek, United States",-96.53454413018926,33.64729529772009,-96.7065914,-96.3624968,33.5514404,33.7431502,19170,15
+"Benbrook, Texas, USA, NORTH AND CENTRAL AMERICA","Benbrook, Tarrant County, Texas, United States",-97.4605759,32.673188,-97.50399809999999,-97.411845,32.6458199,32.723728,5080,16
+"Austin, Texas, USA, NORTH AND CENTRAL AMERICA","Austin, Travis County, Texas, United States",-97.7430608,30.267153,-97.93835399999999,-97.5275861,30.075576,30.5166519,28370,17
+"Trouville, France, Western Europe","Trouville-sur-Mer, Calvados, Normandy, France",0.08280799999999999,49.36628899999999,0.07525459999999999,0.1319579,49.3554574,49.3898033,1324,18
+"Shennan, Texas, USA, NORTH AND CENTRAL AMERICA","Texas, United States",-99.9018131,31.9685988,-106.6456461,-93.5080389,25.8371165,36.50112610000001,774098,19
+"Cagny, Calvados, Normandy, France, Western Europe","Cagny, Calvados, Normandy, France, 14630",-0.255309,49.147306,-0.2896796,-0.2348055,49.1380904,49.1684049,2709,20
+"Nogent-le-Rotrou, France, Western Europe","Nogent-le-Rotrou, Eure-et-Loir, Centre-Val de Loire, France, 28400",0.8217776999999999,48.321344,0.7556895,0.8585432,48.2898262,48.3495471,4155,21
+"Varennes, Meuse, France, Western Europe","Varennes-en-Argonne, Meuse, Grand Est, France, 55270",5.033516,49.226297,4.9775843,5.0486909,49.208424,49.2513096,2993,22
+"Denton County, Texas, USA, NORTH AND CENTRAL AMERICA","Denton County, Texas, United States",-97.179026,33.1418611,-97.398459,-96.8341099,32.987435,33.4304501,26706,23
+"San Pedro Spr, San Antonio, Texas, USA, NORTH AND CENTRAL AMERICA","Suite 108, 2251, Broadway, Westfort Alliance, San Antonio, Bexar County, Texas, United States, 78215",-98.475932,29.446757,-98.47708758029151,-98.47438961970849,29.4457403197085,29.4484382802915,159,24
+"Les basses Vienne, Nouvelle-Aquitaine, France, Western Europe","Basses, Vienne, Nouvelle-Aquitaine, France, 86200",0.118803,47.035894,0.1014837,0.1517932,47.0236482,47.064716,1894,25
+"Vienne, Nouvelle-Aquitaine, France, Western Europe","Vienne, Nouvelle-Aquitaine, France",0.4772865,46.6695417,-0.1050271,1.213222,46.0482628,47.1759905,79446,26
+"Haute Garonne, France, Western Europe","Haute-Garonne, Occitanie, France",1.135302,43.4010462,0.4416817,2.0483036,42.6891759,43.9215181,93633,27
+"Hilston, Texas, USA, NORTH AND CENTRAL AMERICA","Hilton, Sherman, Grayson County, Texas, United States, 75092",-96.6208243,33.570663,-96.6221732802915,-96.6194753197085,33.5693140197085,33.5720119802915,195,28
+"Latrecy, Haute Marne, France, Western Europe","Haute-Marne, Grand Est, France",5.1071322,48.1260968,4.6266139,5.890943399999999,47.57655260000001,48.6893027,70899,29
+"Le Simon La Vineuse, Vendee, Pays de Loire, France, Western Europe","Simon-la-Vineuse, Sainte-Hermine, Vendee, Pays de la Loire, France, 85210",-1.087236,46.56255,-1.088584980291502,-1.085887019708498,46.56120101970851,46.5638989802915,182,30
+"May sur Orne, Calvados, Normandy, France, Western Europe","May-sur-Orne, Calvados, Normandy, France, 14320",-0.374753,49.101101,-0.3934757,-0.3610684,49.0848424,49.1080008,1260,31
+"Faxe, Denmark, Northern Europe","Faxe, Denmark, 4640",12.11381,55.255138,12.0412542,12.2868399,55.13352279999999,55.3124215,12710,32
+"Charlos sur Vesle, Marne, France, Western Europe","Vesle, France",3.728094245550682,49.32537517678858,3.465638,3.9905505,49.2560023,49.3947481,20568,33
+"Charlos sur Vesle, Marne, France, Western Europe","Charlas, Haute-Garonne, Occitanie, France, 31350",0.691825,43.227146,0.6707223,0.7195332999999999,43.21527560000001,43.2579878,2163,33
+"Cuise la Motte, Oise, France, Western Europe","Cuise-la-Motte, Oise, Hauts-de-France, France, 60350",3.006905,49.386771,2.9694389,3.034374,49.3698486,49.4072569,3028,34
+"Houdan, Ile de France, France, Western Europe","Houdan, Yvelines, Île-de-France, France, 78550",1.601126,48.789808,1.5753972,1.6207395,48.7737488,48.8198393,2601,35
+"Bois Gouet, Western Europe, Loire-Atlantique, France, Western Europe","Le Bois Gouet, Saffré, Loire-Atlantique, Pays de la Loire, France, 44390",-1.610587,47.486434,-1.611935980291502,-1.609238019708498,47.48508501970849,47.48778298029149,181,36
+"Vicksburg, Mississipi NORTH AND CENTRAL AMERICA","Vicksburg, Parish Governing Authority District 1, Warren County, Mississippi, United States",-90.877882,32.3526456,-90.9517351,-90.8189079,32.2233941,32.428079,10038,37
+"Veyrin, Isere, France, Western Europe","Veyrins-Thuellin, Les Avenières Veyrins-Thuellin, Isère, Auvergne-Rhône-Alpes, France, 38630",5.539128000000001,45.626513,5.4984848,5.5674206,45.6109072,45.65402599999999,3613,38
+"Quaranta, Herault, France, Western Europe","Hérault, Occitanie, France",3.2583626,43.5912356,2.5395564,4.1945463,43.2102012,43.9727532,71991,39
+"St. Come, Gironde, France, Western Europe","Saint-Côme, Gironde, Nouvelle-Aquitaine, France, 33430",-0.182137,44.42458999999999,-0.1998364,-0.1481611,44.4116733,44.4382122,2012,40
+"Leognan, Gironde, France, Western Europe","Léognan, Gironde, Nouvelle-Aquitaine, France, 33850",-0.59709,44.727859,-0.6733887,-0.5609845,44.6837369,44.7633744,4874,41
+"Clariborne, Alabama, USA, NORTH AND CENTRAL AMERICA","Claiborne, Monroe County, Alabama, United States, 36445",-87.51554639999999,31.5401611,-87.5168953802915,-87.51419741970848,31.5388121197085,31.5415100802915,197,42
+"Villedrant, Gironde, France, Western Europe","Gironde, Nouvelle-Aquitaine, France",-0.4502368,44.84966499999999,-1.2609782,0.3151236,44.1938882,45.604882,97285,43
+"Pontpourquey, Gironde, France, Western Europe","Pont-Pourquey, 43, Route du Médoc, Saucats, Gironde, Nouvelle-Aquitaine, France, 33650",-0.6094609999999999,44.65037299999999,-0.6104098802915019,-0.6077119197084978,44.64887771970849,44.65157568029149,182,44
+"Pontpourquey, Gironde, France, Western Europe","11, Lassime, Saucats, Gironde, Nouvelle-Aquitaine, France, 33650",-0.6124584,44.6499282,-0.6138008802915019,-0.6111029197084978,44.64858921970851,44.6512871802915,183,44
+"Le Coquillat, Gironde, France, Western Europe","Le Coquillat, Léognan, Gironde, Nouvelle-Aquitaine, France, 33850",-0.609683,44.720053,-0.611031980291502,-0.6083340197084979,44.7187040197085,44.7214019802915,184,45
+"Ause la Motte, France, Western Europe","La Motte, Var, Provence-Alpes-Côte d'Azur, France",6.535977,43.493077,6.506582499999999,6.5945277,43.47902699999999,43.5391864,2844,46
+"Ause la Motte, France, Western Europe","La Motte, Côtes-d'Armor, Brittany, France, 22600",-2.733757,48.235732,-2.7788768,-2.631476,48.2030354,48.2653662,4946,46
+"Pussenquier, Herault, France, Western Europe","Hérault, Occitanie, France",3.2583626,43.5912356,2.5395564,4.1945463,43.2102012,43.9727532,71991,47
+"Cerois, Ariege, France, Western Europe","Ariège, Occitanie, France",1.443469,42.9326292,0.8259955,2.1758616,42.5714741,43.3162055,64537,48
+"Cerois, Ariege, France, Western Europe","Croix, Nord, Hauts-de-France, France",3.148719,50.67731999999999,3.1360874,3.1739066,50.65711899999999,50.6936148,2418,48
+"Lebanon, Middle East","Lebanon",35.862285,33.854721,35.0711001,36.62372,33.0550256,34.69209,115228,49
+"Prairie Bluff, Alabama, USA, NORTH AND CENTRAL AMERICA","Prairie Bluff, Wilcox County, Alabama, United States, 36720",-87.4036071,32.1343111,-87.40495608029151,-87.4022581197085,32.1329621197085,32.1356600802915,196,50
+"Chalons sur Vesle, Marne, France, Western Europe","Châlons-sur-Vesle, Marne, Grand Est, France, 51140",3.918170999999999,49.28928800000001,3.8974661,3.9421183,49.2763338,49.2986005,2027,51
+"Grignon, Seine et Oise, France, Western Europe","Oise, Hauts-de-France, France",2.4146396,49.42145679999999,1.6888518,3.1657638,49.0605263,49.7638618,66328,52
+"Grignon, Seine et Oise, France, Western Europe","Thiverval-Grignon, Yvelines, Île-de-France, France, 78850",1.9177,48.849581,1.8935793,1.9708222,48.8230717,48.86080279999999,3439,52
+"Parnes, Oise, France, Western Europe","Parnes, Oise, Hauts-de-France, France",1.738355,49.203252,1.7148676,1.7768646,49.1745913,49.2236686,3609,53
+"Jonquires, Aude, France, Western Europe","Jonquières, Aude, Occitanie, France, 11220",2.729057,43.039532,2.6958735,2.7570691,43.0222603,43.0618742,3316,54
+"Bois Gouet, Pays de la Loire,  Loire-Atlantique, France, Western Europe","Le Bois Gouet, Saffré, Loire-Atlantique, Pays de la Loire, France, 44390",-1.610587,47.486434,-1.611935980291502,-1.609238019708498,47.48508501970849,47.48778298029149,181,55
+"Bercheres Eure et Loire, France, Western Europe","Berchères-les-Pierres, Eure-et-Loir, Centre-Val de Loire, France, 28630",1.5524119,48.384818,1.5236125,1.5953151,48.3464811,48.4051951,3902,56
+"Bercheres Eure et Loire, France, Western Europe","Berchères-sur-Vesgre, Eure-et-Loir, Centre-Val de Loire, France, 28260",1.5412729,48.84036099999999,1.5179866,1.5842244,48.820926,48.8676964,2756,56
+"Mouchy, Oise, France, Western Europe","Mouchy-le-Châtel, Oise, Hauts-de-France, France",2.249302,49.3264629,2.2248746,2.271281,49.31216089999999,49.3386279,2093,57
+"Port Royal, South Carolina, USA, NORTH AND CENTRAL AMERICA","Port Royal, Beaufort County, South Carolina, United States",-80.6926069,32.3790843,-80.84412499999999,-80.656803,32.300071,32.4168651,5376,58
+"Morigny, Essonne, France, Western Europe","Morigny-Champigny, Essonne, Île-de-France, France",2.181743,48.446833,2.1568842,2.2481431,48.39622259999999,48.4803827,5921,59
+"Etampes, Paris, Essone, France, Western Europe","Paris, Paris, Île-de-France, France",2.3513765,48.8575475,2.2242171,2.4698511,48.8155622,48.9021476,10006,60
+"Etampes, Paris, Essone, France, Western Europe","Étampes, Essonne, Île-de-France, France, 91150",2.16142,48.43441600000001,2.0713708,2.2335037,48.3822841,48.4631872,6219,60
+"Pierrefitte, Ile de France, France, Western Europe","Pierrefitte-sur-Seine, Pierrefitte-sur-Seine, Seine-Saint-Denis, Île-de-France, France, 93380",2.364077,48.967903,2.3516006,2.3757264,48.94678750000001,48.9740281,1092,61
+"Monte Grumi, Venetia, Italy, Southern Europe","Grumi, Castelgomberto, Province of Vicenza, Veneto, Italy, 36070",11.4015347,45.5782242,11.3997267,11.4041044,45.5769543,45.5798765,200,62
+"Monte Grumi, Venetia, Italy, Southern Europe","Monte, Illasi, Province of Verona, Veneto, Italy, 37031",11.1867225,45.4786715,11.1849803,11.1896011,45.4773670697085,45.4800650302915,199,62
+"Monte Grumi, Venetia, Italy, Southern Europe","Monte, Calvene, Province of Vicenza, Veneto, Italy, 36030",11.5133768,45.7808583,11.5120653,11.5162321,45.77996511970851,45.78266308029151,142,62
+"Berscubruck, Hanover, Germany, Western Europe","Hanover, Hanover Region, Lower Saxony, Germany, 30",9.732010400000002,52.3758916,9.6044352,9.9185077,52.304911,52.4544218,11747,63
+"Maubis la Cabonne, Landes, Aquitaine, France, Western Europe","Landes, Nouvelle-Aquitaine, France",-0.7532808999999999,43.9412045,-1.5235994,0.1367626,43.4874111,44.5323684,79975,64
+"Maubis la Cabonne, Landes, Aquitaine, France, Western Europe","La Cabone, Puygaillard-de-Quercy, Tarn-et-Garonne, Occitanie, France, 82800",1.61872,44.046919,1.617371019708498,1.620068980291502,44.04557001970849,44.04826798029149,185,64
+"Laricy, Gironde, France, Western Europe","Gironde, Nouvelle-Aquitaine, France",-0.4502368,44.84966499999999,-1.2609782,0.3151236,44.1938882,45.604882,97285,65
+"Labrede, Gironde, France, Western Europe","La Brède, Gironde, Nouvelle-Aquitaine, France, 33650",-0.5273211,44.6820186,-0.5940687,-0.4850655,44.65637539999999,44.6989321,3841,66
+"Labrede, Gironde, France, Western Europe","Canton of la Brède, Gironde, Nouvelle-Aquitaine, France",-0.5273367999999999,44.6820233,-0.7299616,-0.4330892,44.5460536,44.7704127,12338,66
+"Casenovo, Gironde, France, Western Europe","Gironde, Nouvelle-Aquitaine, France",-0.4502368,44.84966499999999,-1.2609782,0.3151236,44.1938882,45.604882,97285,67
+"Pont-le-Voy, Loir-et-Cher, France, Western Europe","Pontlevoy, Loir-et-Cher, Centre-Val de Loire, France, 41400",1.254324,47.390249,1.178635,1.2843403,47.3556068,47.4490308,6893,68
+"Sheppy, Kent, England, Northern Europe","Isle of Sheppey, England, United Kingdom",0.8365233,51.3964896,0.7214186,0.9509641,51.3544831,51.4478442,9278,69
+"Trouville, Calvados, Normandy, France, Western Europe","Trouville-sur-Mer, Calvados, Normandy, France",0.08280799999999999,49.36628899999999,0.07525459999999999,0.1319579,49.3554574,49.3898033,1324,70
+"Chambors, Oise, France, Western Europe","Chambors, Oise, Hauts-de-France, France, 60240",1.815147,49.26012900000001,1.789432,1.8370812,49.2451652,49.2740805,2226,71
+"Cairo, Egypt, AFRICA","Cairo, Cairo Governorate, Egypt",31.2357116,30.0444196,31.2149558,31.3019729,30.0083745,30.1106024,4469,72
+"Jackson, Mississipi, USA, NORTH AND CENTRAL AMERICA","Jackson, Hinds County, Mississippi, United States",-90.18065,32.2981392,-90.329895,-90.05566999999999,32.1954599,32.412656,17311,73
+"Puysserquier, Herault, France, Western Europe","Hérault, Occitanie, France",3.2583626,43.5912356,2.5395564,4.1945463,43.2102012,43.9727532,71991,74
+"Pointpourquey, Gironde, France, Western Europe","Gironde, Nouvelle-Aquitaine, France",-0.4502368,44.84966499999999,-1.2609782,0.3151236,44.1938882,45.604882,97285,75
+"Sancats, Gironde, France, Western Europe","Gironde, Nouvelle-Aquitaine, France",-0.4502368,44.84966499999999,-1.2609782,0.3151236,44.1938882,45.604882,97285,76
+"Grignon, Paris Basin, France, Western Europe","Paris, Paris, Île-de-France, France",2.3513765,48.8575475,2.2242171,2.4698511,48.8155622,48.9021476,10006,77
+"Chamount, Oise, France, Northern Europe","Chaumont-en-Vexin, Oise, Hauts-de-France, France, 60240",1.882324,49.2621619,1.837516,1.9281483,49.24853419999999,49.2981183,3597,78
+"Tongres, Belgium, Western Europe","Tongeren, Tongeren-Borgloon, Limburg, Flanders, Belgium, 3700",5.4607492,50.78220719999999,5.3889745,5.552955499999999,50.7201581,50.8223548,7887,79
+"Mt. Grumi, Venetia, Italy, Southern Europe","Grumi, Castelgomberto, Province of Vicenza, Veneto, Italy, 36070",11.4015347,45.5782242,11.3997267,11.4041044,45.5769543,45.5798765,200,80
+"Mt. Grumi, Venetia, Italy, Southern Europe","Province of Matera, Basilicata, Italy",16.4405872,40.4962656,15.9414216,16.8668854,40.0556505,40.8380296,52342,80
+"Blue Anchor, Somerset, England, Northern Europe","Blue Anchor, Minehead, Somerset, England, United Kingdom, TA24",-3.3931073,51.1807179,-3.407768,-3.3834537,51.1765181,51.183158,728,81
+"Aust Cliff, Gloscestershire, England, Northern Europe","Aust, Bristol, South Gloucestershire, England, United Kingdom, BS35",-2.6202643,51.59919559999999,-2.6319965,-2.6120765,51.59455639999999,51.6018238,638,82
+"Aust Cliff, Gloscestershire, England, Northern Europe","Mitcheldean, Mitcheldean, Gloucestershire, England, United Kingdom, GL17",-2.489453,51.862693,-2.5038485,-2.4773783,51.840938800000004,51.8741261,1520,82
+"Camberjon, Haute Saone, France, Western Europe","Haute-Saône, Bourgogne-Franche-Comté, France",6.1556282,47.7569806,5.366935499999999,6.8249356,47.252542,48.0241356,58203,83
+"Le Plan, Haute Garonne, France, Western Europe","Le Plan, Haute-Garonne, Occitanie, France, 31220",1.1202129,43.167117,1.0958775,1.1532684,43.1441098,43.1820162,3157,84
+"Le Fayel, Seine et Oise, France, Western Europe","Le Fayel, Oise, Hauts-de-France, France, 60680",2.7006579,49.370308,2.6821241,2.7106142,49.3632865,49.382476,1534,85
+"Chaumont, Haute-Marne, France, Western Europe","Chaumont, Haute-Marne, Grand Est, France, 52000",5.1392559,48.113748,5.0832297,5.2619153,48.0356899,48.1405115,9604,86
+"Villiers, Vienne, France, Western Europe","Villiers, Vienne, Nouvelle-Aquitaine, France",0.1733993,46.6752318,0.1470092,0.1988622,46.6510724,46.692525,2737,87
+"Mouchy, Bourgogne, France, Western Europe","Mouchy, Moraches, Nièvre, Bourgogne-Franche-Comté, France, 58420",3.54662,47.29518299999999,3.545271019708498,3.547968980291502,47.2938340197085,47.2965319802915,181,88
+"Crepy en Valois, Oise, France, Western Europe","Crépy-en-Valois, Oise, Hauts-de-France, France, 60800",2.890059,49.2361549,2.8634131,2.9362735,49.2131353,49.2601015,3213,89
+"Chenay, Marne, France, Western Europe","Chenay, Marne, Grand Est, France, 51140",3.929584,49.298061,3.9112001,3.9405804,49.2881369,49.3163334,1734,90
+"Bois Gouet,  Loire-Atlantique, France, Western Europe","Le Bois Gouet, Saffré, Loire-Atlantique, Pays de la Loire, France, 44390",-1.610587,47.486434,-1.611935980291502,-1.609238019708498,47.48508501970849,47.48778298029149,181,91
+"Ezauville, Seine et Oise, France, Western Europe","Oise, France",3.135554447887726,49.50371648141728,2.0174732,4.2536357,48.98175070000001,50.0256823,99291,92
+"Coustouge, Aude, France, Western Europe","Coustouge, Aude, Occitanie, France, 11220",2.74386,43.0478049,2.7191295,2.765788,43.0379641,43.0717453,2293,93
+"Tabrezan, Aude, France, Western Europe","Aude, Occitanie, France",2.3813621,43.0724667,1.6884309,3.2401477,42.648901,43.4600545,73627,94
+"Tabrezan, Ande, France, Western Europe","France",2.213749,46.227638,-109.2967524,11.4548613,10.2676819,51.3682119,886364,95
+"Liancourt, Oise, France, Western Europe","Liancourt, Oise, Hauts-de-France, France, 60140",2.468027,49.329255,2.4448433,2.4862995,49.3155984,49.3436932,2084,96
+"Fontcourverte, Aude, France, Western Europe","Fontcouverte, Aude, Occitanie, France, 11700",2.690116,43.16858999999999,2.6623676,2.7185007,43.1534891,43.1851285,2812,97
+"Agel, Herault, France, Western Europe","Agel, Hérault, Occitanie, France, 34210",2.853136,43.337792,2.8328789,2.8758434,43.3257383,43.3738083,2120,689
+"Bois Gouet, Loire-Atlantique, France, Western Europe","Le Bois Gouet, Saffré, Loire-Atlantique, Pays de la Loire, France, 44390",-1.610587,47.486434,-1.611935980291502,-1.609238019708498,47.48508501970849,47.48778298029149,181,99
+"Barroubio, Herault, France, Western Europe","Barroubio, Saint-Jean-de-Minervois, Hérault, Occitanie, France, 34360",2.854711,43.39377899999999,2.853362019708498,2.856059980291502,43.3924300197085,43.3951279802915,185,100
+"Le Guespelle, Sables Moyennes, France, Western Europe","Sablé-sur-Sarthe, Sarthe, Pays de la Loire, France, 72300",-0.3359853,47.8406652,-0.413312,-0.2950315,47.804268,47.8751663,4910,101
+"Le Guespelle, Sables Moyennes, France, Western Europe","Moyen, Meurthe-et-Moselle, Grand Est, France, 54118",6.569205999999999,48.483372,6.5356304,6.6507166,48.4635772,48.5219167,3318,101
+"Ver, France, Western Europe","Ver, Manche, Normandy, France, 50450",-1.3937679,48.8932069,-1.4204275,-1.3505484,48.8779336,48.9165741,2590,102
+"Argenteuil, France, Western Europe","Argenteuil, Val-d'Oise, Île-de-France, France, 95100",2.2466847,48.9472096,2.2033193,2.2922147,48.9277326,48.9724213,3845,103
+"Caunelles, Herault, France, Western Europe","Caunelles, Juvignac, Hérault, Occitanie, France, 34990",3.810677,43.620508,3.809328019708497,3.812025980291502,43.6191590197085,43.6218569802915,185,104
+"Chalons sur Vesle, Marne, France, western Europe","Châlons-sur-Vesle, Marne, Grand Est, France, 51140",3.918170999999999,49.28928800000001,3.8974661,3.9421183,49.2763338,49.2986005,2027,105
+"Hermonville, Marne, France, Western Europe","Hermonville, Marne, Grand Est, France, 51220",3.908621,49.3355,3.8810281,3.9531539,49.315328,49.3493983,3009,106
+"Puyssenquier, Herault, France, Western Europe","Hérault, Occitanie, France",3.2583626,43.5912356,2.5395564,4.1945463,43.2102012,43.9727532,71991,107
+"Merignac, Gironde, France, Western Europe","Mérignac, Gironde, Nouvelle-Aquitaine, France, 33700",-0.656358,44.8448769,-0.7570817999999999,-0.6068492,44.79978149999999,44.8627539,4389,108
+"Pontpourquey, Gironde, France, western Europe","Pont-Pourquey, 43, Route du Médoc, Saucats, Gironde, Nouvelle-Aquitaine, France, 33650",-0.6094609999999999,44.65037299999999,-0.6104098802915019,-0.6077119197084978,44.64887771970849,44.65157568029149,182,109
+"Pontpourquey, Gironde, France, western Europe","11, Lassime, Saucats, Gironde, Nouvelle-Aquitaine, France, 33650",-0.6124584,44.6499282,-0.6138008802915019,-0.6111029197084978,44.64858921970851,44.6512871802915,183,109
+"Beaucels, Herault, France, Western Europe","Hérault, Occitanie, France",3.2583626,43.5912356,2.5395564,4.1945463,43.2102012,43.9727532,71991,110
+"Beaucels, Herault, France, Western Europe","Beaucel, Saint-Ganton, Ille-et-Vilaine, Bretagne, France, 35550",-1.874882,47.768256,-1.876230980291502,-1.873533019708498,47.7669070197085,47.7696049802915,181,110
+"Parnes, Oise, France, Northern Europe","Parnes, Oise, Hauts-de-France, France",1.738355,49.203252,1.7148676,1.7768646,49.1745913,49.2236686,3609,111
+"St. Chinian, Herault, France, Westerrn Europe","Saint-Chinian, Hérault, Occitanie, France, 34360",2.945129,43.418646,2.8843647,2.9707797,43.3882922,43.4665119,5709,112
+"Chataigniers, Herault, France, Western Europe","Hérault, Occitanie, France",3.2583626,43.5912356,2.5395564,4.1945463,43.2102012,43.9727532,71991,113
+"Chataigniers, Herault, France, Western Europe","La Châtaignière, Saint-Géry, Dordogne, Nouvelle-Aquitaine, France, 24400",0.3022889,44.970467,0.3009399197084979,0.303637880291502,44.9691180197085,44.9718159802915,184,113
+"Chataigniers, Herault, France, Western Europe","La Châtaignière, Saint-Méard-de-Gurçon, Dordogne, Nouvelle-Aquitaine, France, 24610",0.199063,44.914434,0.197714019708498,0.200411980291502,44.9130850197085,44.9157829802915,184,113
+"Homowack, New York USA, NORTH AND CENTRAL AMERICA","New York, New York, United States",-74.0059728,40.7127753,-74.258843,-73.700169,40.476578,40.917705,33854,114
+"Dabuque, Iowa, USA","Dubuque, Dubuque County, Iowa, United States",-90.6677479,42.5063629,-90.8240261,-90.6358352,42.409285,42.5578554,6292,115
+"Hopewell, New York, USA, NORTH AND CENTRAL AMERICA","Hopewell, Ontario County, New York, United States",-77.17152279999999,42.89554040000001,-77.2459839,-77.1309239,42.85491,42.945142,6430,116
+"Randerston, Fife, Scotland, Northern Europe","Fife, Scotland, United Kingdom",-3.1495175,56.2082078,-3.7394067,-2.5446682,56.0058319,56.4532634,43068,117
+"Redland, Bristol, England, Northern Europe","Redland, Bristol, Bristol City, England, United Kingdom",-2.6062403,51.4677204,-2.6159402,-2.593241,51.46080019999999,51.47856650000001,1023,118
+"le Mas de Bouysson, Herault, France, Western Europe","Hérault, Occitanie, France",3.2583626,43.5912356,2.5395564,4.1945463,43.2102012,43.9727532,71991,119
+"le Mas de Bouysson, Herault, France, Western Europe","Mas de Bouyssou, Saint-Sozy, Lot, Occitanie, France, 46200",1.548135,44.880365,1.546786019708498,1.549483980291502,44.8790160197085,44.8817139802915,184,119
+"Montmajon, Herault, France, Western Europe","Hérault, Occitanie, France",3.2583626,43.5912356,2.5395564,4.1945463,43.2102012,43.9727532,71991,120
+"Camberjon, The. Saone, France, Western Europe","Saône, France",5.382812523437513,46.8817363165104,4.7027792,6.0628459,45.7169617,48.04651090000001,139278,121
+"Perte du Rhone, France, Western Europe","Rue de la Perte du Rhône, Valserhône, Ain, Auvergne-Rhône-Alpes, France, 01200",5.831331,46.1074373,5.829978169708498,5.832676130291502,46.10613346970851,46.10883143029151,179,659
+"Redland, Bristol, Avon, England, Northern Europe, ","Redland, Bristol, Bristol City, England, United Kingdom",-2.6062403,51.4677204,-2.6159402,-2.593241,51.46080019999999,51.47856650000001,1023,123
+"Aust, Gloucestershire, England, Northern Europe","Aust, Bristol, South Gloucestershire, England, United Kingdom, BS35",-2.6202643,51.59919559999999,-2.6319965,-2.6120765,51.59455639999999,51.6018238,638,124
+"Bellegarde, Ain, France, Western Europe","Bellegarde-sur-Valserine, Valserhône, Ain, Auvergne-Rhône-Alpes, France, 01200",5.826179,46.10759900000001,5.789309299999999,5.8677304,46.0785172,46.1368362,4310,125
+"La Balme de Rancusel, Isere, France, Western Europe","La Balme-les-Grottes, Isère, Auvergne-Rhône-Alpes, France, 38390",5.337346,45.851802,5.2905349,5.3487307,45.8131158,45.87384350000001,2605,126
+"Camberjohn, Haute Saone, France, Western Europe","Haute-Saône, Bourgogne-Franche-Comté, France",6.1556282,47.7569806,5.366935499999999,6.8249356,47.252542,48.0241356,58203,127
+"Camberjohn, Haute saone, France, Western Europe","Haute-Saône, Bourgogne-Franche-Comté, France",6.1556282,47.7569806,5.366935499999999,6.8249356,47.252542,48.0241356,58203,128
+"Lebanon","Lebanon",35.862285,33.854721,35.0711001,36.62372,33.0550256,34.69209,115228,129
+"Fouzilhon, Herault, Occitaine, France, Western Europe","Fouzilhon, Hérault, Occitanie, France, 34480",3.244396,43.501335,3.221523,3.2585436,43.4927637,43.5262951,2081,130
+"Macon, France, Western Europe","Mâcon, Saône-et-Loire, Bourgogne-Franche-Comté, France, 71000",4.8293535,46.3079587,4.7579899,4.8586816,46.2734283,46.3796478,6706,131
+"Camberjon, The Saone, France, Western Europe","Saône, France",5.382812523437513,46.8817363165104,4.7027792,6.0628459,45.7169617,48.04651090000001,139278,132
+"St. Pezenne, Deux Sevres, Frace, Western Europe","Sainte-Pezenne, Niort, Deux-Sèvres, Nouvelle-Aquitaine, France, 79000",-0.474515,46.349737,-0.475863980291502,-0.4731660197084979,46.34838801970849,46.35108598029149,182,133
+"Calloneghe, Lago di scoce, France, Western Europe","Lagos, Pyrénées-Atlantiques, Nouvelle-Aquitaine, France, 64800",-0.22327,43.209729,-0.2518056,-0.1949681,43.1997857,43.226431,2569,134
+"Bembrook, Texas, USA, NORTH AND CENTRAL AMEWRICA","Benbrook, Tarrant County, Texas, United States",-97.4605759,32.673188,-97.50399809999999,-97.411845,32.6458199,32.723728,5080,135
+"Tarrant County Texas, USA, NORTH AND CENTRAL AMERICA","Tarrant County, Texas, United States",-97.35165579999999,32.7732044,-97.550582,-97.031007,32.548666,32.994194,31117,136
+"Dives, Calvados, France, Western Europe","Dives-sur-Mer, Calvados, Normandy, France, 14160",-0.100024,49.28656,-0.1150614,-0.0638299,49.2677702,49.29584,2359,137
+"Dives, Calvados, France, Western Europe","Dives, Normandy, France",0.04134491256647548,49.04185569310518,-0.173711,0.2564009,48.7590292,49.3246821,35145,137
+"Denton County Texas, USA, NORTH AND CENTRAL AMERICA","Denton County, Texas, United States",-97.179026,33.1418611,-97.398459,-96.8341099,32.987435,33.4304501,26706,138
+"Hundorf, Bohemia, Czech Republic, Central Europe","Bohemia, Prague 1, Hlavní město Praha, Prague, Czechia, 110 00",14.4328744,50.0850736,14.4315254197085,14.4342233802915,50.08372461970851,50.0864225802915,178,139
+"St. Pezenne, Deux Serves, France, Western Europe","Sainte-Pezenne, Niort, Deux-Sèvres, Nouvelle-Aquitaine, France, 79000",-0.474515,46.349737,-0.475863980291502,-0.4731660197084979,46.34838801970849,46.35108598029149,182,140
+"Neuilly en Verin, Ile de France, France, Western Europe","Neuilly-sur-Seine, Hauts-de-Seine, Île-de-France, France",2.2674317,48.8848172,2.2457038,2.2845383,48.874081,48.8983982,1963,141
+"Neuilly en Verin, Ile de France, France, Western Europe","Verín, Verín, Province of Ourense, Spain",-7.4349526,41.9402591,-7.4486992,-7.423059299999999,41.9296144,41.947932,1303,141
+"Noaillan la Saubotte, Gironde, France, Western Europe","La Saubotte, Noaillan, Gironde, Nouvelle-Aquitaine, France, 33730",-0.359161,44.492823,-0.3605099802915021,-0.357812019708498,44.49147401970851,44.4941719802915,184,142
+"Klein Spawen, Belgium, Western Europe","Belgium",4.469936,50.503887,2.5240999,6.4081,49.4969518,51.5051242,175814,143
+"Guex Marne, France, Western Europe","Marne, France",3.877894023877895,48.49339096862101,2.4084191,5.347369,47.8768139,49.10996799999999,127882,144
+"Guex Marne, France, Western Europe","Marne, Grand Est, France",4.1475445,49.128754,3.3958859,5.0396806,48.5152405,49.4078194,71964,144
+"Ferme de l'Orme, France, Western Europe","Ferme de l'Orme, Beynes, Yvelines, Île-de-France, France, 78650",1.850983,48.83808399999999,1.849634019708498,1.852331980291502,48.8367350197085,48.8394329802915,180,145
+"Ferme de l'Orme, France, Western Europe","Ferme de l'Orme, Montigny-sur-Vesle, Marne, Grand Est, France, 51140",3.80734,49.321506,3.805991019708498,3.808688980291503,49.3201570197085,49.3228549802915,179,145
+"Ferme de l'Orme, France, Western Europe","Ferme de l'Orme, Chavignon, Aisne, Hauts-de-France, France, 02000",3.524556,49.46712,3.523207019708498,3.525904980291502,49.4657710197085,49.4684689802915,179,145
+"Belmont, New York State, USA, NORTH AND CENTRAL AMERICA","Belmont, Amity, Allegany County, New York, United States, 14813",-78.0344506,42.2231241,-78.0458871,-78.019534,42.2129849,42.232289,1470,146
+"Grignon, Paris, France, Western Europe","Paris, Paris, Île-de-France, France",2.3513765,48.8575475,2.2242171,2.4698511,48.8155622,48.9021476,10006,147
+"Soudley, Church Stretton, Shropshire, England, Northern Europe","Church Stretton, Church Stretton, Shropshire, England, United Kingdom, SY6",-2.803484,52.540698,-2.822099,-2.7860608,52.52791,52.549056,1504,148
+"Soudley, Church Stretton, Shropshire, England, Northern Europe","Soudley, Market Drayton, Shropshire, England, United Kingdom, TF9",-2.407774,52.856322,-2.4119491,-2.4005673,52.8537788,52.8601684,399,148
+"Wasioya, Minnesota, USA, Northern America","Wasioja, Wasioja Township, Dodge County, Minnesota, United States, 55927",-92.8190142,44.0804896,-92.82036318029151,-92.8176652197085,44.0791406197085,44.0818385802915,185,149
+"Rorrington, Shropshire, England, Northern Europe","Rorrington, Montgomery, Shropshire, England, United Kingdom, SY15 6BX",-3.032615,52.600267,-3.033963980291502,-3.031266019708498,52.5989180197085,52.6016159802915,176,150
+"Lleyn Peninsula, Caernarfonshire, Wales, Northern Europe","Stryd Llyn, Caernarfon, Gwynedd, Cymru, United Kingdom, LL55",-4.2724778,53.139515,-4.273948499999999,-4.2711543,53.1381815697085,53.14087953029149,176,151
+"Ffestiniog, Merionethshire, Wales, Northern Europe","Ffestiniog, Blaenau Ffestiniog, Gwynedd, Wales, United Kingdom, LL41 4LU",-3.933458,52.959065,-3.934806980291502,-3.932109019708498,52.95771601970849,52.96041398029149,175,152
+"Ffestiniog, Merionethshire, Wales, Northern Europe","Ffestiniog, Gwynedd, Wales, United Kingdom",-3.9169564,52.9922554,-4.0046598,-3.8326216,52.9461004,53.0225642,6590,152
+"Porth-y-rhaw, St David's, Pembrokeshire, Wales, Northern Europe","Solva, Haverfordwest, Pembrokeshire, Wales, United Kingdom, SA62 6UH",-5.216098,51.8723075,-5.216450780291503,-5.213752819708498,51.8721918197085,51.8748897802915,27,153
+"Porth-y-rhaw, St David's, Pembrokeshire, Wales, Northern Europe","WQC4+QC, Haverfordwest, United Kingdom, SA62 6DB",-5.2439922,51.9219624,-5.244173030291502,-5.241475069708497,51.9195163197085,51.9222142802915,175,153
+"Craighead, Girvan, Ayrshire, Scotland, Northern Europe","76F9+VH, Girvan, South Ayrshire, Scotland, United Kingdom, KA26 9QG",-4.78109,55.27471999999999,-4.781930680291502,-4.779232719708498,55.2732711697085,55.2759691302915,170,154
+"Dynevork Park, Llandeilo, Carmarthenshire, Wales, Northern Europe","Llandeilo, Llandeilo, Carmarthenshire, Wales, United Kingdom, SA19",-3.99143,51.88469,-4.011241399999999,-3.9840285,51.8759776,51.9004195,1674,155
+"Minneapolis, Minnesota, USA, Northern America","Minneapolis, Hennepin County, Minnesota, United States",-93.2650108,44.977753,-93.329163,-93.194042,44.889787,45.05125,9900,156
+"Lower Wood, Betton, Salop, Shropshire, England, Northern Europe","Lower Wood, Church Stretton, Shropshire, England, United Kingdom, SY6 6LF",-2.7886071,52.5702449,-2.7908129,-2.7864307,52.56895841970849,52.57165638029149,207,157
+"Lower Wood, Betton, Salop, Shropshire, England, Northern Europe","Betton, Market Drayton, Shropshire, England, United Kingdom, TF9 4AA",-2.462095,52.922995,-2.463443980291502,-2.460746019708498,52.9216460197085,52.9243439802915,175,157
+"Llandridod, Radnorshire, Wales, Northern Europe","Spa Road, Llandrindod Wells, Powys, Wales, United Kingdom, LD1 5EY",-3.3799429,52.2383798,-3.381354980291502,-3.378657019708498,52.2371816697085,52.2398796302915,165,158
+"St Paul, Minneapolis, Minnesota, USA, Northern America","Saint Paul, Ramsey County, Minnesota, United States",-93.0899578,44.9537029,-93.207787,-93.004324,44.88739899999999,44.992016,7985,159
+"Gilvach, Narberth, Pembrokeshire, Wales, Northern Europe","Gilfach Road, Narberth, Pembrokeshire, Wales, United Kingdom, SA67",-4.6664874,51.7907873,-4.6713034,-4.665949900000001,51.7855143,51.7960234,584,160
+"Gilvach, Narberth, Pembrokeshire, Wales, Northern Europe","Gilfach Hill, Narberth, Pembrokeshire, Wales, United Kingdom, SA67",-4.6738627,51.796536,-4.6757201,-4.6708452,51.7955317197085,51.7982296802915,170,160
+"Marshbrook, Shropshire, England, Northern Europe","Marshbrook, Church Stretton, Shropshire, England, United Kingdom, SY6 6QE",-2.824202,52.503571,-2.825550980291502,-2.822853019708498,52.5022220197085,52.5049199802915,176,161
+"Quarry on Llandeilo-Bethlehem Road, Carmarthenshire, Wales, Northern Europe","Bethlehem Road, Carmarthenshire, Wales, United Kingdom, SA19",-3.9359944,51.9033159,-3.9943472,-3.8778001,51.87449429999999,51.9338397,5140,162
+"Balcletchie, Girvan, Ayrshire, Scotland, Northern Europe","Girvan, Girvan, South Ayrshire, Scotland, United Kingdom",-4.854217999999999,55.240164,-4.8650235,-4.8384453,55.2254058,55.2555405,1781,163
+"Herault, France, Western Europe","Hérault, Occitanie, France",3.2583626,43.5912356,2.5395564,4.1945463,43.2102012,43.9727532,71991,164
+"Combes de Barroubio, Herault, France, Western Europe","Combes, Hérault, Occitanie, France, 34240",3.046453,43.60311300000001,3.0232645,3.0789919,43.5842396,43.62075369999999,2811,165
+"Combes de Barroubio, Herault, France, Western Europe","Barroubio, Saint-Jean-de-Minervois, Hérault, Occitanie, France, 34360",2.854711,43.39377899999999,2.853362019708498,2.856059980291502,43.3924300197085,43.3951279802915,185,165
+"Sencels, St Chinian, Herault, France, Western Europe","Saint-Chinian, Hérault, Occitanie, France, 34360",2.945129,43.418646,2.8843647,2.9707797,43.3882922,43.4665119,5709,166
+"Quarry west of Trefanty, St Clears, Carmarthonshire, Wales, Northern Europe","Saint Clears, Carmarthen, Carmarthenshire, Wales, United Kingdom",-4.498791,51.81934099999999,-4.561582599999999,-4.4348811,51.7884499,51.8494269,5529,167
+"Cincinnati, Ohio, USA, Northern America","Cincinnati, Hamilton County, Ohio, United States",-84.5120196,39.1031182,-84.7123951,-84.3695489,39.0520649,39.2211029,17978,168
+"Acton Scott, Shropshire, England, Northern Europe","Acton Scott, Church Stretton, Shropshire, England, United Kingdom, SY6 6QQ",-2.79942,52.5013549,-2.800768980291502,-2.798071019708499,52.5000059197085,52.50270388029149,176,169
+"Lake Chapman, New York, USA, Northern America","New York, New York, United States",-74.0059728,40.7127753,-74.258843,-73.700169,40.476578,40.917705,33854,170
+"New York, USA, Northern America","New York, New York, United States",-74.0059728,40.7127753,-74.258843,-73.700169,40.476578,40.917705,33854,171
+"Bowmanville, Durham County, Ontario, Canada, Northern America","Bowmanville, Clarington, Regional Municipality of Durham, Ontario, Canada",-78.6876283,43.9118739,-78.73076379999999,-78.64001739999999,43.8704215,43.9505722,5754,172
+"Marion County, Kentucky, USA, Northern America","Marion County, Kentucky, United States",-85.2308414,37.585137,-85.5212899,-85.0301719,37.412038,37.7306579,23967,173
+"High Bridge, Kentucky, USA, Northern America","High Bridge, Jessamine County, Kentucky, United States, 40390",-84.720489,37.823689,-84.7246761,-84.68901799999999,37.815389,37.844179,992,174
+"Le Mont Glauzy, Herault, France, Western Europe","Hérault, Occitanie, France",3.2583626,43.5912356,2.5395564,4.1945463,43.2102012,43.9727532,71991,175
+"Pavlovsk, Russia, Eastern Europe","Pavlovsk, Saint Petersburg, Pushkinskiy, Санкт-Петербург, Saint Petersburg, Russia",30.44437629999999,59.6811976,30.393685,30.4910228,59.649460500000004,59.707121,3904,176
+"Versailles, Kentucky, USA, Northern America","Versailles, Woodford County, Kentucky, United States, 40383",-84.7305058,38.0514897,-84.77018,-84.68632199999999,38.023477,38.0725141,4526,177
+"Coston Farm, Clunbury, Shropshire, England, Northern Europe","Clunbury, Craven Arms, Shropshire, England, United Kingdom, SY7 0HE",-2.925366,52.420347,-2.926714980291502,-2.924017019708499,52.4189980197085,52.4216959802915,176,178
+"Coston Farm, Clunbury, Shropshire, England, Northern Europe","Coston, Melton Mowbray, Leicestershire, England, United Kingdom, LE14 2RP",-0.7438319999999999,52.791461,-0.745180980291502,-0.742483019708498,52.7901120197085,52.7928099802915,176,178
+"Coston Farm, Clunbury, Shropshire, England, Northern Europe","Coston, Norwich, Norfolk, England, United Kingdom, NR9 4DT",1.043853,52.61455100000001,1.042504019708498,1.045201980291502,52.61320201970851,52.61589998029151,176,178
+"Lebanon, Kentucky, USA, Northern America","Lebanon, Marion County, Kentucky, United States, 40033",-85.2525819,37.5698914,-85.2927838,-85.2209663,37.5401423,37.6049869,4793,179
+"Cynwyd, Wales, Northern Europe","Cynwyd, Corwen, Denbighshire, Wales, United Kingdom, LL21",-3.401130900000001,52.9585781,-3.4116988,-3.3963451,52.9552777,52.9623875,532,180
+"Versailles, Indiana, USA, Northern America","Versailles, Johnson Township, Ripley County, Indiana, United States",-85.2519035,39.0719988,-85.27214699999999,-85.242916,39.0453339,39.076307,913,181
+"Horderley, Shropshire, England, Northern Europe","Horderley, Craven Arms, Shropshire, England, United Kingdom, SY7 8HP",-2.875045,52.476124,-2.876393980291502,-2.873696019708499,52.4747750197085,52.47747298029149,176,182
+"Clairmont, Iowa, USA, Northern America","Clermont, Fayette County, Iowa, United States",-91.652374,43.0035912,-91.6651531,-91.63554189999999,42.990537,43.0076169,1443,183
+"Pulkova, Russia, Eastern Europe","Pulkovo, Lomonosovsky District, Leningrad Oblast, Russia, 188535",29.190503,59.975589,29.1891540197085,29.1918519802915,59.97424001970849,59.9769379802915,168,184
+"Pulkova, Russia, Eastern Europe","Pulkovo, Kingiseppsky District, Leningrad Oblast, Russia, 188470",28.3519932,59.4194366,28.3396141,28.359981,59.417365,59.422489,567,184
+"Pulkova, Russia, Eastern Europe","Pulkovo, Saint Petersburg, Moskovskiy, Санкт-Петербург, Saint Petersburg, Russia, 196140",30.32840139999999,59.7718473,30.32705241970849,30.32975038029149,59.7704983197085,59.77319628029151,168,184
+"Fairy Gill, Cautley Inlier, Yorkshire, England, Northern Europe","Cautley, Sedbergh, Westmorland and Furness, England, United Kingdom, LA10 5LY",-2.4819939,54.340325,-2.483342880291502,-2.480644919708498,54.3389760197085,54.3416739802915,174,185
+"Onny Section, Craven Arms, Shropshire, England, Northern Europe","River Onny, Shropshire, England, United Kingdom",-2.840558048813103,52.44442824792387,-2.9270351,-2.754081,52.3821251,52.5067314,9088,186
+"Fillmore County, Minnesota, USA, Northern America","Fillmore County, Minnesota, United States",-92.0665197,43.6956298,-92.4496099,-91.730192,43.50044,43.848281,31952,187
+"Leningrad, Russia, Eastern Europe","Saint Petersburg, Санкт-Петербург, Saint Petersburg, Russia",30.3609097,59.9310584,29.4247991,30.76454409999999,59.63408599999999,60.246742,41732,188
+"Warren County, Ohio, USA, Northern America","Warren County, Ohio, United States",-84.1857115,39.4241422,-84.3652321,-83.976987,39.2551119,39.589581,24325,189
+"Nashville, Tennessee, USA, Northern America","Nashville, Davidson County, Tennessee, United States",-86.7816016,36.1626638,-87.05470489999999,-86.51558899999999,35.9677849,36.4054958,32756,190
+"Cannon Fall, Indiana, USA, Northern America","Cannon Falls, Goodhue County, Minnesota, United States, 55009",-92.905484,44.5069113,-92.9207971,-92.87612999999999,44.479097,44.5433861,3322,191
+"Cannon Fall, Indiana, USA, Northern America","Indianapolis, Marion County, Indiana, United States",-86.158018,39.76909,-86.32812109999999,-85.9373789,39.632177,39.927392,21069,191
+"Ballyvorgal South, Co. Clare, Republic of Ireland, Northern Europe","Ballyvorgal South, County Clare, Ireland",-8.7258408,52.7707677,-8.7410888,-8.715240099999999,52.76556619999999,52.776131,932,192
+"Richmond, Indiana, USA, Northern America","Richmond, Wayne Township, Wayne County, Indiana, United States",-84.8902382,39.8289369,-84.9674649,-84.81380399999999,39.74859,39.882589,8847,193
+"Spring Valley, Minnesota, USA, Northern America","Spring Valley, Spring Valley Township, Fillmore County, Minnesota, United States, 55975",-92.396174,43.684423,-92.413955,-92.3492591,43.6742,43.709056,1829,194
+"Woodford County, Kentucky, USA, Northern America","Woodford County, Kentucky, United States",-84.7315563,38.0721662,-84.86600310000001,-84.625079,37.84702,38.1954261,16563,195
+"Lake Chaplain, Washington, USA, Northern America","Lake Chaplain, Everett, Snohomish County, Washington, United States",-121.8443679,47.9596345,-121.8570626,-121.8291529,47.9441593,47.9701867,1633,196
+"Beartooth Butte, Wyoming, USA, Northern America","Beartooth Butte, Park County, Wyoming, United States, 82414",-109.6110027,44.9549444,-109.6123516802915,-109.6096537197085,44.9535954197085,44.95629338029149,184,197
+"Ottawa, Canada, Northern America","Ottawa, Ottawa, Ontario, Canada",-75.7003397,45.4200572,-76.35391589999999,-75.2465979,44.962733,45.5375801,37805,198
+"Trenton Falls, USA, Northern America","Trenton, Oneida County, New York, United States",-75.2245693,43.228708,-75.2872939,-75.1064949,43.181769,43.325387,7292,199
+"Trenton Falls, USA, Northern America","Tinton Falls, Monmouth County, New Jersey, United States",-74.0955271,40.2987771,-74.126207,-74.0644349,40.206321,40.337273,5026,199
+"Bay of Quinte, Ontario, Canada, Northern America","Bay of Quinte, Hastings County, Ontario, Canada",-77.2126473,44.1490319,-77.2139962802915,-77.21129831970849,44.1476829197085,44.1503808802915,185,200
+"Bougang Quarry, Girvan, Ayrshire, Scotland, Northern Europe","Girvan, Girvan, South Ayrshire, Scotland, United Kingdom",-4.854217999999999,55.240164,-4.8650235,-4.8384453,55.2254058,55.2555405,1781,201
+"Auchensoul Quarry, Girvan, Ayrshire, Scotland, Northern Europe","Auchensoul, Girvan, South Ayrshire, Scotland, United Kingdom, KA26 9TJ",-4.716707,55.215672,-4.718009880291502,-4.715311919708498,55.2143504197085,55.21704838029149,169,202
+"Auchensoul Quarry, Girvan, Ayrshire, Scotland, Northern Europe","Auchensoul, Girvan, South Ayrshire, Scotland, United Kingdom, KA26 9TJ",-4.716475,55.21574,-4.717845780291501,-4.715147819708497,55.2143674697085,55.2170654302915,170,202
+"Minuntion, Girvan, Ayrshire, Scotland, Northern Europe","Minuntion, Pinmore, Girvan, South Ayrshire, Scotland, United Kingdom, KA26 0TE",-4.789921,55.1835847,-4.791196580291502,-4.788498619708498,55.1821715197085,55.1848694802915,169,203
+"Craighead Quarry, Girvan, Ayrshire, Scotland, Northern Europe","76F9+VH, Girvan, South Ayrshire, Scotland, United Kingdom, KA26 9QG",-4.78109,55.27471999999999,-4.781930680291502,-4.779232719708498,55.2732711697085,55.2759691302915,170,204
+"Quarrel Hill, Girvan, Ayrshire, Scotland, Northern Europe","48, Dalrymple Street, Girvan, South Ayrshire, Scotland, United Kingdom, KA26 9BT",-4.8554847,55.2418013,-4.856733880291502,-4.854035919708497,55.2404491697085,55.2431471302915,170,205
+"Breaks Bale, Ayrshire,  Scotland, Northern Europe","Ayrshire, Scotland, United Kingdom",-4.6679959,55.3649698,-5.3978616,-3.9570569,54.9976443,55.89261370000001,61920,206
+"exposure in the east bank of the burn, Penkill Burn, Girvan, Ayrshire, Scotland, Northern Europe","Girvan, Girvan, South Ayrshire, Scotland, United Kingdom",-4.854217999999999,55.240164,-4.8650235,-4.8384453,55.2254058,55.2555405,1781,207
+"exposure in the east bank of the burn, Penkill Burn, Girvan, Ayrshire, Scotland, Northern Europe","Penkill Road, Girvan, South Ayrshire, Scotland, United Kingdom, KA26 9EG",-4.846889,55.2444933,-4.848571480291503,-4.8458735197084994,55.2430492197085,55.2457471802915,154,207
+"exposure in the east bank of the burn, Penkill Burn, Girvan, Ayrshire, Scotland, Northern Europe","The Burn, Brechin, Aberdeenshire, Scotland, United Kingdom, DD9 7YP",-2.6601737,56.8340746,-2.661522680291502,-2.658824719708498,56.8327256197085,56.8354235802915,171,207
+"Woodlands Point, Girvan, Ayrshire, Scotland, Northern Europe","Girvan, Girvan, South Ayrshire, Scotland, United Kingdom",-4.854217999999999,55.240164,-4.8650235,-4.8384453,55.2254058,55.2555405,1781,208
+"Woodlands Point, Girvan, Ayrshire, Scotland, Northern Europe","Woodland Walk, Irvine, North Ayrshire Council, Scotland, United Kingdom, KA12",-4.6697491,55.6353709,-4.679533,-4.6558063,55.6330041,55.6403297,670,208
+"Ladyburn, Girvan, Ayrshire, Scotland, Northern Europe","Lady Burn, Girvan, South Ayrshire, Scotland, United Kingdom",-4.793356460621613,55.29097720905361,-4.8377925,-4.748920399999999,55.2795655,55.3023889,3095,209
+"Girvan, Ayrshire, Scotland, Northern Europe","Girvan, Girvan, South Ayrshire, Scotland, United Kingdom",-4.854217999999999,55.240164,-4.8650235,-4.8384453,55.2254058,55.2555405,1781,210
+"Minuntion Farm, Pinmore, Ayrshire, Scotland, Northern Europe","Minuntion, Pinmore, Girvan, South Ayrshire, Scotland, United Kingdom, KA26 0TE",-4.789921,55.1835847,-4.791196580291502,-4.788498619708498,55.1821715197085,55.1848694802915,169,211
+"Drummuck, Girvan, Ayrshire, Scotland, Northern Europe","Girvan, Girvan, South Ayrshire, Scotland, United Kingdom",-4.854217999999999,55.240164,-4.8650235,-4.8384453,55.2254058,55.2555405,1781,212
+"Glenmard Quarry, Quarrel Hill, Girvan, Ayrshire, Scotland, Northern Europe","Glenmard House, Glenmard Estate, Girvan, South Ayrshire, Scotland, United Kingdom, KA26 9LB",-4.757725,55.287282,-4.759169530291502,-4.756471569708498,55.28593821970851,55.2886361802915,171,213
+"Thraive Glen, Girvan, Ayrshire, Scotland, Northern Europe","Finnick Glen, Ayr, South Ayrshire, Scotland, United Kingdom, KA7",-4.6215511,55.4410606,-4.622693130291502,-4.619995169708497,55.4398796697085,55.4425776302915,150,214
+"Thraive Glen, Girvan, Ayrshire, Scotland, Northern Europe","Girvan, Girvan, South Ayrshire, Scotland, United Kingdom",-4.854217999999999,55.240164,-4.8650235,-4.8384453,55.2254058,55.2555405,1781,214
+"Ardwell Farm, Girvan, Ayrshire, Scotland, Northern Europe","Ardwell, Farm, Girvan, South Ayrshire, Scotland, United Kingdom, KA26 0HP",-4.8931756,55.207097,-4.894534530291502,-4.891836569708498,55.2057398197085,55.2084377802915,172,215
+"Shalloch Mill, Girvan, Ayrshire, Scotland, Northern Europe","Shalloch Square, Girvan, South Ayrshire, Scotland, United Kingdom, KA26",-4.8505608,55.2350328,-4.851526480291502,-4.848828519708498,55.2338051697085,55.2365031302915,150,216
+"Penwhapple Burn, Girvan, Ayrshire, Scotland, Northern Europe","Penwhapple Burn, Girvan, South Ayrshire, Scotland, United Kingdom, KA26",-4.773342848602174,55.24704887088612,-4.8058396,-4.7408461,55.23235159999999,55.2617462,2636,217
+"South Threave, Ayrshire, Girvan, Scotland, Northern Europe","Girvan, South Ayrshire, Scotland, United Kingdom, KA26 9JZ",-4.7668297,55.2950342,-4.768163930291502,-4.765465969708498,55.2936945197085,55.2963924802915,172,218
+"Dailly, Ayrshire, Scotland, Northern Europe","Dailly, Girvan, South Ayrshire, Scotland, United Kingdom, KA26",-4.7244141,55.2766771,-4.7305883,-4.7176178,55.2733758,55.27991669999999,538,219
+"Kilbucho, 5km SSE of Biggar NT 060 338, Peeblesshire, Scotland, Northern Europe","Biggar, Biggar, South Lanarkshire, Scotland, United Kingdom, ML12",-3.523964,55.623396,-3.5391809,-3.5049497,55.61506749999999,55.62941610000001,1334,220
+"Kilgrammie, Girvan, Ayrshire, Scotland, Northern Europe","Kilgrammie House, Girvan, South Ayrshire, Scotland, United Kingdom, KA26 9LD",-4.7535167,55.2809324,-4.754897380291502,-4.752199419708497,55.27968066970849,55.28237863029149,165,221
+"Kilbucho, 5km SSE of Biggar, Peeblesshire, Scotland, Northern Europe","Kilbucho, Biggar, Scottish Borders, Scotland, United Kingdom, ML12 6JG",-3.465865,55.601416,-3.467213980291502,-3.464516019708498,55.6000670197085,55.6027649802915,173,222
+"Kilbucho, 5km SSE of Biggar, Peeblesshire, Scotland, Northern Europe","Biggar, Biggar, South Lanarkshire, Scotland, United Kingdom, ML12",-3.523964,55.623396,-3.5391809,-3.5049497,55.61506749999999,55.62941610000001,1334,222
+"Wallace's Cast, Peeblesshire, Scotland, Northern Europe","Peebles, Peebles, Scottish Borders, Scotland, United Kingdom, EH45",-3.193642,55.653071,-3.2076422,-3.1641578,55.637283,55.66641809999999,1966,223
+"Pomeroy, Co. Tyrone, Northern Ireland, Northern Europe","Pomeroy, Dungannon, Mid Ulster, Northern Ireland, United Kingdom, BT70",-6.9290099,54.59431550000001,-6.9453439,-6.9181805,54.58796,54.598101,817,224
+"Mulloch Hill, Girvan, Ayrshire, Scotland, Northern Europe","McCulloch Road, Girvan, South Ayrshire, Scotland, United Kingdom, KA26",-4.8471997,55.2365555,-4.848382730291502,-4.845684769708497,55.2352289697085,55.2379269302915,166,225
+"Dunlavay, Lough Mask, Co. Mayo, Republic of Ireland, Northern Europe","Lough Mask, Ireland",-9.3273832,53.6452231,-9.516672699999999,-9.2777999,53.55021989999999,53.69591,6524,226
+"Podmokly, Czech Republic, Eastern Europe","Podmokly, Zbiroh, Rokycany District, Plzeň Region, Czechia, 338 08",13.7043784,49.9432385,13.6885292,13.7521045,49.92794019999999,49.9598822,2047,227
+"Podmokly, Czech Republic, Eastern Europe","Podmokly, Děčín 2, Děčín District, Ústí nad Labem Region, Czechia, 405 02",14.1971277,50.775567,14.1957787197085,14.1984766802915,50.77421801970849,50.77691598029149,178,227
+"Podmokly, Czech Republic, Eastern Europe","Podmokly, Sušice 1, Klatovy District, Plzeň Region, Czechia, 342 01",13.5781614,49.23008919999999,13.553353,13.6017892,49.21160709999999,49.245508,2429,227
+"Deerhope Burn, Pentland Hills, Midlothian, Scotland, Northern Europe","Pentland Hills Regional Park, Flotterstone, Scotland, United Kingdom, EH26 0PP",-3.2267443,55.8548682,-3.227717380291502,-3.225019419708498,55.8534799697085,55.85617793029149,166,318
+"Pentland Hills, Midlothian, Scotland, Northern Europe","Pentland Hills Military Path, Castlelaw Cottages, Penicuik, Midlothian, Scotland, United Kingdom, EH26 0PB",-3.2354106,55.8693566,-3.236811430291502,-3.234113469708498,55.8680121197085,55.8707100802915,171,339
+"Podowrin Burn, Hagshaw Hills, Lanarkshire, Scotland, Northern Europe","Podowrin Burn, Lanark, South Lanarkshire, Scotland, United Kingdom, ML11 0SJ",-3.917939884089238,55.54155533066046,-3.9278991,-3.9079806,55.5379726,55.54513799999999,745,230
+"Podowrin Burn, Hagshaw Hills, Lanarkshire, Scotland, Northern Europe","Station Road, Douglas, Lanark, South Lanarkshire, Scotland, United Kingdom, ML11 0SL",-3.855307499999999,55.5535661,-3.856625080291503,-3.853927119708498,55.5522428697085,55.5549408302915,169,230
+"Gutterford Burn, Pentland Hills, Midlothian, Scotland, Northern Europe","Pentland Hills Regional Park, Flotterstone, Scotland, United Kingdom, EH26 0PP",-3.2267443,55.8548682,-3.227717380291502,-3.225019419708498,55.8534799697085,55.85617793029149,166,231
+"Mocktree, Herefordshire, England, Northern Europe","Mocktree, Craven Arms, Herefordshire, England, United Kingdom, SY7 0LY",-2.8546299,52.371814,-2.855978880291502,-2.853280919708498,52.3704650197085,52.3731629802915,176,232
+"Onibury, Shropshire, England, Northern Europe","Onibury, Craven Arms, Shropshire, England, United Kingdom, SY7 9AW",-2.8051149,52.40998399999999,-2.806463880291502,-2.803765919708498,52.4086350197085,52.4113329802915,176,233
+"Montague, New Jersey, USA, Northern America","Montague, Sandyston, Sussex County, New Jersey, United States",-74.7907582,41.2909206,-74.8364211,-74.64934,41.222066,41.357607,8551,234
+"Dudley, Worcestershire, England, Northern Europe","Dudley, West Midlands, England, United Kingdom",-2.0865972,52.5106724,-2.1567844,-2.0571865,52.4735445,52.5581732,5650,315
+"Woodland Point, Girvan, Ayrshire, Scotland, Northern Europe","Girvan, Girvan, South Ayrshire, Scotland, United Kingdom",-4.854217999999999,55.240164,-4.8650235,-4.8384453,55.2254058,55.2555405,1781,236
+"Woodland Point, Girvan, Ayrshire, Scotland, Northern Europe","Woodland Walk, Irvine, North Ayrshire Council, Scotland, United Kingdom, KA12",-4.6697491,55.6353709,-4.679533,-4.6558063,55.6330041,55.6403297,670,236
+"Top of Deerhope Burn, north Bank, top of main scree, North Esk Inlier, Pentland Hills, Scotland, Northern Europe","Scotland, United Kingdom",-4.2026458,56.49067119999999,-8.6500072,-0.7246751,54.6332381,60.8607515,348469,237
+"Railway cutting near Rushall, Staffordshire, England, Northern Europe","Staffordshire, England, United Kingdom",-2.1045243,52.7697957,-2.4707897,-1.5853847,52.42324379999999,53.22622399999999,45860,238
+"Railway cutting near Rushall, Staffordshire, England, Northern Europe","Rushall, Walsall, West Midlands, England, United Kingdom",-1.9621922,52.6090771,-1.968613,-1.9541546,52.5992824,52.6170297,1039,238
+"Stokesay, Shropshire, England, Northern Europe","Stokesay, Craven Arms, Shropshire, England, United Kingdom, SY7 9AH",-2.829809,52.428114,-2.831157980291502,-2.828460019708499,52.4267650197085,52.4294629802915,176,239
+"Clark's Mills, Perry County, Pennsylvania, USA, Northern America","Perry County, Pennsylvania, United States",-77.2405153,40.371376,-77.67176110000001,-76.91496990000002,40.1853621,40.6281669,39682,240
+"Western Ontario, Canada, Northern America","Ontario, Canada",-85.3232139,51.253775,-95.1558005,-74.3434716,41.6765559,56.8670159,950500,241
+"Elora, Western Ontario, Canada, Northern America","Elora, Centre Wellington, Wellington County, Ontario, Canada, N0B 1S0",-80.43054269999999,43.683715,-80.44097119999999,-80.4005706,43.6704741,43.69846099999999,1695,242
+"Norton, Craven Arms, Shropshire, England, Northern Europe","Norton, Craven Arms, Shropshire, England, United Kingdom, SY7 9LS",-2.793886,52.428227,-2.795234980291502,-2.792537019708498,52.4268780197085,52.4295759802915,176,243
+"Nickees, Pennsylvania, USA, Northern America","Pennsylvania, United States",-77.1945247,41.2033216,-80.5198485,-74.6895609,39.71979899999999,42.5141658,253873,244
+"Norbury, Shropshire, England, Northern Europe","Norbury, Bishops Castle, Shropshire, England, United Kingdom",-2.9392749,52.5299959,-2.952467,-2.9150619,52.5022637,52.5535578,3094,245
+"Whitfield, Gloucestershire, England, Northern Europe","Whitfield, Wotton-under-Edge, South Gloucestershire, England, United Kingdom, GL12",-2.4712579,51.6212121,-2.4768165,-2.466752,51.6191969,51.6236395,413,246
+"Damory Bridge, Gloucestershire, England, Northern Europe","Mitcheldean, Mitcheldean, Gloucestershire, England, United Kingdom, GL17",-2.489453,51.862693,-2.5038485,-2.4773783,51.840938800000004,51.8741261,1520,247
+"Damory Bridge, Gloucestershire, England, Northern Europe","Gloucestershire, England, United Kingdom",-2.2257856,51.74677399999999,-2.6871585,-1.6152024,51.5775571,52.1125655,37062,247
+"May Hill, Gloucestershire, England, Northern Europe","May Hill, Longhope, Gloucestershire, England, United Kingdom, GL17 0RF",-2.4438055,51.8892222,-2.445154480291502,-2.442456519708498,51.8878732197085,51.8905711802915,177,248
+"Mc Keet, Pennsylvania, USA, Northern America","Pennsylvania, United States",-77.1945247,41.2033216,-80.5198485,-74.6895609,39.71979899999999,42.5141658,253873,249
+"Newlands Burn, Ayrshire, Scotland, Northern Europe","Newlands Burn, East Ayrshire Council, Scotland, United Kingdom",-4.293459034316053,55.60027129177665,-4.3008428,-4.2860752,55.5941307,55.6064119,827,250
+"Deerhope Rig, Pentland Hills, Midlothian, Scotland, Northern Europe","Pentland Hills Regional Park, Flotterstone, Scotland, United Kingdom, EH26 0PP",-3.2267443,55.8548682,-3.227717380291502,-3.225019419708498,55.8534799697085,55.85617793029149,166,251
+"Deerhope, Pentland Hills, Midlothian, Scotland, Northern Europe","Pentland Hills Regional Park, Flotterstone, Scotland, United Kingdom, EH26 0PP",-3.2267443,55.8548682,-3.227717380291502,-3.225019419708498,55.8534799697085,55.85617793029149,166,296
+"Bohemia, Czech Republic, Eastern Europe","Bohemia, Prague 1, Hlavní město Praha, Prague, Czechia, 110 00",14.4328744,50.0850736,14.4315254197085,14.4342233802915,50.08372461970851,50.0864225802915,178,253
+"Mordiford, Herefordshire, England, Northern Europe","Mordiford, Hereford, Herefordshire, England, United Kingdom, HR1",-2.6264948,52.0321559,-2.6305529,-2.617537,52.0317644,52.0357229,282,254
+"Deerhope Burn, Pentland Hills, Midlothian,  Scotland, Northern Europe","Pentland Hills Regional Park, Flotterstone, Scotland, United Kingdom, EH26 0PP",-3.2267443,55.8548682,-3.227717380291502,-3.225019419708498,55.8534799697085,55.85617793029149,166,255
+"Plowdon, Shropshire, England, Northern Europe","Plowden, Lydbury North, Shropshire, England, United Kingdom, SY7 8BE",-2.912533,52.48481,-2.913881980291502,-2.911184019708498,52.4834610197085,52.4861589802915,176,256
+"Whitecliff, Ludlow, Shropshire, England, Northern Europe","Ludlow, Ludlow, Shropshire, England, United Kingdom, SY8",-2.7139129,52.367749,-2.7350821,-2.6844195,52.3579584,52.38600899999999,1807,257
+"Whitecliff, Ludlow, Shropshire, England, Northern Europe","Whitecliff, Poole, Bournemouth, Christchurch and Poole, England, United Kingdom, BH14 8RB",-1.9513651,50.717857,-1.952714080291502,-1.950016119708498,50.71650801970849,50.71920598029149,178,257
+"Havenfordwest, Pembrokeshire, Wales, Northern Europe","Haverfordwest, Haverfordwest, Pembrokeshire, Wales, United Kingdom, SA62",-4.971318999999999,51.800475,-5.0092007,-4.9493781,51.78020619999999,51.8197361,2623,258
+"Much Wenlock, Shropshire, England, Northern Europe","Much Wenlock, Much Wenlock, Shropshire, England, United Kingdom, TF13",-2.5592959,52.5971339,-2.5782095,-2.5441475,52.5880369,52.604827,1337,259
+"Penwhapple Glen, Girvan, Ayrshire, Scotland, Northern Europe","Penwhapple Reservoir, Girvan, South Ayrshire, Scotland, United Kingdom, KA26 9TH",-4.7366265,55.2405668,-4.7432177,-4.73259,55.2344732,55.2460044,658,260
+"Wether Law Linn, locality R82, Pentland Hills, Midlothian, Scotland, Northern Europe","Wether Law, West Linton, Scottish Borders, Scotland, United Kingdom, EH46 7BX",-3.2836944,55.72208329999999,-3.285043380291502,-3.282345419708498,55.72073431970849,55.72343228029149,172,261
+"Wether Law Linn, locality R82, Pentland Hills, Midlothian, Scotland, Northern Europe","Pentland Hills Military Path, Castlelaw Cottages, Penicuik, Midlothian, Scotland, United Kingdom, EH26 0PB",-3.2354106,55.8693566,-3.236811430291502,-3.234113469708498,55.8680121197085,55.8707100802915,171,261
+"Wether Law Linn, locality R82, Pentland Hills, Midlothian, Scotland, Northern Europe","Linn, Crawford Township, Osage County, Missouri, United States, 65051",-91.85045149999999,38.4858749,-91.86033289999999,-91.82707789999999,38.4664491,38.4942049,2239,261
+"south bank of Wether Law Linn, main scree, Pentland Hills, Midlothian, Scotland, Northern Europe","Wether Law, West Linton, Scottish Borders, Scotland, United Kingdom, EH46 7BX",-3.2836944,55.72208329999999,-3.285043380291502,-3.282345419708498,55.72073431970849,55.72343228029149,172,262
+"south bank of Wether Law Linn, main scree, Pentland Hills, Midlothian, Scotland, Northern Europe","Pentland Hills Regional Park, Flotterstone, Scotland, United Kingdom, EH26 0PP",-3.2267443,55.8548682,-3.227717380291502,-3.225019419708498,55.8534799697085,55.85617793029149,166,262
+"found loose at Deerhope Burn 1,000 metres wes of its mouth, exposure on north side of dry valley, Pentland Hills, Midlothian, Scotland, Northern Europe","Pentland Hills Military Path, Castlelaw Cottages, Penicuik, Midlothian, Scotland, United Kingdom, EH26 0PB",-3.2354106,55.8693566,-3.236811430291502,-3.234113469708498,55.8680121197085,55.8707100802915,171,263
+"Buildwas, Shropshire, England, Northern Europe","Buildwas, Telford, Shropshire, England, United Kingdom, TF8 7BX",-2.531244,52.637896,-2.532592980291502,-2.529895019708498,52.63654701970849,52.63924498029149,176,264
+"Deerhope Burn, main scree at top of burn west, Pentland Hills, Midlothian, Scotland, Northern Europe","Midlothian, Scotland, United Kingdom",-3.1338428,55.8292247,-3.3690393,-2.8462393,55.7103492,55.9320236,19826,265
+"Deerhope Burn, main scree at top of burn west, Pentland Hills, Midlothian, Scotland, Northern Europe","Fairhope, Baldwin County, Alabama, United States, 36532",-87.9033261,30.5229719,-87.924977,-87.83541389999999,30.443873,30.58223499999999,9012,265
+"Bargany Pond Burn, Girvan, Ayrshire, Scotland, Northern Europe","Bargany, Girvan, South Ayrshire, Scotland, United Kingdom, KA26 9RG",-4.764971,55.265444,-4.766319980291502,-4.763622019708498,55.2640950197085,55.2667929802915,173,266
+"main scree at western end of Deerhope Burn, Pentland Hills, Midlothian, Scotland, Northern Europe","Midlothian, Scotland, United Kingdom",-3.1338428,55.8292247,-3.3690393,-2.8462393,55.7103492,55.9320236,19826,267
+"main scree at western end of Deerhope Burn, Pentland Hills, Midlothian, Scotland, Northern Europe","West End, Edinburgh, Edinburgh, Scotland, United Kingdom, EH12 5BS",-3.2198107,55.9485487,-3.221159680291502,-3.218461719708498,55.9471997197085,55.9498976802915,172,267
+"main scree at western end of Deerhope Burn, Pentland Hills, Midlothian, Scotland, Northern Europe","Fairhope, Baldwin County, Alabama, United States, 36532",-87.9033261,30.5229719,-87.924977,-87.83541389999999,30.443873,30.58223499999999,9012,267
+"north bank top of main scree, top of Deerhope Burn, Pentland Hills, Midlothian, Scotland, Northern Europe","Midlothian, Scotland, United Kingdom",-3.1338428,55.8292247,-3.3690393,-2.8462393,55.7103492,55.9320236,19826,268
+"north bank top of main scree, top of Deerhope Burn, Pentland Hills, Midlothian, Scotland, Northern Europe","Fairhope, Baldwin County, Alabama, United States, 36532",-87.9033261,30.5229719,-87.924977,-87.83541389999999,30.443873,30.58223499999999,9012,268
+"Mc Kee's, Miffen, Pennsylvania, USA, Northern America","McKee, Blair County, Pennsylvania, United States",-78.4197681,40.35990779999999,-78.4279249,-78.412944,40.3549289,40.3664619,886,269
+"Mc Kee's, Miffen, Pennsylvania, USA, Northern America","Mifflin, Juniata County, Pennsylvania, United States",-77.4027674,40.5695217,-77.4103071,-77.400727,40.5627,40.5719429,320,269
+"East bank Gutterford Burn, Pentland Hills, Midlothian, Scotland, Northern Europe","Pentland Hills Regional Park, Flotterstone, Scotland, United Kingdom, EH26 0PP",-3.2267443,55.8548682,-3.227717380291502,-3.225019419708498,55.8534799697085,55.85617793029149,166,270
+"Deerhope Coral Bed, South bank Deerhope Burn, second tributary, Pentland Hills, Midlothian, Scotland, Northern Europe","Midlothian, Scotland, United Kingdom",-3.1338428,55.8292247,-3.3690393,-2.8462393,55.7103492,55.9320236,19826,271
+"Deerhope Coral Bed, South bank Deerhope Burn, second tributary, Pentland Hills, Midlothian, Scotland, Northern Europe","South Bank, London, Greater London, England, United Kingdom",-0.1116764,51.503728,-0.1228261,-0.1044825,51.4943628,51.5098445,844,271
+"Mullocks Hill, Girvan, Ayrshire, Scotland, Northern Europe","Girvan, Girvan, South Ayrshire, Scotland, United Kingdom",-4.854217999999999,55.240164,-4.8650235,-4.8384453,55.2254058,55.2555405,1781,272
+"Penkill, Girvan, Ayrshire, Scotland, Northern Europe","Girvan, Girvan, South Ayrshire, Scotland, United Kingdom",-4.854217999999999,55.240164,-4.8650235,-4.8384453,55.2254058,55.2555405,1781,273
+"Penkill, Girvan, Ayrshire, Scotland, Northern Europe","Penkill Road, Girvan, South Ayrshire, Scotland, United Kingdom, KA26 9EG",-4.846889,55.2444933,-4.848571480291503,-4.8458735197084994,55.2430492197085,55.2457471802915,154,273
+"Deerhope Burn, 1000 metres west of its mouth exposure on north side of dry valley, Pentland Hills, Midlothian, Scotland, Northern Europe","Pentland Hills Military Path, Castlelaw Cottages, Penicuik, Midlothian, Scotland, United Kingdom, EH26 0PB",-3.2354106,55.8693566,-3.236811430291502,-3.234113469708498,55.8680121197085,55.8707100802915,171,274
+"Wether Law Linn, Pentland Hills, Midlothian, Scotland, Northern Europe","Wether Law, West Linton, Scottish Borders, Scotland, United Kingdom, EH46 7BX",-3.2836944,55.72208329999999,-3.285043380291502,-3.282345419708498,55.72073431970849,55.72343228029149,172,276
+"Wether Law Linn, Pentland Hills, Midlothian, Scotland, Northern Europe","Pentland Hills Regional Park, Flotterstone, Scotland, United Kingdom, EH26 0PP",-3.2267443,55.8548682,-3.227717380291502,-3.225019419708498,55.8534799697085,55.85617793029149,166,276
+"Wether Law Linn, Pentland Hills, Midlothian, Scotland, Northern Europe","Wether Law, West Linton, Scottish Borders, Scotland, United Kingdom, EH46 7BX",-3.2836944,55.72208329999999,-3.285043380291502,-3.282345419708498,55.72073431970849,55.72343228029149,172,276
+"Wether Law Linn, Pentland Hills, Midlothian, Scotland, Northern Europe","Pentland Hills Regional Park, Flotterstone, Scotland, United Kingdom, EH26 0PP",-3.2267443,55.8548682,-3.227717380291502,-3.225019419708498,55.8534799697085,55.85617793029149,166,276
+"Main scree south bank of Wether Law Lin, Pentland Hills, Midlothian, Scotland, Northern Europe","Midlothian, Scotland, United Kingdom",-3.1338428,55.8292247,-3.3690393,-2.8462393,55.7103492,55.9320236,19826,277
+"North Wether Law Linn, North Esk, Pentland Hills, Midlothian, Scotland, Northern Europe","River North Esk, Scotland, United Kingdom",-3.201531069328599,55.85524358353582,-3.3482785,-3.0547836,55.7902181,55.9202691,11693,278
+"North Wether Law Linn, North Esk, Pentland Hills, Midlothian, Scotland, Northern Europe","Wether Law, West Linton, Scottish Borders, Scotland, United Kingdom, EH46 7BX",-3.2836944,55.72208329999999,-3.285043380291502,-3.282345419708498,55.72073431970849,55.72343228029149,172,278
+"North Wether Law Linn, North Esk, Pentland Hills, Midlothian, Scotland, Northern Europe","Pentland Hills, West Linton, Scottish Borders, Scotland, United Kingdom, EH46 7HL",-3.4166667,55.76666669999999,-3.418015680291502,-3.415317719708498,55.76531771970849,55.76801568029149,172,278
+"Strinds Quarry, Old Radnor, Powys, Wales, Northern Europe","Strinds Quarry, Dolyhir, Old Radnor, Presteigne, Powys, Wales, United Kingdom, LD8 2RW",-3.1154651,52.2173454,-3.116760830291502,-3.114062869708498,52.2160512197085,52.2187491802915,169,279
+"Rough Neuk Farm, New Dailly, Ayrshire, Scotland, Northern Europe","Dailly, Girvan, South Ayrshire, Scotland, United Kingdom, KA26",-4.7244141,55.2766771,-4.7305883,-4.7176178,55.2733758,55.27991669999999,538,280
+"Rough Neuk Farm, New Dailly, Ayrshire, Scotland, Northern Europe","The Neuk, Banchory, Aberdeenshire, Scotland, United Kingdom, AB31 5QL",-2.4414491,57.0691863,-2.442798080291502,-2.440100119708498,57.0678373197085,57.0705352802915,171,280
+"Linley, Shropshire, England, Northern Europe","Linley, Bishops Castle, Shropshire, England, United Kingdom, SY9 5HL",-2.959829,52.528465,-2.961177980291502,-2.958480019708498,52.52711601970849,52.52981398029149,176,281
+"Rochester, New York, USA","Rochester, Monroe County, New York, United States",-77.6088465,43.15657789999999,-77.701632,-77.531166,43.1033071,43.269045,9593,282
+"Henshaw Burn, 30m north of join with North Esk River, South Bank, Pentland Hills, Midlothian, Scotland, Northern Europe","Midlothian, Scotland, United Kingdom",-3.1338428,55.8292247,-3.3690393,-2.8462393,55.7103492,55.9320236,19826,283
+"Henshaw Burn, 30m north of join with North Esk River, South Bank, Pentland Hills, Midlothian, Scotland, Northern Europe","South Bank, London, Greater London, England, United Kingdom",-0.1116764,51.503728,-0.1228261,-0.1044825,51.4943628,51.5098445,844,283
+"McKees, Mifflin County, Pennsylvania, USA","Mifflin County, Pennsylvania, United States",-77.6077865,40.652279,-77.9139289,-77.287941,40.3605421,40.8469369,34596,284
+"McKees, Mifflin County, Pennsylvania, USA","McKeesport, Allegheny County, Pennsylvania, United States",-79.8641232,40.3470671,-79.8856121,-79.815834,40.3180949,40.3649879,3699,284
+"Clarks Mills, Perry County, Pennsylvania, USA","Clarks Mills, Perry Township, Mercer County, Pennsylvania, United States, 16114",-80.1836732,41.3931109,-80.18502218029151,-80.18232421970849,41.3917619197085,41.39445988029149,188,285
+"Clarks Mills, Perry County, Pennsylvania, USA","Perry County, Pennsylvania, United States",-77.2405153,40.371376,-77.67176110000001,-76.91496990000002,40.1853621,40.6281669,39682,285
+"Buffalo, New York, USA","Buffalo, Erie County, New York, United States",-78.8788896,42.88690039999999,-78.9337269,-78.795157,42.826023,42.9664551,8113,286
+"Wren's Nest, Dudley, Worcestershire, England, Northern Europe","Wren's Nest, Dudley, West Midlands, England, United Kingdom, DY1",-2.0970689,52.5253329,-2.1077174,-2.0908732,52.5198663,52.53268689999999,920,287
+"Main scree, south bank, Wether Law Linn, North Esk Inlier, Pentland Hills, Midlothian, Scotland, Northern Europe","Midlothian, Scotland, United Kingdom",-3.1338428,55.8292247,-3.3690393,-2.8462393,55.7103492,55.9320236,19826,288
+"Main scree, south bank, Wether Law Linn, North Esk Inlier, Pentland Hills, Midlothian, Scotland, Northern Europe","South Bank, London, Greater London, England, United Kingdom",-0.1116764,51.503728,-0.1228261,-0.1044825,51.4943628,51.5098445,844,288
+"Camregan Wood, Girvan, Ayrshire, Scotland, Northern Europe","United Kingdom, Girvan, South Ayrshire, Scotland, KA26 9RA",-4.8111111,55.2519444,-4.812545730291502,-4.809847769708497,55.2506654197085,55.2533633802915,169,289
+"Camregan Wood, Girvan, Ayrshire, Scotland, Northern Europe","Wood Street, Dailly, Girvan, South Ayrshire, Scotland, United Kingdom, KA26",-4.7291874,55.2754069,-4.730496430291502,-4.727798469708498,55.2741094197085,55.2768073802915,167,289
+"Auld Thorus, east side of Quarrel Hill, north of New Dailly, Girvan, Ayrshire, Scotland, Northern Europe","Dailly, Girvan, South Ayrshire, Scotland, United Kingdom, KA26",-4.7244141,55.2766771,-4.7305883,-4.7176178,55.2733758,55.27991669999999,538,290
+"western end of Deerhope Burn, North Esk Inlier, Pentland Hills, Midlothian, Scotland, Northern Europe","River North Esk, Scotland, United Kingdom",-3.201531069328599,55.85524358353582,-3.3482785,-3.0547836,55.7902181,55.9202691,11693,291
+"western end of Deerhope Burn, North Esk Inlier, Pentland Hills, Midlothian, Scotland, Northern Europe","Pentland Hills, West Linton, Scottish Borders, Scotland, United Kingdom, EH46 7HL",-3.4166667,55.76666669999999,-3.418015680291502,-3.415317719708498,55.76531771970849,55.76801568029149,172,291
+"North Esk, Pentland Hills, Midlothian, Scotland, Northern Europe","River North Esk, Scotland, United Kingdom",-3.201531069328599,55.85524358353582,-3.3482785,-3.0547836,55.7902181,55.9202691,11693,292
+"North Esk, Pentland Hills, Midlothian, Scotland, Northern Europe","Pentland Hills, West Linton, Scottish Borders, Scotland, United Kingdom, EH46 7HL",-3.4166667,55.76666669999999,-3.418015680291502,-3.415317719708498,55.76531771970849,55.76801568029149,172,292
+"Gotland, Sweden, Northern Europe","Gotland, Gotland County, Sweden",18.4867447,57.46841209999999,18.085562,19.1228587,56.9049485,57.92981529999999,63869,293
+"North of mouth of Wether Law Linn, North Esk River, Pentland Hills, Midlothian, Scotland, Northern Europe","River North Esk, Scotland, United Kingdom",-3.201531069328599,55.85524358353582,-3.3482785,-3.0547836,55.7902181,55.9202691,11693,294
+"South bank of Wether Law Linn, North Esk Inlier, Pentland Hills, Midlothian, Scotland, Northern Europe","River North Esk, Scotland, United Kingdom",-3.201531069328599,55.85524358353582,-3.3482785,-3.0547836,55.7902181,55.9202691,11693,295
+"South bank of Wether Law Linn, North Esk Inlier, Pentland Hills, Midlothian, Scotland, Northern Europe","Wether Law, West Linton, Scottish Borders, Scotland, United Kingdom, EH46 7BX",-3.2836944,55.72208329999999,-3.285043380291502,-3.282345419708498,55.72073431970849,55.72343228029149,172,295
+"South bank of Wether Law Linn, North Esk Inlier, Pentland Hills, Midlothian, Scotland, Northern Europe","Pentland Hills, West Linton, Scottish Borders, Scotland, United Kingdom, EH46 7HL",-3.4166667,55.76666669999999,-3.418015680291502,-3.415317719708498,55.76531771970849,55.76801568029149,172,295
+"Deerhope, Pentland Hills, Midlothian, Scotland, Northern Europe","Pentland Hills Regional Park, Flotterstone, Scotland, United Kingdom, EH26 0PP",-3.2267443,55.8548682,-3.227717380291502,-3.225019419708498,55.8534799697085,55.85617793029149,166,296
+"Priors Court, Mordiford, Herefordshire, England, Northern Europe","Mordiford, Hereford, Herefordshire, England, United Kingdom, HR1",-2.6264948,52.0321559,-2.6305529,-2.617537,52.0317644,52.0357229,282,297
+"Priors Court, Mordiford, Herefordshire, England, Northern Europe","Priors Court, Staplow, Ledbury, Herefordshire, England, United Kingdom, HR8 1NQ",-2.4421982,52.0679538,-2.443465880291503,-2.440767919708499,52.0665471197085,52.06924508029149,174,297
+"128 yards east of Haggis Quarry, Pentland Hills, Midlothian, Scotland, Northern Europe","Pentland Hills Regional Park, Flotterstone, Scotland, United Kingdom, EH26 0PP",-3.2267443,55.8548682,-3.227717380291502,-3.225019419708498,55.8534799697085,55.85617793029149,166,298
+"Longhope, Gloucestershire, England, Northern Europe","Longhope, Longhope, Gloucestershire, England, United Kingdom, GL17",-2.454864,51.866547,-2.4694974,-2.4369357,51.8586553,51.8828833,1337,299
+"Longhope, Gloucestershire, England, Northern Europe","Longhope, Gloucestershire, England, United Kingdom, GL17",-2.4539171,51.8743102,-2.4813001,-2.4292058,51.84986439999999,51.89480349999999,2845,299
+"Newlands Farm, Girvan, Ayrshire, Scotland, Northern Europe","Unnamed Road, Darvel, East Ayrshire Council, Scotland, United Kingdom, KA17 0LU",-4.2208304,55.6131201,-4.222351380291502,-4.219653419708497,55.6118599697085,55.61455793029149,170,300
+"Newlands Farm, Girvan, Ayrshire, Scotland, Northern Europe","Girvan, Girvan, South Ayrshire, Scotland, United Kingdom",-4.854217999999999,55.240164,-4.8650235,-4.8384453,55.2254058,55.2555405,1781,300
+"Shineton, Shropshire, England, Northern Europe","Shropshire, England, United Kingdom",-2.7417849,52.7063657,-3.2355653,-2.2328985,52.3062678,52.9983945,47237,301
+"Daw End, Walsall, Staffordshire, England, Northern Europe","Walsall, England, United Kingdom",-1.9663075,52.6223682,-2.0505943,-1.8709943,52.5475982,52.6718559,8482,302
+"Daw End, Walsall, Staffordshire, England, Northern Europe","Daw End, Walsall, West Midlands, England, United Kingdom, WS4 1LA",-1.954111,52.6037899,-1.955459980291502,-1.952762019708498,52.6024409197085,52.6051388802915,176,302
+"Lockport, New York, USA","Lockport, Lockport, Niagara County, New York, United States, 14094",-78.6903098,43.1706128,-78.73889799999999,-78.662373,43.143742,43.193908,3443,303
+"Shelderton Quarries, Shropshire, England, Northern Europe","Shelderton, Craven Arms, Shropshire, England, United Kingdom, SY7 0PE",-2.873808,52.3961169,-2.875156980291502,-2.872459019708498,52.3947679197085,52.39746588029149,176,304
+"Aymestry, Herefordshire, England, Northern Europe","Aymestrey, Leominster, Herefordshire, England, United Kingdom, HR6",-2.845269,52.28168489999999,-2.8465047,-2.8405887,52.278562,52.2859553,358,305
+"Aymestry, Herefordshire, England, Northern Europe","Aymestrey, Herefordshire, England, United Kingdom",-2.8468004,52.2898597,-2.9182216,-2.7736988,52.2651073,52.325592,5599,305
+"Arisaig shore, Nova Scotia, Canada","Arisaig, Antigonish County, Nova Scotia, Canada, B2G 2L1",-62.166667,45.75,-62.16801598029151,-62.16531801970849,45.7486510197085,45.7513489802915,183,306
+"Utica, New York, USA","Utica, Oneida County, New York, United States",-75.23558059999999,43.10109490000001,-75.295296,-75.1609059,43.064471,43.13243809999999,6340,307
+"Wales, Northern Europe","Wales, United Kingdom",-3.7837117,52.1306607,-5.6700973,-2.6497994,51.3749686,53.4356935,155036,308
+"Schoharie, New York, USA","Schoharie, Schoharie, Schoharie County, New York, United States, 12157",-74.3095787,42.6659087,-74.3301381,-74.29888609999999,42.6521931,42.679723,1767,437
+"Schoharie, New York, USA","Schoharie, Schoharie County, New York, United States",-74.3352858,42.6895424,-74.387827,-74.240749,42.628237,42.719219,8058,437
+"Webb City, Missouri, USA","Webb City, Joplin Township, Jasper County, Missouri, United States",-94.4630035,37.1464475,-94.493557,-94.42954789999999,37.101758,37.174935,4339,480
+"Shropshire, England, Northern Europe","Shropshire, England, United Kingdom",-2.7417849,52.7063657,-3.2355653,-2.2328985,52.3062678,52.9983945,47237,311
+"Wren Nest Hill, Dudley, Worcestershire, England","Wren's Nest Place, Dudley, West Midlands, England, United Kingdom, DY1",-2.099884,52.5260205,-2.101206580291502,-2.098508619708498,52.5246654197085,52.5273633802915,175,312
+"JerUSA, Harlem Hill, New York, USA","Harlem, Manhattan, New York, New York County, New York, United States",-73.9464769,40.8115504,-73.9623589,-73.9338182,40.7968871,40.834443,2109,313
+"Deerhope or Wether Law Linn, Pentland Hills, Midlothian, Scotland, Northern Europe","Wether Law, West Linton, Scottish Borders, Scotland, United Kingdom, EH46 7BX",-3.2836944,55.72208329999999,-3.285043380291502,-3.282345419708498,55.72073431970849,55.72343228029149,172,314
+"Deerhope or Wether Law Linn, Pentland Hills, Midlothian, Scotland, Northern Europe","Pentland Hills Regional Park, Flotterstone, Scotland, United Kingdom, EH26 0PP",-3.2267443,55.8548682,-3.227717380291502,-3.225019419708498,55.8534799697085,55.85617793029149,166,314
+"Dudley, Worcestershire, England, Northern Europe","Dudley, West Midlands, England, United Kingdom",-2.0865972,52.5106724,-2.1567844,-2.0571865,52.4735445,52.5581732,5650,315
+"Henshaw Burn, Pentland Hills, Midlothian, Scotland, Northern Europe","Pentland Hills Regional Park, Flotterstone, Scotland, United Kingdom, EH26 0PP",-3.2267443,55.8548682,-3.227717380291502,-3.225019419708498,55.8534799697085,55.85617793029149,166,316
+"East bank of Gutterford Burn, North Esk Inlier, Pentland Hills, Scotland, Northern Europe","River North Esk, Scotland, United Kingdom",-3.201531069328599,55.85524358353582,-3.3482785,-3.0547836,55.7902181,55.9202691,11693,317
+"Deerhope Burn, Pentland Hills, Midlothian, Scotland, Northern Europe","Pentland Hills Regional Park, Flotterstone, Scotland, United Kingdom, EH26 0PP",-3.2267443,55.8548682,-3.227717380291502,-3.225019419708498,55.8534799697085,55.85617793029149,166,318
+"Wether Law Linn, base of scree slope, southern bank, North Esk Inlier, Pentland Hills, Midlothian, Scotland, Northern Europe","River North Esk, Scotland, United Kingdom",-3.201531069328599,55.85524358353582,-3.3482785,-3.0547836,55.7902181,55.9202691,11693,319
+"Wether Law Linn, base of scree slope, southern bank, North Esk Inlier, Pentland Hills, Midlothian, Scotland, Northern Europe","Pentland Hills, West Linton, Scottish Borders, Scotland, United Kingdom, EH46 7HL",-3.4166667,55.76666669999999,-3.418015680291502,-3.415317719708498,55.76531771970849,55.76801568029149,172,319
+"Wether Law Linn, base of scree slope, southern bank, North Esk Inlier, Pentland Hills, Midlothian, Scotland, Northern Europe","Wether Law, West Linton, Scottish Borders, Scotland, United Kingdom, EH46 7BX",-3.2836944,55.72208329999999,-3.285043380291502,-3.282345419708498,55.72073431970849,55.72343228029149,172,319
+"Presthope, Shropshire, England, Northern Europe","Presthope, Much Wenlock, Shropshire, England, United Kingdom, TF13 6QQ",-2.615996,52.57182299999999,-2.617344980291502,-2.614647019708499,52.5704740197085,52.57317198029149,176,320
+"Newlands, Girvan, Ayrshire, Scotland, Northern Europe","Girvan, Girvan, South Ayrshire, Scotland, United Kingdom",-4.854217999999999,55.240164,-4.8650235,-4.8384453,55.2254058,55.2555405,1781,321
+"Newlands, Girvan, Ayrshire, Scotland, Northern Europe","Newlands, Glasgow, Glasgow City, Scotland, United Kingdom, G43",-4.2888683,55.8229506,-4.2919522,-4.2834077,55.8214257697085,55.8241237302915,257,321
+"McKee's, Mifflin County, Pennsylvania, USA","Mifflin County, Pennsylvania, United States",-77.6077865,40.652279,-77.9139289,-77.287941,40.3605421,40.8469369,34596,322
+"Kilbride Peninsula, County Mayo, Republic of Ireland","Mayo, County Mayo, Ireland",-9.4289369,54.0152604,-10.2593809,-8.5828617,53.4719262,54.3454432,66350,323
+"Kilbride Peninsula, County Mayo, Republic of Ireland","Kilbride, Kilbride, County Wicklow, Ireland",-6.4669351,53.1986734,-6.468284080291502,-6.465586119708497,53.1973244197085,53.20002238029149,175,323
+"Mulloch Hill, High Road, Girvan, Ayrshire, Scotland, Europe","Girvan, Girvan, South Ayrshire, Scotland, United Kingdom",-4.854217999999999,55.240164,-4.8650235,-4.8384453,55.2254058,55.2555405,1781,324
+"Mulloch Hill, High Road, Girvan, Ayrshire, Scotland, Europe","High Road, North Ayrshire Council, Scotland, United Kingdom",-4.7791269,55.6420576,-4.7980014,-4.7578134,55.6397366,55.64628339999999,1216,324
+"Mulloch Hill, High Road, Girvan, Ayrshire, Scotland, Europe","Mulloch Drive, Saint John's Town of Dalry, Castle Douglas, Dumfries and Galloway, Scotland, United Kingdom, DG7",-4.1571863,55.1067642,-4.158439280291502,-4.155741319708498,55.1053951197085,55.1080930802915,172,324
+"Deerhope Burn, top of main scree slope of western end, North Esk Inlier, Pentland Hills, Midlothian, Scotland, Northern Europe","Midlothian, Scotland, United Kingdom",-3.1338428,55.8292247,-3.3690393,-2.8462393,55.7103492,55.9320236,19826,325
+"Top of the main scree, north bank, top of Deerhope Burn, Pentland Hills, Midlothian, Scotland, Northern Europe","Pentland Hills Regional Park, Flotterstone, Scotland, United Kingdom, EH26 0PP",-3.2267443,55.8548682,-3.227717380291502,-3.225019419708498,55.8534799697085,55.85617793029149,166,326
+"Deckers Ferry, Pennsylvania, USA","Decker Ferry Road, Upper Mount Bethel Township, Northampton County, Pennsylvania, United States, 18343",-75.1107057,40.9445423,-75.1126686,-75.1096579,40.9427073,40.946334,218,327
+"Doonquin, Clogher Head, County Kerry, Republic of Ireland","Slea Head Drive, Graigue, County Kerry, Ireland",-10.4781701,52.15087450000001,-10.4795190802915,-10.4768211197085,52.14952551970851,52.15222348029151,176,328
+"Ballycar, County Clare, Republic of Ireland","Ballycar, Ballycar North, County Clare, Ireland",-8.656609999999999,52.7322,-8.657958980291502,-8.655261019708497,52.7308510197085,52.73354898029149,176,329
+"Ferriter's Cove, Dingle Peninsula, County Kerry, Republic of Ireland","Ballincolla, County Kerry, Ireland",-10.4399559,52.1733105,-10.4409570802915,-10.4382591197085,52.1720470697085,52.1747450302915,156,330
+"Clogher Head, County Kerry, Republic of Ireland, Europe","Slea Head Drive, Graigue, County Kerry, Ireland",-10.4781701,52.15087450000001,-10.4795190802915,-10.4768211197085,52.14952551970851,52.15222348029151,176,331
+"Boocaun, Cong, County Galway, Republic of Ireland, Northern Europe","Boocaun, County Galway, Ireland",-9.412145599999999,53.5497942,-9.4185458,-9.3952966,53.545905,53.55496489999999,606,332
+"Boocaun, Cong, County Galway, Republic of Ireland, Northern Europe","Cong, Strandhill, County Mayo, Ireland",-9.2834604,53.54168439999999,-9.2848093802915,-9.282111419708496,53.54033541970849,53.54303338029149,175,332
+"Ballintemple, Parish of Dooquin, County Kerry, Republic of Ireland, Northern Europe","Ballintemple, County Kerry, Ireland",-10.4364713,52.1384124,-10.4535752,-10.4243154,52.1319051,52.1406631,869,333
+"Bradford-on-Avon, Wiltshire, England, Northern Europe","Bradford-on-Avon, Wiltshire, England, United Kingdom, BA15",-2.2525019,51.345178,-2.2748896,-2.2269656,51.3282564,51.3631739,2445,334
+"Farleigh Down, Bath, Somerset, England, Northern Europe","A366, Farleigh Hungerford, Bath, Somerset, England, United Kingdom, BA2 7RS",-2.2865509999999998,51.3173589,-2.287695180291502,-2.284997219708498,51.31573066970849,51.31842863029149,161,335
+"Scutterdine, Herefordshire, England, Northern Europe","Hereford, Hereford, Herefordshire, England, United Kingdom",-2.715974,52.05639799999999,-2.7747453,-2.6725242,52.0283901,52.0771019,3766,336
+"Kilbucho, Biggar, Peeblesshire, Scotland","Kilbucho, Biggar, Scottish Borders, Scotland, United Kingdom, ML12 6JG",-3.465865,55.601416,-3.467213980291502,-3.464516019708498,55.6000670197085,55.6027649802915,173,337
+"North Esk Inlier, Pentland Hills, Midlothian, Scotland, Northern Europe","River North Esk, Scotland, United Kingdom",-3.201531069328599,55.85524358353582,-3.3482785,-3.0547836,55.7902181,55.9202691,11693,338
+"North Esk Inlier, Pentland Hills, Midlothian, Scotland, Northern Europe","Pentland Hills, West Linton, Scottish Borders, Scotland, United Kingdom, EH46 7HL",-3.4166667,55.76666669999999,-3.418015680291502,-3.415317719708498,55.76531771970849,55.76801568029149,172,338
+"Pentland Hills, Midlothian, Scotland, Northern Europe","Pentland Hills Military Path, Castlelaw Cottages, Penicuik, Midlothian, Scotland, United Kingdom, EH26 0PB",-3.2354106,55.8693566,-3.236811430291502,-3.234113469708498,55.8680121197085,55.8707100802915,171,339
+"Rockford, Iowa, USA","Rockford, Floyd County, Iowa, United States, 50468",-92.94853010000001,43.0521922,-92.962513,-92.935459,43.0485799,43.0572641,1205,340
+"Madison City, New York, USA","Madison, Madison, Madison County, New York, United States, 13402",-75.5121217,42.8989582,-75.51884799999999,-75.505481,42.8920231,42.903475,739,341
+"Landlake, Launceston, Cornwall, England","Landlake Road, Launceston, Cornwall, England, United Kingdom, PL15",-4.3607243,50.6252585,-4.362469680291502,-4.359771719708498,50.62320169999997,50.62853410000002,260,342
+"Cazenovia, Madison, New York, USA, North America","Cazenovia, Cazenovia, Madison County, New York, United States, 13035",-75.85269149999999,42.9300668,-75.871551,-75.8349339,42.91647,42.94070989999999,1871,343
+"East Bethany, New York, USA","East Bethany, Bethany, Genesee County, New York, United States, 14054",-78.1014019,42.9314495,-78.10275088029151,-78.10005291970849,42.9301005197085,42.9327984802915,186,344
+"Ithaca, New York, USA","Ithaca, Ithaca, Tompkins County, New York, United States",-76.5018807,42.4439614,-76.5269469,-76.469803,42.41832700000001,42.4670791,3516,345
+"Moscow, New York, USA","Leicester, Leicester, Livingston County, New York, United States, 14481",-77.89667089999999,42.7720066,-77.904826,-77.88721989999999,42.766252,42.7757509,878,346
+"East Bloomfield, New York, USA","East Bloomfield, Bloomfield, East Bloomfield, Ontario County, New York, United States, 14469",-77.43522089999999,42.8951611,-77.4408775,-77.42971709999999,42.8899929,42.8982632,566,347
+"Craigs, New York, USA","Craigs, York, Livingston County, New York, United States, 14533",-77.9216734,42.8608951,-77.92302238029151,-77.92032441970849,42.8595461197085,42.8622440802915,186,348
+"Gerolstein, Eifel, Germany","Eifel, Gerolstein, Vulkaneifel, Rhineland-Palatinate, Germany, 54568",6.6666667,50.25000000000001,6.665317719708497,6.668015680291502,50.24865101970851,50.25134898029151,178,349
+"Ferques, Pas-de-Calais, Nord, France, Western Europe","Ferques, Pas-de-Calais, Hauts-de-France, France",1.764077,50.828816,1.7319482,1.8055019,50.81497210000001,50.8417114,2738,350
+"Ferques, Pas-de-Calais, Nord, France, Western Europe","Autoroute du Nord, Pas-de-Calais, France",2.9415344,50.3475261,2.854578999999999,3.1035468,50.01935989999997,50.61467610000002,31865,350
+"Clarksville, New York, USA","Clarksville, New Scotland, Albany County, New York, United States",-73.9638411,42.5758581,-73.9848706,-73.9402187,42.57020869999999,42.5842842,1837,351
+"Clarksville, New York, USA","Clarksville, Allegany County, New York, United States",-78.2703951,42.1250458,-78.3090021,-78.190679,42.086336,42.173621,5356,351
+"Coblenz, Germany, Western Europe","Koblenz, Kreisfreie Stadt Koblenz, Rhineland-Palatinate, Germany, 56",7.5889959,50.3569429,7.480694,7.696415399999999,50.2829914,50.4095948,9627,352
+"Milwaukee, Wisconsin, USA","Milwaukee, Milwaukee County, Wisconsin, United States",-87.9096783,43.0410344,-88.0710091,-87.863807,42.920823,43.194772,17483,353
+"Fossil, Oregon, USA","Fossil, Wheeler County, Oregon, United States, 97830",-120.2161373,44.99818639999999,-120.224958,-120.2043452,44.992433,45.003706,945,354
+"Oneonta, New York, USA","Oneonta, Oneonta, Otsego County, New York, United States, 13820",-75.0637746,42.4528571,-75.10975599999999,-75.022694,42.4336411,42.4779089,4344,355
+"Two Bridges, Launceston, Cornwall, England, Europe","Two Bridges Bungalow, Lewannick, Launceston, Cornwall, England, United Kingdom, PL15 7QN",-4.4456867,50.6105736,-4.447016680291503,-4.444318719708498,50.60932476970849,50.61202273029149,168,356
+"Millerstown, Pennsylvania, USA","Millerstown, Perry County, Pennsylvania, United States, 17062",-77.1547054,40.5495268,-77.170023,-77.1381731,40.5450699,40.5628709,1389,357
+"Millerstown, Pennsylvania, USA","Millerstown, North Woodbury Township, Blair County, Pennsylvania, United States, 16662",-78.298346,40.2789663,-78.2996949802915,-78.2969970197085,40.2776173197085,40.2803152802915,189,357
+"Millerstown, Pennsylvania, USA","Millerstown, Donegal Township, Butler County, Pennsylvania, United States, 16025",-79.7481055,40.9550635,-79.74945448029149,-79.74675651970848,40.9537145197085,40.9564124802915,188,357
+"Millerstown, Pennsylvania, USA","Millerstown, Elk Township, Clarion County, Pennsylvania, United States, 16254",-79.452546,41.3061731,-79.45389498029151,-79.45119701970849,41.30482411970849,41.30752208029149,188,357
+"Charlestown, Indiana, USA","Charlestown, Charlestown Township, Clark County, Indiana, United States, 47111",-85.6702406,38.45312,-85.7230939,-85.620479,38.39168799999999,38.4771699,5098,358
+"Bloomfield, New York, USA","Bloomfield, East Bloomfield, Ontario County, New York, United States, 14469",-77.4214278,42.8972624,-77.4407679,-77.40771900000001,42.890113,42.909015,1720,359
+"Exmouth, Devon, England","Exmouth, Exmouth, Devon, England, United Kingdom",-3.413702,50.619957,-3.4277374,-3.3653957,50.60916049999999,50.6532778,1559,360
+"Meadsfoot, Torquay, Devon, England, Northern Europe","Meadfoot Beach, Meadfoot Sea Road, Torquay, Torbay, England, United Kingdom, TQ1 2LL",-3.5083297,50.4577997,-3.509649780291502,-3.506951819708498,50.4564251697085,50.45912313029149,177,361
+"Ilfracombe, Devon, England, Northern Europe","Ilfracombe, Ilfracombe, Devon, England, United Kingdom, EX34",-4.126761999999999,51.205163,-4.1643577999999994,-4.0766799,51.1753399,51.2188737,3818,362
+"Woolborough, Newton, Devon, England, Northern Europe","Wolborough, Newton Abbot, Devon, England, United Kingdom, TQ12 6BU",-3.621571,50.52184099999999,-3.622919980291502,-3.620222019708498,50.5204920197085,50.5231899802915,178,363
+"Callaway County, Missouri, USA","Callaway County, Missouri, United States",-91.9099238,38.8886044,-92.226091,-91.63399799999999,38.557396,39.0644931,30870,364
+"Hackberry Grove, Iowa, USA","Hackberry Road, Pottawattamie County, Iowa, United States",-95.2499913,41.2888199,-95.3468563,-95.15363269999999,41.2794647,41.29900360000001,8150,365
+"Hackberry Grove, Iowa, USA","Hackberry Road, Shelby County, Iowa, United States",-95.427484,41.5639278,-95.435853,-95.40966329999999,41.5034135,41.6099251,5320,365
+"Hackberry Grove, Iowa, USA","Hackberry Avenue, Page County, Iowa, United States",-95.228901,40.6621622,-95.2371087,-95.2162283,40.5775935,40.7446056,9218,365
+"Eighteen Mile Creek, New York, USA","Eighteenmile Creek, Hamburg, Erie County, New York, United States, 14085",-78.9692034,42.7181144,-78.9705523802915,-78.96785441970849,42.7167654197085,42.71946338029149,186,366
+"Port Colborne, Ontario, Canada","Port Colborne, Regional Municipality of Niagara, Ontario, Canada",-79.2508558,42.88652039999999,-79.28140909999999,-79.1151229,42.697384,42.959874,13755,367
+"Independence, Iowa, USA","Independence, Buchanan County, Iowa, United States, 50644",-91.8893386,42.4685978,-91.95339299999999,-91.866181,42.44302099999999,42.491431,3172,368
+"Croyde Bay, Devon, England, Northern Europe","Croyde Bay, Croyde, Braunton, Devon, England, United Kingdom, EX33 1NU",-4.2342479,51.1346487,-4.235596880291502,-4.232898919708497,51.1332997197085,51.1359976802915,177,369
+"near Exmouth, Devon, England, Europe","Exmouth, Exmouth, Devon, England, United Kingdom",-3.413702,50.619957,-3.4277374,-3.3653957,50.60916049999999,50.6532778,1559,370
+"Wittlich, Eifel, Germany, Europe","Wittlich, Wittlich-Land, Bernkastel-Wittlich, Rhineland-Palatinate, Germany, 54516",6.889722,49.986944,6.888373019708498,6.891070980291502,49.98559501970851,49.9882929802915,179,371
+"Wittlich, Eifel, Germany, Europe","Eifel, Gerolstein, Vulkaneifel, Rhineland-Palatinate, Germany, 54568",6.6666667,50.25000000000001,6.665317719708497,6.668015680291502,50.24865101970851,50.25134898029151,178,371
+"Jeffersonville, Indiana, USA","Jeffersonville, Utica Township, Clark County, Indiana, United States",-85.7371847,38.2775702,-85.75770899999999,-85.632827,38.2671701,38.4027319,2135,372
+"Schoharie County, New York, USA","Schoharie County, New York, United States",-74.4994517,42.65503349999999,-74.71158,-74.1646779,42.3550169,42.829558,33575,373
+"Stroudsberg, Pennsylvania, USA","Stroudsburg, Monroe County, Pennsylvania, United States, 18360",-75.1946248,40.9867609,-75.2157921,-75.179355,40.974765,40.997542,1756,374
+"Cudlbeckville, New York, USA","Cuddebackville, Deerpark, Orange County, New York, United States, 12729",-74.5937718,41.4673153,-74.59512078029151,-74.59242281970849,41.4659663197085,41.4686642802915,187,375
+"Murlenbach, Eifel, Germany, Western Europe","Mürlenbach, Vulkaneifel, Rhineland-Palatinate, Germany, 54570",6.6004494,50.15032,6.5484567,6.6722153,50.127102,50.1644271,4526,376
+"Murlenbach, Eifel, Germany, Western Europe","Eifel, Gerolstein, Vulkaneifel, Rhineland-Palatinate, Germany, 54568",6.6666667,50.25000000000001,6.665317719708497,6.668015680291502,50.24865101970851,50.25134898029151,178,376
+"Danville, Pennsylvania, USA, Northern America","Danville, Montour County, Pennsylvania, United States, 17821",-76.6127329,40.96342,-76.6334341,-76.5925591,40.9463209,40.98065099999999,2558,377
+"Perry County, Pennsylvania, USA","Perry County, Pennsylvania, United States",-77.2405153,40.371376,-77.67176110000001,-76.91496990000002,40.1853621,40.6281669,39682,378
+"Hopewell, New York, USA, North America","Hopewell, Ontario County, New York, United States",-77.17152279999999,42.89554040000001,-77.2459839,-77.1309239,42.85491,42.945142,6430,379
+"Bethany, New York, USA","Bethany, Genesee County, New York, United States",-78.13363799999999,42.92381090000001,-78.1926209,-78.07413,42.87,42.9575909,6138,380
+"Alfred, New York, USA","Alfred, Alfred, Allegany County, New York, United States",-77.7905509,42.2542366,-77.803223,-77.778021,42.242182,42.265662,1637,381
+"Grund, Harz, Germany","Bad Grund, Göttingen, Lower Saxony, Germany, 37539",10.2372671,51.81028060000001,10.1422859,10.2625259,51.75121739999999,51.8327436,3046,382
+"Ural Mountains, Russia, Eastern Europe","Ural Mountains, Russia",59.1619065,60.2784931,56.2201032,66.9096782,51.56677879999999,68.3576114,973779,383
+"Pilton, Barnstaple, Devon, England, Northern Europe","Pilton, Barnstaple, Devon, England, United Kingdom",-4.0618675,51.08616809999999,-4.0633452,-4.0605058,51.0847041,51.0880125,193,384
+"New York, USA","New York, New York, United States",-74.0059728,40.7127753,-74.258843,-73.700169,40.476578,40.917705,33854,385
+"Cayuga County, New York, USA","Cayuga County, New York, United States",-76.5488232,42.7655231,-76.7537619,-76.26558399999999,42.61860799999999,43.7082155,23418,386
+"Vailham, Herault, France, Western Europe","Vailhan, Hérault, Occitanie, France, 34320",3.303199,43.55213699999999,3.2743478,3.317152,43.5317546,43.5841778,3250,387
+"McConnelltown, Pennsylvania, USA","McConnellstown, Walker Township, Huntingdon County, Pennsylvania, United States, 16652",-78.0816724,40.4525739,-78.0908671,-78.041096,40.444862,40.484342,1158,388
+"Edmonston, New York, USA","Edmeston, Edmeston, Otsego County, New York, United States, 13335",-75.2440429,42.69783,-75.274722,-75.22161,42.672867,42.718338,2927,389
+"Danville, Pennsylvania, USA","Danville, Montour County, Pennsylvania, United States, 17821",-76.6127329,40.96342,-76.6334341,-76.5925591,40.9463209,40.98065099999999,2558,390
+"Solon, Iowa, USA","Solon, Johnson County, Iowa, United States, 52333",-91.49414809999999,41.8072031,-91.52077799999999,-91.480085,41.7918289,41.817289,1619,391
+"Lynton, North Devon, England, Northern Europe","Lynton, Lynton, Devon, England, United Kingdom, EX35",-3.840102,51.2296539,-3.8459422,-3.8301122,51.2192472,51.2336655,828,392
+"Kings Mill, Perry County, Pennsylvania, USA","Kings Highway, Marysville, Perry County, Pennsylvania, United States, 17053",-76.935633,40.336712,-76.9427006,-76.9311761,40.33327329999999,40.3390633,460,393
+"Kings Mill, Perry County, Pennsylvania, USA","Mill Road, Spring Township, Perry County, Pennsylvania, United States, 17090",-77.2102648,40.355827,-77.2139292,-77.20889869999999,40.3517668,40.3615006,548,393
+"Saaremaa, Estonia, Eastern Europe","Saaremaa, Saare County, Estonia",22.6136407,58.4849721,21.8281004,23.328579,57.9044003,58.64212449999999,45142,394
+"Saaremaa, Estonia, Eastern Europe","Saare County, Estonia",22.6136407,58.4849721,21.7645388,23.4452842,57.7798183,58.68537620000001,53274,394
+"Cobleskill, New York, USA","Cobleskill, Cobleskill, Schoharie County, New York, United States",-74.4854172,42.677853,-74.5167831,-74.45318100000001,42.65960889999999,42.694883,3249,395
+"Finnentrop, Westphalia, Germany","Finnentrop, Olpe, Arnsberg, North Rhine-Westphalia, Germany, 57413",7.9736319,51.17360910000001,7.898081299999999,8.1217984,51.1287388,51.248423,7271,396
+"Le Mont Peyroux, Herault, France, Western Europe","Montpeyroux, Hérault, Occitanie, France, 34150",3.506458,43.69543600000001,3.4715211,3.5306523,43.67294709999999,43.7487944,3765,397
+"Cooe Station, Pennsylvania, USA","Cole Station Lane, Columbia Township, Bradford County, Pennsylvania, United States, 16914",-76.8547825,41.8820316,-76.8573217,-76.8522763,41.8798753,41.882651,219,398
+"18 Mile Creek, New York, USA","Eighteenmile Creek, Hamburg, Erie County, New York, United States, 14085",-78.9692034,42.7181144,-78.9705523802915,-78.96785441970849,42.7167654197085,42.71946338029149,186,399
+"Fulton, Missouri, USA","Fulton, Callaway County, Missouri, United States, 65251",-91.94795859999999,38.84670819999999,-91.995308,-91.916365,38.8140739,38.915414,5480,400
+"Chickasaw, Iowa, USA","Chickasaw County, Iowa, United States",-92.38136209999999,43.0724667,-92.554464,-92.080974,42.906732,43.2137071,23201,401
+"19 Mile Creek, New York, USA","New York, New York, United States",-74.0059728,40.7127753,-74.258843,-73.700169,40.476578,40.917705,33854,402
+"Brickel, Bergint, Gladbach, Germanry, Western Europe","Bergisch Gladbach, Rheinisch-Bergischer Kreis, Cologne, North Rhine-Westphalia, Germany, 51",7.1229789,50.98964789999999,7.061793,7.2546025,50.9199454,51.02697680000001,8866,403
+"Brickel, Bergint, Gladbach, Germanry, Western Europe","Brickell, Miami, Miami-Dade County, Florida, United States",-80.1958755,25.7601793,-80.2056696,-80.18255180000001,25.7480928,25.7704797,1661,403
+"20 Mile Creek, New York, USA","New York, New York, United States",-74.0059728,40.7127753,-74.258843,-73.700169,40.476578,40.917705,33854,404
+"Clark's Mill, Perry County, Pennsylvania, USA","Mill Road, Spring Township, Perry County, Pennsylvania, United States, 17090",-77.2102648,40.355827,-77.2139292,-77.20889869999999,40.3517668,40.3615006,548,405
+"Stadtfeld, Eifel, Germany","Eifel, Gerolstein, Vulkaneifel, Rhineland-Palatinate, Germany, 54568",6.6666667,50.25000000000001,6.665317719708497,6.668015680291502,50.24865101970851,50.25134898029151,178,406
+"Columbus, Ohio, USA","Columbus, Franklin County, Ohio, United States",-83.0032218,39.9625112,-83.2102539,-82.77137809999999,39.808694,40.157349,24602,407
+"Saint-Nazaire-de-Ladarez, Herault, France, Western Europe","Saint-Nazaire-de-Ladarez, Hérault, Occitanie, France, 34490",3.0761759,43.50942,3.0448003,3.1245499,43.4840856,43.5570208,3790,408
+"Namur, Belgium, Western Europe","Namur, Namur, Wallonia, Belgium",4.864973099999999,50.46493340000001,4.722966599999999,4.9843534,50.3873228,50.5311069,11222,409
+"Villers-sur-Lesse, Belgium","Villers-sur-Lesse, Rochefort, Namur, Wallonia, Belgium, 5580",5.11367,50.15352,5.055310899999999,5.151060999999999,50.1087139,50.1804259,4012,410
+"Kerpen, Eifel, Germany, Western Europe","Kerpen, Vulkaneifel, Cologne, Rhineland-Palatinate, Germany, 54",6.7294484,50.3097384,6.6809046,6.7549686,50.2900016,50.3348769,3335,411
+"Centerville, New York, USA","Centerville, Centerville, Allegany County, New York, United States, 14065",-78.2497346,42.4797854,-78.2510835802915,-78.24838561970849,42.4784364197085,42.48113438029149,186,412
+"22 Mile Creek, New York, USA","Throop Avenue, Brooklyn, Kings County, New York, United States",-73.9428156,40.6923611,-73.94920789999999,-73.93892129999999,40.6796324,40.7048922,1430,413
+"23 Mile Creek, New York, USA","New York, New York, United States",-74.0059728,40.7127753,-74.258843,-73.700169,40.476578,40.917705,33854,414
+"24 Mile Creek, New York, USA","New York, New York, United States",-74.0059728,40.7127753,-74.258843,-73.700169,40.476578,40.917705,33854,415
+"York, New York, USA","York, York, Livingston County, New York, United States",-77.8856212,42.8710697,-77.906983,-77.86850299999999,42.849942,42.882148,1863,416
+"25 Mile Creek, New York, USA, North America","Mile Creek, New York, United States",-75.26029502918233,43.54026230674992,-75.3076904,-75.2128996,43.5197878,43.5607368,4455,417
+"Thedford, Ontario, Canada","Thedford, Lambton Shores, Lambton County, Ontario, Canada, N0M 2N0",-81.8546647,43.165434,-81.8676131,-81.8435966,43.158752,43.1718161,1146,418
+"Hustonville, Kentucky, USA","Hustonville, Lincoln County, Kentucky, United States",-84.8157827,37.4731315,-84.82519099999999,-84.805404,37.469384,37.489023,930,419
+"London, Canada, North America","London, London, Middlesex County, Ontario, Canada",-81.2452768,42.9849233,-81.390852,-81.1063879,42.824517,43.073245,14980,420
+"Helderberg, New York, USA","Helderberg, Berne, Albany County, New York, United States, 12059",-74.0662416,42.6000775,-74.0675905802915,-74.06489261970849,42.5987285197085,42.60142648029149,186,421
+"Helderberg, New York, USA","Helderberg, Albany, Bethlehem, Albany County, New York, United States, 12208",-73.7933809,42.6518007,-73.8063671,-73.784965,42.6450789,42.657579,942,421
+"26 Mile Creek, New York, USA","New York, New York, United States",-74.0059728,40.7127753,-74.258843,-73.700169,40.476578,40.917705,33854,422
+"Wissenbach, Germany, Western Europe","Wissenbach, Eschenburg, Lahn-Dill-Kreis, Gießen, Hessen, Germany, 35713",8.3220306,50.7899343,8.314340399999999,8.3311768,50.7846986,50.7978894,796,423
+"Hamilton, Ontario, Canada","Hamilton, Hamilton, Ontario, Canada",-79.8711024,43.2557206,-80.24870709999999,-79.6175911,43.0505639,43.4710569,31538,424
+"West Laurens, New York, USA","West Laurens, Laurens, Otsego County, New York, United States, 13796",-75.17155509999999,42.5297991,-75.1729040802915,-75.1702061197085,42.5284501197085,42.5311480802915,186,425
+"New Bloomfield, Pennsylvania, USA","New Bloomfield, Perry County, Pennsylvania, United States, 17068",-77.1872047,40.4197907,-77.20042389999999,-77.1771579,40.412666,40.4257119,1077,426
+"Ohio, USA","Ohio, United States",-82.90712300000001,40.4172871,-84.8203051,-80.518705,38.4034229,42.323374,277724,427
+"Barvaux, Belgium, Western Europe","Barvaux-sur-Ourthe, Durbuy, Luxembourg, Wallonia, Belgium",5.4910127,50.3505435,5.462697299999999,5.522296900000001,50.3218628,50.3757617,3581,428
+"Budleigh Salterton, Devon, England, Northern Europe","Budleigh Salterton, Budleigh Salterton, Devon, England, United Kingdom",-3.320214,50.630998,-3.3447229,-3.3104624,50.62478429999999,50.6427491,1478,429
+"Boulonnais, Pas-de-Calais, France","1, Boulevard du Bassin Napoléon, Boulogne-sur-Mer, Pas-de-Calais, Hauts-de-France, France, 62200",1.596309,50.7223815,1.595272519708498,1.597970480291502,50.7209918697085,50.7236898302915,171,430
+"Boulonnais, Pas-de-Calais, France","Bat A510, Parc d'Entreprises Eurocap, Rue du Cap Blanc-Nez, Coquelles, Pas-de-Calais, Hauts-de-France, France, 62231",1.8504402,50.9309628,1.849363169708498,1.852061130291502,50.9296914197085,50.9323893802915,160,430
+"Iowa City, Iowa, USA","Iowa City, Johnson County, Iowa, United States",-91.53461689999999,41.6578257,-91.61842399999999,-91.46304699999999,41.59857,41.69662,7354,431
+"Seneca Lake, New York, USA","Seneca Lake, New York, United States",-76.92019200000001,42.6918497,-76.98133589999999,-76.8552315,42.3829761,42.8737667,20896,432
+"Oryol, Russia, Eastern Europe","Oryol, Gorod Orel, Oryol Oblast, Russia",36.06248980000001,52.9668468,35.966428,36.1890429,52.89548,53.053345,10237,433
+"Bensberg, near Koln, Germany, Western Europe","Bensberg, Bergisch Gladbach, Rheinisch-Bergischer Kreis, Cologne, North Rhine-Westphalia, Germany, 51",7.1548209,50.9647506,7.1287606,7.1785955,50.95043709999999,50.9729762,1904,434
+"Port Jervis, New York, USA","Port Jervis, Orange County, New York, United States, 12771",-74.692663,41.3750937,-74.7131119,-74.67241609999999,41.35638590000001,41.393924,2691,435
+"Cumberland, Maryland, USA","Cumberland, Allegany County, Maryland, United States, 21502",-78.7625185,39.6528654,-78.81242689999999,-78.710909,39.619414,39.68593,5670,436
+"Schoharie, New York, USA","Schoharie, Schoharie, Schoharie County, New York, United States, 12157",-74.3095787,42.6659087,-74.3301381,-74.29888609999999,42.6521931,42.679723,1767,437
+"Schoharie, New York, USA","Schoharie, Schoharie County, New York, United States",-74.3352858,42.6895424,-74.387827,-74.240749,42.628237,42.719219,8058,437
+"Paffrath, near Koln, Germany, Western Europe","Paffrath, Bergisch Gladbach, Rheinisch-Bergischer Kreis, Cologne, North Rhine-Westphalia, Germany, 51",7.1002725,50.99894640000001,7.083611299999999,7.116255799999999,50.9918236,51.0065313,1404,438
+"Ardross, Fife, Scotland, Northern Europe","Ardross Place, Glenrothes, Fife, Scotland, United Kingdom, KY6",-3.1761373,56.1878796,-3.177177780291502,-3.174479819708498,56.1865286697085,56.1892266302915,164,439
+"Drumley near Annbank Station, Ayrshire, Scotland, Northern Europe","Drumley Drive, Mossblown, Ayr, South Ayrshire, Scotland, United Kingdom, KA6",-4.5302053,55.4919165,-4.5321818,-4.5287814,55.4905304697085,55.4932284302915,172,440
+"Bear Island, County Cork, Republic of Ireland, Northern Europe","Island, County Cork, Ireland",-8.5114486,52.0177052,-8.5213509,-8.502308,52.0119149,52.0227831,844,441
+"Garngad Quarry, Glasgow, Lanarkshire, Scotland, Northern Europe","Royston, Glasgow, Glasgow City, Scotland, United Kingdom, G21 2NF",-4.235128599999999,55.8687873,-4.236477580291502,-4.233779619708497,55.8674383197085,55.8701362802915,172,442
+"Garngad Quarry, Glasgow, Lanarkshire, Scotland, Northern Europe","Quarry Walk, Glasgow, Glasgow City, Scotland, United Kingdom, G46",-4.3081743,55.811016,-4.309644130291502,-4.306946169708497,55.8096055697085,55.8123035302915,163,442
+"Bishopbriggs, Glasgow, Lanarkshire, Scotland, Northern Europe","Bishopbriggs, Glasgow, East Dunbartonshire Council, Scotland, United Kingdom, G64",-4.228494,55.904185,-4.251058599999999,-4.1837458,55.89613019999999,55.92429929999999,1672,443
+"Melville Open Cast Coal Pit, 7 km SE of Edinburgh, Midlothian, Scotland, Northern Europe","Fountainbridge, Edinburgh, Edinburgh, Scotland, United Kingdom, EH3 9QA",-3.2078217,55.9438061,-3.209077080291502,-3.206379119708498,55.9423600197085,55.9450579802915,166,444
+"Melville Open Cast Coal Pit, 7 km SE of Edinburgh, Midlothian, Scotland, Northern Europe","Edinburgh, Scotland, United Kingdom",-3.2023923,55.91658779999999,-3.3897266,-3.0776611,55.8628341,55.9918179,11440,444
+"Melville Open Cast Coal Pit, 7 km SE of Edinburgh, Midlothian, Scotland, Northern Europe","9-10, Saint Andrew Square, Edinburgh, Edinburgh, Scotland, United Kingdom, EH2 2AF",-3.1942778,55.9534446,-3.195406430291502,-3.192708469708498,55.9521159197085,55.9548138802915,164,444
+"Duloch, Dunfermline, Fife, Scotland, Northern Europe","Duloch, Pitreavie Castle, Dunfermline, Fife, Scotland, United Kingdom, KY11",-3.4000136,56.064699,-3.4174347,-3.3889388,56.0563908,56.0760715,1426,445
+"Campsie, Stirlingshire, Scotland, Northern Europe","Campsie Road, Glasgow, Stirling, Scotland, United Kingdom, G63",-4.2977207,55.9860958,-4.3059104,-4.289274199999999,55.9844248697085,55.9871228302915,539,446
+"Elie, Fife, Scotland, Northern Europe","Elie and Earlsferry, Fife, Scotland, United Kingdom",-2.8268248,56.1904895,-2.8460536,-2.8106496,56.1837027,56.194329,1091,447
+"Boghead, near Hamilton, Lanarkshire, Scotland, Northern Europe","Boghead, Lanark, South Lanarkshire, Scotland, United Kingdom, ML11",-3.9432339,55.656,-3.9478095,-3.9376064,55.6535224,55.6602104,399,448
+"Newfield, East Kilbride, Lanarkshire, Scotland, Europe","East Kilbride, Glasgow, South Lanarkshire, Scotland, United Kingdom",-4.1769988,55.76435240000001,-4.2484055,-4.1282606,55.7268994,55.79138099999999,4291,449
+"Gare, Lanarkshire, Scotland, Northern Europe","Lanark, Lanark, South Lanarkshire, Scotland, United Kingdom, ML11",-3.7821380000000002,55.673865,-3.7986431,-3.7358893,55.6609692,55.6914519,1772,450
+"Abden, Fife, Scotland, Northern Europe","Fife, Scotland, United Kingdom",-3.1495175,56.2082078,-3.7394067,-2.5446682,56.0058319,56.4532634,43068,451
+"Gateside, Beith, Ayrshire, Scotland, Northern Europe","Gateside, Beith, North Ayrshire Council, Scotland, United Kingdom, KA15",-4.6086458,55.7487137,-4.614027999999999,-4.603161,55.744462,55.7528652,576,452
+"Capelrig, near East Kilbride, Lanarkshire, Scotland, Northern Europe","Capelrig Drive, East Kilbride, Glasgow, South Lanarkshire, Scotland, United Kingdom, G74",-4.1568587,55.770296,-4.1581775,-4.1553374,55.7688285,55.7721791,183,453
+"Limekilns, East Kilbride, Lanarkshire, Scotland, Northern Europe","East Kilbride, Glasgow, South Lanarkshire, Scotland, United Kingdom",-4.1769988,55.76435240000001,-4.2484055,-4.1282606,55.7268994,55.79138099999999,4291,454
+"Limekilns, East Kilbride, Lanarkshire, Scotland, Northern Europe","Limekilns, Fife, Scotland, United Kingdom, KY11",-3.479036,56.0342419,-3.4907912,-3.4681469,56.0298589,56.0376335,777,454
+"Garngad Road, Glasgow, Lanarkshire, Scotland, Northern Europe","Royston, Glasgow, Glasgow City, Scotland, United Kingdom, G21 2NF",-4.235128599999999,55.8687873,-4.236477580291502,-4.233779619708497,55.8674383197085,55.8701362802915,172,455
+"Dockra, Beith, Ayrshire, Scotland, Northern Europe","Beith, Beith, North Ayrshire Council, Scotland, United Kingdom",-4.631787,55.753797,-4.6677889,-4.616359,55.7316762,55.7675602,1813,456
+"Roscobie, Fife, Scotland, Northern Europe","Roscobie Farm, Dunfermline, Fife, Scotland, United Kingdom, KY12 0SG",-3.4692888,56.118131,-3.473117,-3.4672889,56.11711949999999,56.1207529,263,457
+"Orchard, Ayrshire, Scotland","Orchard Avenue, Ayr, South Ayrshire, Scotland, United Kingdom, KA7",-4.6168886,55.453013,-4.619068,-4.6147501,55.4517523,55.45450899999999,197,458
+"Limekilnburn, Lanarkshire, Scotland, Northern Europe","Limekilnburn, Hamilton, South Lanarkshire, Scotland, United Kingdom, ML3 7XW",-4.0602479,55.7327032,-4.061596880291503,-4.058898919708498,55.7313542197085,55.7340521802915,172,459
+"Auchinbeg, near Lesmahagow, Lanarkshire, Scotland, Northern Europe","Lesmahagow, Lanark, South Lanarkshire, Scotland, United Kingdom, ML11",-3.8866787,55.63719159999999,-3.9064287,-3.869831899999999,55.6200913,55.6513321,1898,460
+"Auchinbeg, near Lesmahagow, Lanarkshire, Scotland, Northern Europe","Auchenbeg Crescent, Ayr, South Ayrshire, Scotland, United Kingdom, KA7 4TF",-4.6178299,55.4395356,-4.6196553,-4.6166249,55.4377040697085,55.44040203029149,123,460
+"Garngard, near station, Lanarkshire, Scotland, Northern Europe","Royston, Glasgow, Glasgow City, Scotland, United Kingdom, G21 2NF",-4.235128599999999,55.8687873,-4.236477580291502,-4.233779619708497,55.8674383197085,55.8701362802915,172,461
+"Garngard, near station, Lanarkshire, Scotland, Northern Europe","South Lanarkshire, Scotland, United Kingdom",-3.7035077,55.5243038,-4.282572099999999,-3.3964449,55.2907676,55.84426029999999,40522,461
+"Beith, Ayrshire, Scotland, Northern Europe","Beith, Beith, North Ayrshire Council, Scotland, United Kingdom",-4.631787,55.753797,-4.6677889,-4.616359,55.7316762,55.7675602,1813,462
+"Woodhall, Edinburgh, Midlothian, Scotland, Northern Europe","Woodhall House, 184, Woodhall Road, Colinton, Juniper Green, Edinburgh, Edinburgh, Scotland, United Kingdom, EH13 0PJ",-3.2854039,55.9015388,-3.286754830291502,-3.284056869708498,55.9001671197085,55.9028650802915,170,463
+"Woodhall, Edinburgh, Midlothian, Scotland, Northern Europe","Midlothian, Scotland, United Kingdom",-3.1338428,55.8292247,-3.3690393,-2.8462393,55.7103492,55.9320236,19826,463
+"Woodhall, Edinburgh, Midlothian, Scotland, Northern Europe","Edinburgh, Scotland, United Kingdom",-3.2023923,55.91658779999999,-3.3897266,-3.0776611,55.8628341,55.9918179,11440,463
+"Thornton A, East Kilbride, Lanarkshire, Scotland, Northern Europe","Thornton Road, East Kilbride, Glasgow, South Lanarkshire, Scotland, United Kingdom, G74",-4.2430265,55.7642467,-4.243490299999999,-4.2395321,55.75846669999998,55.77052410000002,644,464
+"Sand Quarry, Garngad Road, Glasgow, Lanarkshire, Scotland, Northern Europe","Royston, Glasgow, Glasgow City, Scotland, United Kingdom, G21 2NF",-4.235128599999999,55.8687873,-4.236477580291502,-4.233779619708497,55.8674383197085,55.8701362802915,172,465
+"Sand Quarry, Garngad Road, Glasgow, Lanarkshire, Scotland, Northern Europe","Quarry Walk, Glasgow, Glasgow City, Scotland, United Kingdom, G46",-4.3081743,55.811016,-4.309644130291502,-4.306946169708497,55.8096055697085,55.8123035302915,163,465
+"Castlecary, Stirlingshire, Scotland, Northern Europe","Stirling, Stirling, Stirling, Scotland, United Kingdom",-3.9369029,56.1165227,-3.9750002,-3.9043966,56.0918724,56.1455382,3627,466
+"Carlops, Peeblesshire, Scotland, Northern Europe","Carlops, Penicuik, Scottish Borders, Scotland, United Kingdom, EH26 9NF",-3.3394339,55.788779,-3.340782880291502,-3.338084919708498,55.78743001970849,55.79012798029149,172,467
+"Elk County, Kansas, USA","Elk County, Kansas, United States",-96.15269850000001,37.3936365,-96.52632690000002,-95.9610019,37.299232,37.607261,29146,468
+"Howard, Kansas, USA","Howard, Howard Township, Elk County, Kansas, United States, 67349",-96.26360659999999,37.4703117,-96.2716241,-96.25217789999999,37.462599,37.475617,1112,469
+"Braddyville, Iowa, USA","Braddyville, Page County, Iowa, United States, 51631",-95.02997640000001,40.5788801,-95.04022909999999,-95.0213229,40.57618100000001,40.584962,918,470
+"Skrinkle Haven, Pembroke Peninsula, Pembrokeshire, Wales, Northern Europe","Essex Road, Pembroke Dock, Pembrokeshire, Wales, United Kingdom, SA72 6ED",-4.935976699999999,51.6996261,-4.937365880291503,-4.934667919708498,51.6983086197085,51.70100658029149,175,471
+"Boghead, near Lesmahagow, Lanarkshire, Scotland, Northern Europe","Boghead, Lanark, South Lanarkshire, Scotland, United Kingdom, ML11",-3.9432339,55.656,-3.9478095,-3.9376064,55.6535224,55.6602104,399,472
+"Louisiana, Missouri, USA","Louisiana, Buffalo Township, Pike County, Missouri, United States, 63353",-91.05152559999999,39.4489351,-91.0951189,-91.027603,39.4134879,39.459605,2375,473
+"behind Castell Dinas Bran, Llangollen, Denbighshire, Wales, Northern Europe","United Kingdom, Llangollen, Denbighshire, Wales, LL20 8D",-3.1592513,52.9793297,-3.1592513,-3.1549156,52.9771038197085,52.9798017802915,248,474
+"Vise, Belgium, Western Europe","Vise, Liège, Wallonia, Belgium",5.6956089,50.7378047,5.6480263,5.725247899999999,50.6711622,50.8121222,8140,475
+"Stuart, Iowa, USA","Stuart, Adair County, Iowa, United States, 50250",-94.3183715,41.5034243,-94.337747,-94.2942269,41.482128,41.51459,2367,476
+"Marion County, Kentucky, USA","Marion County, Kentucky, United States",-85.2308414,37.585137,-85.5212899,-85.0301719,37.412038,37.7306579,23967,477
+"Overton, Beith, Ayrshire, Scotland, Northern Europe","Beith, Beith, North Ayrshire Council, Scotland, United Kingdom",-4.631787,55.753797,-4.6677889,-4.616359,55.7316762,55.7675602,1813,478
+"Overton, Beith, Ayrshire, Scotland, Northern Europe","Overton, Aberdeen, Aberdeen City, Scotland, United Kingdom, AB21 0EQ",-2.2156133,57.217775,-2.216962280291502,-2.214264319708498,57.2164260197085,57.21912398029149,171,478
+"Overton, Beith, Ayrshire, Scotland, Northern Europe","Overton, Inverurie, Aberdeenshire, Scotland, United Kingdom, AB51 5JY",-2.4727546,57.2531561,-2.474103580291502,-2.471405619708498,57.2518071197085,57.25450508029149,171,478
+"Spickardsville, Missouri, USA","Missouri, United States",-91.8318334,37.9642529,-95.774704,-89.098968,35.9956849,40.61364,376924,479
+"Webb City, Missouri, USA","Webb City, Joplin Township, Jasper County, Missouri, United States",-94.4630035,37.1464475,-94.493557,-94.42954789999999,37.101758,37.174935,4339,480
+"County Clare, Republic of Ireland, Northern Europe","Clare, County Clare, Ireland",-8.9811351,52.904532,-9.9386938,-8.2824241,52.554516,53.1687693,55330,481
+"Crawfordsville, Indiana, USA","Crawfordsville, Union Township, Montgomery County, Indiana, United States, 47933",-86.87445160000001,40.0411536,-86.9428449,-86.8570369,40.003199,40.086193,5217,482
+"Millecent, County Kildare, Republic of Ireland, Northern Europe","Millicent, Millicent South, County Kildare, Ireland",-6.68821,53.26809,-6.689558980291502,-6.6868610197084966,53.2667410197085,53.2694389802915,175,483
+"Van Buren County, Iowa, USA","Van Buren County, Iowa, United States",-91.9099238,40.7001158,-92.17978199999999,-91.716432,40.5985299,40.901362,25460,484
+"tributary of Poneil Water, Coalburn, Lanarkshire, England","England, United Kingdom",-1.1743197,52.3555177,-6.4185458,1.7629159,49.8647411,55.81165979999999,429950,485
+"tributary of Poneil Water, Coalburn, Lanarkshire, England","Coalburn, Lanark, South Lanarkshire, Scotland, United Kingdom, ML11",-3.890822,55.59242,-3.8939324,-3.8597817,55.58351580000001,55.6009335,1011,485
+"County Cork, Republic of Ireland, Northern Europe","Cork, County Cork, Ireland",-8.7285446,51.994206,-10.2378995,-7.841127600000001,51.41989659999999,52.3879603,74849,486
+"Gameshill, near Stewarton, Ayrshire, Scotland","Stewarton, Kilmarnock, East Ayrshire Council, Scotland, United Kingdom, KA3",-4.513587,55.67995699999999,-4.5350282,-4.495348,55.6728235,55.69041,1565,487
+"Treak Cliff, Castleton, Derbyshire, England, Northern Europe","Buxton Road, Castleton, Hope Valley, Derbyshire, England, United Kingdom, S33 8WP",-1.7971662,53.345105,-1.797744680291502,-1.795046719708498,53.3433093697085,53.3460073302915,173,488
+"Warsaw, Illinois, USA","Warsaw, Warsaw Township, Hancock County, Illinois, United States, 62379",-91.43459779999999,40.35921099999999,-91.466999,-91.40218589999999,40.3318139,40.37594199999999,3321,489
+"Muirkirk, Ayrshire, Scotland, Northern Europe","Muirkirk, Cumnock, East Ayrshire Council, Scotland, United Kingdom, KA18",-4.066396999999999,55.523464,-4.0902446,-4.0357087,55.5103144,55.5319522,2101,490
+"Dryden, Midlothian, Scotland, Northern Europe","Dryden Road, Loanhead, Midlothian, Scotland, United Kingdom, EH20",-3.1669097,55.8735397,-3.1716786,-3.1621697,55.87211379999999,55.8750069,338,491
+"Boonville, Missouri, USA","Boonville, Boonville Township, Cooper County, Missouri, United States, 65233",-92.74324179999999,38.9736392,-92.79315989999999,-92.679835,38.9289031,38.9841941,5618,492
+"Boone County, Missouri, USA","Boone County, Missouri, United States",-92.38136209999999,39.0468547,-92.570156,-92.10437399999999,38.6431671,39.2487951,32802,493
+"Whitewell, Lancashire, England, Northern Europe","Whitewell, Clitheroe, Lancashire, England, United Kingdom, BB7 3BN",-2.520706,53.91780499999999,-2.522054980291502,-2.519357019708498,53.9164560197085,53.9191539802915,174,494
+"Peoria County, Illinois, USA","Peoria County, Illinois, United States",-89.77553379999999,40.7156396,-89.989018,-89.44769300000002,40.5132249,40.975055,28838,495
+"Cedar Creek, Nebraska, USA","Cedar Creek, Eight Mile Grove Precinct, Cass County, Nebraska, United States, 68037",-96.10234679999999,41.0467204,-96.114791,-96.09007609999999,41.03576899999999,41.0519739,1185,496
+"Hullerhurst, Stevenson, Ayrshire, Scotland, Northern Europe","Stevenston, Stevenston, North Ayrshire Council, Scotland, United Kingdom, KA20",-4.760409999999999,55.641817,-4.773983299999999,-4.7329934,55.6276826,55.6579545,1791,497
+"Hardin County, Kentucky, USA","Hardin County, Kentucky, United States",-86.0121573,37.6565708,-86.277558,-85.67607199999999,37.44030790000001,38.0050728,33558,498
+"Davis County, Missouri, USA","Daviess County, Missouri, United States",-93.9878427,39.9949074,-94.2187999,-93.7588681,39.7846741,40.1366261,25084,499
+"Craigenglen, Stirlingshire, Scotland, Northern Europe","Stirling, Stirling, Stirling, Scotland, United Kingdom",-3.9369029,56.1165227,-3.9750002,-3.9043966,56.0918724,56.1455382,3627,500
+"Bowertrapping, near Dalry, Ayrshire, Scotland","Dalry, Dalry, North Ayrshire Council, Scotland, United Kingdom, KA24",-4.723153,55.711116,-4.7411539,-4.693942499999999,55.69640399999999,55.7167934,1942,501
+"Castleton, Derbyshire, England, Northern Europe","Castleton, Hope Valley, Derbyshire, England, United Kingdom, S33",-1.7765105,53.34368139999999,-1.7819689,-1.7692815,53.339535,53.3460937,551,502
+"Kansas City, Missouri, USA","Kansas City, Jackson County, Missouri, United States",-94.5785667,39.0997265,-94.76556699999999,-94.385448,38.824259,39.3562099,32998,503
+"Poolvash, Isle of Man, England, Northern Europe","Isle of Man",-4.548056,54.236107,-4.8736609,-4.270618199999999,54.0186764,54.4369363,28730,504
+"Poolvash, Isle of Man, England, Northern Europe","England, United Kingdom",-1.1743197,52.3555177,-6.4185458,1.7629159,49.8647411,55.81165979999999,429950,504
+"England, Northern Europe","England, United Kingdom",-1.1743197,52.3555177,-6.4185458,1.7629159,49.8647411,55.81165979999999,429950,505
+"Roughwood, Beith, Ayrshire, Scotland, Northern Europe","Beith, Beith, North Ayrshire Council, Scotland, United Kingdom",-4.631787,55.753797,-4.6677889,-4.616359,55.7316762,55.7675602,1813,506
+"Arisaig, Nova Scotia, Canada","Arisaig, Antigonish County, Nova Scotia, Canada, B2G 2L1",-62.166667,45.75,-62.16801598029151,-62.16531801970849,45.7486510197085,45.7513489802915,183,507
+"Burlington, Iowa, USA","Burlington, Des Moines County, Iowa, United States",-91.1128901,40.8076529,-91.180263,-91.078285,40.76069,40.84760500000001,5311,508
+"Burlington, Illinois, USA","Burlington, Burlington Township, Kane County, Illinois, United States",-88.54814119999999,42.0528038,-88.58731600000002,-88.513773,42.011092,42.066781,3241,509
+"Madison County, Kentucky, USA","Madison County, Kentucky, United States",-84.3121264,37.7143001,-84.525643,-84.073764,37.5152789,37.91754600000001,29040,510
+"Thornliebank, Renfrewshire, Scotland, Northern Europe","Thornliebank, Glasgow, East Renfrewshire, Scotland, United Kingdom, G46",-4.317434,55.804662,-4.327274099999999,-4.3056678,55.7974387,55.8115247,1014,511
+"Poniel Water, Coalburn, Lanarkshire, Scotland","Poniel Water, Lanark, South Lanarkshire, Scotland, United Kingdom, ML11",-3.868985379701078,55.58859909459331,-3.9364105,-3.8015602,55.5698381,55.60736009999999,4736,512
+"Poniel Water, Coalburn, Lanarkshire, Scotland","Coalburn, Lanark, South Lanarkshire, Scotland, United Kingdom, ML11",-3.890822,55.59242,-3.8939324,-3.8597817,55.58351580000001,55.6009335,1011,512
+"Clarksville, Albany, New York, USA, North America","Clarksville, New Scotland, Albany County, New York, United States",-73.9638411,42.5758581,-73.9848706,-73.9402187,42.57020869999999,42.5842842,1837,513
+"Congleton Edge, Nobold Quarry, Shropshire, England, Northern Europe","Congleton, Congleton, Cheshire East, England, United Kingdom, CW12",-2.218923,53.162856,-2.2508014,-2.1680072,53.1446084,53.1802049,2945,514
+"Congleton Edge, Nobold Quarry, Shropshire, England, Northern Europe","Nobold, Shrewsbury, Shropshire, England, United Kingdom, SY5",-2.7799958,52.6871232,-2.7812322,-2.7773374,52.6854692697085,52.6881672302915,202,514
+"Congleton Edge, Nobold Quarry, Shropshire, England, Northern Europe","Nobold, Baschurch, Shrewsbury, Shropshire, England, United Kingdom, SY4",-2.8557471,52.7900451,-2.8577917,-2.852846,52.788985,52.7917472,182,514
+"Torness Shore, Thornton Loch, East Lothian, Scotland, Northern Europe","Dunbar, East Lothian, Scotland, United Kingdom, EH42 1QU",-2.4066617,55.9691929,-2.407742080291502,-2.405044119708498,55.9678468697085,55.97054483029149,164,515
+"Sedgeley, Worcestershire, England, Northern Europe","Sedgley, Sedgley, Dudley, West Midlands, England, United Kingdom, DY3 1NU",-2.1217238,52.5428691,-2.123072780291502,-2.120374819708498,52.54152011970849,52.54421808029149,176,516
+"Sedgeley, Worcestershire, England, Northern Europe","Worcestershire, England, United Kingdom",-2.2668382,52.2545225,-2.6632102,-1.7574089,51.9665565,52.4553026,41278,516
+"Glucksbrun, Thuringia, Germany, Western Europe","Thuringia, Germany",10.845346,51.0109892,9.876984000000002,12.6539326,50.20434669999999,51.6489359,112917,517
+"Gera, Germany, Western Europe","Gera, Kreisfreie Stadt Gera, Thuringia, Germany, 07",12.0807203,50.8850706,11.9980384,12.1695209,50.79861760000001,50.9766184,11243,518
+"Marathon, Texas, USA","Marathon, Brewster County, Texas, United States, 79842",-103.2446205,30.2051688,-103.2652721,-103.220731,30.191934,30.23620289999999,2471,519
+"Hildelang, Bavarian Alps, Germany, Western Europe","Bad Hindelang, Oberallgäu, Swabia, Bavaria, Germany, 87541",10.3704552,47.5058367,10.3218417,10.4759983,47.3703237,47.5612206,10053,520
+"Wurttemberg, Germany, Western Europe","Baden-Württemberg, Germany",9.3501336,48.6616037,7.511811,10.495573,47.5323664,49.7913278,150816,521
+"Stinchcombe, Gloucester, England","Stinchcombe, Gloucestershire, England, United Kingdom",-2.3877817,51.6855739,-2.4243023,-2.3662221,51.6687772,51.7013551,2303,522
+"Stinchcombe, Gloucester, England","Stinchcombe, Dursley, Gloucestershire, England, United Kingdom, GL11 6BA",-2.38732,51.685591,-2.388668980291502,-2.385971019708498,51.68424201970849,51.68693998029149,177,522
+"Radstock, Somerset, England, Northern Europe","Radstock, Radstock, Bath and North East Somerset, England, United Kingdom",-2.446092,51.29201699999999,-2.4756875,-2.4173722,51.2737507,51.3055846,2508,523
+"Bitton, Bristol, England, Northern Europe","Bitton, Bristol, South Gloucestershire, England, United Kingdom, BS30",-2.459913,51.4248205,-2.4690597,-2.4544636,51.4205114,51.4289528,596,524
+"Bitton, Bristol, England, Northern Europe","Bitton, South Gloucestershire, England, United Kingdom",-2.4520935,51.43162969999999,-2.4928963,-2.402599,51.4159043,51.452406,3334,524
+"Cam, Gloucestershire, England, Europe","Cam, Gloucestershire, England, United Kingdom, GL11",-2.3648537,51.7071317,-2.406789,-2.3158681,51.6803654,51.7203764,3692,525
+"Charmailles, Haute-Saone, France, Western Europe","Haute-Saône, Bourgogne-Franche-Comté, France",6.1556282,47.7569806,5.366935499999999,6.8249356,47.252542,48.0241356,58203,526
+"Stroud, Gloucestershire, England, Northern Europe","Stroud, Stroud, Gloucestershire, England, United Kingdom",-2.217758,51.745734,-2.2637751,-2.1827343,51.7239782,51.76052,2925,527
+"Montmajou, Herault, France, Northern Europe","Montmajou, Cazouls-lès-Béziers, Hérault, Occitanie, France, 34370",3.071654,43.404508,3.070305019708498,3.073002980291502,43.4031590197085,43.4058569802915,185,528
+"Montmajou, Herault, France, Northern Europe","Montmajou, Cébazan, Hérault, Occitanie, France, 34360",2.959666,43.397969,2.958317019708498,2.961014980291502,43.39662001970849,43.39931798029149,185,528
+"Keynsham, Somerset, England, Northern Europe","Keynsham, Bristol, Bath and North East Somerset, England, United Kingdom",-2.502526,51.415059,-2.5348386,-2.4606532,51.3902435,51.4347791,3561,529
+"Lyme Regis, Dorset, England, Northern Europe","Lyme Regis, Dorset, England, United Kingdom",-2.936639,50.725156,-2.9555214,-2.9277364,50.7183204,50.73694279999999,1454,530
+"Longeville, Haute-Saone, France, Western Europe","Haute-Saône, Bourgogne-Franche-Comté, France",6.1556282,47.7569806,5.366935499999999,6.8249356,47.252542,48.0241356,58203,531
+"Longeville, Haute-Saone, France, Western Europe","Longeville, Doubs, Bourgogne-Franche-Comté, France",6.226511899999999,47.030055,6.206226,6.2555625,47.00886819999999,47.05722129999999,2815,531
+"Longeville, Haute-Saone, France, Western Europe","Longeville-sur-Mer, Vendee, Pays de la Loire, France, 85560",-1.4904023,46.4249178,-1.5435489,-1.4124214,46.37142310000001,46.447618,6503,531
+"Black Venn, Dorset, England, Northern Europe","Black Ven, Bridport, Dorset, England, United Kingdom, DT6 6BW",-2.9111359,50.7345501,-2.912484880291502,-2.909786919708498,50.7332011197085,50.7358990802915,178,532
+"Ilminster, Somerset, England, Northern Europe","Ilminster, Ilminster, Somerset, England, United Kingdom, TA19",-2.9101886,50.9266519,-2.9378078,-2.8934017,50.9180557,50.9369652,1646,579
+"Creissan, Herault, France, Western Europe","Creissan, Hérault, Occitanie, France, 34370",3.010079,43.374445,2.9775515,3.0267367,43.3576629,43.3942212,2579,534
+"Vesoul, Haute-Saone, France, Western Europe","Vesoul, Haute-Saône, Bourgogne-Franche-Comté, France, 70000",6.15428,47.61978800000001,6.130271,6.1742835,47.612784,47.651804,1966,535
+"Grandborough, Warwickshire, England, Northern Europe","Grandborough, Rugby, Warwickshire, England, United Kingdom, CV23",-1.281004,52.29872109999999,-1.2878224,-1.2759604,52.2941996,52.30159219999999,470,536
+"Bouldish, Welton, Somerset, England, Northern Europe","Welton, Midsomer Norton, Radstock, Bath and North East Somerset, England, United Kingdom, BA3",-2.475859,51.2969904,-2.476984680291502,-2.474286719708498,51.2955782197085,51.2982761802915,176,537
+"Simon-La-Vineuse, Vendee, France, Western Europe","Simon-la-Vineuse, Sainte-Hermine, Vendee, Pays de la Loire, France, 85210",-1.087236,46.56255,-1.088584980291502,-1.085887019708498,46.56120101970851,46.5638989802915,182,538
+"Angreville, Calvados, France, Western Europe","Calvados, Normandy, France",-0.4330578,49.1213315,-1.159764,0.4464865,48.7516927,49.42992419999999,67264,539
+"Angreville, Calvados, France, Western Europe","Douvrend, Seine-Maritime, Normandy, France, 76630",1.322108,49.867902,1.2781941000000001,1.3558133,49.8424759,49.8993539,4239,539
+"Calvados, France, Western Europe","Calvados, Normandy, France",-0.4330578,49.1213315,-1.159764,0.4464865,48.7516927,49.42992419999999,67264,540
+"Boudreville, Cote-d'Or, France, Western Europe","Boudreville, Côte-d'Or, Bourgogne-Franche-Comté, France, 21520",4.826411999999999,47.935123,4.810633999999999,4.8660942,47.9116256,47.9456494,2866,541
+"Dovecez, Doubs, France, Western Europe","Doubs, Bourgogne-Franche-Comté, France",6.3126004,47.1969824,5.6986785,7.062375100000001,46.5537985,47.5796934,70817,542
+"Dovecez, Doubs, France, Western Europe","Doubs, Doubs, Bourgogne-Franche-Comté, France, 25300",6.349000999999999,46.92760000000001,6.330686099999999,6.399576,46.9157777,46.94852119999999,1917,542
+"Tuisse, Pouilly, Saone-et-Loire, France, Western Europe","Pouilly, Solutré-Pouilly, Saône-et-Loire, Bourgogne-Franche-Comté, France, 71960",4.740502999999999,46.290768,4.739154019708497,4.741851980291502,46.2894190197085,46.2921169802915,182,543
+"Eype, Bridport, Dorset, England, Europe","Eype, Bridport, Dorset, England, United Kingdom, DT6",-2.782735,50.72143699999999,-2.7853658,-2.7752021,50.7163204,50.72389769999999,598,544
+"Stoke Knap, Dorset, England, Europe","Norway Lane, Stoke Abbott, Beaminster, Dorset, England, United Kingdom, DT8 3JZ",-2.7895675,50.8105572,-2.790863480291502,-2.788165519708498,50.8091373197085,50.8118352802915,173,545
+"Sapperton Tunnel, Gloucestershire, England","40, Sapperton, Cirencester, Gloucestershire, England, United Kingdom, GL7 6LQ",-2.082618,51.728648,-2.083454480291502,-2.080756519708498,51.7267353697085,51.7294333302915,155,546
+"Barrow Hill, Leicester, England, Northern Europe","Leicester, Leicester, Leicester, England, United Kingdom",-1.1397592,52.6368778,-1.2159877,-1.0462128,52.5806504,52.6915038,8113,547
+"Barrow Hill, Leicester, England, Northern Europe","Barrow Hill, Chesterfield, Derbyshire, England, United Kingdom, S43",-1.3729273,53.2745866,-1.3878235,-1.3685511,53.27229740000001,53.2798485,654,547
+"Vendee, France, Western Europe","Vendee, Pays de la Loire, France",-1.4482662,46.6613966,-2.4006683,-0.5381475,46.2666616,47.08501529999999,83855,548
+"Saint-Honorine, Calvados, France, Western Europe","Sainte-Honorine-du-Fay, Calvados, Normandy, France, 14210",-0.487876,49.071679,-0.5236102,-0.4512149,49.0603043,49.0825744,2902,549
+"Langenberg, Germany, Western Europe","Langenberg, Gütersloh, Detmold, North Rhine-Westphalia, Germany, 33449",8.3230516,51.7759584,8.251997099999999,8.3684197,51.7222289,51.8048957,4491,550
+"Sainte-Pezenne, Deux-Sevres, France, Western Europe","Sainte-Pezenne, Niort, Deux-Sèvres, Nouvelle-Aquitaine, France, 79000",-0.474515,46.349737,-0.475863980291502,-0.4731660197084979,46.34838801970849,46.35108598029149,182,551
+"Rockhill, Welton, Somerset, England, Northern Europe","Welton, Midsomer Norton, Radstock, Bath and North East Somerset, England, United Kingdom, BA3",-2.475859,51.2969904,-2.476984680291502,-2.474286719708498,51.2955782197085,51.2982761802915,176,552
+"Rockhill, Welton, Somerset, England, Northern Europe","Rock Hill, Taunton, Somerset, England, United Kingdom, TA3",-2.9637276,51.0015973,-2.9671297,-2.9589868,50.9997072,51.0044234,318,552
+"Le Simon, La Vineuse, Vendee, France, Western Europe","Simon-la-Vineuse, Sainte-Hermine, Vendee, Pays de la Loire, France, 85210",-1.087236,46.56255,-1.088584980291502,-1.085887019708498,46.56120101970851,46.5638989802915,182,553
+"North Road, Ilminster, Somerset, England, Northern Europe","North Street, Ilminster, Somerset, England, United Kingdom, TA19",-2.9105597,50.9274265,-2.912018980291502,-2.909321019708498,50.9260905697085,50.9287885302915,175,554
+"Langrune-sur-Mer, Calvados, France","Langrune-sur-Mer, Calvados, Normandy, France, 14830",-0.37271,49.32232699999999,-0.4020883,-0.3583442,49.2996381,49.3276695,1202,555
+"La Heve, Le Havre, Seine-Maritime, France, Western Europe","Promenade de la plage, Le Havre, Seine-Maritime, Normandie, France, 76600",0.09277719999999999,49.4955921,0.09187306970849797,0.09457103029150203,49.49432681970849,49.49702478029149,155,556
+"La Heve, Le Havre, Seine-Maritime, France, Western Europe","234, Rue Stendhal, Le Havre, Seine-Maritime, Normandie, France, 76620",0.08710129999999999,49.52003240000001,0.08589186970849796,0.08858983029150203,49.5188237697085,49.5215217302915,160,556
+"Amfreville, Calvados, France, Northern Europe","Amfreville, Calvados, Normandy, France, 14860",-0.234694,49.248568,-0.2694236,-0.2115074,49.2385324,49.2630397,2332,557
+"Pliensbach, Baden-Wurttemberg, Germany, Western Europe","Pliensbach, Zell unter Aichelberg, Göppingen, Stuttgart, Baden-Württemberg, Germany, 73119",9.585792399999999,48.6522094,9.5821604,9.5878175,48.6500768,48.6540408,252,558
+"Denouville, Calvados, France","Démouville, Calvados, Normandy, France, 14840",-0.26911,49.17822,-0.2777543,-0.2433549,49.1615585,49.1886415,1957,559
+"Arco, Tyrol, Austria, Europe","Tyrol, Austria",11.601487,47.2537414,10.0978273,12.9659975,46.6515599,47.7430379,116313,560
+"Luc-sur-Mer, Calvados, France","Luc-sur-Mer, Calvados, Normandy, France",-0.3569536,49.3166028,-0.372601,-0.3398404,49.2930426,49.3219784,1380,561
+"Bitton, near Bristol, Gloucestershire, England, Northern Europe","Gloucestershire, England, United Kingdom",-2.2257856,51.74677399999999,-2.6871585,-1.6152024,51.5775571,52.1125655,37062,562
+"Bitton, near Bristol, Gloucestershire, England, Northern Europe","Bitton, South Gloucestershire, England, United Kingdom",-2.4520935,51.43162969999999,-2.4928963,-2.402599,51.4159043,51.452406,3334,562
+"Bitton, near Bristol, Gloucestershire, England, Northern Europe","Bitton, Bristol, South Gloucestershire, England, United Kingdom, BS30",-2.459913,51.4248205,-2.4690597,-2.4544636,51.4205114,51.4289528,596,562
+"Ciply, Mons, Belgium, Western Europe","Ciply, Mons, Hainaut, Wallonia, Belgium",3.9462109,50.4219839,3.9291888,3.9588847,50.4032162,50.4233482,913,563
+"Saint-Scolasse-sur-Sarthe, Orne, France","Sainte-Scolasse-sur-Sarthe, Orne, Normandy, France, 61170",0.39428,48.57711,0.3486052,0.4237213,48.56424879999999,48.5988547,3250,564
+"Haute-Saone, France, Western Europe","Haute-Saône, Bourgogne-Franche-Comté, France",6.1556282,47.7569806,5.366935499999999,6.8249356,47.252542,48.0241356,58203,565
+"Latrecy, Haute-Marne, France, Western Europe","Haute-Marne, Grand Est, France",5.1071322,48.1260968,4.6266139,5.890943399999999,47.57655260000001,48.6893027,70899,566
+"Pizieux, Sarthe, France, Western Europe","Pizieux, Sarthe, Pays de la Loire, France, 72600",0.3310989,48.32177000000001,0.3179504,0.34688600000000003,48.3057284,48.3381651,2033,567
+"Khoroschowo, near Moscow, Russia, Eastern Europe","Moscow, Moscow, Moscow, Russia",37.6173,55.755826,36.8032249,37.9678221,55.142591,56.0214609,36821,568
+"near Stroud, Gloucestershire, England","Stroud, Stroud, Gloucestershire, England, United Kingdom",-2.217758,51.745734,-2.2637751,-2.1827343,51.7239782,51.76052,2925,569
+"near Stroud, Gloucestershire, England","Stroud, Stroud, Gloucestershire, England, United Kingdom",-2.2076814,51.7523923,-2.2425543,-2.1813727,51.73154,51.7602087,2014,569
+"near Stroud, Gloucestershire, England","Stroud District, Gloucestershire, England, United Kingdom",-2.3705881,51.7017403,-2.5408122,-2.068763,51.5898334,51.8504558,17142,569
+"Whitby, Yorkshire, England, Northern Europe","Whitby, North Yorkshire, England, United Kingdom",-0.613347,54.486335,-0.6493099,-0.5892991,54.4658905,54.4952604,1848,570
+"Neuffen, Wurttemberg, Germany, Western Europe","Neuffen, Esslingen, Stuttgart, Baden-Württemberg, Germany, 72",9.375619499999999,48.5561406,9.313986400000001,9.408652,48.5307612,48.5775629,3409,571
+"Uhrwiller, Bas-Rhin, Alsace, France, Western Europe","Uhrwiller, Bas-Rhin, Grand Est, France, 67350",7.578480999999999,48.878889,7.544142799999999,7.605838200000001,48.8609693,48.9067539,3212,572
+"Evrecy, near Caen, Calvados, France, Western Europe","Évrecy, Calvados, Normandy, France, 14210",-0.502835,49.09901,-0.5297157,-0.4798367,49.0793255,49.1109466,2141,573
+"Gretton, near Winchcombe, Gloucestershire, England","Gretton Road, Winchcombe, Cheltenham, Gloucestershire, England, United Kingdom, GL54",-1.9696354,51.9625262,-1.9747446,-1.9659738,51.9548481,51.9693149,796,574
+"Isle of Pabay, near Isle of Skye, Invernessshire, Scotland, Northern Europe","Pabay, Scotland, United Kingdom, IV49 9AB",-5.8577208,57.2741379,-5.8710084,-5.847802,57.2686645,57.2828265,1007,575
+"Robin Hood's Bay, Yorkshire, England","Robin Hood's Bay, Whitby, North Yorkshire, England, United Kingdom, YO22",-0.5350049,54.4343549,-0.5410294,-0.5316731,54.4298777,54.4374315,405,576
+"Nancy, Meurthe-et-Moselle, France","Nancy, Meurthe-et-Moselle, Grand Est, France",6.184417,48.692054,6.134237199999999,6.2126272,48.66684189999999,48.709273,2825,577
+"Bayeux, Calvados, France, Western Europe","Bayeux, Calvados, Normandy, France, 14400",-0.70314,49.27643699999999,-0.7275451,-0.6757194,49.2608378,49.29349999999999,2483,578
+"Ilminster, Somerset, England, Northern Europe","Ilminster, Ilminster, Somerset, England, United Kingdom, TA19",-2.9101886,50.9266519,-2.9378078,-2.8934017,50.9180557,50.9369652,1646,579
+"Auxerre, Yonne, France, Western Europe","Auxerre, Yonne, Bourgogne-Franche-Comté, France",3.573781,47.798202,3.5260991,3.6380302,47.7353311,47.8524521,7715,580
+"Aumale, Seine-Maritime, France","Aumale, Seine-Maritime, Normandy, France, 76390",1.752119,49.76861,1.7242714,1.7867203,49.75268879999999,49.7922941,2676,581
+"Combe Petit, Isere, France, Western Europe","Isère, Auvergne-Rhône-Alpes, France",5.9293476,44.9957745,4.7420403,6.3593031,44.69586959999999,45.88339269999999,99606,582
+"Combe Petit, Isere, France, Western Europe","La Combe Petite, Saint-Félix-Lauragais, Haute-Garonne, Occitanie, France, 31540",1.867229,43.484746,1.865880019708498,1.868577980291502,43.4833970197085,43.4860949802915,185,582
+"Saint-Jean-de-Couz, Savoie, France, Western Europe","Saint-Jean-de-Couz, Savoie, Auvergne-Rhône-Alpes, France",5.820552999999999,45.468642,5.7904379,5.840338,45.4459296,45.485376,2419,583
+"Cyply, near Mons, Belgium","Mons, Hainaut, Wallonia, Belgium",3.9612155,50.4538181,3.854492999999999,4.0851724,50.3777076,50.5138182,11043,584
+"Roquefort, Ariege, France, Western Europe","Ariège, Occitanie, France",1.443469,42.9326292,0.8259955,2.1758616,42.5714741,43.3162055,64537,585
+"Roquefort, Ariege, France, Western Europe","Roquefort, Landes, Nouvelle-Aquitaine, France, 40120",-0.322667,44.034137,-0.3723986,-0.2850341,44.0201121,44.0555574,3842,585
+"Roquefort, Ariege, France, Western Europe","Roquefort, Lot-et-Garonne, Nouvelle-Aquitaine, France, 47310",0.5618299999999999,44.17398499999999,0.5357166999999999,0.5873828999999999,44.1540714,44.19381790000001,3005,585
+"Haldem, Westphalia, Germany, Western Europe","Haldem, Stemwede, Minden-Lübbecke, Detmold, North Rhine-Westphalia, Germany, 32351",8.3873125,52.4382525,8.3737421,8.3997928,52.4312924,52.4420388,948,586
+"Mariager Fjord, Denmark, Europe","Mariager Fjord, Denmark",9.9919307,56.6723553,9.799693099999999,10.3381277,56.6367097,56.720623,12441,587
+"Le Mans, Sarthe, France, Europe","Le Mans, Sarthe, Pays de la Loire, France",0.2015378,48.00578669999999,0.1362942,0.2551081,47.9279412,48.0358679,5211,588
+"Villedieu-le-Chateau, Loir-et-Cher, Touraine, France, Western Europe","Villedieu-le-Château, Loir-et-Cher, Centre-Val de Loire, France, 41800",0.648014,47.720279,0.5804931999999999,0.6942634,47.6840363,47.7419373,4223,589
+"Villedieu-le-Chateau, Loir-et-Cher, Touraine, France, Western Europe","Touraine, France",0.6921741,47.3020954,-2.026e-4,1.1401384,46.7609253,47.6650867,52617,589
+"Macon, Saone-et-Loire, France, Western Europe","Mâcon, Saône-et-Loire, Bourgogne-Franche-Comté, France, 71000",4.8293535,46.3079587,4.7579899,4.8586816,46.2734283,46.3796478,6706,671
+"Escragnolles, Var, France, Europe","Escragnolles, Alpes-Maritimes, Provence-Alpes-Côte d'Azur, France, 06460",6.783065,43.73090699999999,6.711209999999999,6.8404571,43.6936992,43.7534046,5256,591
+"Escragnolles, Var, France, Europe","Var, Provence-Alpes-Côte d'Azur, France",6.2375947,43.46764599999999,5.6559051,6.933569299999999,42.9820047,43.80888170000001,67759,591
+"Escragnolles, Var, France, Europe","Vars, Hautes-Alpes, Provence-Alpes-Côte d'Azur, France, 05560",6.6799921,44.5726618,6.6422807,6.799901999999999,44.5388335,44.6426585,4807,591
+"Berklingen, Brunswick, Germany, Europe","Berklingen, Vahlberg, Wolfenbüttel, Niedersachsen, Germany, 38170",10.734585300000001,52.12214299999999,10.7305885,10.7395003,52.118731,52.1248559,452,592
+"Devecey, Doubs, France","Devecey, Doubs, Bourgogne-Franche-Comté, France, 25870",6.014967,47.326056,5.9962067,6.0382726,47.311605,47.3345536,1999,593
+"Allt-na-Cuile, Sutherland, Scotland, Northern Europe","Allt na Cuile, Highland Council, Scotland, United Kingdom",-3.806321218460539,58.06528211924368,-3.8166125,-3.79603,58.0594916,58.0710726,886,594
+"Allt-na-Cuile, Sutherland, Scotland, Northern Europe","Allt Na Cuile, Lairg, Highland Council, Scotland, United Kingdom, IV27 4SL",-4.961963371879798,58.50200210140296,-4.971490999999999,-4.9524357,58.4999106,58.5040936,602,594
+"Launoy, Ardennes, France, Europe","Launois-sur-Vence, Ardennes, Grand Est, France, 08430",4.5387579,49.653856,4.4971711,4.5548248,49.6382482,49.69451,3469,595
+"Kirklington Quarry, north of Oxford, Oxfordshire, England, Northern Europe","Kirtlington Quarry, Mill Lane, Kidlington, Oxfordshire, England, United Kingdom, OX5 3HW",-1.2835386,51.87546949999999,-1.284679530291502,-1.281981569708498,51.87372681970851,51.8764247802915,151,596
+"Marolles, Yonne, France, Europe","Yonne, Bourgogne-Franche-Comté, France",3.6079823,47.8652728,2.8484389,4.3403008,47.3103535,48.4000532,80666,597
+"Ringstead, Dorset, England, Northern Europe","Ringstead, Dorchester, Dorset, England, United Kingdom, DT2 8NF",-2.3545569,50.6387969,-2.355905880291502,-2.353207919708498,50.6374479197085,50.64014588029149,178,598
+"Mamers, Sarthe, France","Mamers, Sarthe, Pays de la Loire, France, 72600",0.3748705,48.3505811,0.3534082,0.3880891,48.34144939999999,48.3692883,1887,599
+"Culgower, Sutherland, Scotland, Northern Europe","Culgower, Helmsdale, Highland Council, Scotland, United Kingdom, KW8 6HP",-3.739048,58.083879,-3.740396980291503,-3.737699019708498,58.08253001970849,58.0852279802915,170,600
+"Weymouth, Dorset, England, Northern Europe","Weymouth, Dorset, England, United Kingdom",-2.4546253,50.6099306,-2.5074354,-2.4082137,50.5829489,50.67049919999999,4795,601
+"Osmington Mills, Dorset, England, Northern Europe","Osmington Mills, Weymouth, Dorset, England, United Kingdom",-2.375283,50.6345659,-2.3775048,-2.3717072,50.6341427,50.6426196,164,602
+"Templars Firs, Wootton Bassett, Wiltshire, England, Northern Europe","Templars Firs, Royal Wootton Bassett, Swindon, Wiltshire, England, United Kingdom, SN4",-1.898979,51.5329401,-1.900201330291502,-1.897503369708498,51.5318482697085,51.5345462302915,148,603
+"Ringstead Bay, Dorset, England, Northern Europe","Ringstead Bay, United Kingdom",-2.3413011,50.62809009999999,-2.342650080291502,-2.339952119708498,50.6267411197085,50.6294390802915,178,604
+"Ringstead Bay, Dorset, England, Northern Europe","Dorset, England, United Kingdom",-2.3382346,50.7390661,-2.9615945,-1.7906218,50.51310960000001,51.0810006,50768,604
+"Cognin-les-Gorges, Isere, France, Western Europe","Cognin-les-Gorges, Isère, Auvergne-Rhône-Alpes, France, 38470",5.41221,45.171487,5.384521599999999,5.4488333,45.1445047,45.1985102,3706,605
+"Borstal, Kent, England, Northern Europe","Borstal, Rochester, Medway, England, United Kingdom, ME1 3LF",0.4823199999999999,51.372704,0.4809710197084979,0.483668980291502,51.3713550197085,51.37405298029149,177,606
+"Forth Worth, Texas, USA, Northern America","Fort Worth, Tarrant County, Texas, United States",-97.3307658,32.7554883,-97.6000779,-97.03384009999999,32.550589,33.0491639,33981,607
+"Charmouth, Dorset, England, Northern Europe","Charmouth, Bridport, Dorset, England, United Kingdom, DT6",-2.903384,50.738506,-2.91481,-2.8871098,50.73342659999999,50.74378890000001,985,608
+"Folkestone, Kent, England, Northern Europe","Folkestone, Kent, England, United Kingdom",1.169456,51.081397,1.117001,1.2212356,51.0716403,51.1051872,3833,609
+"Saltholm, Denmark, Northern Europe","Saltholm, Kastrup, Denmark, 2770",12.7594539,55.634077,12.729998,12.7897501,55.604862,55.6728561,3745,610
+"Borstal Manor, Kent, England, Northern Europe","Manor Lane, Kent, England, United Kingdom",0.2874685,51.3727106,0.283902,0.2977144,51.3649919,51.3797761,894,611
+"Somerset, England, Northern Europe","Somerset, England, United Kingdom",-2.7546704,51.0634565,-3.839803,-2.2444016,50.8208634,51.3287966,46299,612
+"South Petherton, Somerset, England, Northern Europe","South Petherton, South Petherton, Somerset, England, United Kingdom, TA13",-2.810525,50.948076,-2.8202011,-2.7974994,50.9409343,50.9547569,1046,613
+"near Cheltenham, Gloucestershire, England, Northern Europe","Cheltenham, Cheltenham, Gloucestershire, England, United Kingdom",-2.0782533,51.8993855,-2.141489,-2.0234584,51.8582803,51.9214401,4499,614
+"near Cheltenham, Gloucestershire, England, Northern Europe","Cheltenham, Cheltenham, Gloucestershire, England, United Kingdom",-2.0756689,51.8868631,-2.1430197,-2.0102235,51.8582669,51.9388731,5625,614
+"Hunstanton, Norfolk, England, Northern Europe","Hunstanton, Norfolk, England, United Kingdom, PE36",0.491032,52.9389139,0.4740584,0.5331539,52.9228724,52.9682335,2119,615
+"Dundry, Somerset, England, Northern Europe","Dundry, Bristol, North Somerset, England, United Kingdom, BS41",-2.6377361,51.3995681,-2.652673,-2.6339698,51.393256,51.40281580000001,446,616
+"Montreuil and Bayeux, France, Western Europe","Bayeux, Calvados, Normandy, France, 14400",-0.70314,49.27643699999999,-0.7275451,-0.6757194,49.2608378,49.29349999999999,2483,617
+"Montreuil and Bayeux, France, Western Europe","Montreuil, Seine-Saint-Denis, Île-de-France, France, 93100",2.4465697,48.861845,2.4152865,2.4828241,48.8487451,48.8787512,2719,617
+"Nattheim, Germany, Western Europe","Nattheim, Heidenheim, Stuttgart, Baden-Württemberg, Germany, 89564",10.2419418,48.6994064,10.2012024,10.3362334,48.6796872,48.75559819999999,3716,618
+"Gretton near Winchcombe, Gloucestershire, England, Northern Europe","Gretton Road, Winchcombe, Cheltenham, Gloucestershire, England, United Kingdom, GL54",-1.9696354,51.9625262,-1.9747446,-1.9659738,51.9548481,51.9693149,796,619
+"Vils, Tyrol, Austria, Western Europe","Vils, Reutte District, Tyrol, Austria, 6682",10.6302645,47.5494412,10.6289155197085,10.6316134802915,47.5480922197085,47.5507901802915,181,620
+"Montreuil, Bellay, Maine-et-Loire, France, Western Europe","Montreuil-Bellay, Maine-et-Loire, Pays de la Loire, France, 49260",-0.1542721,47.1309569,-0.1876718,-0.061529,47.0916625,47.167325,5051,621
+"Westphalia, Germany, Western Europe","North Rhine-Westphalia, Germany",7.661593799999999,51.43323669999999,5.8663425,9.461634900000002,50.322701,52.53146959999999,173849,622
+"Reutlingen, Wurttemberg, Germany, Western Europe","Reutlingen, Reutlingen, Tübingen, Baden-Württemberg, Germany, 72",9.202803099999999,48.49437,9.1148739,9.2555938,48.4126753,48.5786104,10146,623
+"Thouars, Deux-Sevres, France, Western Europe","Thouars, Deux-Sèvres, Nouvelle-Aquitaine, France, 79100",-0.216803,46.976154,-0.3461753,-0.1441286,46.9246416,47.0273498,7934,624
+"Treat Cliff, Castleton, Derbyshire, England, Northern Europe","Castleton, Hope Valley, Derbyshire, England, United Kingdom, S33",-1.7765105,53.34368139999999,-1.7819689,-1.7692815,53.339535,53.3460937,551,625
+"Marseilles, Bouches-du-Rhone, France, Western Europe","Marseille, Bouches-du-Rhone, Provence-Alpes-Côte d'Azur, France",5.369074299999999,43.3025742,5.228731799999999,5.532543299999999,43.1696215,43.3910565,16502,626
+"Angles, Basses-Alpes, France, Western Europe","Angles, Alpes-de-Haute-Provence, Provence-Alpes-Côte d'Azur, France, 04170",6.557875000000001,43.943112,6.5278928999999994,6.578354999999999,43.9216927,43.9667003,3094,627
+"Blandas, Gard, France, Western Europe","Blandas, Gard, Occitanie, France, 30770",3.51278,43.912042,3.4545327,3.5602968,43.8851602,43.9568729,5552,628
+"Clynelish Quarry, Brora, Sutherland, Scotland, Northern Europe","Clynelish Road, Brora, Highland Council, Scotland, United Kingdom, KW9 6LR",-3.8679855,58.02384610000001,-3.869064130291503,-3.866366169708498,58.0226986697085,58.0253966302915,143,629
+"Sarthe, France, Western Europe","Sarthe, Pays de la Loire, France",0.1655803,47.9217014,-0.4480562,0.9166506,47.5684041,48.485027,60503,630
+"Gross Berklingen, Braunschweig, Germany, Western Europe","Berklingen, Vahlberg, Wolfenbüttel, Niedersachsen, Germany, 38170",10.734585300000001,52.12214299999999,10.7305885,10.7395003,52.118731,52.1248559,452,631
+"Gross Berklingen, Braunschweig, Germany, Western Europe","23, Schuhstraße, Innenstadt, Braunschweig, Kreisfreie Stadt Braunschweig, Niedersachsen, Germany, 38100",10.520206,52.2629309,10.5188225697085,10.5215205302915,52.2617588697085,52.2644568302915,161,631
+"Gross Berklingen, Braunschweig, Germany, Western Europe","Große Straße, Lehndorf-Watenbüttel, Braunschweig, Kreisfreie Stadt Braunschweig, Niedersachsen, Germany, 38116",10.4857447,52.2695195,10.4809035,10.4905173,52.2682281197085,52.2709260802915,360,631
+"Braunschweig, Germany, Western Europe","Braunschweig, Kreisfreie Stadt Braunschweig, Lower Saxony, Germany, 38",10.5245656,52.2677907,10.4124078,10.6433623,52.1868049,52.3575799,11830,632
+"probably Brora, Sutherland, Scotland, Northern Europe","Brora, Highland Council, Scotland, United Kingdom, KW9",-3.852548,58.01215699999999,-3.868250499999999,-3.8426546,58.00502909999999,58.02283569999999,1221,633
+"Isle of Skye, Invernessshire, Scotland, Northern Europe","Skye, Highland Council, Scotland, United Kingdom",-6.2155022,57.2736278,-6.7885198,-5.647537,57.0176604,57.70827939999999,44897,634
+"Vieil-Saint-Remi, Ardennes, France, Western Europe","Vieux, Marvaux-Vieux, Ardennes, Grand Est, France, 08400",4.6957,49.281348,4.694351019708497,4.697048980291502,49.2799990197085,49.2826969802915,179,635
+"Vieil-Saint-Remi, Ardennes, France, Western Europe","Murtin-et-Bogny, Ardennes, Grand Est, France, 08150",4.538054499999999,49.8168356,4.536805369708498,4.539503330291502,49.81546411970849,49.81816208029149,177,635
+"Vieil-Saint-Remi, Ardennes, France, Western Europe","16, Rue Saint-Rémi, Vaux-Villaine, Ardennes, Grand Est, France, 08150",4.474690000000001,49.769899,4.473423769708497,4.476121730291502,49.7686525197085,49.7713504802915,166,635
+"Niort, Deux-Sevres, France, Western Europe","Niort, Deux-Sèvres, Nouvelle-Aquitaine, France, 79000",-0.4673997,46.3230985,-0.5422235,-0.3804154,46.2817325,46.373012,7374,636
+"Backwater, Weymouth, Dorset, England, Northern Europe","Weymouth, Dorset, England, United Kingdom",-2.4546253,50.6099306,-2.5074354,-2.4082137,50.5829489,50.67049919999999,4795,637
+"Ranville, Calvados, France, Western Europe","Ranville, Calvados, Normandy, France",-0.257152,49.232102,-0.2957838,-0.2328051,49.2065619,49.2489509,2580,638
+"Peterhead, Aberdeenshire, Scotland, Northern Europe","Peterhead, Aberdeenshire, Scotland, United Kingdom",-1.784066,57.50812299999999,-1.8256087,-1.7666744,57.48487769999999,57.5258002,2228,639
+"Chey, Deux-Sevres, France, Western Europe","Chey, Deux-Sèvres, Nouvelle-Aquitaine, France, 79120",-0.0507407,46.3044374,-0.0852516,-0.0130962,46.26373479999999,46.3201456,3385,640
+"Weinbohla, Germany, Western Europe","Weinböhla, Meissen, Saxony, Germany, 01",13.5812326,51.1637004,13.5336495,13.6377488,51.1432066,51.1859935,4035,641
+"Scarborough, Yorkshire, England, Northern Europe","Scarborough, North Yorkshire, England, United Kingdom",-0.399752,54.283113,-0.4522934,-0.3732511,54.2462263,54.3048801,2975,642
+"Scarborough, Yorkshire, England, Northern Europe","Scarborough District, North Yorkshire, England, United Kingdom",-0.7894848,54.4754265,-1.0646827,-0.2123533,54.1324204,54.5620675,38598,642
+"Saint-Julien-sur-Calonne, Calvados, France, Western Europe","Saint-Julien-sur-Calonne, Calvados, Normandy, France, 14130",0.226871,49.290599,0.2011727,0.2579663,49.2727178,49.3019213,2589,643
+"Moscow, Russia, Eastern Europe","Moscow, Moscow, Moscow, Russia",37.6173,55.755826,36.8032249,37.9678221,55.142591,56.0214609,36821,644
+"Bath, Somerset, England, Northern Europe","Bath, Bath, Bath and North East Somerset, England, United Kingdom",-2.3596827,51.3781018,-2.4141532,-2.3149068,51.3484788,51.4117741,4873,645
+"Hanover, Germany, Western Europe","Hanover, Hanover Region, Lower Saxony, Germany, 30",9.732010400000002,52.3758916,9.6044352,9.9185077,52.304911,52.4544218,11747,646
+"Montreuil-Bellay, Maine-et-Loire, France, Western Europe","Montreuil-Bellay, Maine-et-Loire, Pays de la Loire, France, 49260",-0.1542721,47.1309569,-0.1876718,-0.061529,47.0916625,47.167325,5051,647
+"Langton Herring, Dorset, England, Northern Europe","Langton Herring, Weymouth, Dorset, England, United Kingdom, DT3",-2.5479269,50.6414739,-2.5556367,-2.5413704,50.6379268,50.6432846,506,648
+"Avon, Deux-Sevres, France, Western Europe","Avon, Deux-Sèvres, Nouvelle-Aquitaine, France, 79800",0.0097844,46.3720662,-0.0308733,0.0342987,46.3513572,46.3928361,2981,649
+"Bopfingen, Wurttemberg, Germany, Western Europe","Bopfingen, Ostalbkreis, Stuttgart, Baden-Württemberg, Germany, 73441",10.3542144,48.8572411,10.2601808,10.4294563,48.8116632,48.9215765,8564,650
+"Cognac, Charente, France, Western Europe","Cognac, Charente, Nouvelle-Aquitaine, France, 16100",-0.3290863,45.6902857,-0.3735668,-0.3017119,45.67470240000001,45.7173692,3689,651
+"Chatillon, Drome, France, Western Europe","Châtillon-en-Diois, Drôme, Auvergne-Rhône-Alpes, France, 26410",5.485029,44.6953419,5.4440004,5.6291155,44.6641361,44.7956718,4755,652
+"Upware, Cambridge, Cambridgeshire, England, Northern Europe","Upware, ELY, Cambridgeshire, England, United Kingdom, CB7",0.254691,52.30796789999999,0.2518048,0.2617235,52.3042051,52.311841,463,653
+"Ramade, Aude, France, Western Europe","Ramade, Armissan, Aude, Occitanie, France, 11110",3.112307,43.17595,3.110958019708498,3.113655980291502,43.1746010197085,43.1772989802915,186,654
+"Hythe Quarry, Kent, England, Northern Europe","Quarry Way, Hythe, Kent, England, United Kingdom, CT21",1.0454661,51.0586581,1.043712169708498,1.046410130291502,51.05735626970851,51.06005423029151,169,655
+"Hythe Quarry, Kent, England, Northern Europe","Quarry Road, Hythe, Kent, England, United Kingdom, CT21",1.0820093,51.0754094,1.080633269708498,1.083331230291502,51.07406341970849,51.07676138029149,177,655
+"Hythe Quarry, Kent, England, Northern Europe","Quarry Lane, Hythe, Kent, England, United Kingdom, CT21",1.0778865,51.0739628,1.076607619708498,1.079305580291502,51.0725584197085,51.0752563802915,175,655
+"Hythe Quarry, Kent, England, Northern Europe","Quarry Walk, Hythe, Kent, England, United Kingdom, CT21",1.1158497,51.0763893,1.114491669708498,1.117189630291502,51.07514096970849,51.07783893029149,168,655
+"Orgon, Bouches-du-Rhone, France, Western Europe","Orgon, Bouches-du-Rhone, Provence-Alpes-Côte d'Azur, France",5.0289233,43.7924099,4.968058999999999,5.0907531,43.7488998,43.8199883,5843,656
+"Faringdon, Berkshire, England, Northern Europe","Berkshire, Berkshire, England, United Kingdom",-1.1853677,51.4669939,-1.5880881,-0.4900443,51.3289786,51.57782539999999,31958,657
+"Faringdon, Berkshire, England, Northern Europe","Faringdon, Faringdon, Oxfordshire, England, United Kingdom, SN7",-1.584679,51.658477,-1.5993329,-1.5707449,51.6439904,51.6626862,1072,657
+"Warriz, Pusht-i-Kuh, Iran, Western Asia","Iran",53.688046,32.427908,44.0326949,63.33408069999999,24.8066999,39.782056,1190376,658
+"Perte du Rhone, France, Western Europe","Rue de la Perte du Rhône, Valserhône, Ain, Auvergne-Rhône-Alpes, France, 01200",5.831331,46.1074373,5.829978169708498,5.832676130291502,46.10613346970851,46.10883143029151,179,659
+"Woodeaten Quarry, Oxfordshire, England, Northern Europe","Woodeaton, Oxford, Oxfordshire, England, United Kingdom, OX3 9TH",-1.2278892,51.8060264,-1.229472230291502,-1.226774269708498,51.80443006970849,51.80712803029149,145,660
+"Moen, Denmark, Northern Europe","Møn, Vordingborg Municipality, Denmark",12.3745367,54.98310919999999,12.1042299,12.5526932,54.878507,55.0610381,14321,661
+"Burnwell, Cambridgeshire, England, Northern Europe","Burwell, Cambridgeshire, England, United Kingdom",0.3266911,52.28641400000001,0.2613888,0.3608647,52.24232809999999,52.3086976,3403,662
+"Burnwell, Cambridgeshire, England, Northern Europe","Burwell, Cambridge, Cambridgeshire, England, United Kingdom",0.327247,52.27491999999999,0.3174877,0.3405476,52.26240079999999,52.2943594,1544,662
+"Burnwell, Cambridgeshire, England, Northern Europe","Barnwell, Cambridge, Cambridgeshire, England, United Kingdom, CB5 8PF",0.162972,52.2124278,0.161623019708498,0.164320980291502,52.2110788197085,52.2137767802915,176,662
+"Port Gower, Sutherland, Scotland, Northern Europe","Portgower, Helmsdale, Highland Council, Scotland, United Kingdom, KW8 6HL",-3.689735999999999,58.098279,-3.691084980291502,-3.688387019708498,58.09693001970849,58.09962798029151,170,663
+"State Knop, Dorset, England, Northern Europe","Dorset, England, United Kingdom",-2.3382346,50.7390661,-2.9615945,-1.7906218,50.51310960000001,51.0810006,50768,664
+"Tuisse, Saone-et-Loire, France, Western Europe","Saône-et-Loire, Bourgogne-Franche-Comté, France",4.486670999999999,46.5827512,3.6225898,5.4652854,46.156065,47.1557624,81671,665
+"Maastricht, Netherlands, Western Europe","Maastricht, Maastricht, Limburg, Netherlands",5.6909725,50.8513682,5.638872399999999,5.7629404,50.8038126,50.9117809,6439,666
+"Malleval, Isere, France, Western Europe","Malleval-en-Vercors, Isère, Auvergne-Rhône-Alpes, France, 38470",5.437719,45.146687,5.4172756,5.4707706,45.1248894,45.1826176,2908,667
+"Welton, Somerset, England, Northern Europe","Welton, Midsomer Norton, Radstock, Bath and North East Somerset, England, United Kingdom, BA3",-2.475859,51.2969904,-2.476984680291502,-2.474286719708498,51.2955782197085,51.2982761802915,176,668
+"Radipole, Weymouth, Dorset, England, Northern Europe","Radipole, Weymouth, Dorset, England, United Kingdom, DT3 5JF",-2.466618,50.63176199999999,-2.467966980291502,-2.465269019708498,50.6304130197085,50.63311098029149,178,669
+"Midford, Somerset, England, Northern Europe","Midford, Bath, Bath and North East Somerset, England, United Kingdom, BA2",-2.3452842,51.34432169999999,-2.3557781,-2.3401698,51.341883,51.3483691,574,670
+"Macon, Saone-et-Loire, France, Western Europe","Mâcon, Saône-et-Loire, Bourgogne-Franche-Comté, France, 71000",4.8293535,46.3079587,4.7579899,4.8586816,46.2734283,46.3796478,6706,671
+"Snowdown, Chard, Somerset, England, Northern Europe","Snowdon Heights, Chard, Somerset, England, United Kingdom, TA20",-2.9742097,50.8729108,-2.975564530291502,-2.972866569708498,50.8715459697085,50.8742439302915,176,672
+"Ayton, Scarborough, Yorkshire, England, Northern Europe","Ayton Bridge, Scarborough, North Yorkshire, England, United Kingdom, YO13",-0.4856437,54.249128,-0.4868835802915021,-0.484185619708498,54.24781721970849,54.25051518029149,167,673
+"St Clement, Macon, Saone-et-Loire, France, Western Europe","70, Rue de Lyon, Mâcon, Saône-et-Loire, Bourgogne-Franche-Comté, France, 71000",4.8252041,46.2995801,4.823893319708498,4.826591280291503,46.2981956697085,46.3008936302915,181,674
+"Tuisse, Macon, Saone-et-Loire, France, Western Europe","Mâcon, Saône-et-Loire, Bourgogne-Franche-Comté, France, 71000",4.8293535,46.3079587,4.7579899,4.8586816,46.2734283,46.3796478,6706,675
+"Meriager Fjord, Denmark, Northern Europe","Mariager Fjord, Denmark",9.9919307,56.6723553,9.799693099999999,10.3381277,56.6367097,56.720623,12441,676
+"Digeon, Somme, France, Western Europe","Digeon, Morvillers-Saint-Saturnin, Somme, Hauts-de-France, France, 80590",1.789073,49.761724,1.787724019708498,1.790421980291502,49.7603750197085,49.7630729802915,179,677
+"Digeon, Somme, France, Western Europe","Digeon, Morvillers-Saint-Saturnin, Somme, Hauts-de-France, France, 80590",1.7936077,49.7625359,1.7836609,1.8026647,49.7565002,49.76786,881,677
+"Watton Cliff, Bridport, Dorset, England, Northern Europe","Watton Gardens, Bridport, Dorset, England, United Kingdom, DT6",-2.7489879,50.7396854,-2.750100080291502,-2.747402119708498,50.7382538697085,50.74095183029149,178,678
+"Specton, Yorkshire, England, Northern Europe","Yorkshire, England, United Kingdom",-1.0792403,53.9590858,-2.5647389,0.149826,53.30157699999999,54.56214379999999,104500,679
+"Herbury Peninsula, Fleet Shore, Hampshire, England, Northern Europe","Fleet, Fleet, Hampshire, England, United Kingdom",-0.842655,51.277283,-0.8701753000000001,-0.8026426999999999,51.2646947,51.299976,2377,680
+"Herbury Peninsula, Fleet Shore, Hampshire, England, Northern Europe","Henbury, Bristol, Bristol City, England, United Kingdom, BS10",-2.6286711,51.50928390000001,-2.6418281,-2.616349,51.5033524,51.5163832,1127,680
+"near Cirencester, Gloucestershire, England, Northern Europe","Cirencester, Cirencester, Gloucestershire, England, United Kingdom, GL7",-1.968243,51.718495,-1.9912892,-1.941325,51.70008,51.7298793,2250,681
+"near Cirencester, Gloucestershire, England, Northern Europe","Cirencester, Cirencester, Gloucestershire, England, United Kingdom, GL7",-1.9958817,51.7245132,-2.0557466,-1.9428585,51.6938056,51.7394758,4024,681
+"Templecombe, Somerset, England, Northern Europe","Templecombe, Templecombe, Somerset, England, United Kingdom, BA8",-2.415668,50.9960639,-2.4274106,-2.4068775,50.9934178,51.0072786,875,682
+"Latton Quarry, Latton, Wiltshire, England, Northern Europe","Latton, Swindon, Wiltshire, England, United Kingdom, SN6",-1.8653971,51.66022,-1.8710037,-1.8633146,51.6567344,51.6629977,341,683
+"Bordeaux or Touraine, France, Western Europe","Touraine, France",0.6921741,47.3020954,-2.026e-4,1.1401384,46.7609253,47.6650867,52617,684
+"Bordeaux or Touraine, France, Western Europe","Bordeaux, Gironde, Nouvelle-Aquitaine, France",-0.5810938000000001,44.8416106,-0.6386989,-0.5333254,44.8107415,44.91669419999999,5703,684
+"Montolieu, Aude, France, Western Europe","Montolieu, Aude, Occitanie, France, 11170",2.2143667,43.3099325,2.1716168,2.2649952,43.2842614,43.3435262,4491,685
+"Orford Castle, Suffolk, England, Northern Europe","Orford Road, Orford, Woodbridge, Suffolk, England, United Kingdom, IP12 2ND",1.530753,52.094217,1.5298243697084981,1.532522330291502,52.0927731197085,52.0954710802915,173,686
+"Fareham, Hampshire, England, Northern Europe","Fareham, Hampshire, England, United Kingdom",-1.1865868,50.8548464,-1.2467367,-1.143361,50.8107769,50.8894404,4906,687
+"Malplaquet, Belgium, Western Europe","Belgium",4.469936,50.503887,2.5240999,6.4081,49.4969518,51.5051242,175814,688
+"Malplaquet, Belgium, Western Europe","Taisnières-sur-Hon, Nord, Hauts-de-France, France, 59570",3.839768,50.318349,3.8053801,3.890468199999999,50.2990246,50.3477688,3259,688
+"Agel, Herault, France, Western Europe","Agel, Hérault, Occitanie, France, 34210",2.853136,43.337792,2.8328789,2.8758434,43.3257383,43.3738083,2120,689
+"Dax, Landes, France, Western Europe","Dax, Landes, Nouvelle-Aquitaine, France, 40100",-1.051945,43.708608,-1.1023805,-1.0251044,43.6754073,43.7296547,3185,690
+"Isle of Sheppey, Kent, England, Northern Europe","Isle of Sheppey, England, United Kingdom",0.8365233,51.3964896,0.7214186,0.9509641,51.3544831,51.4478442,9278,691
+"Orford, Suffolk, England, Northern Europe","Orford, Woodbridge, Suffolk, England, United Kingdom, IP12",1.5341196,52.0947402,1.5266093,1.5424984,52.090134,52.1001973,726,692
+"Novale, Venetia, Italy, Western Europe","Novale, Valdagno, Provincia di Vicenza, Veneto, Italy, 36078",11.2882443,45.6664006,11.2868953197085,11.2895932802915,45.6650516197085,45.6677495802915,183,693
+"Astrup, near Osnabruck, Germany, Western Europe","Osnabrück, Kreisfreie Stadt Osnabrück, Münster, Lower Saxony, Germany, 49",8.0471788,52.2799112,7.929959,8.180900099999999,52.2185885,52.33738469999999,10519,694
+"Doue, Maine-et-Loire, France, Western Europe","Doué, Doué-en-Anjou, Maine-et-Loire, Pays de la Loire, France, 49700",-0.271907,47.197311,-0.2732559802915021,-0.270558019708498,47.1959620197085,47.1986599802915,181,695
+"Suffolk, England, Northern Europe","Suffolk, England, United Kingdom",1.0721487,52.27137700000001,0.339916,1.7629159,51.9323747,52.5502329,56323,696
+"Terre-Negre, Bordeaux, Gironde, France, Western Europe","95, Rue Ernest Renan, Bordeaux, Gironde, Nouvelle-Aquitaine, France, 33000",-0.5929599999999999,44.8512036,-0.593905580291502,-0.5912076197084979,44.8498719697085,44.8525699302915,166,697
+"Aldborough, Suffolk, England, Northern Europe","Aldeburgh, Suffolk, England, United Kingdom",1.600446,52.155357,1.5736386,1.6062425,52.1449892,52.1684466,1510,698
+"Wien, Austria, Western Europe","Vienna, Vienna, Vienna, Austria",16.3713095,48.20806959999999,16.1818304,16.5774545,48.1179032,48.322563,17297,699
+"near Dax, Landes, France, Western Europe","Dax, Landes, Nouvelle-Aquitaine, France, 40100",-1.051945,43.708608,-1.1023805,-1.0251044,43.6754073,43.7296547,3185,700
+"Doberg, near Bunde, Westphalia, Germany, Western Europe","Der Doberg, Bünde, Herford, Detmold, Nordrhein-Westfalen, Germany, 32257",8.613014399999999,52.1840066,8.611023119708497,8.613721080291501,52.1829105697085,52.1856085302915,183,701
+"Paris Basin, France, Western Europe","France",2.213749,46.227638,-109.2967524,11.4548613,10.2676819,51.3682119,886364,702
