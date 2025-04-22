@@ -1,7 +1,7 @@
 ## 1.7 Geocoding
 
 ## Load libraries
-packages <- c("stringr", "dismo", "terra", "countrycode", "gptr", "stringi", "readr")
+packages <- c("stringr", "dismo", "terra", "countrycode", "gptr", "stringi", "readr", "CoordinateCleaner")
 if(length(packages[!packages %in% installed.packages()[,"Package"]]) > 0){
   install.packages(packages[!packages %in% installed.packages()[,"Package"]])
 }
@@ -12,6 +12,7 @@ library(countrycode)
 library(gptr)
 library(stringi)
 library(readr)
+library(CoordinateCleaner)
 
 ##  Clean directory
 rm(list = ls())
@@ -173,6 +174,9 @@ for(l in 1:length(Peabody.loc)){
   }
 }
 
+## Add combine Peabody.loc to TBC
+Peabody_TBC$combLocal <- Peabody.loc
+
 ## finalise
 geocode_Peabody <- unique(Peabody.loc)
 
@@ -242,6 +246,9 @@ for(l in 1:length(AMNH.loc)){
     AMNH.loc[l] <- str_flatten(c(AMNH.loc[l], country[l]), collapse = ", ")
   }
 }
+
+## Add combined AMNH.loc to TBC
+AMNH_TBC$combLocal <- AMNH.loc
 
 ## finalise
 geocode_AMNH <- unique(AMNH.loc)
@@ -367,6 +374,9 @@ GBIF.loc <- str_replace(GBIF.loc, fixed('?'), " ")
 GBIF.loc <- str_replace(GBIF.loc, fixed(':'), " ")
 GBIF.loc <- str_replace(GBIF.loc, fixed(':'), " ")
 GBIF.loc <- str_replace(GBIF.loc, fixed('"'), " ")
+
+## Add combine GBIF.loc to TBC
+GBIF_TBC$combLocal <- GBIF.loc
 
 ## finalise
 geocode_GBIF <- unique(GBIF.loc)
@@ -530,7 +540,7 @@ saveRDS(AMNH_key, file = "data/museum/AMNH_GPT_output.Rds")
 saveRDS(NMS_key, file = "data/museum/NMS_GPT_output.Rds")
 saveRDS(Peabody_key, file = "data/museum/Peabody_GPT_output.Rds")
 
-#### Georeferencing GBIF ####
+#### Georeferencing ####
 ### Read in keys
 GBIF_key <- readRDS("data/GBIF/GBIF_GPT_output.Rds")
 Peabody_key <- readRDS("data/museum/Peabody_GPT_output.Rds")
@@ -589,19 +599,244 @@ write_excel_csv(Peabody_TBC_coords, file = "data/museum/Peabody_TBC_coords_raw.c
 write_excel_csv(AMNH_TBC_coords, file = "data/museum/AMNH_TBC_coords_raw.csv")
 write_excel_csv(GBIF_TBC_coords, file = "data/GBIF/GBIF_TBC_coords_raw.csv")
 
-#### Refining georeferencing ####
-## Read in
-NMS_TBC_coords <- read_csv("data/museum/NMS_TBC_coords_cleaned.csv", col_names = 1, show_col_types = F)
-AMNH_TBC_coords <- read_csv("data/museum/AMNH_TBC_coords_cleaned.csv", col_names = 1, show_col_types = F)
-Peabody_TBC_coords <- read_csv("data/museum/Peabody_TBC_coords_cleaned.csv", col_names = 1, show_col_types = F)
-GBIF_TBC_coords <- read_csv("data/GBIF/GBIF_TBC_coords_cleaned.csv", col_names = 1, show_col_types = F)
+#### Finalising georeferencing ####
+## Read in results
+NMS_TBC_coords <- read_csv("data/museum/NMS_TBC_coords_cleaned.csv", col_names = T, show_col_types = F)
+AMNH_TBC_coords <- read_csv("data/museum/AMNH_TBC_coords_cleaned.csv", col_names = T, show_col_types = F)
+Peabody_TBC_coords <- read_csv("data/museum/Peabody_TBC_coords_cleaned.csv", col_names = T, show_col_types = F)
+GBIF_TBC_coords <- read_csv("data/GBIF/GBIF_TBC_coords_cleaned.csv", col_names = T, show_col_types = F)
 
+### Read in keys
+GBIF_key <- readRDS("data/GBIF/GBIF_GPT_output.Rds")
+Peabody_key <- readRDS("data/museum/Peabody_GPT_output.Rds")
+AMNH_key <- readRDS("data/museum/AMNH_GPT_output.Rds")
+NMS_key <- readRDS("data/museum/NMS_GPT_output.Rds")
+
+##### NMS ####
 ## Match TBC_coords "original place" to key "response". Combine outputs.
+## Add interpreted_locality, lat, long, and uncertainty
+NMS_key$interpreted_locality <- ""
+NMS_key$latitude <- NA
+NMS_key$longitude <- NA
+NMS_key$uncertainty <- NA
+## Populate new cells
+for(i in 1:nrow(NMS_TBC_coords)){
+  ## find exact hits
+  hits <- which(NMS_key$response %in% NMS_TBC_coords$originalPlace[i])
+  ## transfer data
+  NMS_key[hits,"interpreted_locality"] <- NMS_TBC_coords[i,"interpretedPlace"]
+  NMS_key[hits,"latitude"] <- NMS_TBC_coords[i,"latitude"]
+  NMS_key[hits,"longitude"] <- NMS_TBC_coords[i,"longitude"]
+  NMS_key[hits,"uncertainty"] <- NMS_TBC_coords[i,"uncertainty"]
+}
 
-## Match "original" of key to localities in TBC objects. Add interpreted locality, lat, long, and uncertainty.
+## Export new version of key
+saveRDS(NMS_key, file = "data/museum/NMS_GPT_output.Rds")
 
-## Apply GBIF coordinates cleaner
+## Now use key to match to original data - first, add missing columns. NMS missing all.
+NMS_TBC$interpreted_locality <- ""
+NMS_TBC$latitude <- NA
+NMS_TBC$longitude <- NA
+NMS_TBC$uncertainty <- NA
+## Populate new cells
+for(i in 1:nrow(NMS_key)){
+  ## find hits, matching original to locality.
+  hits <- which(NMS_TBC$locality %in% NMS_key$original[i])
+  ## transfer data
+  NMS_TBC[hits,"interpreted_locality"] <- NMS_key[i,"interpreted_locality"]
+  NMS_TBC[hits,"latitude"] <- NMS_key[i,"latitude"]
+  NMS_TBC[hits,"longitude"] <- NMS_key[i,"longitude"]
+  NMS_TBC[hits,"uncertainty"] <- NMS_key[i,"uncertainty"]
+}
 
-## Filter out 10km uncertainties
+## ## Drop NAs
+NMS <- NMS_TBC
+droppers <- c()
+droppers <- c(droppers, which(is.na(NMS$latitude)))
+droppers <- c(droppers, which(is.na(NMS$longitude)))
+droppers <- c(droppers, which(is.na(NMS$uncertainty)))
+droppers <- unique(droppers)
+NMS <- NMS[-droppers,]
 
-## Combine and export - geocoding done!
+## Filter out those with 10km or more uncertainty
+droppers <- c()
+droppers <- which(NMS$uncertainty > 10000)
+NMS <- NMS[-droppers,]
+
+## Save geocoded version
+saveRDS(NMS, file = "data/museum/NMS_geocoded.Rds")
+
+##### AMNH ####
+## Match geocode to key "response". Combine outputs.
+## Add interpreted_locality, lat, long, and uncertainty
+AMNH_key$interpreted_locality <- ""
+AMNH_key$latitude <- NA
+AMNH_key$longitude <- NA
+AMNH_key$uncertainty <- NA
+## Populate new cells
+for(i in 1:nrow(AMNH_TBC_coords)){
+  ## find hits
+  hits <- which(AMNH_key$response %in% AMNH_TBC_coords$originalPlace[i])
+  ## transfer data
+  AMNH_key[hits,"interpreted_locality"] <- AMNH_TBC_coords[i,"interpretedPlace"]
+  AMNH_key[hits,"latitude"] <- AMNH_TBC_coords[i,"latitude"]
+  AMNH_key[hits,"longitude"] <- AMNH_TBC_coords[i,"longitude"]
+  AMNH_key[hits,"uncertainty"] <- AMNH_TBC_coords[i,"uncertainty"]
+}
+
+## Export new version of key
+saveRDS(AMNH_key, file = "data/museum/AMNH_GPT_output.Rds")
+
+## Now use key to match to original data - first, add missing columns. AMNH missing just one.
+AMNH_TBC$interpreted_locality <- ""
+
+## Populate new cells
+for(i in 1:nrow(AMNH_key)){
+  ## find hits, matching original to locality.
+  hits <- which(AMNH_TBC$combLocal %in% AMNH_key$original[i])
+  ## transfer data
+  AMNH_TBC[hits,"interpreted_locality"] <- AMNH_key[i,"interpreted_locality"]
+  AMNH_TBC[hits,"latitudeDecimal"] <- AMNH_key[i,"latitude"]
+  AMNH_TBC[hits,"longitudeDecimal"] <- AMNH_key[i,"longitude"]
+  AMNH_TBC[hits,"uncertaintyInMeters"] <- AMNH_key[i,"uncertainty"]
+}
+
+## ## Drop NAs
+droppers <- c()
+droppers <- c(droppers, which(is.na(AMNH_TBC$latitudeDecimal)))
+droppers <- c(droppers, which(is.na(AMNH_TBC$longitudeDecimal)))
+droppers <- c(droppers, which(is.na(AMNH_TBC$uncertaintyInMeters)))
+droppers <- unique(droppers)
+AMNH_TBC <- AMNH_TBC[-droppers,]
+
+## Filter out those with 10km or more uncertainty
+droppers <- c()
+droppers <- which(AMNH_TBC$uncertaintyInMeters > 10000)
+AMNH_TBC <- AMNH_TBC[-droppers,]
+
+## Combine with original version
+AMNH_TBC$combLocal <- NULL
+AMNH$interpreted_locality <- ""
+AMNH$geodataSource <- "record"
+AMNH_TBC$geodataSource <- "GoogleMapAPI"
+AMNH <- rbind(AMNH,AMNH_TBC)
+
+## Save geocoded version
+saveRDS(AMNH, file = "data/museum/AMNH_geocoded.Rds")
+
+##### Peabody ####
+## Match geocode to key "response". Combine outputs.
+## Add interpreted_locality, lat, long, and uncertainty
+Peabody_key$interpreted_locality <- ""
+Peabody_key$latitude <- NA
+Peabody_key$longitude <- NA
+Peabody_key$uncertainty <- NA
+## Populate new cells
+for(i in 1:nrow(Peabody_TBC_coords)){
+  ## find hits
+  hits <- which(Peabody_key$response %in% Peabody_TBC_coords$originalPlace[i])
+  ## transfer data
+  Peabody_key[hits,"interpreted_locality"] <- Peabody_TBC_coords[i,"interpretedPlace"]
+  Peabody_key[hits,"latitude"] <- Peabody_TBC_coords[i,"latitude"]
+  Peabody_key[hits,"longitude"] <- Peabody_TBC_coords[i,"longitude"]
+  Peabody_key[hits,"uncertainty"] <- Peabody_TBC_coords[i,"uncertainty"]
+}
+
+## Export new version of key
+saveRDS(Peabody_key, file = "data/museum/Peabody_GPT_output.Rds")
+
+## Now use key to match to original data - first, add missing columns. Peabody missing just one.
+Peabody_TBC$interpreted_locality <- ""
+
+## Populate new cells
+for(i in 1:nrow(Peabody_key)){
+  ## find hits, matching original to locality.
+  hits <- which(Peabody_TBC$combLocal %in% Peabody_key$original[i])
+  ## transfer data
+  Peabody_TBC[hits,"interpreted_locality"] <- Peabody_key[i,"interpreted_locality"]
+  Peabody_TBC[hits,"latitude"] <- Peabody_key[i,"latitude"]
+  Peabody_TBC[hits,"longitude"] <- Peabody_key[i,"longitude"]
+  Peabody_TBC[hits,"uncertaintyInMeters"] <- Peabody_key[i,"uncertainty"]
+}
+
+## ## Drop NAs
+droppers <- c()
+droppers <- c(droppers, which(is.na(Peabody_TBC$latitude)))
+droppers <- c(droppers, which(is.na(Peabody_TBC$longitude)))
+droppers <- c(droppers, which(is.na(Peabody_TBC$uncertaintyInMeters)))
+droppers <- unique(droppers)
+Peabody_TBC <- Peabody_TBC[-droppers,]
+
+## Filter out those with 10km or more uncertainty
+droppers <- c()
+droppers <- which(Peabody_TBC$uncertaintyInMeters > 10000)
+Peabody_TBC <- Peabody_TBC[-droppers,]
+
+## Combine with original version
+Peabody_TBC$combLocal <- NULL
+Peabody$interpreted_locality <- ""
+Peabody$geodataSource <- "record"
+Peabody_TBC$geodataSource <- "GoogleMapAPI"
+Peabody <- rbind(Peabody,Peabody_TBC)
+
+## Save geocoded version
+saveRDS(Peabody, file = "data/museum/Peabody_geocoded.Rds")
+
+##### GBIF ####
+## Match geocode to key "response". Combine outputs.
+## Add interpreted_locality, lat, long, and uncertainty
+GBIF_key$interpreted_locality <- ""
+GBIF_key$latitude <- NA
+GBIF_key$longitude <- NA
+GBIF_key$uncertainty <- NA
+## Populate new cells
+for(i in 1:nrow(GBIF_TBC_coords)){
+  ## find hits
+  hits <- which(GBIF_key$response %in% GBIF_TBC_coords$originalPlace[i])
+  ## transfer data
+  GBIF_key[hits,"interpreted_locality"] <- GBIF_TBC_coords[i,"interpretedPlace"]
+  GBIF_key[hits,"latitude"] <- GBIF_TBC_coords[i,"latitude"]
+  GBIF_key[hits,"longitude"] <- GBIF_TBC_coords[i,"longitude"]
+  GBIF_key[hits,"uncertainty"] <- GBIF_TBC_coords[i,"uncertainty"]
+}
+
+## Export new version of key
+saveRDS(GBIF_key, file = "data/GBIF/GBIF_GPT_output.Rds")
+
+## Now use key to match to original data - first, add missing columns. GBIF missing just one.
+GBIF_TBC$interpreted_locality <- ""
+
+## Populate new cells
+for(i in 1:nrow(GBIF_key)){
+  ## find hits, matching original to locality.
+  hits <- which(GBIF_TBC$combLocal %in% GBIF_key$original[i])
+  ## transfer data
+  GBIF_TBC[hits,"interpreted_locality"] <- GBIF_key[i,"interpreted_locality"]
+  GBIF_TBC[hits,"decimalLatitude"] <- GBIF_key[i,"latitude"]
+  GBIF_TBC[hits,"decimalLongitude"] <- GBIF_key[i,"longitude"]
+  GBIF_TBC[hits,"coordinateUncertaintyInMeters"] <- GBIF_key[i,"uncertainty"]
+}
+
+## ## Drop NAs
+droppers <- c()
+droppers <- c(droppers, which(is.na(GBIF_TBC$decimalLatitude)))
+droppers <- c(droppers, which(is.na(GBIF_TBC$decimalLongitude)))
+droppers <- c(droppers, which(is.na(GBIF_TBC$coordinateUncertaintyInMeters)))
+droppers <- unique(droppers)
+GBIF_TBC <- GBIF_TBC[-droppers,]
+
+## Filter out those with 10km or more uncertainty
+droppers <- c()
+droppers <- which(GBIF_TBC$coordinateUncertaintyInMeters > 10000)
+GBIF_TBC <- GBIF_TBC[-droppers,]
+
+## Combine with original version
+GBIF_TBC$combLocal <- NULL
+GBIF$interpreted_locality <- ""
+GBIF$geodataSource <- "record"
+GBIF_TBC$geodataSource <- "GoogleMapAPI"
+GBIF <- rbind(GBIF,GBIF_TBC)
+
+## Save geocoded version
+saveRDS(GBIF, file = "data/GBIF/GBIF_geocoded.Rds")
+
