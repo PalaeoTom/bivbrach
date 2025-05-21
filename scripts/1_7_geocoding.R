@@ -149,7 +149,7 @@ if(any(Peabody$longitude[!is.na(Peabody$longitude)] < -180)){
 }
 
 ## Any coordinates with unaccpetable uncertainty
-Peabody_drop <- c(Peabody_drop, which(Peabody[,"uncertaintyInMeters"] > 10000))
+Peabody_drop <- c(Peabody_drop, which(Peabody[,"uncertaintyInMeters"] > 25000))
 
 ## get unique
 Peabody_drop <- unique(Peabody_drop)
@@ -263,7 +263,7 @@ geocode_AMNH <- unique(AMNH.loc)
 ## Get missing entries
 GBIF_drop <- which(is.na(GBIF$decimalLatitude))
 GBIF_drop <- c(GBIF_drop, which(is.na(GBIF$decimalLongitude)))
-GBIF_drop <- c(GBIF_drop, which(GBIF$coordinateUncertaintyInMeters>10000))
+GBIF_drop <- c(GBIF_drop, which(GBIF$coordinateUncertaintyInMeters>25000))
 
 ## Any coordinates outside expected range
 if(any(GBIF$decimalLatitude[!is.na(GBIF$decimalLatitude)] > 180)){
@@ -383,175 +383,175 @@ geocode_GBIF <- unique(GBIF.loc)
 
 #### Preparing key ####
 ## Set API key
-gptKey <- "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"
-Sys.setenv(OPENAI_API_KEY = gptKey)
+#gptKey <- "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"
+#Sys.setenv(OPENAI_API_KEY = gptKey)
 
 ## Define instruction string
-instruct <- "Re-write this locality string for clarity, removing all references to rock beds, stratigraphic units, and geological time units. Remove all duplicates of substrings. Do not return anything other than the updated locality string. Locality string to be re-written: "
+#instruct <- "Re-write this locality string for clarity, removing all references to rock beds, stratigraphic units, and geological time units. Remove all duplicates of substrings. Do not return anything other than the updated locality string. Locality string to be re-written: "
 
 ## Combine instruction string with each locality string
 ## AMNH
-AMNH_key <- data.frame(geocode_AMNH)
-colnames(AMNH_key) <- "original"
-AMNH_key$gpt <- ""
-for(r in 1:nrow(AMNH_key)){
-  AMNH_key[r,"gpt"] <- str_flatten(c(instruct, AMNH_key[r,"original"]), collapse = "")
-}
-AMNH_key$response <- ""
+#AMNH_key <- data.frame(geocode_AMNH)
+#colnames(AMNH_key) <- "original"
+#AMNH_key$gpt <- ""
+#for(r in 1:nrow(AMNH_key)){
+#  AMNH_key[r,"gpt"] <- str_flatten(c(instruct, AMNH_key[r,"original"]), collapse = "")
+#}
+#AMNH_key$response <- ""
 
 ## GBIF
-GBIF_key <- data.frame(geocode_GBIF)
-colnames(GBIF_key) <- "original"
-GBIF_key$gpt <- ""
-for(r in 1:nrow(GBIF_key)){
-  GBIF_key[r,"gpt"] <- str_flatten(c(instruct, GBIF_key[r,"original"]), collapse = "")
-}
-GBIF_key$response <- ""
+#GBIF_key <- data.frame(geocode_GBIF)
+#colnames(GBIF_key) <- "original"
+#GBIF_key$gpt <- ""
+#for(r in 1:nrow(GBIF_key)){
+#  GBIF_key[r,"gpt"] <- str_flatten(c(instruct, GBIF_key[r,"original"]), collapse = "")
+#}
+#GBIF_key$response <- ""
 
 ## Peabody
-Peabody_key <- data.frame(geocode_Peabody)
-colnames(Peabody_key) <- "original"
-Peabody_key$gpt <- ""
-for(r in 1:nrow(Peabody_key)){
-  Peabody_key[r,"gpt"] <- str_flatten(c(instruct, Peabody_key[r,"original"]), collapse = "")
-}
-Peabody_key$response <- ""
+#Peabody_key <- data.frame(geocode_Peabody)
+#colnames(Peabody_key) <- "original"
+#Peabody_key$gpt <- ""
+#for(r in 1:nrow(Peabody_key)){
+#  Peabody_key[r,"gpt"] <- str_flatten(c(instruct, Peabody_key[r,"original"]), collapse = "")
+#}
+#Peabody_key$response <- ""
 
 ## NMS
-NMS_key <- data.frame(geocode_NMS)
-colnames(NMS_key) <- "original"
-NMS_key$gpt <- ""
-for(r in 1:nrow(NMS_key)){
-  NMS_key[r,"gpt"] <- str_flatten(c(instruct, NMS_key[r,"original"]), collapse = "")
-}
-NMS_key$response <- ""
+#NMS_key <- data.frame(geocode_NMS)
+#colnames(NMS_key) <- "original"
+#NMS_key$gpt <- ""
+#for(r in 1:nrow(NMS_key)){
+#  NMS_key[r,"gpt"] <- str_flatten(c(instruct, NMS_key[r,"original"]), collapse = "")
+#}
+#NMS_key$response <- ""
 
 #### Cleaning locality strings using ChatGPT (!) ####
 ## Start with Peabody
-for(r in 1:nrow(Peabody_key)){
-  skip_to_next <- F
-  tryCatch(Peabody_key[r,"response"] <- get_response(Peabody_key[r, "gpt"], model = "gpt-4o")$choices$message$content, error = function(e) {skip_to_next <<-TRUE})
-  if(skip_to_next){next}
-}
+#for(r in 1:nrow(Peabody_key)){
+#  skip_to_next <- F
+#  tryCatch(Peabody_key[r,"response"] <- get_response(Peabody_key[r, "gpt"], model = "gpt-4o")$choices$message$content, error = function(e) {skip_to_next <<-TRUE})
+#  if(skip_to_next){next}
+#}
 
 ## Start with NMS
-for(r in 1:nrow(NMS_key)){
-  skip_to_next <- F
-  tryCatch(NMS_key[r,"response"] <- get_response(NMS_key[r, "gpt"], model = "gpt-4o")$choices$message$content, error = function(e) {skip_to_next <<-TRUE})
-  if(skip_to_next){next}
-}
+#for(r in 1:nrow(NMS_key)){
+#  skip_to_next <- F
+#  tryCatch(NMS_key[r,"response"] <- get_response(NMS_key[r, "gpt"], model = "gpt-4o")$choices$message$content, error = function(e) {skip_to_next <<-TRUE})
+#  if(skip_to_next){next}
+#}
 
 ## Start with AMNH
-for(r in 1:nrow(AMNH_key)){
-  skip_to_next <- F
-  tryCatch(AMNH_key[r,"response"] <- get_response(AMNH_key[r, "gpt"], model = "gpt-4o")$choices$message$content, error = function(e) {skip_to_next <<-TRUE})
-  if(skip_to_next){next}
-}
+#for(r in 1:nrow(AMNH_key)){
+#  skip_to_next <- F
+#  tryCatch(AMNH_key[r,"response"] <- get_response(AMNH_key[r, "gpt"], model = "gpt-4o")$choices$message$content, error = function(e) {skip_to_next <<-TRUE})
+#  if(skip_to_next){next}
+#}
 
 ## Start with GBIF
-for(r in 1:nrow(GBIF_key)){
-  skip_to_next <- F
-  tryCatch(GBIF_key[r,"response"] <- get_response(GBIF_key[r, "gpt"], model = "gpt-4o")$choices$message$content, error = function(e) {skip_to_next <<-TRUE})
-  if(skip_to_next){next}
-}
+#for(r in 1:nrow(GBIF_key)){
+#  skip_to_next <- F
+#  tryCatch(GBIF_key[r,"response"] <- get_response(GBIF_key[r, "gpt"], model = "gpt-4o")$choices$message$content, error = function(e) {skip_to_next <<-TRUE})
+#  if(skip_to_next){next}
+#}
 
 ## Export
-saveRDS(GBIF_key, file = "data/GBIF/GBIF_GPT_output.Rds")
-saveRDS(AMNH_key, file = "data/museum/AMNH_GPT_output.Rds")
-saveRDS(NMS_key, file = "data/museum/NMS_GPT_output.Rds")
-saveRDS(Peabody_key, file = "data/museum/Peabody_GPT_output.Rds")
+#saveRDS(GBIF_key, file = "data/GBIF/GBIF_GPT_output.Rds")
+#saveRDS(AMNH_key, file = "data/museum/AMNH_GPT_output.Rds")
+#saveRDS(NMS_key, file = "data/museum/NMS_GPT_output.Rds")
+#saveRDS(Peabody_key, file = "data/museum/Peabody_GPT_output.Rds")
 
 #### Tidying up chatGPT outputs ####
 ### Read them in
-GBIF_key <- readRDS("data/GBIF/GBIF_GPT_output.Rds")
-Peabody_key <- readRDS("data/museum/Peabody_GPT_output.Rds")
-AMNH_key <- readRDS("data/museum/AMNH_GPT_output.Rds")
-NMS_key <- readRDS("data/museum/NMS_GPT_output.Rds")
+#GBIF_key <- readRDS("data/GBIF/GBIF_GPT_output.Rds")
+#Peabody_key <- readRDS("data/museum/Peabody_GPT_output.Rds")
+#AMNH_key <- readRDS("data/museum/AMNH_GPT_output.Rds")
+#NMS_key <- readRDS("data/museum/NMS_GPT_output.Rds")
 
 ## Find gaps - use original
-if(any(GBIF_key$response=="")){
-  GBIF_key$response[which(GBIF_key$response == "")] <- GBIF_key[which(GBIF_key$response == ""),"original"]
-}
+#if(any(GBIF_key$response=="")){
+#  GBIF_key$response[which(GBIF_key$response == "")] <- GBIF_key[which(GBIF_key$response == ""),"original"]
+#}
 
-if(any(AMNH_key$response=="")){
-  AMNH_key$response[which(AMNH_key$response == "")] <- AMNH_key[which(AMNH_key$response == ""),"original"]
-}
+#if(any(AMNH_key$response=="")){
+#  AMNH_key$response[which(AMNH_key$response == "")] <- AMNH_key[which(AMNH_key$response == ""),"original"]
+#}
 
-if(any(NMS_key$response=="")){
-  NMS_key$response[which(NMS_key$response == "")] <- NMS_key[which(NMS_key$response == ""),"original"]
-}
+#if(any(NMS_key$response=="")){
+#  NMS_key$response[which(NMS_key$response == "")] <- NMS_key[which(NMS_key$response == ""),"original"]
+#}
 
-if(any(Peabody_key$response=="")){
-  Peabody_key$response[which(Peabody_key$response == "")] <- Peabody_key[which(Peabody_key$response == ""),"original"]
-}
+#if(any(Peabody_key$response=="")){
+#  Peabody_key$response[which(Peabody_key$response == "")] <- Peabody_key[which(Peabody_key$response == ""),"original"]
+#}
 
 ## Find single word original entries - use these in place of new strings
-if(any(!str_detect(GBIF_key[,"original"], " "))){
-  GBIF_key$response[!str_detect(GBIF_key[,"original"], " ")] <- GBIF_key[!str_detect(GBIF_key[,"original"], " "),"original"]
-}
+#if(any(!str_detect(GBIF_key[,"original"], " "))){
+#  GBIF_key$response[!str_detect(GBIF_key[,"original"], " ")] <- GBIF_key[!str_detect(GBIF_key[,"original"], " "),"original"]
+#}
 
-if(any(!str_detect(AMNH_key[,"original"], " "))){
-  AMNH_key$response[!str_detect(AMNH_key[,"original"], " ")] <- AMNH_key[!str_detect(AMNH_key[,"original"], " "),"original"]
-}
+#if(any(!str_detect(AMNH_key[,"original"], " "))){
+#  AMNH_key$response[!str_detect(AMNH_key[,"original"], " ")] <- AMNH_key[!str_detect(AMNH_key[,"original"], " "),"original"]
+#}
 
-if(any(!str_detect(NMS_key[,"original"], " "))){
-  NMS_key$response[!str_detect(NMS_key[,"original"], " ")] <- NMS_key[!str_detect(NMS_key[,"original"], " "),"original"]
-}
+#if(any(!str_detect(NMS_key[,"original"], " "))){
+#  NMS_key$response[!str_detect(NMS_key[,"original"], " ")] <- NMS_key[!str_detect(NMS_key[,"original"], " "),"original"]
+#}
 
-if(any(!str_detect(Peabody_key[,"original"], " "))){
-  Peabody_key$response[!str_detect(Peabody_key[,"original"], " ")] <- Peabody_key[!str_detect(Peabody_key[,"original"], " "),"original"]
-}
+#if(any(!str_detect(Peabody_key[,"original"], " "))){
+#  Peabody_key$response[!str_detect(Peabody_key[,"original"], " ")] <- Peabody_key[!str_detect(Peabody_key[,"original"], " "),"original"]
+#}
 
 ## Find new entries with special characters - drop and use original string (gptr::get_response returns rubbish characters when dealing with accents)
-if(any(grepl("[^ -~]", GBIF_key$response))){
-  GBIF_key$response[which(grepl("[^ -~]", GBIF_key$response))] <- GBIF_key[which(grepl("[^ -~]", GBIF_key$response)),"original"]
-}
+#if(any(grepl("[^ -~]", GBIF_key$response))){
+#  GBIF_key$response[which(grepl("[^ -~]", GBIF_key$response))] <- GBIF_key[which(grepl("[^ -~]", GBIF_key$response)),"original"]
+#}
 
-if(any(grepl("[^ -~]", Peabody_key$response))){
-  Peabody_key$response[which(grepl("[^ -~]", Peabody_key$response))] <- Peabody_key[which(grepl("[^ -~]", Peabody_key$response)),"original"]
-}
+#if(any(grepl("[^ -~]", Peabody_key$response))){
+#  Peabody_key$response[which(grepl("[^ -~]", Peabody_key$response))] <- Peabody_key[which(grepl("[^ -~]", Peabody_key$response)),"original"]
+#}
 
-if(any(grepl("[^ -~]", AMNH_key$response))){
-  AMNH_key$response[which(grepl("[^ -~]", AMNH_key$response))] <- AMNH_key[which(grepl("[^ -~]", AMNH_key$response)),"original"]
-}
+#if(any(grepl("[^ -~]", AMNH_key$response))){
+#  AMNH_key$response[which(grepl("[^ -~]", AMNH_key$response))] <- AMNH_key[which(grepl("[^ -~]", AMNH_key$response)),"original"]
+#}
 
-if(any(grepl("[^ -~]", NMS_key$response))){
-  NMS_key$response[which(grepl("[^ -~]", NMS_key$response))] <- NMS_key[which(grepl("[^ -~]", NMS_key$response)),"original"]
-}
+#if(any(grepl("[^ -~]", NMS_key$response))){
+#  NMS_key$response[which(grepl("[^ -~]", NMS_key$response))] <- NMS_key[which(grepl("[^ -~]", NMS_key$response)),"original"]
+#}
 
 ## Finally, strip accents (geocoding function can't handle them)
-GBIF_key[,"response"] <- stringi::stri_trans_general(GBIF_key[,"response"], "Latin-ASCII")
-Peabody_key[,"response"] <- stringi::stri_trans_general(Peabody_key[,"response"], "Latin-ASCII")
-AMNH_key[,"response"] <- stringi::stri_trans_general(AMNH_key[,"response"], "Latin-ASCII")
-NMS_key[,"response"] <- stringi::stri_trans_general(NMS_key[,"response"], "Latin-ASCII")
+#GBIF_key[,"response"] <- stringi::stri_trans_general(GBIF_key[,"response"], "Latin-ASCII")
+#Peabody_key[,"response"] <- stringi::stri_trans_general(Peabody_key[,"response"], "Latin-ASCII")
+#AMNH_key[,"response"] <- stringi::stri_trans_general(AMNH_key[,"response"], "Latin-ASCII")
+#NMS_key[,"response"] <- stringi::stri_trans_general(NMS_key[,"response"], "Latin-ASCII")
 
 ## And strip all non-comma, non-period, non-apostrophe, non-hyphen punctuation
-GBIF_key[,"response"] <- gsub("[^[:alnum:][:space:]',.-]", "", GBIF_key[,"response"])
-NMS_key[,"response"] <- gsub("[^[:alnum:][:space:]',.-]", "", NMS_key[,"response"])
-AMNH_key[,"response"] <- gsub("[^[:alnum:][:space:]',.-]", "", AMNH_key[,"response"])
-Peabody_key[,"response"] <- gsub("[^[:alnum:][:space:]',.-]", "", Peabody_key[,"response"])
+#GBIF_key[,"response"] <- gsub("[^[:alnum:][:space:]',.-]", "", GBIF_key[,"response"])
+#NMS_key[,"response"] <- gsub("[^[:alnum:][:space:]',.-]", "", NMS_key[,"response"])
+#AMNH_key[,"response"] <- gsub("[^[:alnum:][:space:]',.-]", "", AMNH_key[,"response"])
+#Peabody_key[,"response"] <- gsub("[^[:alnum:][:space:]',.-]", "", Peabody_key[,"response"])
 
 ## Somehow missed japanese characters
-GBIF_key[which(stringi::stri_enc_mark(GBIF_key[,"response"])=="UTF-8"),"response"] <- "Naruha Town, Takahashi City, Okayama Prefecture, Japan"
+#GBIF_key[which(stringi::stri_enc_mark(GBIF_key[,"response"])=="UTF-8"),"response"] <- "Naruha Town, Takahashi City, Okayama Prefecture, Japan"
 
 ## Export
-saveRDS(GBIF_key, file = "data/GBIF/GBIF_GPT_output.Rds")
-saveRDS(AMNH_key, file = "data/museum/AMNH_GPT_output.Rds")
-saveRDS(NMS_key, file = "data/museum/NMS_GPT_output.Rds")
-saveRDS(Peabody_key, file = "data/museum/Peabody_GPT_output.Rds")
+#saveRDS(GBIF_key, file = "data/GBIF/GBIF_GPT_output.Rds")
+#saveRDS(AMNH_key, file = "data/museum/AMNH_GPT_output.Rds")
+#saveRDS(NMS_key, file = "data/museum/NMS_GPT_output.Rds")
+#saveRDS(Peabody_key, file = "data/museum/Peabody_GPT_output.Rds")
 
 #### Georeferencing ####
 ### Read in keys
-GBIF_key <- readRDS("data/GBIF/GBIF_GPT_output.Rds")
-Peabody_key <- readRDS("data/museum/Peabody_GPT_output.Rds")
-AMNH_key <- readRDS("data/museum/AMNH_GPT_output.Rds")
-NMS_key <- readRDS("data/museum/NMS_GPT_output.Rds")
+#GBIF_key <- readRDS("data/GBIF/GBIF_GPT_output.Rds")
+#Peabody_key <- readRDS("data/museum/Peabody_GPT_output.Rds")
+#AMNH_key <- readRDS("data/museum/AMNH_GPT_output.Rds")
+#NMS_key <- readRDS("data/museum/NMS_GPT_output.Rds")
 
 ## Isolate geostrings
-GBIF_geostring <- GBIF_key[,"response"]
-AMNH_geostring <- AMNH_key[,"response"]
-NMS_geostring <- NMS_key[,"response"]
-Peabody_geostring <- Peabody_key[,"response"]
+#GBIF_geostring <- GBIF_key[,"response"]
+#AMNH_geostring <- AMNH_key[,"response"]
+#NMS_geostring <- NMS_key[,"response"]
+#Peabody_geostring <- Peabody_key[,"response"]
 
 ## Final inspection for obvious errors
 #View(data.frame(unique(GBIF_geostring)))
@@ -560,44 +560,44 @@ Peabody_geostring <- Peabody_key[,"response"]
 #View(data.frame(unique(Peabody_geostring)))
 
 ## Register google maps API keys
-gMAPIKey <- "AIzaSyAeUFGhS8Inob5ByMIPTokWg076qmStEV0"
+#gMAPIKey <- "AIzaSyAeUFGhS8Inob5ByMIPTokWg076qmStEV0"
 
 ## Run test with dismo - works!
 #test_dismo <- dismo::geocode(NMS_geostring[1:10], oneRecord = F, geocode_key = gMAPIKey)
 #test_dismo_2 <- dismo::geocode(NMS_geostring[1:10], oneRecord = T, geocode_key = gMAPIKey)
 
 ## Run final geocoding and export
-NMS_TBC_coords <- dismo::geocode(NMS_geostring, oneRecord = F, geocode_key = gMAPIKey)
-AMNH_TBC_coords <- dismo::geocode(AMNH_geostring, oneRecord = F, geocode_key = gMAPIKey)
-Peabody_TBC_coords <- dismo::geocode(Peabody_geostring, oneRecord = F, geocode_key = gMAPIKey)
-GBIF_TBC_coords <- dismo::geocode(GBIF_geostring, oneRecord = F, geocode_key = gMAPIKey)
+#NMS_TBC_coords <- dismo::geocode(NMS_geostring, oneRecord = F, geocode_key = gMAPIKey)
+#AMNH_TBC_coords <- dismo::geocode(AMNH_geostring, oneRecord = F, geocode_key = gMAPIKey)
+#Peabody_TBC_coords <- dismo::geocode(Peabody_geostring, oneRecord = F, geocode_key = gMAPIKey)
+#GBIF_TBC_coords <- dismo::geocode(GBIF_geostring, oneRecord = F, geocode_key = gMAPIKey)
 
 ## Label
-NMS_TBC_coords$number <- NA
-for(i in 1:length(NMS_geostring)){
-  NMS_TBC_coords[which(NMS_TBC_coords$originalPlace == NMS_geostring[i]),"number"] <- i
-}
+#NMS_TBC_coords$number <- NA
+#for(i in 1:length(NMS_geostring)){
+#  NMS_TBC_coords[which(NMS_TBC_coords$originalPlace == NMS_geostring[i]),"number"] <- i
+#}
 
-AMNH_TBC_coords$number <- NA
-for(i in 1:length(AMNH_geostring)){
-  AMNH_TBC_coords[which(AMNH_TBC_coords$originalPlace == AMNH_geostring[i]),"number"] <- i
-}
+#AMNH_TBC_coords$number <- NA
+#for(i in 1:length(AMNH_geostring)){
+#  AMNH_TBC_coords[which(AMNH_TBC_coords$originalPlace == AMNH_geostring[i]),"number"] <- i
+#}
 
-Peabody_TBC_coords$number <- NA
-for(i in 1:length(Peabody_geostring)){
-  Peabody_TBC_coords[which(Peabody_TBC_coords$originalPlace == Peabody_geostring[i]),"number"] <- i
-}
+#Peabody_TBC_coords$number <- NA
+#for(i in 1:length(Peabody_geostring)){
+#  Peabody_TBC_coords[which(Peabody_TBC_coords$originalPlace == Peabody_geostring[i]),"number"] <- i
+#}
 
-GBIF_TBC_coords$number <- NA
-for(i in 1:length(GBIF_geostring)){
-  GBIF_TBC_coords[which(GBIF_TBC_coords$originalPlace == GBIF_geostring[i]),"number"] <- i
-}
+#GBIF_TBC_coords$number <- NA
+#for(i in 1:length(GBIF_geostring)){
+#  GBIF_TBC_coords[which(GBIF_TBC_coords$originalPlace == GBIF_geostring[i]),"number"] <- i
+#}
 
 ## Export as CSV for manual checking
-write_excel_csv(NMS_TBC_coords, file = "data/museum/NMS_TBC_coords_raw.csv")
-write_excel_csv(Peabody_TBC_coords, file = "data/museum/Peabody_TBC_coords_raw.csv")
-write_excel_csv(AMNH_TBC_coords, file = "data/museum/AMNH_TBC_coords_raw.csv")
-write_excel_csv(GBIF_TBC_coords, file = "data/GBIF/GBIF_TBC_coords_raw.csv")
+#write_excel_csv(NMS_TBC_coords, file = "data/museum/NMS_TBC_coords_raw.csv")
+#write_excel_csv(Peabody_TBC_coords, file = "data/museum/Peabody_TBC_coords_raw.csv")
+#write_excel_csv(AMNH_TBC_coords, file = "data/museum/AMNH_TBC_coords_raw.csv")
+#write_excel_csv(GBIF_TBC_coords, file = "data/GBIF/GBIF_TBC_coords_raw.csv")
 
 #### Finalising georeferencing ####
 ## Read in results
@@ -658,9 +658,9 @@ droppers <- c(droppers, which(is.na(NMS$uncertainty)))
 droppers <- unique(droppers)
 NMS <- NMS[-droppers,]
 
-## Filter out those with 10km or more uncertainty
+## Filter out those with 25km or more uncertainty
 droppers <- c()
-droppers <- which(NMS$uncertainty > 10000)
+droppers <- which(NMS$uncertainty > 25000)
 NMS <- NMS[-droppers,]
 
 ## Save geocoded version
@@ -709,9 +709,9 @@ droppers <- c(droppers, which(is.na(AMNH_TBC$uncertaintyInMeters)))
 droppers <- unique(droppers)
 AMNH_TBC <- AMNH_TBC[-droppers,]
 
-## Filter out those with 10km or more uncertainty
+## Filter out those with 25km or more uncertainty
 droppers <- c()
-droppers <- which(AMNH_TBC$uncertaintyInMeters > 10000)
+droppers <- which(AMNH_TBC$uncertaintyInMeters > 25000)
 AMNH_TBC <- AMNH_TBC[-droppers,]
 
 ## Combine with original version
@@ -767,9 +767,9 @@ droppers <- c(droppers, which(is.na(Peabody_TBC$uncertaintyInMeters)))
 droppers <- unique(droppers)
 Peabody_TBC <- Peabody_TBC[-droppers,]
 
-## Filter out those with 10km or more uncertainty
+## Filter out those with 25km or more uncertainty
 droppers <- c()
-droppers <- which(Peabody_TBC$uncertaintyInMeters > 10000)
+droppers <- which(Peabody_TBC$uncertaintyInMeters > 25000)
 Peabody_TBC <- Peabody_TBC[-droppers,]
 
 ## Combine with original version
@@ -825,9 +825,9 @@ droppers <- c(droppers, which(is.na(GBIF_TBC$coordinateUncertaintyInMeters)))
 droppers <- unique(droppers)
 GBIF_TBC <- GBIF_TBC[-droppers,]
 
-## Filter out those with 10km or more uncertainty
+## Filter out those with 25km or more uncertainty
 droppers <- c()
-droppers <- which(GBIF_TBC$coordinateUncertaintyInMeters > 10000)
+droppers <- which(GBIF_TBC$coordinateUncertaintyInMeters > 25000)
 GBIF_TBC <- GBIF_TBC[-droppers,]
 
 ## Combine with original version

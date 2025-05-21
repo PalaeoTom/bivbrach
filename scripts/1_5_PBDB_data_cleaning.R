@@ -2,11 +2,10 @@
 ## Started by TJS on 08/01/2024
 
 ## If packages aren't installed, install them, then load them
-packages <- c("fossilbrush", "stringr", "divDyn")
+packages <- c("stringr", "divDyn")
 if(length(packages[!packages %in% installed.packages()[,"Package"]]) > 0){
   install.packages(packages[!packages %in% installed.packages()[,"Package"]])
 }
-library(fossilbrush)
 library(stringr)
 library(divDyn)
 
@@ -14,15 +13,7 @@ library(divDyn)
 rm(list = ls())
 
 #### Loading data ####
-## Option A: November 2023 dataset
-## Load raw PBDB data
-#raw_PBDB <- readRDS("data/unclean_data/PBDB_Nov23.Rds")
-
-## Isolate bivalve and brachiopod data
-#PBDB <- raw_PBDB[c(which(raw_PBDB$phylum == "Brachiopoda"),which(raw_PBDB$class == "Bivalvia")),]
-#rm(raw_PBDB)
-
-## Download latest version
+## Download latest version - get all columns
 #library(paleobioDB)
 #raw_PBDB_bivalves <- pbdb_occurrences(limit = "all", vocab = "pbdb", base_name = "Bivalvia",
 #                                      show = c("coll", "class", "coords", "paleoloc", "strat", "stratext", "lith", "env"))
@@ -58,12 +49,13 @@ PBDB[grep("NO_", PBDB[,"genus"]), "genus"] <- ""
 ## Drop all genera with no information
 PBDB <- PBDB[-which(PBDB$genus == ""),]
 
-## Stip out subgenera in brackets
-PBDB$genus <- str_split_i(PBDB$genus, pattern = ' ', i = 1)
+#### Applying Guo et al. corrections ####
 
-## Standardise dipthongs for genera
-source("functions/misspell.R")
-PBDB$genus <- misspell(PBDB$genus)
+
+## Load column names to retain after applying Guo et al corrections.
+#colsToKeep <- readRDS("data/PBDB/columnsToKeep.Rds")
+
+## Filter out to these columns
 
 #### Adding environmental covariates ####
 ## Define lithology, bathymetric, and reefal categories
@@ -75,6 +67,9 @@ PBDB$reefCat[PBDB$lithCat == "siliciclastic" & PBDB$environment == "marine indet
 
 ## Drop unlithified sediments - effort to reduce sampling bias
 PBDB <- PBDB[-which(PBDB$lithification1=="unlithified"),]
+
+#### Applying Guo et al corrections to collectons and formations ####
+
 
 #### Updating chronostratigraphy and temporal filtering ####
 ## Adding stages of Kocsis et al. (2019)
@@ -228,7 +223,7 @@ PBDB$stg <- NULL
 
 ### Cleaning up rest of Chronostratigraphy
 ## use fossilbrush to update Chronostratigraphy
-PBDB <- chrono_scale(PBDB,  tscale = "GTS2020", srt = "early_interval", end = "late_interval",
+PBDB <- chrono_scale(PBDB,  tscale = "GTS_2020", srt = "early_interval", end = "late_interval",
                      max_ma = "max_ma", min_ma = "min_ma", verbose = FALSE)
 
 ## set new chronostratigraphy as "max_ma" and "min_ma", then remove added columns newFAD and newLAD

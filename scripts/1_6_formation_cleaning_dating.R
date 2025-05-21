@@ -471,6 +471,9 @@ GBIF[which(GBIF$formation1 == "San Carlos formation"),"chronostratigraphy"] <- "
 ## Do same for AMNH
 AMNH[which(AMNH$formation1 == "Ford formation"),"chronostratigraphy"] <- "Roadian,Changhsingian"
 
+## Update rogue stages that have not been updated
+GBIF[which(GBIF$chronostratigraphy == "Tatarian"),"chronostratigraphy"] <- "Lopingian,Wordian"
+
 ## Isolate formations once again for checking
 final.forms <- c(GBIF$formation1, GBIF$formation2, GBIF$formation3, GBIF$formation4, AMNH$formation1, AMNH$formation2, NMS$formation1, NMS$formation2, Peabody$formation1, Peabody$formation2)
 final.forms <- sort(unique(final.forms))[-1]
@@ -562,7 +565,7 @@ for(i in 1:nrow(GBIF)){
         next
       }
     } else {
-      ## Step 1: check within PBDB
+      ## Step 1: check within macrostrat
       hits <- which(macrostrat$verbatim_name == form)
       ## If hits has at least one number, proceed
       if(length(hits)>0){
@@ -885,7 +888,7 @@ NMS <- NMS[-missing,]
 ## Export updated NMS
 saveRDS(NMS, file = "data/museum/NMS_1_6_1.Rds")
 
-#### Checking formations ####
+#### Checking formations sampled ####
 GBIF.f <- c(GBIF$formation1, GBIF$formation2, GBIF$formation3, GBIF$formation4)
 GBIF.f <- unique(GBIF.f)
 
@@ -912,7 +915,7 @@ length(which(!NMS.f %in% PBDB.f))/length(NMS.f)
 length(which(!Peabody.f %in% PBDB.f))
 length(which(!Peabody.f %in% PBDB.f))/length(Peabody.f)
 
-#### Checking occurrences ####
+#### Checking occurrences sampled ####
 GBIF.occs <- which(GBIF$formation1 %in% GBIF.f[(!GBIF.f %in% PBDB.f)])
 GBIF.occs <- c(GBIF.occs,which(GBIF$formation2 %in% GBIF.f[(!GBIF.f %in% PBDB.f)]))
 GBIF.occs <- c(GBIF.occs,which(GBIF$formation3 %in% GBIF.f[(!GBIF.f %in% PBDB.f)]))

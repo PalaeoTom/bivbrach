@@ -450,17 +450,11 @@ noLoc <- unique(noLoc)
 droppers <- intersect(noLL, noLoc)
 AMNH <- AMNH[-droppers, ]
 
-## Pass misspell function to correct common dipthongs
-source("functions/misspell.R")
-AMNH$genus <- misspell(AMNH$genus)
-
 ## Clean up punctuation
-AMNH$genus <- str_replace_all(AMNH$genus, pattern = "[:punct:]", replacement = "")
 AMNH$formation1 <- str_replace_all(AMNH$formation1, pattern = "[:punct:]", replacement = "")
 AMNH$formation2 <- str_replace_all(AMNH$formation2, pattern = "[:punct:]", replacement = "")
 
-## Tidy up genus, stage, and formation capitalization
-AMNH$genus <- str_to_title(AMNH$genus)
+## Tidy up formation capitalization
 AMNH$formation1 <- str_to_title(AMNH$formation1)
 AMNH$formation2 <- str_to_title(AMNH$formation2)
 

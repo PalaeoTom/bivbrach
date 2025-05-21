@@ -140,10 +140,6 @@ noLoc <- c(noLoc, which(NMS_biv$locality == "unknown locality"))
 NMS_biv <- NMS_biv[-noLoc, ]
 
 #### Tidying up taxonomy ####
-## Use misspell to address dipthongs
-source("functions/misspell.R")
-NMS_biv$genus <- misspell(NMS_biv$genus)
-
 ## Tidy up undetermined/indeterminate
 #View(data.frame(table(NMS_biv$species)))
 gen.level <- c()
@@ -203,11 +199,9 @@ NMS_biv[gen.level,"species"] <- "sp."
 NMS_biv$phylum <- "Mollusca"
 
 ## Clean up punctuation
-NMS_biv$genus <- str_replace_all(NMS_biv$genus, pattern = "[:punct:]", replacement = "")
 NMS_biv$formation <- str_replace_all(NMS_biv$formation, pattern = "[:punct:]", replacement = "")
 
 ## Format capitalization
-NMS_biv$genus <- str_to_title(NMS_biv$genus)
 NMS_biv$formation <- str_to_title(NMS_biv$formation)
 NMS_biv$species <- tolower(NMS_biv$species)
 
@@ -492,15 +486,10 @@ noLoc <- c(noLoc, which(NMS_brach$locality == "unknown"))
 noLoc <- unique(noLoc)
 NMS_brach <- NMS_brach[-noLoc,]
 
-## Clean up dipthongs with misspell
-NMS_brach$genus <- misspell(NMS_brach$genus)
-
-## Clean genera, formations, and stages
-NMS_brach$genus <- str_replace_all(NMS_brach$genus, pattern = "[:punct:]", replacement = "")
+## Address punctuation and capitalization for formations
 NMS_brach$formation1 <- str_replace_all(NMS_brach$formation1, pattern = "[:punct:]", replacement = "")
 NMS_brach$formation2 <- str_replace_all(NMS_brach$formation2, pattern = "[:punct:]", replacement = "")
 
-NMS_brach$genus <- str_to_title(NMS_brach$genus)
 NMS_brach$formation1 <- str_to_title(NMS_brach$formation1)
 NMS_brach$formation2 <- str_to_title(NMS_brach$formation2)
 

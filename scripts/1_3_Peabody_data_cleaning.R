@@ -370,17 +370,11 @@ noLoc <- unique(noLoc)
 droppers <- intersect(noLL, noLoc)
 Peabody_biv <- Peabody_biv[-droppers,]
 
-## Apply misspell function to correct dipthongs
-source("functions/misspell.R")
-Peabody_biv$genus <- misspell(Peabody_biv$genus)
-
 ## Clean out punctuation
-Peabody_biv$genus <- str_replace_all(Peabody_biv$genus, pattern = "[:punct:]", replacement = "")
 Peabody_biv$formation1 <- str_replace_all(Peabody_biv$formation1, pattern = "[:punct:]", replacement = "")
 Peabody_biv$formation2 <- str_replace_all(Peabody_biv$formation2, pattern = "[:punct:]", replacement = "")
 
 ## Tidy up genus, stage, and formation capitalization
-Peabody_biv$genus <- str_to_title(Peabody_biv$genus)
 Peabody_biv$formation1 <- str_to_title(Peabody_biv$formation1)
 Peabody_biv$formation2 <- str_to_title(Peabody_biv$formation2)
 
@@ -762,17 +756,11 @@ noLoc <- unique(noLoc)
 droppers <- intersect(noLL, noLoc)
 Peabody_brach <- Peabody_brach[-droppers, ]
 
-## Misspell function
-source("functions/misspell.R")
-Peabody_brach$genus <- misspell(Peabody_brach$genus)
-
-## Remove punctuation from genera, stages, and formations
-Peabody_brach$genus <- str_replace_all(Peabody_brach$genus, pattern = "[:punct:]", replacement = "")
+## Remove punctuation from  formations
 Peabody_brach$formation1 <- str_replace_all(Peabody_brach$formation1, pattern = "[:punct:]", replacement = "")
 Peabody_brach$formation2 <- str_replace_all(Peabody_brach$formation2, pattern = "[:punct:]", replacement = "")
 
-## Tidy up genus, stage, and formation capitalization
-Peabody_brach$genus <- str_to_title(Peabody_brach$genus)
+## Tidy up formation capitalization
 Peabody_brach$formation1 <- str_to_title(Peabody_brach$formation1)
 Peabody_brach$formation2 <- str_to_title(Peabody_brach$formation2)
 

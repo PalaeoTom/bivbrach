@@ -5,7 +5,7 @@
 # GBIF.org (20 May 2024) GBIF Occurrence Download  https://doi.org/10.15468/dl.3xb65c
 
 ## Load libraries
-packages <- c("fossilbrush", "stringr", "CoordinateCleaner", "rgbif", "divDyn", "velociraptr")
+packages <- c("fossilbrush", "stringr", "CoordinateCleaner", "rgbif", "divDyn", "velociraptr", "rnaturalearth", "rnaturalearthdata")
 if(length(packages[!packages %in% installed.packages()[,"Package"]]) > 0){
   install.packages(packages[!packages %in% installed.packages()[,"Package"]])
 }
@@ -15,6 +15,8 @@ library(CoordinateCleaner)
 library(rgbif)
 library(divDyn)
 library(velociraptr)
+library(rnaturalearth)
+library(rnaturalearthdata)
 
 ## Clean directory
 rm(list = ls())
@@ -70,12 +72,12 @@ rm(list = ls())
 #GBIF_brach <- data.frame(import.raw.GBIF(brachiopod.download.path, columns.TBR, out.dir, export = T, export.name = "GBIF_brach_Oct24"))
 
 ## Load raw GBIF
-GBIF_biv <- readRDS("data/unclean_data/raw_GBIF_biv_Oct24.Rds")
-GBIF_brach <- readRDS("data/unclean_data/raw_GBIF_brach_Oct24.Rds")
+GBIF_biv <- readRDS("data/unclean_data/raw_GBIF_biv_18Oct24.Rds")
+GBIF_brach <- readRDS("data/unclean_data/raw_GBIF_brach_18Oct24.Rds")
 
 #### Dropping useless columns ####
-GBIF_biv <- GBIF_biv[,-c(9, 10, 13, 14, 15, 18, 35, 37, 38)]
-GBIF_brach <- GBIF_brach[,-c(9, 10, 13, 14, 15, 18, 35, 37, 38)]
+GBIF_biv <- GBIF_biv[,-c(9, 10, 13, 14, 15, 18, 35)]
+GBIF_brach <- GBIF_brach[,-c(9, 10, 13, 14, 15, 18, 35)]
 
 #### Dropping unusable rows ####
 ## Drop data with taxonRank not genus, species, or lower
@@ -269,7 +271,7 @@ GBIF_biv[which(GBIF_biv$latestAgeOrHighestStage == "Upper Ludlow, Pragian, Zlich
 #### Read in bivalve milestone data ####
 ## Wittle down to stages to be split
 ## First, save progress
-#saveRDS(GBIF_biv, file = "data/GBIF/GBIF_biv_milestone.Rds")
+saveRDS(GBIF_biv, file = "data/GBIF/GBIF_biv_milestone.Rds")
 GBIF_biv <- readRDS("data/GBIF/GBIF_biv_milestone.Rds")
 
 ## Parition out original stage data for record
@@ -536,20 +538,13 @@ GBIF_biv$formation <- NULL
 ## Attach to dataset
 GBIF_biv <- cbind(GBIF_biv, formations)
 
-## Tidy formations, stages, and genera
-## Use misspell to tidy up dipthongs and alternative spellings
-source("functions/misspell.R")
-GBIF_biv$genus <- misspell(GBIF_biv$genus)
-
 ## Drop punctuation from formations and genus names
-GBIF_biv$genus <- str_replace_all(GBIF_biv$genus, pattern = "[:punct:]", replacement = "")
 GBIF_biv$formation1 <- str_replace_all(GBIF_biv$formation1, pattern = "[:punct:]", replacement = "")
 GBIF_biv$formation2 <- str_replace_all(GBIF_biv$formation2, pattern = "[:punct:]", replacement = "")
 GBIF_biv$formation3 <- str_replace_all(GBIF_biv$formation3, pattern = "[:punct:]", replacement = "")
 GBIF_biv$formation4 <- str_replace_all(GBIF_biv$formation4, pattern = "[:punct:]", replacement = "")
 
 ## Correct capitalization for genera and formations
-GBIF_biv$genus <- str_to_title(GBIF_biv$genus)
 GBIF_biv$formation1 <- str_to_title(GBIF_biv$formation1)
 GBIF_biv$formation2 <- str_to_title(GBIF_biv$formation2)
 GBIF_biv$formation3 <- str_to_title(GBIF_biv$formation3)
@@ -666,7 +661,7 @@ droppers <- c(droppers, intersect(noLL, noLoc))
 GBIF_brach <- GBIF_brach[-droppers,]
 
 ## Record milestone - post coordinate cleaner
-#saveRDS(GBIF_brach, file = "data/GBIF/GBIF_brach_milestone.Rds")
+saveRDS(GBIF_brach, file = "data/GBIF/GBIF_brach_milestone.Rds")
 GBIF_brach <- readRDS("data/GBIF/GBIF_brach_milestone.Rds")
 
 ## First, check for incomplete age categories.
@@ -953,18 +948,11 @@ GBIF_brach$formation <- NULL
 ## Attach to dataset
 GBIF_brach <- cbind(GBIF_brach, formations)
 
-## Tidy formations, stages, and genera
-## Use misspell to tidy up dipthongs and alternative spellings
-source("functions/misspell.R")
-GBIF_brach$genus <- misspell(GBIF_brach$genus)
-
 ## Drop punctuation from formations and stages (fossilbrush will clean taxa)
-GBIF_brach$genus <- str_replace_all(GBIF_brach$genus, pattern = "[:punct:]", replacement = "")
 GBIF_brach$formation1 <- str_replace_all(GBIF_brach$formation1, pattern = "[:punct:]", replacement = "")
 GBIF_brach$formation2 <- str_replace_all(GBIF_brach$formation2, pattern = "[:punct:]", replacement = "")
 
 ## Correct capitalization
-GBIF_brach$genus <- str_to_title(GBIF_brach$genus)
 GBIF_brach$formation1 <- str_to_title(GBIF_brach$formation1)
 GBIF_brach$formation2 <- str_to_title(GBIF_brach$formation2)
 
