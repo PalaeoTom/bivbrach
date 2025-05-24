@@ -73,3 +73,4 @@ quant.chrono <- function(data, key, column = "chronostratigraphy"){
   data[,column] <- NULL
   return(data)
 }
+

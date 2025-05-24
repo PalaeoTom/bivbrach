@@ -2,12 +2,13 @@
 ## Started by TJS on 08/01/2024
 
 ## If packages aren't installed, install them, then load them
-packages <- c("stringr", "divDyn")
+packages <- c("stringr", "divDyn", "fossilbrush", "paleobioDB")
 if(length(packages[!packages %in% installed.packages()[,"Package"]]) > 0){
   install.packages(packages[!packages %in% installed.packages()[,"Package"]])
 }
 library(stringr)
 library(divDyn)
+library(fossilbrush)
 
 ## Clean directory
 rm(list = ls())
@@ -16,22 +17,34 @@ rm(list = ls())
 ## Download latest version - get all columns
 #library(paleobioDB)
 #raw_PBDB_bivalves <- pbdb_occurrences(limit = "all", vocab = "pbdb", base_name = "Bivalvia",
-#                                      show = c("coll", "class", "coords", "paleoloc", "strat", "stratext", "lith", "env"))
+#                                      show = c("coll", "class", "coords", "paleoloc", "strat", "stratext", "lith", "env", "ident", "refattr"))
 
 #raw_PBDB_brachiopods <- pbdb_occurrences(limit = "all", vocab = "pbdb", base_name = "Brachiopoda",
-#                                      show = c("coll", "class", "coords", "paleoloc", "strat", "stratext", "lith", "env"))
+#                                      show = c("coll", "class", "coords", "paleoloc", "strat", "stratext", "lith", "env", "ident", "refattr"))
+
+#### Guo et al corrections to raw data ####
+#setwd("~/R_packages/bivbrach")
+#home <- getwd()
+#source("functions/apply_Guo2023_bivalves.R")
+#source("functions/apply_Guo2023_brachiopods.R")
+#GTS2020 <- readRDS("data/metadata/GTS2020.Rdata")
+#coln <- readRDS("data/PBDB/colnames.Rds")
+
+## Run function
+#raw_PBDB_bivalves <- apply_Guo2023_bivalves(raw_PBDB_bivalves, GTS2020 = GTS2020)
+#raw_PBDB_brachiopods <- apply_Guo2023_brachiopods(raw_PBDB_brachiopods, GTS2020 = GTS2020)
 
 ## combine
 #PBDB <- rbind(raw_PBDB_bivalves, raw_PBDB_brachiopods)
 
 ## trim down to necessary columns
-#PBDB <- PBDB[,c(which(colnames(PBDB) %in% colnames(raw_PBDB)),37)]
+#PBDB <- PBDB[,which(colnames(PBDB) %in% coln)]
 
 ## Export
-#saveRDS(PBDB, "data/unclean_data/PBDB_biv_brach_Apr25.Rds")
+#saveRDS(PBDB, "data/unclean_data/PBDB_biv_brach_May25.Rds")
 
 ## Or, load data that was used for these analyses
-PBDB <- readRDS("data/unclean_data/PBDB_biv_brach_Apr25.Rds")
+PBDB <- readRDS("data/unclean_data/PBDB_biv_brach_May25.Rds")
 
 #### Taxonomic filtering and cleaning ####
 ## First, check accepted ranks
@@ -49,14 +62,6 @@ PBDB[grep("NO_", PBDB[,"genus"]), "genus"] <- ""
 ## Drop all genera with no information
 PBDB <- PBDB[-which(PBDB$genus == ""),]
 
-#### Applying Guo et al. corrections ####
-
-
-## Load column names to retain after applying Guo et al corrections.
-#colsToKeep <- readRDS("data/PBDB/columnsToKeep.Rds")
-
-## Filter out to these columns
-
 #### Adding environmental covariates ####
 ## Define lithology, bathymetric, and reefal categories
 data(keys)
@@ -67,9 +72,6 @@ PBDB$reefCat[PBDB$lithCat == "siliciclastic" & PBDB$environment == "marine indet
 
 ## Drop unlithified sediments - effort to reduce sampling bias
 PBDB <- PBDB[-which(PBDB$lithification1=="unlithified"),]
-
-#### Applying Guo et al corrections to collectons and formations ####
-
 
 #### Updating chronostratigraphy and temporal filtering ####
 ## Adding stages of Kocsis et al. (2019)
@@ -231,6 +233,9 @@ PBDB$max_ma <- PBDB$newFAD
 PBDB$min_ma <- PBDB$newLAD
 PBDB <- PBDB[,c(1:28)]
 
+## Update Late Miocene entries
+PBDB[which(PBDB$late_interval == "Late Miocene"),"min_ma"] <- 5.333
+
 ## check for and remove any entries with nonsensical entries (LAD older than FAD)
 if(any(PBDB$max_ma < PBDB$min_ma)){
   PBDB <- PBDB[-which(PBDB$max_ma < PBDB$min_ma),]
@@ -270,15 +275,14 @@ PBDB <- PBDB[-which(PBDB$min_ma == 0),]
 #write.csv(brachiopod.ecology, "data/Guo2023_brachiopod_ecology.csv")
 #write.csv(bivalve.ecology, "data/Guo2023_bivalve_ecology.csv")
 
-#### Assign depth categories to PBDB data
 ## Define key
-brachiopod.ecology <- read.csv("data/metadata/Guo2023_brachiopod_ecology.csv", row.names = 1)
-bivalve.ecology <- read.csv("data/metadata/Guo2023_bivalve_ecology.csv", row.names = 1)
-key <- rbind(brachiopod.ecology, bivalve.ecology)
+#brachiopod.ecology <- read.csv("data/metadata/Guo2023_brachiopod_ecology.csv", row.names = 1)
+#bivalve.ecology <- read.csv("data/metadata/Guo2023_bivalve_ecology.csv", row.names = 1)
+#key <- rbind(brachiopod.ecology, bivalve.ecology)
 
 ## Read in function
-source("functions/add.ecology.IDs.R")
-PBDB <- add.ecology.IDs(data = PBDB, key)
+#source("functions/add.ecology.IDs.R")
+#PBDB <- add.ecology.IDs(data = PBDB, key)
 
 #### Drop terrestrial records (if any) ####
 omitEnv <- c(
@@ -296,7 +300,7 @@ PBDB <- PBDB[!PBDB$environment%in%omitEnv,]
 
 #### Rearrange and export ####
 ## Rearrange
-PBDB <- PBDB[,c(1, 10, 4, 5, 2, 3, 6, 23, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 25, 21, 24, 22, 26:30)]
+PBDB <- PBDB[,c(1, 10, 4, 5, 2, 3, 6, 23, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 25, 21, 24, 22, 26:28)]
 
 ## Export data
 saveRDS(PBDB, "data/PBDB/PBDB.Rds")

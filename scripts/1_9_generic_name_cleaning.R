@@ -12,11 +12,18 @@ library(fossilbrush)
 rm(list = ls())
 
 ## Read in updated databases
-PBDB <- readRDS("data/PBDB/PBDB.Rds")
-NMS <- readRDS("data/museum/NMS_1_6_1.Rds")
-AMNH <- readRDS("data/museum/AMNH_1_6_1.Rds")
-Peabody <- readRDS("data/museum/Peabody_1_6_1.Rds")
-GBIF <- readRDS("data/GBIF/GBIF_1_6_1.Rds")
+PBDB <- readRDS("data/PBDB/PBDB_1_8_3.Rds")
+NMS <- readRDS("data/museum/NMS_1_8_3.Rds")
+AMNH <- readRDS("data/museum/AMNH_1_8_3.Rds")
+Peabody <- readRDS("data/museum/Peabody_1_8_3.Rds")
+GBIF <- readRDS("data/GBIF/GBIF_1_8_3.Rds")
+
+## PBDB synonymisations applied in script 1_5
+
+#### clean_name, misspell, punctuation, capitalisation ####
+
+#### Adding combined name to use ####
+
 
 #### Functions previously used for non-PBDB data ####
 ## Use misspell to address dipthongs

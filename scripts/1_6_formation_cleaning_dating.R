@@ -471,9 +471,6 @@ GBIF[which(GBIF$formation1 == "San Carlos formation"),"chronostratigraphy"] <- "
 ## Do same for AMNH
 AMNH[which(AMNH$formation1 == "Ford formation"),"chronostratigraphy"] <- "Roadian,Changhsingian"
 
-## Update rogue stages that have not been updated
-GBIF[which(GBIF$chronostratigraphy == "Tatarian"),"chronostratigraphy"] <- "Lopingian,Wordian"
-
 ## Isolate formations once again for checking
 final.forms <- c(GBIF$formation1, GBIF$formation2, GBIF$formation3, GBIF$formation4, AMNH$formation1, AMNH$formation2, NMS$formation1, NMS$formation2, Peabody$formation1, Peabody$formation2)
 final.forms <- sort(unique(final.forms))[-1]
@@ -593,6 +590,9 @@ GBIF.prop.usable.pMacro <- (nrow(GBIF)-length(missing))/nrow(GBIF)
 
 ## Drop missing
 GBIF <- GBIF[-missing,]
+
+## Remove weird stage if present
+GBIF[which(GBIF$chronostratigraphy == "Tatarian"),"chronostratigraphy"] <- "Lopingian,Wordian"
 
 ## Export updated GBIF
 saveRDS(GBIF, file = "data/GBIF/GBIF_1_6_1.Rds")

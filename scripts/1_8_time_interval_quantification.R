@@ -89,86 +89,6 @@ StratKey <- ms.strat[,c(2,4,5,9)]
 
 ## Load function
 source("functions/quant.chrono.R")
-#data <- GBIF
-#key = StratKey
-#column = "chronostratigraphy"
-#i = 46459
-
-quant.chrono <- function(data, key, column = "chronostratigraphy"){
-  ## add relevant columns
-  data$early_interval <- NA
-  data$late_interval <- NA
-  data$max_ma <- NA
-  data$min_ma <- NA
-  data$midpoint <- NA
-  ## Populate new cells using chronostratigraphy
-  for(i in 1:nrow(data)){
-    print(i)
-    c <- data[i,column]
-    ## if comma, split
-    if(str_detect(c, fixed(","))){
-      ## split
-      sc <- unlist(str_split(c, fixed(",")))
-      ## isolate intervals
-      min_ma <- c()
-      max_ma <- c()
-      midpoint <- c()
-      for(int in sc){
-        min_ma <- c(min_ma,key[which(key[,"name"] %in% int),"t_age"])
-        max_ma <- c(max_ma,key[which(key[,"name"] %in% int),"b_age"])
-        midpoint <- c(midpoint,key[which(key[,"name"] %in% int),"Midpoint"])
-      }
-      ## Start with late interval
-      late_int <- sc[which(min_ma %in% min(min_ma))]
-      late_min_ma <- min_ma[which(min_ma %in% min(min_ma))]
-      ## if length is two, take shortest interval
-      if(length(late_int) > 1){
-        late_max_ma <- max_ma[which(min_ma %in% min(min_ma))]
-        ## get duration
-        dur <- late_max_ma-late_min_ma
-        ## retain minimum dur
-        late_int <- late_int[which(dur %in% min(dur))]
-        late_min_ma <- late_min_ma[which(dur %in% min(dur))]
-      }
-      if(length(late_int) > 1){
-        stop(paste0("Row ", i, " has two intervals with matching durations that could fit in late_interval slot: ", late_int))
-      } else {
-        data[i,"late_interval"] <- late_int
-        data[i,"min_ma"] <- late_min_ma
-      }
-      ## Now do the same for the early interval
-      early_int <- sc[which(max_ma %in% max(max_ma))]
-      early_max_ma <- max_ma[which(max_ma %in% max(max_ma))]
-      ## if length is two, take shortest interval
-      if(length(early_int) > 1){
-        early_min_ma <- min_ma[which(max_ma %in% max(max_ma))]
-        ## get duration
-        dur <- early_max_ma-early_min_ma
-        ## retain minimum dur
-        early_int <- early_int[which(dur %in% min(dur))]
-        early_max_ma <- early_max_ma[which(dur %in% min(dur))]
-      }
-      if(length(early_int) > 1){
-        stop(paste0("Row ", i, " has two intervals with matching durations that could fit in early_interval slot: ", early_int))
-      } else {
-        data[i,"early_interval"] <- early_int
-        data[i,"max_ma"] <- early_max_ma
-      }
-      ## Then assign midpoint
-      data[i,"midpoint"] <- (early_max_ma+late_min_ma)/2
-    } else {
-      ## Add populate early interval
-      data[i,"early_interval"] <- c
-      ## Find interval in ms.strat
-      data[i,"min_ma"] <- key[which(key[,"name"] %in% c),"t_age"]
-      data[i,"max_ma"] <- key[which(key[,"name"] %in% c),"b_age"]
-      data[i,"midpoint"] <- key[which(key[,"name"] %in% c),"Midpoint"]
-    }
-  }
-  ## delete old column
-  data[,column] <- NULL
-  return(data)
-}
 
 ## Run function and export
 # NMS
@@ -194,7 +114,59 @@ AMNH <- readRDS("data/museum/AMNH_1_8_2.Rds")
 Peabody <- readRDS("data/museum/Peabody_1_8_2.Rds")
 GBIF <- readRDS("data/GBIF/GBIF_1_8_2.Rds")
 
+## use fossilbrush to update Chronostratigraphy - PBDB already done
+NMS <- chrono_scale(NMS,  tscale = "GTS_2020", srt = "early_interval", end = "late_interval",
+                     max_ma = "max_ma", min_ma = "min_ma", verbose = FALSE)
+AMNH <- chrono_scale(AMNH,  tscale = "GTS_2020", srt = "early_interval", end = "late_interval",
+                    max_ma = "max_ma", min_ma = "min_ma", verbose = FALSE)
+Peabody <- chrono_scale(Peabody,  tscale = "GTS_2020", srt = "early_interval", end = "late_interval",
+                    max_ma = "max_ma", min_ma = "min_ma", verbose = FALSE)
+GBIF <- chrono_scale(GBIF,  tscale = "GTS_2020", srt = "early_interval", end = "late_interval",
+                    max_ma = "max_ma", min_ma = "min_ma", verbose = FALSE)
 
+## Move to max_ma and min_ma, then drop columns
+NMS$max_ma <- NMS$newFAD
+NMS$min_ma <- NMS$newLAD
+NMS$newFAD <- NULL
+NMS$newLAD <- NULL
 
+AMNH$max_ma <- AMNH$newFAD
+AMNH$min_ma <- AMNH$newLAD
+AMNH$newFAD <- NULL
+AMNH$newLAD <- NULL
 
+Peabody$max_ma <- Peabody$newFAD
+Peabody$min_ma <- Peabody$newLAD
+Peabody$newFAD <- NULL
+Peabody$newLAD <- NULL
+
+GBIF$max_ma <- GBIF$newFAD
+GBIF$min_ma <- GBIF$newLAD
+GBIF$newFAD <- NULL
+GBIF$newLAD <- NULL
+
+## Check for "Late Miocene" late intervals - issue with min_ma being set to 8.333 instead of 5.333
+any(which(NMS$late_interval == "Late Miocene"))
+any(which(AMNH$late_interval == "Late Miocene"))
+any(which(Peabody$late_interval == "Late Miocene"))
+any(which(GBIF$late_interval == "Late Miocene"))
+## Some in GBIF
+GBIF[which(GBIF$late_interval == "Late Miocene"),"min_ma"] <- 5.333
+any(which(PBDB$late_interval == "Late Miocene"))
+
+## Re-calculate midpoints
+source("functions/get.midpoints.R")
+NMS$midpoint <- get.midpoints(NMS[,c(21,22)])
+AMNH$midpoint <- get.midpoints(AMNH[,c(40,41)])
+Peabody$midpoint <- get.midpoints(Peabody[,c(33,34)])
+GBIF$midpoint <- get.midpoints(GBIF[,c(38,39)])
+PBDB$midpoint <- get.midpoints(PBDB[,c(9,10)])
+
+## Export
+## Run function and export
+saveRDS(NMS, "data/museum/NMS_1_8_3.Rds")
+saveRDS(AMNH, "data/museum/AMNH_1_8_3.Rds")
+saveRDS(Peabody, "data/museum/Peabody_1_8_3.Rds")
+saveRDS(PBDB, "data/PBDB//PBDB_1_8_3.Rds")
+saveRDS(GBIF, "data/GBIF/GBIF_1_8_3.Rds")
 
