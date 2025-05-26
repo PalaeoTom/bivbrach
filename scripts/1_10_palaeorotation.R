@@ -17,6 +17,30 @@ AMNH <- readRDS("data/museum/AMNH_1_9.Rds")
 Peabody <- readRDS("data/museum/Peabody_1_9.Rds")
 GBIF <- readRDS("data/GBIF/GBIF_1_9.Rds")
 
+## Converting coordinates and midpoints to numeric
+GBIF$decimalLatitude <- as.numeric(GBIF$decimalLatitude)
+GBIF$decimalLongitude <- as.numeric(GBIF$decimalLongitude)
+GBIF$midpoint <- as.numeric(GBIF$midpoint)
+
+AMNH$latitudeDecimal <- as.numeric(AMNH$latitudeDecimal)
+AMNH$longitudeDecimal <- as.numeric(AMNH$longitudeDecimal)
+AMNH$midpoint <- as.numeric(AMNH$midpoint)
+
+NMS$latitude <- as.numeric(NMS$latitude)
+NMS$longitude <- as.numeric(NMS$longitude)
+NMS$midpoint <- as.numeric(NMS$midpoint)
+
+## Peabody has 200 or so occurrences with NA lat/long. Must drop
+droppers <- which(is.na(Peabody$latitude))
+droppers <- c(droppers, which(is.na(Peabody$longitude)))
+droppers <- unique(droppers)
+Peabody <- Peabody[-droppers,]
+
+## Now confirm all are numeric
+Peabody$latitude <- as.numeric(Peabody$latitude)
+Peabody$longitude <- as.numeric(Peabody$longitude)
+Peabody$midpoint <- as.numeric(Peabody$midpoint)
+
 #### Rotating for palaeocoordinates ####
 ## Rotate
 PBDB_rotated <- palaeorotate(PBDB, lng = "lng", lat = "lat", age = "midpoint", model = c("MERDITH2021", "PALEOMAP", "GOLONKA", "TorsvikCocks2017"), method = "point", uncertainty = T)
