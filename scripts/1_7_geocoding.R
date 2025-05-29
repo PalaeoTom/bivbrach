@@ -134,28 +134,40 @@ Peabody[doubles,"uncertaintyInMeters"] <- d[,"uncertaintyInMeters"]
 ## Initialise vector for droppers
 Peabody_drop <-c()
 
+## ## First, remove NAs
+Peabody_drop <- which(is.na(Peabody$latitude))
+Peabody_drop <- c(Peabody_drop, which(is.na(Peabody$longitude)))
+Peabody_drop <- unique(Peabody_drop)
+
+## Remove NAs
+Peabody_TBC <- Peabody[Peabody_drop,]
+Peabody <- Peabody[-Peabody_drop,]
+
+## Reset droppers
+Peabody_drop <- c()
+
 ## Any coordinates outside expected range
-if(any(Peabody$latitude[!is.na(Peabody$latitude)] > 180)){
-  Peabody_drop <- c(Peabody_drop,which((Peabody$latitude[!is.na(Peabody$latitude)]) > 180))
+if(any(Peabody$latitude > 180)){
+  Peabody_drop <- c(Peabody_drop,which(Peabody$latitude > 180))
 }
-if(any(Peabody$latitude[!is.na(Peabody$latitude)] < -180)){
-  Peabody_drop <- c(Peabody_drop,which((Peabody$latitude[!is.na(Peabody$latitude)]) < -180))
+if(any(Peabody$latitude < -180)){
+  Peabody_drop <- c(Peabody_drop,which(Peabody$latitude < -180))
 }
-if(any(Peabody$longitude[!is.na(Peabody$longitude)] > 180)){
-  Peabody_drop <- c(Peabody_drop,which((Peabody$longitude[!is.na(Peabody$longitude)]) > 180))
+if(any(Peabody$longitude > 180)){
+  Peabody_drop <- c(Peabody_drop,which(Peabody$longitude > 180))
 }
-if(any(Peabody$longitude[!is.na(Peabody$longitude)] < -180)){
-  Peabody_drop <- c(Peabody_drop,which((Peabody$longitude[!is.na(Peabody$longitude)]) < -180))
+if(any(Peabody$longitude < -180)){
+  Peabody_drop <- c(Peabody_drop,which(Peabody$longitude < -180))
 }
 
-## Any coordinates with unaccpetable uncertainty
+## Any coordinates with unacceptable uncertainty
 Peabody_drop <- c(Peabody_drop, which(Peabody[,"uncertaintyInMeters"] > 25000))
 
 ## get unique
 Peabody_drop <- unique(Peabody_drop)
 
 ## Remove droppers from dataset
-Peabody_TBC <- Peabody[Peabody_drop,]
+Peabody_TBC <- rbind(Peabody_TBC, Peabody[Peabody_drop,])
 Peabody <- Peabody[-Peabody_drop,]
 
 ## Clean dataset
@@ -193,29 +205,39 @@ AMNH$uncertaintyInMeters <- 0
 #View(data.frame(table(AMNH$longitudeDecimal)))
 
 ## Get those missing coords
+## Initialise vector for droppers
+AMNH_drop <-c()
+
+## ## First, remove NAs
 AMNH_drop <- which(is.na(AMNH$latitudeDecimal))
 AMNH_drop <- c(AMNH_drop, which(is.na(AMNH$longitudeDecimal)))
-
-## Any coordinates outside expected range
-if(any(AMNH$latitudeDecimal[!is.na(AMNH$latitudeDecimal)] > 180)){
-  AMNH_drop <- c(AMNH_drop,which((AMNH$latitudeDecimal[!is.na(AMNH$latitudeDecimal)]) > 180))
-}
-if(any(AMNH$latitudeDecimal[!is.na(AMNH$latitudeDecimal)] < -180)){
-  AMNH_drop <- c(AMNH_drop,which((AMNH$latitudeDecimal[!is.na(AMNH$latitudeDecimal)]) < -180))
-}
-if(any(AMNH$longitudeDecimal[!is.na(AMNH$longitudeDecimal)] > 180)){
-  AMNH_drop <- c(AMNH_drop,which((AMNH$longitudeDecimal[!is.na(AMNH$longitudeDecimal)]) > 180))
-}
-if(any(AMNH$longitudeDecimal[!is.na(AMNH$longitudeDecimal)] < -180)){
-  AMNH_drop <- c(AMNH_drop,which((AMNH$longitudeDecimal[!is.na(AMNH$longitudeDecimal)]) < -180))
-}
-
-## drop to unique entries
 AMNH_drop <- unique(AMNH_drop)
 
-## Separate those entries to be geocoded
+## Remove NAs
 AMNH_TBC <- AMNH[AMNH_drop,]
 AMNH <- AMNH[-AMNH_drop,]
+
+## Reset droppers
+AMNH_drop <- c()
+
+## Any coordinates outside expected range
+if(any(AMNH$latitudeDecimal > 180)){
+  AMNH_drop <- c(AMNH_drop,which(AMNH$latitudeDecimal > 180))
+}
+if(any(AMNH$latitudeDecimal < -180)){
+  AMNH_drop <- c(AMNH_drop,which(AMNH$latitudeDecimal < -180))
+}
+if(any(AMNH$longitudeDecimal > 180)){
+  AMNH_drop <- c(AMNH_drop,which(AMNH$longitudeDecimal > 180))
+}
+if(any(AMNH$longitudeDecimal < -180)){
+  AMNH_drop <- c(AMNH_drop,which(AMNH$longitudeDecimal < -180))
+}
+
+## Any coordinates with unacceptable uncertainty
+AMNH_drop <- c(AMNH_drop, which(AMNH[,"uncertaintyInMeters"] > 25000))
+
+## Nothing else to drop!
 
 ## Clean TBC
 AMNH_TBC$latitudeDecimal <- NA
@@ -260,30 +282,43 @@ geocode_AMNH <- unique(AMNH.loc)
 ##### GBIF #####
 ## Already has uncertainty
 
-## Get missing entries
+## Initialise vector for droppers
+GBIF_drop <-c()
+
+## ## First, remove NAs
 GBIF_drop <- which(is.na(GBIF$decimalLatitude))
 GBIF_drop <- c(GBIF_drop, which(is.na(GBIF$decimalLongitude)))
-GBIF_drop <- c(GBIF_drop, which(GBIF$coordinateUncertaintyInMeters>25000))
-
-## Any coordinates outside expected range
-if(any(GBIF$decimalLatitude[!is.na(GBIF$decimalLatitude)] > 180)){
-  GBIF_drop <- c(GBIF_drop,which((GBIF$decimalLatitude[!is.na(GBIF$decimalLatitude)]) > 180))
-}
-if(any(GBIF$decimalLatitude[!is.na(GBIF$decimalLatitude)] < -180)){
-  GBIF_drop <- c(GBIF_drop,which((GBIF$decimalLatitude[!is.na(GBIF$decimalLatitude)]) < -180))
-}
-if(any(GBIF$decimalLongitude[!is.na(GBIF$decimalLongitude)] > 180)){
-  GBIF_drop <- c(GBIF_drop,which((GBIF$decimalLongitude[!is.na(GBIF$decimalLongitude)]) > 180))
-}
-if(any(GBIF$decimalLongitude[!is.na(GBIF$decimalLongitude)] < -180)){
-  GBIF_drop <- c(GBIF_drop,which((GBIF$decimalLongitude[!is.na(GBIF$decimalLongitude)]) < -180))
-}
-
-## Refine to unique
 GBIF_drop <- unique(GBIF_drop)
 
-## Separate those entries to be geocoded
+## Remove NAs
 GBIF_TBC <- GBIF[GBIF_drop,]
+GBIF <- GBIF[-GBIF_drop,]
+
+## Reset droppers
+GBIF_drop <- c()
+
+## Any coordinates outside expected range
+if(any(GBIF$decimalLatitude > 180)){
+  GBIF_drop <- c(GBIF_drop,which(GBIF$decimalLatitude > 180))
+}
+if(any(GBIF$decimalLatitude < -180)){
+  GBIF_drop <- c(GBIF_drop,which(GBIF$decimalLatitude < -180))
+}
+if(any(GBIF$decimalLongitude > 180)){
+  GBIF_drop <- c(GBIF_drop,which(GBIF$decimalLongitude > 180))
+}
+if(any(GBIF$decimalLongitude < -180)){
+  GBIF_drop <- c(GBIF_drop,which(GBIF$decimalLongitude < -180))
+}
+
+## Any coordinates with unacceptable uncertainty
+GBIF_drop <- c(GBIF_drop, which(GBIF[,"coordinateUncertaintyInMeters"] > 25000))
+
+## get unique
+GBIF_drop <- unique(GBIF_drop)
+
+## Remove droppers from dataset
+GBIF_TBC <- rbind(GBIF_TBC, GBIF[GBIF_drop,])
 GBIF <- GBIF[-GBIF_drop,]
 
 ## Clean TBC
@@ -615,23 +650,23 @@ NMS_key <- readRDS("data/museum/NMS_GPT_output.Rds")
 ##### NMS ####
 ## Match TBC_coords "original place" to key "response". Combine outputs.
 ## Add interpreted_locality, lat, long, and uncertainty
-NMS_key$interpreted_locality <- ""
-NMS_key$latitude <- NA
-NMS_key$longitude <- NA
-NMS_key$uncertainty <- NA
+#NMS_key$interpreted_locality <- ""
+#NMS_key$latitude <- NA
+#NMS_key$longitude <- NA
+#NMS_key$uncertainty <- NA
 ## Populate new cells
-for(i in 1:nrow(NMS_TBC_coords)){
-  ## find exact hits
-  hits <- which(NMS_key$response %in% NMS_TBC_coords$originalPlace[i])
-  ## transfer data
-  NMS_key[hits,"interpreted_locality"] <- NMS_TBC_coords[i,"interpretedPlace"]
-  NMS_key[hits,"latitude"] <- NMS_TBC_coords[i,"latitude"]
-  NMS_key[hits,"longitude"] <- NMS_TBC_coords[i,"longitude"]
-  NMS_key[hits,"uncertainty"] <- NMS_TBC_coords[i,"uncertainty"]
-}
+#for(i in 1:nrow(NMS_TBC_coords)){
+#  ## find exact hits
+#  hits <- which(NMS_key$response %in% NMS_TBC_coords$originalPlace[i])
+#  ## transfer data
+#  NMS_key[hits,"interpreted_locality"] <- NMS_TBC_coords[i,"interpretedPlace"]
+#  NMS_key[hits,"latitude"] <- NMS_TBC_coords[i,"latitude"]
+#  NMS_key[hits,"longitude"] <- NMS_TBC_coords[i,"longitude"]
+#  NMS_key[hits,"uncertainty"] <- NMS_TBC_coords[i,"uncertainty"]
+#}
 
 ## Export new version of key
-saveRDS(NMS_key, file = "data/museum/NMS_GPT_output.Rds")
+#saveRDS(NMS_key, file = "data/museum/NMS_GPT_output.Rds")
 
 ## Now use key to match to original data - first, add missing columns. NMS missing all.
 NMS_TBC$interpreted_locality <- ""
@@ -669,23 +704,23 @@ saveRDS(NMS, file = "data/museum/NMS_geocoded.Rds")
 ##### AMNH ####
 ## Match geocode to key "response". Combine outputs.
 ## Add interpreted_locality, lat, long, and uncertainty
-AMNH_key$interpreted_locality <- ""
-AMNH_key$latitude <- NA
-AMNH_key$longitude <- NA
-AMNH_key$uncertainty <- NA
+#AMNH_key$interpreted_locality <- ""
+#AMNH_key$latitude <- NA
+#AMNH_key$longitude <- NA
+#AMNH_key$uncertainty <- NA
 ## Populate new cells
-for(i in 1:nrow(AMNH_TBC_coords)){
-  ## find hits
-  hits <- which(AMNH_key$response %in% AMNH_TBC_coords$originalPlace[i])
-  ## transfer data
-  AMNH_key[hits,"interpreted_locality"] <- AMNH_TBC_coords[i,"interpretedPlace"]
-  AMNH_key[hits,"latitude"] <- AMNH_TBC_coords[i,"latitude"]
-  AMNH_key[hits,"longitude"] <- AMNH_TBC_coords[i,"longitude"]
-  AMNH_key[hits,"uncertainty"] <- AMNH_TBC_coords[i,"uncertainty"]
-}
+#for(i in 1:nrow(AMNH_TBC_coords)){
+#  ## find hits
+#  hits <- which(AMNH_key$response %in% AMNH_TBC_coords$originalPlace[i])
+#  ## transfer data
+#  AMNH_key[hits,"interpreted_locality"] <- AMNH_TBC_coords[i,"interpretedPlace"]
+#  AMNH_key[hits,"latitude"] <- AMNH_TBC_coords[i,"latitude"]
+#  AMNH_key[hits,"longitude"] <- AMNH_TBC_coords[i,"longitude"]
+#  AMNH_key[hits,"uncertainty"] <- AMNH_TBC_coords[i,"uncertainty"]
+#}
 
 ## Export new version of key
-saveRDS(AMNH_key, file = "data/museum/AMNH_GPT_output.Rds")
+#saveRDS(AMNH_key, file = "data/museum/AMNH_GPT_output.Rds")
 
 ## Now use key to match to original data - first, add missing columns. AMNH missing just one.
 AMNH_TBC$interpreted_locality <- ""
@@ -727,23 +762,23 @@ saveRDS(AMNH, file = "data/museum/AMNH_geocoded.Rds")
 ##### Peabody ####
 ## Match geocode to key "response". Combine outputs.
 ## Add interpreted_locality, lat, long, and uncertainty
-Peabody_key$interpreted_locality <- ""
-Peabody_key$latitude <- NA
-Peabody_key$longitude <- NA
-Peabody_key$uncertainty <- NA
+#Peabody_key$interpreted_locality <- ""
+#Peabody_key$latitude <- NA
+#Peabody_key$longitude <- NA
+#Peabody_key$uncertainty <- NA
 ## Populate new cells
-for(i in 1:nrow(Peabody_TBC_coords)){
-  ## find hits
-  hits <- which(Peabody_key$response %in% Peabody_TBC_coords$originalPlace[i])
-  ## transfer data
-  Peabody_key[hits,"interpreted_locality"] <- Peabody_TBC_coords[i,"interpretedPlace"]
-  Peabody_key[hits,"latitude"] <- Peabody_TBC_coords[i,"latitude"]
-  Peabody_key[hits,"longitude"] <- Peabody_TBC_coords[i,"longitude"]
-  Peabody_key[hits,"uncertainty"] <- Peabody_TBC_coords[i,"uncertainty"]
-}
+#for(i in 1:nrow(Peabody_TBC_coords)){
+#  ## find hits
+#  hits <- which(Peabody_key$response %in% Peabody_TBC_coords$originalPlace[i])
+#  ## transfer data
+#  Peabody_key[hits,"interpreted_locality"] <- Peabody_TBC_coords[i,"interpretedPlace"]
+#  Peabody_key[hits,"latitude"] <- Peabody_TBC_coords[i,"latitude"]
+#  Peabody_key[hits,"longitude"] <- Peabody_TBC_coords[i,"longitude"]
+#  Peabody_key[hits,"uncertainty"] <- Peabody_TBC_coords[i,"uncertainty"]
+#}
 
 ## Export new version of key
-saveRDS(Peabody_key, file = "data/museum/Peabody_GPT_output.Rds")
+#saveRDS(Peabody_key, file = "data/museum/Peabody_GPT_output.Rds")
 
 ## Now use key to match to original data - first, add missing columns. Peabody missing just one.
 Peabody_TBC$interpreted_locality <- ""
@@ -785,23 +820,23 @@ saveRDS(Peabody, file = "data/museum/Peabody_geocoded.Rds")
 ##### GBIF ####
 ## Match geocode to key "response". Combine outputs.
 ## Add interpreted_locality, lat, long, and uncertainty
-GBIF_key$interpreted_locality <- ""
-GBIF_key$latitude <- NA
-GBIF_key$longitude <- NA
-GBIF_key$uncertainty <- NA
+#GBIF_key$interpreted_locality <- ""
+#GBIF_key$latitude <- NA
+#GBIF_key$longitude <- NA
+#GBIF_key$uncertainty <- NA
 ## Populate new cells
-for(i in 1:nrow(GBIF_TBC_coords)){
-  ## find hits
-  hits <- which(GBIF_key$response %in% GBIF_TBC_coords$originalPlace[i])
-  ## transfer data
-  GBIF_key[hits,"interpreted_locality"] <- GBIF_TBC_coords[i,"interpretedPlace"]
-  GBIF_key[hits,"latitude"] <- GBIF_TBC_coords[i,"latitude"]
-  GBIF_key[hits,"longitude"] <- GBIF_TBC_coords[i,"longitude"]
-  GBIF_key[hits,"uncertainty"] <- GBIF_TBC_coords[i,"uncertainty"]
-}
+#for(i in 1:nrow(GBIF_TBC_coords)){
+#  ## find hits
+#  hits <- which(GBIF_key$response %in% GBIF_TBC_coords$originalPlace[i])
+#  ## transfer data
+#  GBIF_key[hits,"interpreted_locality"] <- GBIF_TBC_coords[i,"interpretedPlace"]
+#  GBIF_key[hits,"latitude"] <- GBIF_TBC_coords[i,"latitude"]
+#  GBIF_key[hits,"longitude"] <- GBIF_TBC_coords[i,"longitude"]
+#  GBIF_key[hits,"uncertainty"] <- GBIF_TBC_coords[i,"uncertainty"]
+#}
 
 ## Export new version of key
-saveRDS(GBIF_key, file = "data/GBIF/GBIF_GPT_output.Rds")
+#saveRDS(GBIF_key, file = "data/GBIF/GBIF_GPT_output.Rds")
 
 ## Now use key to match to original data - first, add missing columns. GBIF missing just one.
 GBIF_TBC$interpreted_locality <- ""
@@ -817,7 +852,7 @@ for(i in 1:nrow(GBIF_key)){
   GBIF_TBC[hits,"coordinateUncertaintyInMeters"] <- GBIF_key[i,"uncertainty"]
 }
 
-## ## Drop NAs
+## Drop NAs
 droppers <- c()
 droppers <- c(droppers, which(is.na(GBIF_TBC$decimalLatitude)))
 droppers <- c(droppers, which(is.na(GBIF_TBC$decimalLongitude)))
