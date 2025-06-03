@@ -153,6 +153,7 @@ any(which(GBIF$late_interval == "Late Miocene"))
 ## Some in GBIF
 GBIF[which(GBIF$late_interval == "Late Miocene"),"min_ma"] <- 5.333
 any(which(PBDB$late_interval == "Late Miocene"))
+PBDB[which(PBDB$late_interval == "Late Miocene"),"min_ma"]
 
 ## Re-calculate midpoints
 source("functions/get.midpoints.R")
@@ -160,13 +161,13 @@ NMS$midpoint <- get.midpoints(NMS[,c(21,22)])
 AMNH$midpoint <- get.midpoints(AMNH[,c(40,41)])
 Peabody$midpoint <- get.midpoints(Peabody[,c(33,34)])
 GBIF$midpoint <- get.midpoints(GBIF[,c(38,39)])
-PBDB$midpoint <- get.midpoints(PBDB[,c(9,10)])
+PBDB$midpoint <- get.midpoints(PBDB[,c(10,11)])
 
 ## Export
 ## Run function and export
 saveRDS(NMS, "data/museum/NMS_1_8_3.Rds")
 saveRDS(AMNH, "data/museum/AMNH_1_8_3.Rds")
 saveRDS(Peabody, "data/museum/Peabody_1_8_3.Rds")
-saveRDS(PBDB, "data/PBDB//PBDB_1_8_3.Rds")
+saveRDS(PBDB, "data/PBDB/PBDB_1_8_3.Rds")
 saveRDS(GBIF, "data/GBIF/GBIF_1_8_3.Rds")
 

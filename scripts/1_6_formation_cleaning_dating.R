@@ -472,14 +472,14 @@ GBIF[which(GBIF$formation1 == "San Carlos formation"),"chronostratigraphy"] <- "
 AMNH[which(AMNH$formation1 == "Ford formation"),"chronostratigraphy"] <- "Roadian,Changhsingian"
 
 ## Isolate formations once again for checking
-final.forms <- c(GBIF$formation1, GBIF$formation2, GBIF$formation3, GBIF$formation4, AMNH$formation1, AMNH$formation2, NMS$formation1, NMS$formation2, Peabody$formation1, Peabody$formation2)
-final.forms <- sort(unique(final.forms))[-1]
+#final.forms <- c(GBIF$formation1, GBIF$formation2, GBIF$formation3, GBIF$formation4, AMNH$formation1, AMNH$formation2, NMS$formation1, NMS$formation2, Peabody$formation1, Peabody$formation2)
+#final.forms <- sort(unique(final.forms))[-1]
 
 ## Run function again to get final version
-enriched_forms <- get.units.wrapper(forms = final.forms)
+#enriched_forms <- get.units.wrapper(forms = final.forms)
 
 ## Save enriched forms
-saveRDS(enriched_forms, file = "data/metadata/macrostrat_output.Rds")
+#saveRDS(enriched_forms, file = "data/metadata/macrostrat_output.Rds")
 
 ## Export updated versions of databases
 saveRDS(PBDB, "data/PBDB/PBDB.Rds")

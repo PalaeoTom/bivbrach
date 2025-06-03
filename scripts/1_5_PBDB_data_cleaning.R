@@ -25,14 +25,14 @@ rm(list = ls())
 #### Guo et al corrections to raw data ####
 #setwd("~/R_packages/bivbrach")
 #home <- getwd()
-#source("functions/apply_Guo2023_bivalves.R")
-#source("functions/apply_Guo2023_brachiopods.R")
+#source("functions/apply.Guo2023.bivalves.R")
+#source("functions/apply.Guo2023.brachiopods.R")
 #GTS2020 <- readRDS("data/metadata/GTS2020.Rdata")
 #coln <- readRDS("data/PBDB/colnames.Rds")
 
 ## Run function
-#raw_PBDB_bivalves <- apply_Guo2023_bivalves(raw_PBDB_bivalves, GTS2020 = GTS2020)
-#raw_PBDB_brachiopods <- apply_Guo2023_brachiopods(raw_PBDB_brachiopods, GTS2020 = GTS2020)
+#raw_PBDB_bivalves <- apply.Guo2023.bivalves(raw_PBDB_bivalves, GTS2020 = GTS2020)
+#raw_PBDB_brachiopods <- apply.Guo2023.brachiopods(raw_PBDB_brachiopods, GTS2020 = GTS2020)
 
 ## combine
 #PBDB <- rbind(raw_PBDB_bivalves, raw_PBDB_brachiopods)
@@ -231,7 +231,7 @@ PBDB <- chrono_scale(PBDB,  tscale = "GTS_2020", srt = "early_interval", end = "
 ## set new chronostratigraphy as "max_ma" and "min_ma", then remove added columns newFAD and newLAD
 PBDB$max_ma <- PBDB$newFAD
 PBDB$min_ma <- PBDB$newLAD
-PBDB <- PBDB[,c(1:28)]
+PBDB <- PBDB[,c(1:29)]
 
 ## Update Late Miocene entries
 PBDB[which(PBDB$late_interval == "Late Miocene"),"min_ma"] <- 5.333
@@ -300,7 +300,7 @@ PBDB <- PBDB[!PBDB$environment%in%omitEnv,]
 
 #### Rearrange and export ####
 ## Rearrange
-PBDB <- PBDB[,c(1, 10, 4, 5, 2, 3, 6, 23, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 25, 21, 24, 22, 26:28)]
+PBDB <- PBDB[,c(1, 2, 11, 5, 6, 3, 4, 7, 25, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 24, 26, 22, 23, 27:29)]
 
 ## Export data
 saveRDS(PBDB, "data/PBDB/PBDB.Rds")

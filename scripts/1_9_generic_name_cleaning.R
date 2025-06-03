@@ -50,7 +50,7 @@ Peabody$genus <- str_to_title(Peabody$genus)
 
 ## Combine phylum and genus into single name
 View(data.frame(colnames(PBDB)))
-PBDB$combined_name <- apply(PBDB, 1, function(x) paste0(x[12], "_", x[16]))
+PBDB$combined_name <- apply(PBDB, 1, function(x) paste0(x[13], "_", x[17]))
 View(data.frame(colnames(GBIF)))
 GBIF$combined_name <- apply(GBIF, 1, function(x) paste0(x[3], "_", x[7]))
 View(data.frame(colnames(AMNH)))

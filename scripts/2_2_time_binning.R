@@ -1,4 +1,4 @@
-## 2. Time binning
+## 2.2 Time binning
 ## Started by TJS on 08/01/2024
 
 ## Clean directory
