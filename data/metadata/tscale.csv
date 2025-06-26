@@ -1,0 +1,978 @@
+"","Interval","LAD","FAD"
+"1","Meghalayan",0,0.0042
+"2","Northgrippian",0.0042,0.0082
+"3","Greenlandian",0.0082,0.0117
+"4","Late Pleistocene",0.0117,0.129
+"5","Chibanian",0.129,0.774
+"6","Calabrian",0.774,1.8
+"7","Gelasian",1.8,2.58
+"8","Piacenzian",2.58,3.6
+"9","Zanclean",3.6,5.333
+"10","Messinian",5.333,7.246
+"11","Tortonian",7.246,11.63
+"12","Serravallian",11.63,13.82
+"13","Langhian",13.82,15.98
+"14","Burdigalian",15.98,20.44
+"15","Aquitanian",20.44,23.03
+"16","Chattian",23.03,27.82
+"17","Rupelian",27.82,33.9
+"18","Priabonian",33.9,37.71
+"19","Bartonian",37.71,41.2
+"20","Lutetian",41.2,47.8
+"21","Ypresian",47.8,56
+"22","Thanetian",56,59.2
+"23","Selandian",59.2,61.6
+"24","Danian",61.6,66
+"25","Maastrichtian",66,72.1
+"26","Campanian",72.1,83.6
+"27","Santonian",83.6,86.3
+"28","Coniacian",86.3,89.8
+"29","Turonian",89.8,93.9
+"30","Cenomanian",93.9,100.5
+"31","Albian",100.5,113
+"32","Aptian",113,121.4
+"33","Barremian",121.4,125.77
+"34","Hauterivian",125.77,132.6
+"35","Valanginian",132.6,139.8
+"36","Berriasian",139.8,145
+"37","Tithonian",145,149.2
+"38","Kimmeridgian",149.2,154.8
+"39","Oxfordian",154.8,161.5
+"40","Callovian",161.5,165.3
+"41","Bathonian",165.3,168.2
+"42","Bajocian",168.2,170.9
+"43","Aalenian",170.9,174.7
+"44","Toarcian",174.7,184.2
+"45","Pliensbachian",184.2,192.9
+"46","Sinemurian",192.9,199.5
+"47","Hettangian",199.5,201.4
+"48","Rhaetian",201.4,208.5
+"49","Norian",208.5,227
+"50","Carnian",227,237
+"51","Ladinian",237,242
+"52","Anisian",242,247.2
+"53","Olenekian",247.2,251.2
+"54","Induan",251.2,251.902
+"55","Changhsingian",251.902,254.14
+"56","Wuchiapingian",254.14,259.51
+"57","Capitanian",259.51,264.28
+"58","Wordian",264.28,266.9
+"59","Roadian",266.9,273.01
+"60","Kungurian",273.01,283.5
+"61","Artinskian",283.5,290.1
+"62","Sakmarian",290.1,293.52
+"63","Asselian",293.52,298.9
+"64","Gzhelian",298.9,303.7
+"65","Kasimovian",303.7,307
+"66","Moscovian",307,315.2
+"67","Bashkirian",315.2,323.2
+"68","Serpukhovian",323.2,330.9
+"69","Visean",330.9,346.7
+"70","Tournaisian",346.7,358.9
+"71","Famennian",358.9,372.2
+"72","Frasnian",372.2,382.7
+"73","Givetian",382.7,387.7
+"74","Eifelian",387.7,393.3
+"75","Emsian",393.3,407.6
+"76","Pragian",407.6,410.8
+"77","Lochkovian",410.8,419.2
+"78","Pridoli",419.2,423
+"79","Ludfordian",423,425.6
+"80","Gorstian",425.6,427.4
+"81","Homerian",427.4,430.5
+"82","Sheinwoodian",430.5,433.4
+"83","Telychian",433.4,438.5
+"84","Aeronian",438.5,440.8
+"85","Rhuddanian",440.8,443.8
+"86","Hirnantian",443.8,445.2
+"87","Katian",445.2,453
+"88","Sandbian",453,458.4
+"89","Darriwilian",458.4,467.3
+"90","Dapingian",467.3,470
+"91","Floian",470,477.7
+"92","Tremadocian",477.7,485.4
+"93","Stage 10",485.4,489.5
+"94","Jiangshanian",489.5,494
+"95","Paibian",494,497
+"96","Guzhangian",497,500.5
+"97","Drumian",500.5,504.5
+"98","Wuliuan",504.5,509
+"99","Stage 4",509,514
+"100","Stage 3",514,521
+"101","Stage 2",521,529
+"102","Fortunian",529,538.8
+"205","Holocene",0,0.0117
+"206","Pleistocene",0.0117,2.58
+"207","Pliocene",2.58,5.333
+"208","Miocene",5.333,23.03
+"209","Oligocene",23.03,33.9
+"210","Eocene",33.9,56
+"211","Paleocene",56,66
+"212","Late Cretaceous",66,100.5
+"213","Early Cretaceous",100.5,145
+"214","Late Jurassic",145,161.5
+"215","Middle Jurassic",161.5,174.7
+"216","Early Jurassic",174.7,201.4
+"217","Late Triassic",201.4,237
+"218","Middle Triassic",237,247.2
+"219","Early Triassic",247.2,251.902
+"220","Lopingian",251.902,259.51
+"221","Guadalupian",259.51,273.01
+"222","Cisuralian",273.01,298.9
+"223","Pennsylvanian",298.9,323.2
+"224","Mississippian",323.2,358.9
+"225","Late Devonian",358.9,382.7
+"226","Middle Devonian",382.7,393.3
+"227","Early Devonian",393.3,419.2
+"229","Ludlow",423,427.4
+"230","Wenlock",427.4,433.4
+"231","Llandovery",433.4,443.8
+"232","Late Ordovician",443.8,458.4
+"233","Middle Ordovician",458.4,470
+"234","Early Ordovician",470,485.4
+"235","Furongian",485.4,497
+"236","Miaolingian",497,509
+"237","Series 2",509,521
+"238","Terreneuvian",521,538.8
+"239","Quaternary",0,2.58
+"240","Neogene",2.58,23.03
+"241","Paleogene",23.03,66
+"242","Cretaceous",66,145
+"243","Jurassic",145,201.4
+"244","Triassic",201.4,251.902
+"245","Permian",251.902,298.9
+"246","Carboniferous",298.9,358.9
+"247","Devonian",358.9,419.2
+"248","Silurian",419.2,443.8
+"249","Ordovician",443.8,485.4
+"250","Cambrian",485.4,538.8
+"251","Ediacaran",538.8,635
+"252","Cryogenian",635,720
+"253","Tonian",720,1000
+"254","Stenian",1000,1200
+"255","Ectasian",1200,1400
+"256","Calymmian",1400,1600
+"257","Statherian",1600,1800
+"258","Orosirian",1800,2050
+"259","Rhyacian",2050,2300
+"260","Siderian",2300,2500
+"261","NN21",0,0.3
+"262","NN20",0.3,0.5
+"263","NN19",0.5,2
+"264","NN18",2,2.5
+"265","NN17",2.5,2.6
+"266","NN16",2.6,3.75
+"267","NN15",3.75,4
+"268","NN14",4,4.15
+"269","NN13",4.15,5
+"270","NN12",5,5.6
+"271","NN11",5.6,8.6
+"272","NN10",8.6,9.4
+"273","NN9",9.4,10.7
+"274","NN8",10.7,10.9
+"275","NN7",10.9,11.8
+"276","NN6",11.8,13.6
+"277","NN5",13.6,15.6
+"278","NN4",15.6,18.3
+"279","NN3",18.3,19
+"280","NN2",19,22.2
+"281","NN1",22.2,23.9
+"282","NP25",23.9,27.5
+"283","NP24",27.5,29.9
+"284","NP23",29.9,32.3
+"285","NP22",32.3,32.8
+"286","NP21",32.8,34.2
+"287","NP19-20",34.2,36
+"288","NP18",36,37
+"289","NP17",37,41.2
+"290","NP16",41.2,43.4
+"291","NP15",43.4,47.3
+"292","NP14",47.3,49.7
+"293","NP13",49.7,50.6
+"294","NP12",50.6,52.85
+"295","NP11",52.85,53.61
+"296","NP10",53.61,55
+"297","NP9",55,56.2
+"298","NP8",56.2,57.3
+"299","NP7",57.3,57.5
+"300","NP6",57.5,58.4
+"301","NP5",58.4,59.7
+"302","NP4",59.7,62.2
+"303","NP3",62.2,63.8
+"304","NP2",63.8,64.5
+"305","NP1",64.5,66
+"306","CC26",66,67.8
+"307","CC25",67.8,70.2
+"308","CC24",70.2,72.1
+"309","CC23",72.1,76
+"310","CC22",76,76.8
+"311","CC21",76.8,77.6
+"312","CC20",77.6,79
+"313","CC19",79,81
+"314","CC18",81,83.8
+"315","CC17",83.8,84.2
+"316","CC16",84.2,85
+"317","CC15",85,86.3
+"318","CC14",86.3,88
+"319","CC13",88,89.8
+"320","CC12",89.8,91
+"321","CC11",91,93.9
+"322","CC10",93.9,95.7
+"323","CC9",95.7,103
+"324","CC8",103,112.2
+"325","CC7",112.2,125.4
+"326","CC6",125.4,129
+"327","CC5",129,132.7
+"328","CC4",132.7,137.4
+"329","CC3",137.4,139.8
+"330","CC2",139.8,142.4
+"331","CC1",142.4,144
+"332","NJ17",144,149.2
+"333","NJ16",149.2,151.2
+"334","NJ15",151.2,159.7
+"335","NJ14",159.7,161.4
+"336","NJ13",161.4,163.4
+"337","NJ12",163.4,165.4
+"338","NJ11",165.4,168
+"339","NJ10",168,170.3
+"340","NJ9",170.3,171.2
+"341","NJ8",171.2,177.2
+"342","NJ7",177.2,181
+"343","NJ6",181,182.8
+"344","NJ5",182.8,185.5
+"345","NJ4",185.5,189
+"346","NJ3",189,193.3
+"347","NJ2",193.3,199.3
+"348","NJ1",199.3,201.4
+"349","Haweran",0,0.34
+"350","Castlecliffian",0.34,1.63
+"351","Nukumaruan",1.63,2.4
+"352","Mangapanian",2.4,3
+"353","Waipipian",3,3.7
+"354","Opoitian",3.7,5.33
+"355","Kapitean",5.33,7.2
+"356","Tongaporutuan",7.2,11.04
+"357","Waiauan",11.04,13.05
+"358","Lillburnian",13.05,15.1
+"359","Clifdenian",15.1,15.9
+"360","Altonian",15.9,18.7
+"361","Otaian",18.7,21.7
+"362","Waitakian",21.7,25.2
+"363","Duntroonian",25.2,27.3
+"364","Whaingaroan",27.3,34.6
+"365","Runangan",34.6,36.7
+"366","Kaiatan",36.7,39.1
+"367","Bortonian",39.1,42.6
+"368","Porangan",42.6,45.7
+"369","Heretaungan",45.7,48.9
+"370","Mangaorapan",48.9,52
+"371","Waipawan",52,56
+"372","Teurian",56,66
+"373","Haumurian",66,83.6
+"374","Piripauan",83.6,86.5
+"375","Teratan",86.5,90.5
+"376","Mangaotanean",90.5,93.7
+"377","Arowhanan",93.7,95.2
+"378","Ngaterian",95.2,99.5
+"379","Motuan",99.5,103.3
+"380","Urutawan",103.3,108.4
+"381","Korangan",108.4,117.5
+"382","Puaroan",145,150
+"383","Ohauan",150,154.5
+"384","Heterian",154.5,164.3
+"385","Temaikan",164.3,176
+"386","Ururoan",176,188.9
+"387","Aratauran",188.9,201.4
+"388","Otapirian",201.4,208.5
+"389","Warepan",208.5,217
+"390","Otamitan",217,221
+"391","Oretian",221,227.5
+"392","Kaihikuan",227.5,238
+"393","Etalian",238,246
+"394","Malakovian",246,249
+"395","Nelsonian",249,251.5
+"396","Makarewan",251.5,253.2
+"397","Waiitian",253.2,254.2
+"398","Puruhauan",254.2,259.8
+"399","Flettian",259.8,266
+"400","Barrettian",266,276
+"401","Mangapirian",276,285
+"402","Telfordian",285,288.5
+"418","Bolindian",443.8,448.4
+"419","Eastonian",448.4,453
+"420","Gisbornian",453,458.4
+"422","Yapeenian",467.3,468.3
+"423","Castlemainian",468.3,470
+"424","Chewtonian",470,472.4
+"425","Bendigonian",472.4,476
+"426","Lancefieldian",476,484.3
+"427","Warendan",484.3,485.4
+"428","Datsonian",485.4,486.8
+"429","Payntonian",486.8,489.5
+"430","Iverian",489.5,494
+"431","Idamean",494,497
+"432","Mindyallan",497,499
+"433","Boomerangian",499,500.5
+"434","Undillan",500.5,503
+"435","Floran",503,504.5
+"436","Templetonian",504.5,508
+"437","Ordian",508,511.5
+"452","Selandian-Thanetian",56,61.6
+"485","Leonardian",273.01,282
+"486","Wolfcampian",282,298.9
+"487","Virgilian",298.9,303.7
+"488","Missourian",303.7,306
+"489","Desmoinesian",306,312
+"490","Atokan",312,319
+"491","Morrowan",319,323.2
+"492","Chesterian",323.2,335
+"493","Meramecian",335,343.5
+"494","Osagean",343.5,351.5
+"495","Kinderhookian",351.5,358.9
+"501","Siegenian",407.6,410.8
+"502","Gedinnian",410.8,419.2
+"509","Richmondian-Hirnantian",443.8,450
+"510","Edenian-Maysvillian",450,453.5
+"511","Rocklandian-Shermanian",453.5,456.5
+"512","Blackriverian",456.5,458.4
+"513","Llandeilo",458.4,460.5
+"514","Llanvirnian",460.5,465.5
+"515","Arenigian",465.5,477.7
+"517","Trempealeauan",485.4,492.5
+"518","Franconian",492.5,496.8
+"519","Dresbachian",496.8,501
+"520","Middle Cambrian",501,511
+"521","Early Cambrian",511,538.8
+"522","Rancholabrean",0.0114,0.3
+"523","Irvingtonian",0.3,1.8
+"524","Blancan",1.8,4.9
+"525","Hemphillian",4.9,10.3
+"526","Clarendonian",10.3,13.6
+"527","Barstovian",13.6,16.3
+"528","Hemingfordian",16.3,18.6
+"529","Arikareean",18.6,29.8
+"530","Whitneyan",29.8,32.1
+"531","Orellan",32.1,33.9
+"532","Chadronian",33.9,37.71
+"533","Duchesnean",37.71,39.9
+"534","Uintan",39.9,47.9
+"535","Bridgerian",47.9,52
+"536","Wasatchian",52,56
+"537","Clarkforkian",56,57.5
+"538","Tiffanian",57.5,62.25
+"539","Torrejonian",62.25,64.75
+"540","Puercan",64.75,66
+"541","Cenozoic",0,66
+"543","Phanerozoic",0,538.8
+"577","Mesozoic",66,251.902
+"619","Paleozoic",251.902,538.8
+"692","Proterozoic",538.8,2500
+"693","Neoproterozoic",538.8,1000
+"697","Mesoproterozoic",1000,1600
+"701","Paleoproterozoic",1600,2500
+"706","Archean",2500,4000
+"707","Neoarchean",2500,2800
+"708","Mesoarchean",2800,3200
+"709","Paleoarchean",3200,3600
+"710","Eoarchean",3600,4000
+"731","Scythian",247.2,251.902
+"732","Ochoan",259,259.51
+"745","Conewangan",358.9,365
+"746","Cassadagan",365,372.2
+"747","Chemungian",372.2,379
+"748","Fingerlakesian",379,382.7
+"754","Cayugan",419.2,425.6
+"755","Niagaran",425.6,438.5
+"756","Alexandrian",438.5,443.8
+"757","Richmondian",445.2,449
+"758","Maysvillian",449,450
+"759","Edenian",450,451
+"760","Shermanian",451,454.5
+"761","Kirkfield",454.5,455.5
+"762","Rocklandian",455.5,456.5
+"764","Whiterock",456.5,470
+"765","Chazyan",458.4,464
+"786","Symphysurina bulbosa",484.4,485.4
+"787","Symphysurina brevispicata",485.4,486.2
+"788","Missisquoia",486.2,486.7
+"789","Eurekia apopsis",486.7,487.1
+"790","Saukiella serotina",487.1,487.8
+"791","Saukiella junia/Saukiella pyrene",487.8,490.9
+"792","Ellipsocephaloides-Idahoia",490.9,492.3
+"793","Taenicephalus",492.3,493
+"794","Elvinia",493,493.9
+"795","Dunderbergia",493.9,495.2
+"796","Aphelaspis",495.2,497
+"797","Crepicephalus",497,498.5
+"798","Cedaria",498.5,499.5
+"799","Bolaspidella",499.5,504.5
+"800","Ptychagnostus gibbus",504.5,505.25
+"801","Ptychagnostus praecurrens",505.25,506.5
+"802","Albertella",506.5,507.3
+"803","Plagiura-Poliella",507.3,509
+"804","Amecephalus arrojosensis",509,510.5
+"805","Eokochaspis nodosa",510.5,511.1
+"806","Olenellus",511.1,515.5
+"807","Nevadella",515.5,518.5
+"808","Fallotaspis",518.5,520
+"809","Fritzaspis",520,521
+"810","Wyattia",521,524
+"811","Misikella posternstenini",201.4,201.9
+"812","Norigondolella sp.",201.9,202.3
+"813","Cypriodella mosheri",202.3,208.5
+"814","Cypriodella bidentata",208.5,214
+"815","Cypriodella serrulata",214,214.8
+"816","Cypriodella postera",214.8,216.5
+"817","Cypriodella spiculata",216.5,216.9
+"818","Cypriodella multidentata",216.9,217.4
+"819","Epigondolella triangularis",217.4,221.4
+"820","Epigondolella quadrata",221.4,226.5
+"821","Metapolygnathus primitius",226.5,229.5
+"822","Metapolygnathus nodosus",229.5,231.4
+"823","Metapolygnathus carpathicus",231.4,233
+"824","Metapolygnathus polygnathiformis",233,233.5
+"825","Metapolygnathus tadpole",233.5,236.5
+"826","Metapolygnathus intermedius",236.5,237
+"827","Paragondolella inclinata",237,238
+"828","Budurovignathus hungaricus",238,240.3
+"829","Budurovignathus truempyi",240.3,241
+"830","Paragondolella excelsa",241,244.3
+"831","Neogondolella? regalis",244.3,246.7
+"832","Chiosella timorensis",246.7,247.2
+"833","Chiosella gondolelloides",247.2,247.3
+"834","Triassospathodus sosioensis",247.3,247.4
+"835","Neospathodus triangularis",247.4,247.6
+"836","Icriospathodus collinsoni",247.6,248.3
+"837","Neospathodus pingdingshanensis",248.3,248.4
+"838","Borinella buurensis-Scythogondolella milleri",248.4,249.3
+"839","Neospathodus waageni",249.3,251.2
+"840","Neospathodus dieneri Morph 3",251.2,251.4
+"841","Sweetospathodus kummeli",251.4,251.6
+"842","Neogondollela krystyni",251.6,251.7
+"843","Isarcicella isarcica",251.7,251.9
+"844","Hindeodus parvus",251.9,251.902
+"845","Clarkina zhejiangensis-Clarkina meishanensis",251.902,252.5
+"846","Clarkina deflecta-Clarkina yini",252.5,252.8
+"847","Clarkina changxingensis",252.8,253.1
+"848","Clarkina subarinata",253.1,253.5
+"849","Clarkina wangi",253.5,254.14
+"850","Clarkina longicuspidata",254.14,254.5
+"851","Clarkina orientalis",254.5,255.3
+"852","Clarkina transcaucasica",255.3,256.5
+"853","Clarkina guangyuanensis",256.5,257.2
+"854","Clarkina leveni",257.2,257.7
+"855","Clarkina asymmetrica",257.7,258.5
+"856","Clarkina dukouensis",258.5,259
+"857","Clarkina postitteri postitteri",259,259.51
+"858","Clarkina postitteri hongshuiensis",259.51,260.3
+"859","Jinogondolella granti",260.3,261.8
+"860","Jinogondolella prexuanhanensis",261.8,263.7
+"861","Jinogondolella altudaensis",263.7,264
+"862","Jinogondolella shannoni",264,264.5
+"863","Jinogondolella aserrata",264.28,266.9
+"864","Jinogondolella postserrata",264.5,264.28
+"865","Jinogondolella nankingensis",266.9,273.01
+"866","Mesogondolella lamberti-Neostreptognathodus sulcoplicatus",273.01,273.7
+"867","Sweetognathus guizhouensis",273.7,274.7
+"868","Neostreptognathodus prayi",274.7,275.5
+"869","Neostreptognathodus pnevi",275.5,283.5
+"870","Sweetognathus clarki",282,285
+"871","Neostreptognathodus pequopensis",283.5,282
+"872","Sweetognathus whitei",285,290.1
+"873","Sweetognathus anceps-Mesogondolella bisselli",290.1,293.5
+"874","Sweetognathus binodosus",293.5,294.1
+"875","Streptognathodus postfusus",293.52,296.5
+"876","Sweetognathus merrilli-Mesogondolella uralensis",294.1,293.52
+"877","Streptognathodus fusus",296.5,297
+"878","Streptognathodus constrictus-Mesogondolella belladontae",297,297.5
+"879","Streptognathodus sigmoidalis-Streptognathodus cristellaris",297.5,298
+"880","Streptognathodus isolatus",298,298.9
+"881","Streptognathodus wabaunsensis",298.9,300
+"882","Streptognathodus simplex-Streptognathodus bellus",300,301
+"883","Streptognathodus virgilicus",301,302
+"884","Streptognathodus vitali",302,302.7
+"885","Streptognathodus simulator",302.7,303.7
+"886","Streptognathodus firmus",303.7,304
+"887","Idiognathodus toretzianus",304,304.5
+"888","Streptognathodus cancellosus",304.5,305.2
+"889","Idiognathodus sagittalis",305.2,305.7
+"890","Streptognathodus subexcelsus",305.7,307
+"891","Neoghanthodus round-Streptognathodus cancellosus",307,309
+"892","Neoghanthodus medexultimus-Streptognathodus-concinnus",309,310.8
+"893","Streptognathodus dissectus",310.8,312.5
+"894","Neognathodus uralicus",312.5,314.5
+"895","Declinognathodus donetzianus",314.5,315.2
+"896","Neognathodus atokaensis",315.2,317
+"897","Declinognathodus marginodosus",317,318.6
+"898","Idiognathodus sinuosus",318.6,320
+"899","Neognathodus askynensis",320,320.8
+"900","Idiognathoides sinuatus",320.8,322.5
+"901","Declinognathodus noduliferus",322.5,323.2
+"902","Gnathodus postbilineatus",323.2,325.5
+"903","Gnathodus bollandensis",325.5,327.2
+"904","Lochriea cruciformis",327.2,329.5
+"905","Lochriea ziegleri",329.5,330.9
+"906","Lochriea nodosa",330.9,332
+"907","Lochriea mononodosa",332,335
+"908","Gnathodus bilineatus",335,336.8
+"909","Gnathodus praebillineatus",336.8,340
+"910","Gnathodus texanus",340,344
+"911","Gnathodus pseudosemiglaber-Scallioganthus anchoralis",344,346.7
+"912","Gnathodus semiglaber-Polygnathus communis",346.7,348
+"913","Dollimae bouckaerti",348,349
+"914","Gnathodus typicus-Siphonodella isosticha",349,353
+"915","Siphonodella quadruplicata-Patrognathus andersoni",353,355
+"916","Siphonodella sandbergi-Siphonodella belkai",355,357.4
+"917","Siphonodella duplicata",357.4,358.4
+"918","Siphonodella sulcata",358.4,358.9
+"919","Siphonodella praesulcata",358.9,360
+"920","Palmatolepis gracilis expansa",360,362.2
+"921","Palmatolepis perlobata postera",362.2,363
+"922","Palmatolepis rugosa trachytera",363,364
+"923","Palmatolepis marginifera",364,366.5
+"924","Palmatolepis rhomboidea",366.5,367.5
+"925","Palmatolepis crepida",367.5,370
+"926","Palmatolepis triangularis",370,372.2
+"927","Palmatolepis linguiformis",372.2,373
+"928","Palmatolepis rhenana",373,376.5
+"929","Palmatolepis hassi",376.5,379
+"930","Palmatolepis punctata",379,380.2
+"931","Palmatolepis transitans",380.2,381.2
+"932","Mesotaxis guanwushanensis",381.2,383
+"933","Klapperina disparilis",383,384
+"934","Schmidtognathus hermanni",384,385
+"935","Polygnathus varcus",385,387.5
+"936","Polygnathus hemiansatus",387.5,387.7
+"937","Polygnathus ensensis",387.7,388
+"938","Tortodus knockelianus knockelianus",388,389.2
+"939","Polygnathus costatus costatus",389.2,391.5
+"940","Polygnathus costatus partitus",391.5,393.3
+"941","Polygnathus costatus patulus",393.3,395
+"942","Linguipolygnathus serotinus",395,397.5
+"943","Polygnathus inversus",397.5,401
+"944","Eocostapolygnathus nothoperbonus",401,403.5
+"945","Eocostapolygnathus gronbergi",403.5,404.2
+"946","Eocostapolygnathus excavatus",404.2,406
+"947","Eocostapolygnathus kitabicus",406,407.6
+"948","Eocostapolygnathus pireneae",407.6,408.5
+"949","Gondwania kindlei",408.5,410
+"950","Gondwania irregularis",410,411
+"951","Pedavis gilberti",411,412
+"952","Masaraella pandora morpho. Beta",412,412.5
+"953","Ancryodelloides trigonicus",412.5,413.5
+"954","Leanea transitans",413.5,414
+"955","Lanea eleanorae",414,414.5
+"956","Lanea omoalpha",414.5,415.2
+"957","Caudicriodus postwoschmidti",415.2,417.2
+"958","Caudicriodus hesperius",417.2,419
+"959","Oulodus elegans detortus",419,421.2
+"960","Ozarkodina eosteinhornensis",421.2,423
+"961","Ozarkodina crispa",423,423.6
+"962","Ozarkodina snajdri",423.6,424.8
+"963","Polygnathoides siluricus",424.8,425.2
+"964","Ancoradella ploeckensis",425.2,425.6
+"965","Kockelella variabilis variabilis",425.6,427
+"966","Kockelella crassa",427,427.4
+"967","Kockelella ortus obsidata",427.4,428.3
+"968","Ozarkodina bohemica longa",428.3,429.4
+"969","Ozarkodina sagitta sagitta",429.4,430.5
+"970","Kockelella ortus ortus",430.5,431.2
+"971","Kockelella walliseri",431.2,431.8
+"972","Ozarkodina sagitta rhenana",431.8,432.3
+"973","Kockelella ranuliformis",432.3,432.6
+"974","Pterospathodus pennatus procerus",432.6,433.4
+"975","Pterospathodus amorphognathoides amorphognathoides",433.4,435.2
+"976","Pterospathodus amorphognathoides lithuanicus",435.2,435.5
+"977","Pterospathodus amorphognathoides lennarti",435.5,435.8
+"978","Pterospathodus amorphognathoides angulatus",435.8,436.4
+"979","Pterospathodus eopennatus",436.4,437.5
+"980","Distomodus staurognathoides",437.5,439.4
+"981","Pterospathodus tenuis",439.4,440.5
+"982","Aspelunda expansa",440.5,441.1
+"983","Distomodus kentuckyensis",441.1,443.8
+"984","Aphelognathus shatzeri",443.8,445.5
+"985","Aphelognathus divergens",445.5,447
+"986","Aphelognathus grandis",447,449
+"987","Oulodus robustus",449,449.7
+"988","Oulodus velicuspis",449.7,450
+"989","Belodina confluens",450,452.3
+"990","Plectodina tenuis",452.3,453
+"991","Phragmodus undatus",453,453.7
+"992","Belodina compressa",453.7,454.7
+"993","Erismodus quadridactylus",454.7,455.8
+"994","Plectodina aculeata",455.8,456.6
+"995","Cahabagnathus sweeti",456.6,461.2
+"996","Cahabagnathus friendsvillensis",461.2,462.4
+"997","Phragmodus polonicus",462.4,463.7
+"998","Histiodella holodentata",463.7,464.4
+"999","Histiodella sinuosa",464.4,467.4
+"1000","Histiodella altifrons",467.4,468.7
+"1001","Microzarkodina flabellum/Tripodus laevus",468.7,470.3
+"1002","Reutterodus andinus",470.3,473.7
+"1003","Oepikodus communis",473.7,477.5
+"1004","Acodus delatus/Oneotodus costatus",477.5,479.8
+"1005","Macerodus dianae",479.8,480
+"1006","Rossodus manitouensis",480,480.3
+"1007","Cordylodus angulatus",480.3,484.4
+"1008","Iapetognathus fluctivagus",484.4,485.4
+"1052","Sevatian",208.5,214
+"1053","Alaunian",214,216
+"1054","Lacian",216,227
+"1055","Tuvalian",227,230.5
+"1056","Julian",230.5,237
+"1059","Spathian",247.2,248.5
+"1060","Smithian",248.5,251.2
+"1061","Dienerian",251.2,251.6
+"1062","Griesbachian",251.6,251.902
+"1078","Chatauquan",358.9,370
+"1079","Senecan",370,385
+"1080","Erian",385,393.3
+"1081","Ulsterian",393.3,419.2
+"1085","Gamachian",443.8,445.2
+"1089","Mohawkian",451,456.5
+"1091","Blackhillsian",470,475
+"1092","Tulean",475,479.5
+"1093","Stairsian",479.5,480
+"1094","Skullrockian",480,486.7
+"1095","Sunwaptan",486.7,493
+"1096","Steptoean",493,497
+"1097","Marjuman",497,504.5
+"1098","Topazan",504.5,506.5
+"1099","Delamaran",506.5,511
+"1100","Dyeran",511,515.5
+"1101","Montezuman",515.5,520
+"1102","Begadean",520,538.8
+"1103","Hadrynian",538.8,850
+"1104","Mantelliceras dixoni",97.5,98.5
+"1105","Mantelliceras mantelli",98.5,100.2
+"1106","Arrhaphoceras briacensis",100.2,100.8
+"1107","Mortoniceras perinflatum",100.8,101.3
+"1108","Mortoniceras rostratum",101.3,101.7
+"1109","Mortoniceras fallax",101.7,104.1
+"1110","Mortoniceras inflatum",104.1,104.9
+"1111","Mortoniceras pricei",104.9,107
+"1112","Diploceras cristatum",107,107.5
+"1113","Euhoplites lautus",107.5,108.3
+"1114","Euhoplites loricatus",108.3,109.5
+"1115","Hoplites dentatus",109.5,110.3
+"1116","Douvilleiceras mammillatum",110.3,111.3
+"1117","Leymeriella schrammeni",111.3,113
+"1118","Hypacanthoplites jacobi",113,116.8
+"1119","Parahoplites nutfieldiensis",116.8,118
+"1120","Epicheloniceras martinoides",118,123
+"1121","Parancyloceras bidentatum/Parancyloceras scalare",121.4,125.5
+"1122","Tropaeum bowerbanki",123,124
+"1123","Deshayesites deshayesi",124,124.5
+"1124","Deshayesites forbesi",124.5,121.4
+"1125","Simanocyloceras stolleyi",125.5,127.3
+"1126","Ancyloceras inexum/S. pingue",127.3,127.8
+"1127","Paracrioceras denckmanni",127.8,128.2
+"1128","Paracrioceras elegans",128.2,128.8
+"1129","Haplocrioceras fissicostatum",128.8,129
+"1130","Paracrioceras rarocinctum",129,129.4
+"1131","Simbirskites variabilis",129.4,132.3
+"1132","Simbirskites marginatus",132.3,132.5
+"1133","Craspedodiscus gottschei",132.5,132.8
+"1134","Milanowskia speetonensis",132.8,133
+"1135","Speetoniceras inversum",133,133.4
+"1136","Endemoceras regale",133.4,133.5
+"1137","Endemoceras noricum",133.5,133.85
+"1138","Endemoceras amblygonium",133.85,133.95
+"1139","Eleniceras paucinodum",133.95,134.3
+"1140","Stolcoceras tuberulatum",134.3,135
+"1141","Dichotomites",135,135.6
+"1142","Prodichotomites",135.6,136.8
+"1143","Polyptychites",136.8,137.6
+"1144","Paratollia/Platylenticeras",137.6,138.5
+"1145","Peregrinoceras albidum",138.5,139.8
+"1146","Surites stenomphalus",139.8,140.2
+"1147","Surites icenii",140.2,141
+"1148","Hectoroceras kochi",141,141.6
+"1149","Runctonia runctoni",141.6,144
+"1150","Subcraspedites lamplughi",144,144.6
+"1151","Subcraspedites preplicomphalus",144.6,146
+"1152","Subcraspedites primitivus",146,146.4
+"1153","Paracraspedites oppressus",146.4,146.7
+"1154","Titanites anguiformes",146.7,147
+"1155","Galbanites kerberus",147,147.2
+"1156","Galbanites okusensis",147.2,147.4
+"1157","Glaucolithites glaucolithus",147.4,147.6
+"1158","Progalbanites albani",147.6,148
+"1159","Virgatopavlovia fittoni",148,148.3
+"1160","Pavlovia rotunda",148.3,149
+"1161","Pavlovia pallasioides",149,150.2
+"1162","Pectinatites hudlestoni",150.2,150.7
+"1163","Pectinatites wheatleyensis",150.7,151
+"1164","Pectinatites scitulus",151,151.5
+"1165","Pectinatites elegans",151.5,152
+"1166","Aulacostephanus autissiodorensis",152,152.4
+"1167","Aulacostephanus eudoxus",152.4,153.7
+"1168","Aulacostephanus mutabilis",153.7,154.7
+"1169","Rasenia cymodoce",154.7,156
+"1170","Ringsteadia pseudocordata",154.8,159
+"1171","Pictonia baylei",156,154.8
+"1172","Perisphinctes cautisnigrae",159,159.7
+"1173","Perisphinctes pumilus",159.7,160.1
+"1174","Perisphinctes plicatilis",160.1,160.8
+"1175","Cardioceras cordatum",160.8,161.4
+"1176","Quenstedtoceras mariae",161.4,161.5
+"1177","Quenstedtoceras lamberti",161.5,163.8
+"1178","Peltoceras athleta",163.8,164.2
+"1179","Erymnoceras coronatum",164.2,164.5
+"1180","Kosmoceras jason",164.5,164.6
+"1181","Sigloceras calloviense",164.6,165
+"1182","Prolanulites koenigi",165,165.5
+"1183","Macrocephalites herveyi",165.5,166.1
+"1184","Clydoniceras discus",166.1,166.2
+"1185","Oxycerites orbis",166.2,166.4
+"1186","Procerites hodsoni",166.4,166.6
+"1187","Morrisiceras morrisi",166.6,166.8
+"1188","Tulites subcontractus",166.8,167
+"1189","Procerites progracilis",167,167.3
+"1190","Zigzagiceras zigzag",167.3,168.3
+"1191","Parkinsonia parkinsoni",168.3,168.6
+"1192","Garantiana garantiana",168.6,169
+"1193","Strenoceras niortense",169,169.5
+"1194","Stephanoceras humphriesianum",169.5,169.8
+"1195","Witchellia laeviuscula",169.8,170
+"1196","Hyperlioceras discites",170,170.3
+"1197","Graphoceras concavum",170.3,170.9
+"1198","Brasilia bradfordensis",170.9,171.3
+"1199","Ludwigia murchisonae",171.3,172.2
+"1200","Leioceras opalinum",172.2,174.7
+"1201","Dumortieria levesquei",174.4,175
+"1202","Pleydellia aalensis",174.7,174.4
+"1203","Grammoceras thouarsense",175,176.4
+"1204","Haugia variabilis",176.4,178.4
+"1205","Hildoceras bifrons",178.4,180.4
+"1206","Harpoceras falciferum",180.4,180.7
+"1207","Dactylioceras tenuicostatum",180.7,182.7
+"1208","Pleuroceras spinatum",182.7,184.2
+"1209","Amaltheus margaritatus",184.2,187.5
+"1210","Prodactylioceras davoei",187.5,188.5
+"1211","Tragophylloceras ibex",188.5,189.5
+"1212","Uptonia jamesoni",189.5,190.8
+"1213","Echinoceras raricostatum",190.8,192.8
+"1214","Oxynoticeras oxynotum",192.8,193.8
+"1215","Asteroceras obtusum",193.8,195.4
+"1216","Caenisites turneri",195.4,196.4
+"1217","Arnioceras semicostatum",196.4,197.8
+"1218","Arietites bucklandi",197.8,199.3
+"1219","Schlotheimia angulata",199.3,200.2
+"1220","Alsatites liasicus",200.2,201.1
+"1221","Psiloceras planorbis",201.1,201.4
+"1222","Choristoceras crickmayi",201.4,202.2
+"1223","Chochloceras amoenum",202.2,208.5
+"1224","Gnomohalorites cordilleranus",208.5,214
+"1225","Mesohimavatites columbianus",214,217
+"1226","Drepanites rutherfordi",217,217.5
+"1227","Juvavites magnus",217.5,218.3
+"1228","Malayites dawsoni",218.3,224.5
+"1229","Stikinoceras kerri",224.5,227
+"1230","Klamathites macrolobatus",227,229.7
+"1231","Tropites welleri",229.7,232.6
+"1232","Tropites dilleri",232.6,233.5
+"1233","Sirenites nanseni",233.5,234
+"1234","Austrotrachyceras obesum",234,234.6
+"1235","Tachyceras desatoyense",234.6,236.3
+"1236","Daxatina canadensis",236.3,237
+"1237","Frankites sutherlandi",237,238
+"1238","Macl. maclearni",238,238.3
+"1239","Meginoceras meginae",238.3,239
+"1240","Tuchodiceras poseidon",239,240.4
+"1241","Eoprotrachyceras matutinum",240.4,242
+"1242","Frechites chischa",242,243.5
+"1243","Eogymnotoceras deleeni",243.5,244
+"1244","Anagymnotoceras varium",244,246.3
+"1245","Lenotropites caurus",246.3,246.5
+"1246","Siberlingites mulleri",246.5,246.8
+"1247","Olenikites pilaticus",247.7,248
+"1248","Bajarunia eumphala",248,248.5
+"1249","Anawasatchites tardus",248.5,248.55
+"1250","Euflemingites romunderi",248.55,249.3
+"1251","Hedenstroemia hedenstroemi",249.3,251.2
+"1252","Vavilovites sverdrupi",251.2,251.3
+"1253","Proptychites candidus",251.3,251.6
+"1254","Proptychites rosenkrantzi strigatus",251.6,251.8
+"1255","Ophiceras commune",251.8,251.9
+"1256","upper Otoceras boreale",251.9,251.902
+"1257","lower Otoceras boreale",251.902,252.4
+"1258","Jeletzkytes nebrascensis",68.69,69.3
+"1259","Hoploscaphites nicolleti",69.3,69.91
+"1260","Hoploscaphites birkelundae",69.91,70
+"1261","Baculites clinolobatus",70,70.44
+"1262","Baculites grandis",70.44,71.2
+"1263","Baculites baculus",71.2,72.1
+"1264","Baculites eliasi",72.1,73.27
+"1265","Baculites jenseni",73.27,73.63
+"1266","Baculites reesidei",73.63,73.91
+"1267","Baculites cuneatus",73.91,74.21
+"1268","Baculites compressus",74.21,74.6
+"1269","Didymoceras cheyennense",74.6,75.08
+"1270","Exiteloceras jenneyi",75.08,75.64
+"1271","Didymoceras stevensoni",75.64,76.27
+"1272","Didymoceras nebrascense",76.27,76.94
+"1273","Baculites scotti",76.94,77.63
+"1274","Baculites reduncus",77.63,78.34
+"1275","Baculites gregoryensis",78.34,79.01
+"1276","Baculites perplexus",79.01,79.64
+"1277","Baculites sp. (smooth II)",79.64,80.21
+"1278","Baculites asperiformis",80.21,80.67
+"1279","Baculites maclearni",80.67,80.97
+"1280","Baculites obtusus",80.97,81.13
+"1281","Baculites sp. (weak flank ribs)",81.13,81.28
+"1282","Baculites sp. (smooth)",81.28,81.53
+"1283","Scaphites hippocrepis III",81.53,82
+"1284","Scaphites hippocrepis II",82,82.7
+"1285","Scaphites hippocrepis",82.7,83.64
+"1286","Scaphites leei",83.64,84.08
+"1287","Desmoscaphites bassleri",84.08,84.52
+"1288","Desmoscaphites erdmanni",84.52,85.23
+"1289","Clioscaphites choteauensis",85.23,85.56
+"1290","Clioscaphites vermiformis",85.56,86.26
+"1291","Clioscaphites saxitonianus",86.26,87.86
+"1292","Scaphites depressus",87.86,88.77
+"1293","Scaphites ventricosus",88.77,89.77
+"1294","Scaphites preventricosus",89.77,89.87
+"1295","Scaphites mariasensis",89.87,89.98
+"1296","Prionocyclus germari",89.98,90.24
+"1297","Scaphites nigricollensis",90.24,90.65
+"1298","Scaphites whitfieldi",90.65,91.34
+"1299","Scaphites warreni",91.34,91.41
+"1300","Prionocyclus macombi",91.41,91.6
+"1301","Prionocyclus hyatti",91.6,92.08
+"1302","Collingnoniceras praecox",92.08,92.9
+"1303","Collingnoniceras woollgari",92.9,93.35
+"1304","Mammites nodosoides",93.35,93.45
+"1305","Vascoceras birchbyi",93.45,93.55
+"1306","Pseudaspidoceras flexuosum",93.55,93.9
+"1307","Watinoceras devonense",93.9,93.98
+"1308","Nigericeras scotti",93.98,94.15
+"1309","Neocardioceras juddii",94.15,94.27
+"1310","Burroceras clydense",94.27,94.39
+"1311","Sciponoceras gracile (Euomphaloceras septemseriatum)",94.39,94.57
+"1312","Sciponoceras gracile (Vasoceras diartianum)",94.57,94.78
+"1313","Dunveganoceras conditum",94.78,95.01
+"1314","Dunveganoceras albertense",95.01,95.24
+"1315","Dunveganoceras problematicum",95.24,95.47
+"1316","Dunveganoceras pondi",95.47,95.67
+"1317","Pleisacanthoceras wyomingense",95.67,95.81
+"1318","Acanthoceras amphibolum",95.81,95.9
+"1319","Acanthoceras bellense",95.9,95.98
+"1320","Acanthoceras muldoonense",95.98,96.08
+"1321","Acanthoceras granerosense",96.08,96.24
+"1322","Conlinoceras tarrantense - Conlinoceras gilberti",96.24,97.26
+"1323","Neogastroplites maclearni",97.76,98.19
+"1324","Neogastroplites americanus",98.19,98.75
+"1325","Neogastroplites muelleri",98.75,99.17
+"1326","Neogastroplites cornutus",99.17,99.81
+"1327","Neogastroplites haasi",99.81,100.25
+"1347","Late Miocene",5.333,11.63
+"1348","Middle Miocene",11.63,15.98
+"1349","Early Miocene",15.98,23.03
+"1350","Late Oligocene",23.03,27.82
+"1351","Early Oligocene",27.82,33.9
+"1352","Late Eocene",33.9,37.71
+"1353","Middle Eocene",37.71,47.8
+"1354","Early Eocene",47.8,56
+"1361","C1",0,1.778
+"1362","C2",1.778,2.581
+"1363","C2A",2.581,4.187
+"1364","C3",4.187,6.033
+"1365","C3A",6.033,7.14
+"1366","C3B",7.14,7.528
+"1367","C4",7.528,8.771
+"1368","C4A",8.771,9.786
+"1369","C5",9.786,12.049
+"1370","C5A",12.049,13.032
+"1371","C5AA",13.032,13.363
+"1372","C5AB",13.363,13.739
+"1373","C5AC",13.739,14.163
+"1374","C5AD",14.163,14.775
+"1375","C5B",14.775,15.974
+"1376","C5C",15.974,17.235
+"1377","C5D",17.235,18.056
+"1378","C5E",18.056,18.748
+"1379","C6",18.748,20.04
+"1380","C6A",20.04,21.083
+"1381","C6AA",21.083,21.767
+"1382","C6B",21.767,22.564
+"1383","C6C",22.564,23.692
+"1384","C7",23.692,24.761
+"1385","C7A",24.761,25.099
+"1386","C8",25.099,26.42
+"1387","C9",26.42,27.859
+"1388","C10",27.859,29.183
+"1389","C11",29.183,30.591
+"1390","C12",30.591,33.157
+"1391","C13",33.157,34.999
+"1392","C15",34.999,35.706
+"1393","C16",35.706,36.969
+"1394","C17",36.969,38.615
+"1395","C18",38.615,41.154
+"1396","C19",41.154,42.301
+"1397","C20",42.301,45.724
+"1398","C21",45.724,48.566
+"1399","C22",48.566,50.628
+"1400","C23",50.628,52.62
+"1401","C24",52.62,57.101
+"1402","C25",57.101,58.959
+"1403","C26",58.959,62.221
+"1404","C27",62.221,63.394
+"1405","C28",63.394,64.958
+"1406","C29",64.958,66.398
+"1407","C30",66.398,68.369
+"1408","C31",68.369,71.449
+"1409","C32",71.449,74.309
+"1410","C33",74.309,83.64
+"1411","C34",83.64,125.93
+"1412","M0",125.93,126.3
+"1413","M1",126.3,128.66
+"1414","M3",128.66,130.6
+"1415","M5",130.6,131.74
+"1416","M6",131.74,132.04
+"1417","M7",132.04,132.55
+"1418","M8",132.55,133.05
+"1419","M9",133.05,133.58
+"1420","M10",133.58,134.22
+"1421","M10N",134.22,135.32
+"1422","M11",135.32,136.29
+"1423","M11A",136.29,136.87
+"1424","M12",136.87,137.94
+"1425","M12A",137.94,138.25
+"1426","M13",138.25,138.66
+"1427","M14",138.66,139.54
+"1428","M15",139.54,140.42
+"1429","M16",140.42,142.22
+"1430","M17",142.22,144
+"1431","M18",144,145.01
+"1432","M19",145.01,146.54
+"1433","M20",146.54,148.44
+"1434","M21",148.44,149.8
+"1435","M22",149.8,151.92
+"1436","M22A",151.92,152.64
+"1437","M23",152.64,153.62
+"1438","M24",153.62,154.59
+"1439","M24A",154.59,155.01
+"1440","M24B",155.01,155.54
+"1441","M25",155.54,156.04
+"1442","M25A",156.04,156.56
+"1443","M26",156.56,157.25
+"1444","M27",157.25,157.57
+"1445","M28",157.57,158.89
+"1446","M29",158.89,159.38
+"1447","M30",159.38,159.78
+"1448","M31",159.78,160.15
+"1449","M32",160.15,160.73
+"1450","M33",160.73,161.81
+"1451","M34",161.81,162.49
+"1452","M35",162.49,162.7
+"1453","M36",162.7,163.29
+"1454","M37",163.29,163.88
+"1455","M38",163.88,165.04
+"1456","M39",165.04,166.72
+"1457","M40",166.72,167.47
+"1458","M41",167.47,168.15
+"1459","M42",168.15,169.24
+"1460","M43",169.24,169.99
+"1461","M44",169.99,170.76

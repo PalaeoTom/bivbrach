@@ -114,14 +114,17 @@ AMNH <- readRDS("data/museum/AMNH_1_8_2.Rds")
 Peabody <- readRDS("data/museum/Peabody_1_8_2.Rds")
 GBIF <- readRDS("data/GBIF/GBIF_1_8_2.Rds")
 
+## Load timescale - see script 1.11 for how this was produced
+cleaning_tscale <- read.csv("data/metadata/cleaning_timescale.csv", row.names = 1)
+
 ## use fossilbrush to update Chronostratigraphy - PBDB already done
-NMS <- chrono_scale(NMS,  tscale = "GTS_2020", srt = "early_interval", end = "late_interval",
+NMS <- chrono_scale(NMS,  tscale = cleaning_tscale, srt = "early_interval", end = "late_interval",
                      max_ma = "max_ma", min_ma = "min_ma", verbose = FALSE)
-AMNH <- chrono_scale(AMNH,  tscale = "GTS_2020", srt = "early_interval", end = "late_interval",
+AMNH <- chrono_scale(AMNH,  tscale = cleaning_tscale, srt = "early_interval", end = "late_interval",
                     max_ma = "max_ma", min_ma = "min_ma", verbose = FALSE)
-Peabody <- chrono_scale(Peabody,  tscale = "GTS_2020", srt = "early_interval", end = "late_interval",
+Peabody <- chrono_scale(Peabody,  tscale = cleaning_tscale, srt = "early_interval", end = "late_interval",
                     max_ma = "max_ma", min_ma = "min_ma", verbose = FALSE)
-GBIF <- chrono_scale(GBIF,  tscale = "GTS_2020", srt = "early_interval", end = "late_interval",
+GBIF <- chrono_scale(GBIF,  tscale = cleaning_tscale, srt = "early_interval", end = "late_interval",
                     max_ma = "max_ma", min_ma = "min_ma", verbose = FALSE)
 
 ## Move to max_ma and min_ma, then drop columns
@@ -144,16 +147,6 @@ GBIF$max_ma <- GBIF$newFAD
 GBIF$min_ma <- GBIF$newLAD
 GBIF$newFAD <- NULL
 GBIF$newLAD <- NULL
-
-## Check for "Late Miocene" late intervals - issue with min_ma being set to 8.333 instead of 5.333
-any(which(NMS$late_interval == "Late Miocene"))
-any(which(AMNH$late_interval == "Late Miocene"))
-any(which(Peabody$late_interval == "Late Miocene"))
-any(which(GBIF$late_interval == "Late Miocene"))
-## Some in GBIF
-GBIF[which(GBIF$late_interval == "Late Miocene"),"min_ma"] <- 5.333
-any(which(PBDB$late_interval == "Late Miocene"))
-PBDB[which(PBDB$late_interval == "Late Miocene"),"min_ma"]
 
 ## Re-calculate midpoints
 source("functions/get.midpoints.R")

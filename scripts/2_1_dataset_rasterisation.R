@@ -18,12 +18,10 @@ rm(list=ls())
 master <- readRDS("data/final/master.Rds")
 
 ## Rasterise data using divvyCompanion function
-master_200 <- rasterOccData(occData = master, res = 200000, xyCoords = c("paleolong_average","paleolat_average"), xyCell = c("cellx_200km","celly_200km"), uniqID = "cell_200km")[,c(40:42)]
-master_500 <- rasterOccData(occData = master, res = 500000, xyCoords = c("paleolong_average","paleolat_average"), xyCell = c("cellx_500km","celly_500km"), uniqID = "cell_500km")[,c(40:42)]
-master_1000 <- rasterOccData(occData = master, res = 1000000, xyCoords = c("paleolong_average","paleolat_average"), xyCell = c("cellx_1000km","celly_1000km"), uniqID = "cell_1000km")[,c(40:42)]
+master_50 <- rasterOccData(occData = master, res = 50000, xyCoords = c("paleolong_average","paleolat_average"), xyCell = c("cellx_50km","celly_50km"), uniqID = "cell_50km")[,c(40:42)]
 
-## Recombine
-master_out <- cbind(master,master_200,master_500,master_1000)
+## Combine
+master <- cbind(master,master_50)
 
 ## Export rasterised data
-saveRDS(master_out, file = "data/final/master_2_1.Rds")
+saveRDS(master, file = "data/final/master_2_1.Rds")

@@ -1,194 +1,189 @@
-## 2.2 Time binning
+## 2.2 Time binning and filtering
 ## Started by TJS on 08/01/2024
+
+## If packages aren't installed, install them, then load them
+packages <- c("divvy", "stringr", "fossilbrush")
+if(length(packages[!packages %in% installed.packages()[,"Package"]]) > 0){
+  install.packages(packages[!packages %in% installed.packages()[,"Package"]])
+}
+library(divvy)
+library(stringr)
+library(fossilbrush)
 
 ## Clean directory
 rm(list = ls())
 
-## If packages aren't installed, install them, then load them
-packages <- c("velociraptr", "dplyr", "plyr", "parallel")
-if(length(packages[!packages %in% installed.packages()[,"Package"]]) > 0){
-  install.packages(packages[!packages %in% installed.packages()[,"Package"]])
+#### Load data ####
+master <- readRDS("data/final/master_2_1.Rds")
+
+## Read in final stages for time binning
+bins <- read.csv("data/metadata/binning_timescale.csv", row.names = 1)
+
+#### Time bin data ####
+## Number stages
+bins$number <- seq(1,nrow(bins),1)
+
+## Create empty container for stage numbers
+master$stage <- rep(NA,nrow(master))
+
+## Assign occurrences to time bins
+for(b in 1:nrow(bins)){
+  ## Get max
+  max <- bins[b,"FAD"]
+  min <- bins[b,"LAD"]
+  ## Get all occurrences with a FAD equal to or less than max
+  x <- which(master$max_ma <= max)
+  ## Get all occurrences with a LAD equal to or greater than min
+  y <- which(master$min_ma >= min)
+  ## Get intersect
+  if(length(x)>0 && length(y)>0){
+    z <- intersect(x,y)
+  } else {
+    z <- NA
+  }
+  ## Mark those as being in bin b
+  if(!all(is.na(z))){
+    master[z,"stage"] <- b
+  }
 }
-library(velociraptr)
-library(dplyr)
-library(plyr)
-library(parallel)
-library(divDyn)
 
-## Use time binning scheme of Kocsis (minus final bin as not including Holocene data)
-## See https://besjournals.onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1111%2F2041-210X.13161&file=mee313161-sup-0001-Supinfo.pdf for tutorial
-data(stages)
+## Drop occurrences appearing in more than one stage
+droppers <- which(is.na(master$stage))
+master_multiStage <- master[droppers,]
+master_1stage <- master[-droppers,]
 
-## Load data
-setwd("~/R_packages/bivbrach")
-genera <- readRDS("data/genera_200.Rds")
-species <- readRDS("data/species_200.Rds")
+## Nothing to be done for occurrences that cross three boundaries
+## For those that cross 2, how many occurrences would be retained if they were assigned to time bins the majority of their temporal range overlaps with?
+# Get boundaries
+bounds <- c(bins$FAD,bins$LAD[nrow(bins)])
+## Now assign occurrences which only cross a single boundary to stages they are more likely to occur within.
+for(n in 1:nrow(master_multiStage)){
+  ## boundaries crossed
+  cross <- which(data.table::between(bounds, lower = master_multiStage[n,"min_ma"], upper = master_multiStage[n,"max_ma"]))
+  ## skip if no boundaries crossed (occurrence that needs dropping because it is beyond range)
+  if(length(cross)==0){
+    next
+  }
+  ## get values
+  cross.v <- bounds[cross]
+  ## If any of cross.v = max_ma or min_ma, that means range of occurrence starts and/or ends at boundary
+  ## If max_ma is not present, lets add previous boundary to beginning of vector
+  if(!any(cross.v==master_multiStage[n,"max_ma"])){
+    cross.v <- c(bounds[cross[1]-1],cross.v)
+  }
+  ## If min_ma is not present in cross.v, lets add the next boundary to end of vector
+  if(!any(cross.v==master_multiStage[n,"min_ma"])){
+    cross.v <- c(cross.v,bounds[cross[length(cross)]+1])
+  }
+  ## Now, if length of cross.v is over 3, skip. Otherwise, work out how much of each
+  if(length(cross.v)==3){
+    ## get range of occurrences
+    range <- master_multiStage[n,"max_ma"]-master_multiStage[n,"min_ma"]
+    ## get int1 prop
+    int1.prop <- (master_multiStage[n,"max_ma"]-cross.v[2])/range
+    ## get int2 prop
+    int2.prop <- (cross.v[2]-master_multiStage[n,"min_ma"])/range
+    ## If int1.prop is greater than 50%, assign first interval as time bin
+    if(int1.prop > 0.5){
+      master_multiStage[n,"stage"] <- bins[which(bins$FAD == cross.v[1]),"number"]
+    }
+    ## If int2.prop is greater than 50%, assign second nterval as time bin
+    if(int2.prop > 0.5){
+      master_multiStage[n,"stage"] <- bins[which(bins$FAD == cross.v[2]),"number"]
+    }
+    ## Don't assign bin if both equal
+  }
+}
 
-genera_eco <- readRDS("data/genera_eco_200.Rds")
-species_eco <- readRDS("data/species_eco_200.Rds")
+## How many can we keep?
+master <- rbind(master_1stage,master_multiStage[which(!is.na(master_multiStage$stage)),])
 
-genera_refRef <- readRDS("data/genera_RefRef_200.Rds")
-species_refRef <- readRDS("data/species_RefRef_200.Rds")
+#### Derive covariate data for cells from occurrences ####
+## Combine grid cell number and stage number into single spacetime number
+master$stage_cell <- apply(master, 1, function(x) str_flatten(c(x[43],x[40]),collapse = "_"))
+master$stage_cell <- str_replace(master$stage_cell, " ", "")
 
-## Isolate epifaunal
-genera_epif <- genera_eco[which(genera_eco[,"ecological_cat"] == "epifaunal"),]
-species_epif <- species_eco[which(species_eco[,"ecological_cat"] == "epifaunal"),]
-
-#### Get stage time bins ####
-# Function samples occurrences that fit within bins (won't include those that exist before or after)
-#source("functions/extract.time.bin.R")
-
-## First, derive Antell binning scheme
-## Download raw stage data and create names column
-#stages <- downloadTime('international ages')
-#stages$name <- row.names(stages)
-
-## Re-order stages by age, oldest first
-#stages <- stages[order(stages$b_age, decreasing=TRUE), ]
-
-## Create columns for new rounded ages
-#stages$b_round <- stages$t_round <- 0
-
-## Read in function for defining rounded stage ages
-#source("functions/round.age.R")
-
-## Define groupings for rounding - taken from Antell et al. (2020)
-#groupings <- list(u10 <- which(stages$b_age < 10),
-#                  u150 <- which(stages$b_age < 150 & stages$b_age > 10),
-#                  old <- which(stages$b_age > 150))
-
-## Round all to two digits
-#for (group in 1:length(groupings)){
-#  bins <- groupings[[group]]
-#  digits <- c(3, 3, 3)[group]
-
-#  # round all up (so no 0-0 bins, and no overlap)
-#  for (i in bins){
-#    b <- stages$b_age[i]
-#    t <- stages$b_age[i+1]
-#    stages$b_round[i] <- round.age(b, digits=digits, round_up=T)
-#    stages$t_round[i] <- round.age(t, digits=digits, round_up=T)
-#  }
-#}
-
-## Inspect time bins for overlap
-## First bin is always fine
-#checker <- matrix(NA, nrow = length(2:nrow(stages)), ncol = 2)
-#checker[,1] <- stages[,"name"][-1]
-#for(i in 2:nrow(stages)){
-#  if(stages$t_round[i-1] == stages$b_round[i]){
-#    checker[i-1,2] <- "equal to previous"
-#  } else {
-#    checker[i-1,2] <- "unequal"
-#  }
-#}
-#View(checker)
-
-## No overlap between bins. Can continue. First we explort
-#write.csv(stages, file = "data/cleaned_stages.csv")
-
-## Read in time binning scheme
-stages <- read.csv("data/cleaned_stages.csv", row.names = 1)
-
-source("functions/extract.stage.bin.R")
-source("functions/extract.time.bin.R")
-source("functions/get.bins.R")
-source("functions/bin.data.R")
-
-## Function uniqifies data by default
-stages.g200 <- bin.data(occs = genera, trunc.stages = stages, complete.stages = stages, uniqify.data = F)
-stages.s200 <- bin.data(occs = species, trunc.stages = stages, complete.stages = stages, uniqify.data = F, uniqify.taxVar = "unique_name")
-
-stages.g200.epif <- bin.data(occs = genera_epif, trunc.stages = stages, complete.stages = stages, uniqify.data = F)
-stages.s200.epif <- bin.data(occs = species_epif, trunc.stages = stages, complete.stages = stages, uniqify.data = F, uniqify.taxVar = "unique_name")
-
-stages.g200.ref <- bin.data(occs = genera_refRef, trunc.stages = stages, complete.stages = stages, uniqify.data = F)
-stages.s200.ref <- bin.data(occs = species_refRef, trunc.stages = stages, complete.stages = stages, uniqify.data = F, uniqify.taxVar = "unique_name")
-
-#### Label time bins ####
-## Get midpoints for each time bin to use as labels
-source("functions/get.midpoints.R")
-
-## Truncated stages vector
-stage.times <- stages[,c("t_round","b_round")]
-
-## last entry has an NA. Change to 0
-stage.times[102,1] <- 0
-
-## get midpoints
-stage.midpoints <- get.midpoints(stage.times[-102,])
-
-## Label time bins
-names(stages.g200) <- stage.midpoints
-names(stages.s200) <- stage.midpoints
-names(stages.g200.epif) <- stage.midpoints
-names(stages.s200.epif) <- stage.midpoints
-names(stages.g200.ref) <- stage.midpoints
-names(stages.s200.ref) <- stage.midpoints
-
-#### Derive covariate data - see Antell et al., 2020 ####
-## Determine cell lithology, environment, reef status, and latitudinal centroid from combined dataset, paste on to subsets
+## Determine cell lithology, environment, reef status, and latitudinal centroid from combined dataset
+# Load function
 source("functions/add.cell.covariate.R")
 
-## cellY in data frame is latitudinal centroid
-stages.g200 <- add.cell.covariate(stages.g200, name = "cellLith", ref = "occLith", values = c("carb", "sili"), threshold = 0.8, n.cores = 4)
-stages.g200 <- add.cell.covariate(stages.g200, name = "cellEnv", ref = "occEnv", values = c("shal", "deep"), threshold = 0.8, n.cores = 4)
-stages.g200 <- add.cell.covariate(stages.g200, name = "cellReef", ref = "occReef", values = c("reef", "noRf"), threshold = 0.8, n.cores = 4)
+# Run function
+master <- add.cell.covariate(master, stage_cell = "stage_cell", name = "cellLith", unknown = "unknown", ref = "lith_category", values = c("carbonate", "siliciclastic"), threshold = 0.75)
+master <- add.cell.covariate(master, stage_cell = "stage_cell", name = "cellBath", unknown = "unknown", ref = "bath_category", values = c("shallow", "deep"), threshold = 0.75)
+master <- add.cell.covariate(master, stage_cell = "stage_cell", name = "cellReef", unknown = "unknown", ref = "reef_category", values = c("reef", "non-reef"), threshold = 0.75)
 
-stages.s200 <- add.cell.covariate(stages.s200, name = "cellLith", ref = "occLith", values = c("carb", "sili"), threshold = 0.8, n.cores = 4)
-stages.s200 <- add.cell.covariate(stages.s200, name = "cellEnv", ref = "occEnv", values = c("shal", "deep"), threshold = 0.8, n.cores = 4)
-stages.s200 <- add.cell.covariate(stages.s200, name = "cellReef", ref = "occReef", values = c("reef", "noRf"), threshold = 0.8, n.cores = 4)
-
-## Now to extract data for each grid cell and attach it to subsets
-## Load function
-source("functions/transfer.cell.covariate.R")
-
-## Run the function
-stages.g200.epif <- transfer.cell.covariate(source.data = stages.g200, export.data = stages.g200.epif, cov.cols = c("cellLith", "cellEnv", "cellReef"), cell.col = "cell", n.cores = 4)
-stages.s200.epif <- transfer.cell.covariate(source.data = stages.s200, export.data = stages.s200.epif, cov.cols = c("cellLith", "cellEnv", "cellReef"), cell.col = "cell", n.cores = 4)
-
-stages.g200.ref <- transfer.cell.covariate(source.data = stages.g200, export.data = stages.g200.ref, cov.cols = c("cellLith", "cellEnv", "cellReef"), cell.col = "cell", n.cores = 4)
-stages.s200.ref <- transfer.cell.covariate(source.data = stages.s200, export.data = stages.s200.ref, cov.cols = c("cellLith", "cellEnv", "cellReef"), cell.col = "cell", n.cores = 4)
+#### Export datasets
+saveRDS(master, "data/final/master_2_2.Rds")
 
 #### Standardise each time bin to ensure good data quality ####
+rm(list=ls())
+
+## Read in data
+master <- readRDS("data/final/master_2_2.Rds")
+
+## Remove duplicate occurrences from each grid cell-time bin combination
+## Get time bins
+timeBins <- sort(unique(master$stage))
+## 50km
+uniq_master <- master[NULL,]
+for(i in timeBins){
+  ## Get subset
+  uniq_master <- rbind(uniq_master,uniqify(master[which(master$stage==i),], xy = c("cellx_50km","celly_50km"), taxVar = "combined_name"))
+}
+
+#### Standardise uniqified grid cells ####
 source("functions/standardiseCells.R")
-coll.min <- 10
-ref.min <- 5
-multiton.min <- 0.2
-n.cores <- 4
+occs.min <- 5
 
-## Standardise each time bin for collection number, reference number, and multiton ratio ##
-stages.g200.s <- standardiseCells(stages.g200, collMinimum = coll.min, refMinimum = ref.min, multitonRatioMin = multiton.min, level = "genera", n.cores = n.cores)
-stages.s200.s <- standardiseCells(stages.s200, collMinimum = coll.min, refMinimum = ref.min, multitonRatioMin = multiton.min, level = "species", n.cores = n.cores)
+## Run function
+uniq_master <- standardiseCells(data = uniq_master, stage_cell = "stage_cell", minOccs = occs.min)
 
-stages.g200.epif.s <- standardiseCells(stages.g200.epif, collMinimum = coll.min, refMinimum = ref.min, multitonRatioMin = multiton.min, level = "genera", n.cores = n.cores)
-stages.s200.epif.s <- standardiseCells(stages.s200.epif, collMinimum = coll.min, refMinimum = ref.min, multitonRatioMin = multiton.min, level = "species", n.cores = n.cores)
+#### Export datasets
+saveRDS(uniq_master, "data/final/master_2_2_uniq.Rds")
 
-stages.g200.ref.s <- standardiseCells(stages.g200.ref, collMinimum = coll.min, refMinimum = ref.min, multitonRatioMin = multiton.min, level = "genera", n.cores = n.cores)
-stages.s200.ref.s <- standardiseCells(stages.s200.ref, collMinimum = coll.min, refMinimum = ref.min, multitonRatioMin = multiton.min, level = "species", n.cores = n.cores)
+#### Building species version of dataset ####
+## First, let's quickly clean up species names
+rm(list=ls())
 
-## Label cell-cell combination compositions
-source("functions/add.reference.IDs.R")
-source("functions/label.cell.reference.combo.comps.R")
-stages.g200.s <- label.cell.reference.combo.comps(stages.g200.s, n.cores = 4)
-stages.s200.s <- label.cell.reference.combo.comps(stages.s200.s, n.cores = 4)
+## Read in data
+master <- readRDS("data/final/master_2_2.Rds")
 
-stages.g200.epif.s <- label.cell.reference.combo.comps(stages.g200.epif.s, n.cores = 4)
-stages.s200.epif.s <- label.cell.reference.combo.comps(stages.s200.epif.s, n.cores = 4)
+## Clean up names
+master$species <- clean_name(master$species)
 
-stages.g200.ref.s <- label.cell.reference.combo.comps(stages.g200.ref.s, n.cores = 4)
-stages.s200.ref.s <- label.cell.reference.combo.comps(stages.s200.ref.s, n.cores = 4)
+## Drop NAs
+master <- master[-which(is.na(master$species)),]
 
-## Export time binned data
-saveRDS(stages.g200.s, file = "data/stages_g200.Rds")
-saveRDS(stages.s200.s, file = "data/stages_s200.Rds")
+## Standardise dipthongs
+source("functions/misspell.R")
+master$species <- misspell(master$species)
 
-saveRDS(stages.g200.epif.s, file = "data/stages_g200_epif.Rds")
-saveRDS(stages.s200.epif.s, file = "data/stages_s200_epif.Rds")
+## Check for punctuation
+any(str_detect(master$species, pattern = "[:punct:]"))
 
-saveRDS(stages.g200.ref.s, file = "data/stages_g200_ref.Rds")
-saveRDS(stages.s200.ref.s, file = "data/stages_s200_ref.Rds")
+## Capitalisation
+master$species <- str_to_lower(master$species)
 
-## Note - there is a function that can prune grid cells with fewer than 3 references for bivalves and brachiopods
-## Can be used
-#source("functions/applyRefCollThresh.R")
+## Now to combine into a single unique name to update combined name
+master$combined_name <- apply(master, 1, function(x) paste0(x[5], "_", x[9], "_", x[10]))
+
+## Remove duplicate occurrences from each grid cell-time bin combination
+## Get time bins
+timeBins <- sort(unique(master$stage))
+## 50km
+uniq_master <- master[NULL,]
+for(i in timeBins){
+  ## Get subset
+  uniq_master <- rbind(uniq_master,uniqify(master[which(master$stage==i),], xy = c("cellx_50km","celly_50km"), taxVar = "combined_name"))
+}
+
+#### Standardise uniqified grid cells ####
+source("functions/standardiseCells.R")
+occs.min <- 5
+
+## Run function
+uniq_master <- standardiseCells(data = uniq_master, stage_cell = "stage_cell", minOccs = occs.min)
+
+#### Export datasets
+saveRDS(uniq_master, "data/final/master_2_2_uniq_species.Rds")
+

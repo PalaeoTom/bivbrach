@@ -27,12 +27,12 @@ rm(list = ls())
 #home <- getwd()
 #source("functions/apply.Guo2023.bivalves.R")
 #source("functions/apply.Guo2023.brachiopods.R")
-#GTS2020 <- readRDS("data/metadata/GTS2020.Rdata")
+#data("GTS_2020")
 #coln <- readRDS("data/PBDB/colnames.Rds")
 
 ## Run function
-#raw_PBDB_bivalves <- apply.Guo2023.bivalves(raw_PBDB_bivalves, GTS2020 = GTS2020)
-#raw_PBDB_brachiopods <- apply.Guo2023.brachiopods(raw_PBDB_brachiopods, GTS2020 = GTS2020)
+#raw_PBDB_bivalves <- apply.Guo2023.bivalves(raw_PBDB_bivalves, GTS2020 = GTS_2020)
+#raw_PBDB_brachiopods <- apply.Guo2023.brachiopods(raw_PBDB_brachiopods, GTS2020 = GTS_2020)
 
 ## combine
 #PBDB <- rbind(raw_PBDB_bivalves, raw_PBDB_brachiopods)
@@ -223,18 +223,22 @@ PBDB <- dat
 ## Remove Stg column - will time bin separately as one.
 PBDB$stg <- NULL
 
-### Cleaning up rest of Chronostratigraphy
+##### Cleaning up rest of Chronostratigraphy ####
+## Convert gaps back to NA so chrono_scale works
+PBDB[which(PBDB$late_interval == ""),"late_interval"] <- NA
+
+## Load timescale - see script 1.11 for how this was produced
+cleaning_tscale <- read.csv("data/metadata/cleaning_timescale.csv", row.names = 1)
+
 ## use fossilbrush to update Chronostratigraphy
-PBDB <- chrono_scale(PBDB,  tscale = "GTS_2020", srt = "early_interval", end = "late_interval",
+PBDB <- chrono_scale(PBDB,  tscale = cleaning_tscale, srt = "early_interval", end = "late_interval",
                      max_ma = "max_ma", min_ma = "min_ma", verbose = FALSE)
 
 ## set new chronostratigraphy as "max_ma" and "min_ma", then remove added columns newFAD and newLAD
 PBDB$max_ma <- PBDB$newFAD
 PBDB$min_ma <- PBDB$newLAD
-PBDB <- PBDB[,c(1:29)]
-
-## Update Late Miocene entries
-PBDB[which(PBDB$late_interval == "Late Miocene"),"min_ma"] <- 5.333
+PBDB$newFAD <- NULL
+PBDB$newLAD <- NULL
 
 ## check for and remove any entries with nonsensical entries (LAD older than FAD)
 if(any(PBDB$max_ma < PBDB$min_ma)){
