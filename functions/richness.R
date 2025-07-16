@@ -1,54 +1,85 @@
-richness <- function(data, cellID, nCells, nDraws, nOccs, taxonName, taxonomicRankToTally, taxaToTally, n.cores = 1){
+richness <- function(data, cellID, nCells, nDraws, nOccs, standardiseOccs = T, taxonName, taxaToTally, n.cores = 1){
   ## Get cells
   cells <- unique(data[,cellID])
-  ## If length of cells = nCells, proceed as below
-  if(length(cells) == nCells){
-    ## Get row IDs
-    occs <- seq(1,nrow(data),1)
-    ## Sample
-    draws <- mclapply(1:nDraws, mc.cores = n.cores, function(all){
-      ## Randomly sample
-      sampInd <- sample(occs, size = nOccs, replace = T)
-      ## Isolate sample
-      sampOccs <- data[sampInd,]
-      ## Reduce to unique entries
-      sampOccs <- sampOccs[!duplicated(sampOccs[,taxonName]),]
-      ## prepare output
-      out <- c()
-      for(t in 1:length(taxaToTally)){
-        out <- c(out, length(which(sampOccs[,taxonomicRankToTally] == taxaToTally[t])))
-      }
-      return(out)
-    })
-    ## Combine
-    draws <- do.call(rbind, draws)
-    ## Get median of each column
-    output <- apply(draws, 2, function(x) median(x))
+  if(standardiseOccs){
+    ## If length of cells = nCells, proceed as below
+    if(length(cells) == nCells){
+      ## get occs
+      occs <- which(data[,cellID] %in% cells)
+      ## Sample
+      draws <- mclapply(1:nDraws, mc.cores = n.cores, function(all){
+        ## Randomly sample
+        sampInd <- sample(occs, size = nOccs, replace = T)
+        ## Get names
+        taxa <- unique(data[sampInd,taxonName])
+        ## prepare output
+        out <- c()
+        for(t in 1:length(taxaToTally)){
+          out <- c(out, length(str_subset(taxa, taxaToTally[t])))
+        }
+        return(out)
+      })
+      ## Combine
+      draws <- do.call(rbind, draws)
+      ## Get median of each column
+      output <- apply(draws, 2, function(x) median(x))
+    } else {
+      ## Need to standardise number of cells
+      draws <- mclapply(1:nDraws, mc.cores = n.cores, function(all){
+        ## Randomly sample nCells grid cells
+        gcs <- sample(cells, size = nCells, replace = F)
+        ## get occs
+        occs <- which(data[,cellID] %in% gcs)
+        ## Randomly sample
+        sampInd <- sample(occs, size = nOccs, replace = T)
+        ## Get names
+        taxa <- unique(data[sampInd,taxonName])
+        ## prepare output
+        out <- c()
+        for(t in 1:length(taxaToTally)){
+          out <- c(out, length(str_subset(taxa, taxaToTally[t])))
+        }
+        return(out)
+      })
+      ## Combine
+      draws <- do.call(rbind, draws)
+      ## Get median of each column
+      output <- apply(draws, 2, function(x) median(x))
+    }
   } else {
-    ## Need to standardise number of cells
-    draws <- mclapply(1:nDraws, mc.cores = n.cores, function(all){
-      ## Randomly sample nCells grid cells
-      gcs <- sample(cells, size = nCells, replace = F)
-      ## Refine data to those contained within these grid cells
-      data2 <- data[data[,cellID] %in% gcs,]
-      ## Get row IDs
-      occs <- seq(1,nrow(data2),1)
-      ## Randomly sample
-      sampInd <- sample(occs, size = nOccs, replace = T)
-      ## Isolate sample
-      sampOccs <- data2[sampInd,]
-      ## Reduce to unique entries
-      sampOccs <- sampOccs[!duplicated(sampOccs[,taxonName]),]
-      ## prepare output
+    ## Same process but no standardised occurrences
+    ## If length of cells = nCells, proceed as below
+    if(length(cells) == nCells){
+      ## get occs
+      occs <- which(data[,cellID] %in% cells)
+      ## Get names
+      taxa <- unique(data[occs,taxonName])
+      ## Get count
       out <- c()
       for(t in 1:length(taxaToTally)){
-        out <- c(out, length(which(sampOccs[,taxonomicRankToTally] == taxaToTally[t])))
+        out <- c(out, length(str_subset(taxa, taxaToTally[t])))
       }
       return(out)
-    })
-    ## Combine
-    draws <- do.call(rbind, draws)
-    ## Get median of each column
-    output <- apply(draws, 2, function(x) median(x))
+    } else {
+      ## Need to standardise number of cells
+      draws <- mclapply(1:nDraws, mc.cores = n.cores, function(all){
+        ## Randomly sample nCells grid cells
+        gcs <- sample(cells, size = nCells, replace = F)
+        ## get occs
+        occs <- which(data[,cellID] %in% gcs)
+        ## Get names
+        taxa <- unique(data[occs,taxonName])
+        ## prepare output
+        out <- c()
+        for(t in 1:length(taxaToTally)){
+          out <- c(out, length(str_subset(taxa, taxaToTally[t])))
+        }
+        return(out)
+      })
+      ## Combine
+      draws <- do.call(rbind, draws)
+      ## Get median of each column
+      output <- apply(draws, 2, function(x) median(x))
+    }
   }
 }

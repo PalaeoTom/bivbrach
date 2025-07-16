@@ -1,4 +1,4 @@
-add.cell.covariate <- function(data, stage_cell, name, unknown, ref, values, threshold = 0.75){
+add.cell.covariate <- function(data, stage_cell, name, unknown, ref, value){
   ## Get unique spacetime samples
   sc <- unique(data[,stage_cell])
   ## Get colnames
@@ -14,24 +14,13 @@ add.cell.covariate <- function(data, stage_cell, name, unknown, ref, values, thr
     samp <- data[occs,]
     ## Get number of occurrences with assignments
     n <- nrow(samp)-length(which(samp[,ref]==unknown))
-    ## If at least 1 occurrence has value associated
+    ## If at least 1 occurrence has a record,
     if(n>0){
-      ## Get proportions for each value
-      v1c <- length(which(samp[,ref] == values[1]))/n
-      v2c <- length(which(samp[,ref] == values[2]))/n
-      ## Assign value if threshold exceeded
-      if(v1c >= threshold){
-        data[occs,name] <- values[1]
-      } else {
-        if(v2c >= threshold){
-          data[occs,name] <- values[2]
-        } else {
-          data[occs,name] <- "mixed"
-        }
-      }
+      ## Assign proportion as value
+      data[occs,name] <- length(which(samp[,ref] == value))/n
     } else {
-      ## If 0, set as mixed (level 0)
-      data[occs,name] <- "mixed"
+      ## If 0, set as 0.5 (mixed)
+      data[occs,name] <- 0.5
     }
   }
   return(data)
