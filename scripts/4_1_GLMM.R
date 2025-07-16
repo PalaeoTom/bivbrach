@@ -27,7 +27,7 @@ library(palaeoverse)
 library(ggeffects)
 
 ## Load data
-raw_data <- read.csv("data/analysis_data/genera_50_2cell_raw.csv", header = T, row.names = 1)
+raw_data <- read.csv("data/analysis_data/genera_2cell_raw.csv", header = T, row.names = 1)
 
 #### Prepping data ####
 ## Drop columns not being used in model
@@ -292,7 +292,7 @@ p1 <- ggplot() +
         axis.line = element_line(colour = "black"),
         legend.position = "none")
 p1
-pdf("figures/final/main/genera_50_raw_marginal_PTME.pdf")
+pdf("figures/final/main/genera_2cell_raw_marginal_PTME.pdf")
 print(p1)
 dev.off()
 
@@ -352,7 +352,7 @@ p2 <- ggplot(pre, aes(x, y = stdBrach)) +
         axis.line = element_line(colour = "black"),
         legend.position = "none")
 p2
-pdf("figures/final/main/genera_50_raw_marginal_bivalve_prePTME.pdf")
+pdf("figures/final/main/genera_2cell_raw_marginal_bivalve_prePTME.pdf")
 print(p2)
 dev.off()
 
@@ -401,7 +401,7 @@ p3 <- ggplot(pre, aes(x, y = stdBrach)) +
         axis.line = element_line(colour = "black"),
         legend.position = "none")
 p3
-pdf("figures/final/main/genera_50_raw_marginal_bivalve_postPTME.pdf")
+pdf("figures/final/main/genera_2cell_raw_marginal_bivalve_postPTME.pdf")
 print(p3)
 dev.off()
 
@@ -450,7 +450,7 @@ p4 <- ggplot(prBath, aes(x, y = stdBrach)) +
         axis.line = element_line(colour = "black"),
         legend.position = "none")
 p4
-pdf("figures/final/main/genera_50_raw_marginal_bathymetry.pdf")
+pdf("figures/final/main/genera_2cell_raw_marginal_bathymetry.pdf")
 print(p4)
 dev.off()
 
@@ -499,13 +499,13 @@ p5 <- ggplot(prLith, aes(x, y = stdBrach)) +
         axis.line = element_line(colour = "black"),
         legend.position = "none")
 p5
-pdf("figures/final/main/genera_50_raw_marginal_lithology.pdf")
+pdf("figures/final/main/genera_2cell_raw_marginal_lithology.pdf")
 print(p5)
 dev.off()
 
 #### Plotting coefficients and richness by group ####
 ## Get clean data for plotting
-plotting.data <- read.csv("data/analysis_data/genera_50_2cell_raw.csv", row.names = 1)
+plotting.data <- read.csv("data/analysis_data/genera_2cell_raw.csv", row.names = 1)
 
 ## Round data
 plotting.data$bivalve <- round(plotting.data$bivalve, digits = 0)
@@ -546,8 +546,8 @@ scatter <- ggplot() +
   scale_shape_manual(values = point.shape) +
   geom_line(data = line.df, aes(x = x, y = predicted), linetype = "dashed") +
   geom_ribbon(data = line.df, aes(x = x, ymin = conf.low, ymax = conf.high), alpha = 0.3)+
-  scale_x_continuous(expand = c(0,0)) +
-  scale_y_continuous(expand = c(0,0)) +
+  scale_x_continuous(expand = c(0,0), limits = c(0,200)) +
+  scale_y_continuous(expand = c(0,0), limits = c(0,200)) +
   guides(shape = "none",
          color = guide_legend(override.aes = list(shape = legend.shape))) +
   theme(text = element_text(family = "Helvetica"),,
@@ -561,11 +561,12 @@ scatter <- ggplot() +
         axis.line = element_line(colour = "black"),
         legend.position = "bottom",
         legend.text = element_text(size = 10),
-        legend.key.size = unit(10,"point"))
+        legend.key.size = unit(10,"point"),
+        plot.margin = unit(c(0.5,0.5,0.5,0.5),"cm"))
 scatter
 
 ## Export
-pdf(file = paste0("figures/final/main/genera_50_raw_richness.pdf"))
+pdf(file = paste0("figures/final/main/genera_2cell_raw_richness.pdf"))
 print(scatter)
 dev.off()
 
@@ -603,13 +604,13 @@ p7 <- ggplot() +
         axis.line = element_line(colour = "black"),
         legend.position = "none")
 p7
-pdf("figures/final/main/genera_50_raw_coefficients.pdf")
+pdf("figures/final/main/genera_2cell_raw_coefficients.pdf")
 print(p7)
 dev.off()
 
 #### Plotting richness ####
 ## Read in clean data
-richPlotData <- read.csv("data/analysis_data/genera_50_2cell_raw.csv", row.names = 1)
+richPlotData <- read.csv("data/analysis_data/genera_2cell_raw.csv", row.names = 1)
 
 ## Isolate stages and midpoints
 richness <- richPlotData[,c(1,11)]
@@ -663,12 +664,12 @@ richness[which(richness$brachiopod_minus1sd<0),"brachiopod_minus1sd"] <- 0
 
 ## Plot
 oldpar <- par(no.readonly = TRUE)
-pdf(file = "figures/final/supplemental/genera_50km_spatially_standardised_richness.pdf")
+pdf(file = "figures/final/supplemental/genera_2cell_spatially_standardised_richness.pdf")
 par(mar = c(6.1, 4.1, 4.1, 2.1))
-plot(x = richness$stage_midpoint, y = richness$bivalve_mean, main = "Spatially standardised generic richness (mean +/- 1 SD)", axes = FALSE, xlim = c(520, 0), ylim = c(0,50), yaxs="i", xaxs="i",
+plot(x = richness$stage_midpoint, y = richness$bivalve_mean, main = "Spatially standardised generic richness (mean +/- 1 SD)", axes = FALSE, xlim = c(520, 0), ylim = c(0,75), yaxs="i", xaxs="i",
      xlab = NA, ylab = "Generic richness", type = "l", col = rgb(red = 1, green = 0, blue = 0, alpha = 0.75))
 polygon(c(rev(richness$stage_midpoint), richness$stage_midpoint), c(rev(richness$bivalve_plus1sd), richness$bivalve_minus1sd), col = rgb(red = 1, green = 0, blue = 0, alpha = 0.25), border = NA)
-lines(x = richness$stage_midpoint, y = richness$brachiopod_mean, xlim = c(520, 0), ylim = c(0,50),
+lines(x = richness$stage_midpoint, y = richness$brachiopod_mean, xlim = c(520, 0), ylim = c(0,75),
       xlab = NA, ylab = "", type = "l", col = rgb(red = 0, green = 0, blue = 1, alpha = 0.75))
 polygon(c(rev(richness$stage_midpoint), richness$stage_midpoint), c(rev(richness$brachiopod_plus1sd), richness$brachiopod_minus1sd), col = rgb(red = 0, green = 0, blue = 1, alpha = 0.25), border = NA)
 box()

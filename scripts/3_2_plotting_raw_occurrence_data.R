@@ -39,7 +39,7 @@ for(b in 1:nrow(richness)){
 
 ## Plot
 oldpar <- par(no.readonly = TRUE)
-pdf(file = "figures/final/supplemental/genera_50km_raw_richness.pdf")
+pdf(file = "figures/final/supplemental/genera_raw_richness.pdf")
 par(mar = c(6.1, 4.1, 4.1, 2.1))
 plot(x = richness$midpoint, y = richness$bivalves, axes = FALSE, xlim = c(540, 0), ylim = c(0,7500), yaxs="i", xaxs="i",
      xlab = NA, ylab = "Generic richness", type = "l", col = rgb(red = 1, green = 0, blue = 0, alpha = 0.75))
@@ -68,7 +68,7 @@ for(b in 1:nrow(richness)){
 
 ## Plot
 oldpar <- par(no.readonly = TRUE)
-pdf(file = "figures/final/supplemental/species_50km_raw_richness.pdf")
+pdf(file = "figures/final/supplemental/species_raw_richness.pdf")
 par(mar = c(6.1, 4.1, 4.1, 2.1))
 plot(x = richness$midpoint, y = richness$bivalves, axes = FALSE, xlim = c(540, 0), ylim = c(0,6500), yaxs="i", xaxs="i",
      xlab = NA, ylab = "Species richness", type = "l", col = rgb(red = 1, green = 0, blue = 0, alpha = 0.75))
@@ -82,22 +82,22 @@ dev.off()
 
 #### Plot world map ####
 ## Plot generic occurrences
-pdf(file = "figures/final/supplemental/genera_50km_brachiopod_map.pdf")
+pdf(file = "figures/final/supplemental/genera_brachiopod_map.pdf")
 map("world",col="lightgrey",fill = T)
 points(x = genera[which(genera$phylum=="Brachiopoda"),"longitude"],y = genera[which(genera$phylum=="Brachiopoda"),"latitude"], cex = 0.5, pch = 15, col = rgb(red = 0, green = 0, blue = 1, alpha = 0.5))
 dev.off()
 
-pdf(file = "figures/final/supplemental/genera_50km_bivalve_map.pdf")
+pdf(file = "figures/final/supplemental/genera_bivalve_map.pdf")
 map("world",col="lightgrey",fill = T)
 points(x = genera[which(genera$phylum=="Mollusca"),"longitude"],y = genera[which(genera$phylum=="Mollusca"),"latitude"], cex = 0.5, pch = 16, col = rgb(red = 1, green = 0, blue = 0, alpha = 0.5))
 dev.off()
 
-pdf(file = "figures/final/supplemental/species_50km_brachiopod_map.pdf")
+pdf(file = "figures/final/supplemental/species_brachiopod_map.pdf")
 map("world",col="lightgrey",fill = T)
 points(x = species[which(species$phylum=="Brachiopoda"),"longitude"],y = species[which(species$phylum=="Brachiopoda"),"latitude"], cex = 0.5, pch = 15, col = rgb(red = 0, green = 0, blue = 1, alpha = 0.5))
 dev.off()
 
-pdf(file = "figures/final/supplemental/species_50km_bivalve_map.pdf")
+pdf(file = "figures/final/supplemental/species_bivalve_map.pdf")
 map("world",col="lightgrey",fill = T)
 points(x = species[which(species$phylum=="Mollusca"),"longitude"],y = species[which(species$phylum=="Mollusca"),"latitude"], cex = 0.5, pch = 16, col = rgb(red = 1, green = 0, blue = 0, alpha = 0.5))
 dev.off()
