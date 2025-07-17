@@ -20,16 +20,16 @@ library(parallel)
 library(divvyCompanion)
 
 ## Load data
-setwd("~/R_packages/bivbrach")
+setwd("~/GitHub/bivbrach/")
 genera <- readRDS("data/final/master_50_2_2_uniq.Rds")
 species <- readRDS("data/final/master_50_uniq_species.Rds")
 home <- getwd()
 
 ## Set number of cores
-core.set <- 8
+core.set <- 4
 
 ## Output directory
-output.dir <- "~/Library/CloudStorage/Dropbox/unfinished_projects/bivalve_brachiopod/traybake_output"
+output.dir <- "~/Dropbox/unfinished_projects/bivalve_brachiopod/traybake_output"
 
 ## Read in richness function
 source("functions/richness.R")
@@ -49,7 +49,7 @@ genera$cellBath <- as.numeric(genera$cellBath)
 genera$cellLith <- as.numeric(genera$cellLith)
 genera$cellReef <- as.numeric(genera$cellReef)
 
-##### Genera - 2 cells, 50km cells, 100km radius, standardised occurrences with no replacement #####
+##### Genera - 2 cells, 50km cells, 100km radius: creating frame #####
 ## Read in genera count
 genera_count <- read.csv("data/sensitivity_testing/genera_50_radius_nSite_sensitivity_testing.csv", header = T, row.names = 1)
 
@@ -90,6 +90,7 @@ cluster_2cell_stdOccs_Repl <- cluster_2cell
 ## Get stages from cluster_2cell
 stages <- as.character(sort(as.numeric(unique(cluster_2cell[,"stage"]))))
 
+##### Genera - 2 cells, 50km cells, 100km radius: spatial subsampling #####
 ## For each stage, run traybake
 #start = 1
 #for(i in start:length(stages)){
@@ -106,6 +107,7 @@ stages <- as.character(sort(as.numeric(unique(cluster_2cell[,"stage"]))))
 #  }
 #}
 
+##### Genera - 2 cells, 50km cells, 100km radius: richness estimates from occurrences standardised without replacement #####
 #cluster_2cell <- read.csv("data/analysis_data/genera_2cell_stdOccs_noRepl.csv", row.names = 1)
 
 ## Set number of occurrences to be drawn as minimum
@@ -175,7 +177,7 @@ for(i in timeData$number){
 ## Export
 write.csv(cluster_2cell_stdOccs_noRepl, file = "data/analysis_data/genera_2cell_stdOccs_noRepl.csv")
 
-##### Genera - 2 cells, 50km cells, 100km radius, standardised occurrences with replacement #####
+##### Genera - 2 cells, 50km cells, 100km radius: richness estimates from occurrences standardised with replacement #####
 ## Set number of occurrences to be drawn as minimum
 nOccs <- 50
 
@@ -243,7 +245,7 @@ for(i in timeData$number){
 ## Export
 write.csv(cluster_2cell_stdOccs_Repl, file = "data/analysis_data/genera_2cell_stdOccs_Repl.csv")
 
-##### Genera - 2 cells, 50km cells, 100km radius, raw #####
+##### Genera - 2 cells, 50km cells, 100km radius: richness estimates from raw occurrences #####
 ## For each stage, load data, summarise across clusters
 start = 1
 for(i in start:length(stages)){
@@ -282,7 +284,31 @@ for(i in start:length(stages)){
   }
 }
 
-##### Genera - 3 cells, 50km cells, 100km radius, standardised occurrences with no replacement #####
+## Add term for pre/post permian and stage midpoints
+timeData <- read.csv("data/metadata/binning_timescale.csv", row.names = 1)
+timeData$number <- seq(1,nrow(timeData),1)
+
+## Add containers
+cluster_2cell_raw$stage_midpoint <- NA
+cluster_2cell_raw$PTME <- NA
+
+## Stage 48 is last pre-PTME
+## for each timeData
+for(i in timeData$number){
+  if(any(cluster_2cell_raw[,"stage"]==i)){
+    cluster_2cell_raw[which(cluster_2cell_raw$stage == i),"stage_midpoint"] <- timeData[i,"midpoint"]
+    if(i <= 48){
+      cluster_2cell_raw[which(cluster_2cell_raw$stage == i),"PTME"] <- "PrePTME"
+    } else {
+      cluster_2cell_raw[which(cluster_2cell_raw$stage == i),"PTME"] <- "PostPTME"
+    }
+  }
+}
+
+## Export
+write.csv(cluster_2cell_raw, file = "data/analysis_data/genera_2cell_raw.csv")
+
+##### Genera - 3 cells, 50km cells, 100km radius: creating frames #####
 ## Read in genera count
 genera_count <- read.csv("data/sensitivity_testing/genera_50_radius_nSite_sensitivity_testing.csv", header = T, row.names = 1)
 
@@ -323,6 +349,7 @@ cluster_3cell_stdOccs_Repl <- cluster_3cell
 ## Get stages from cluster_3cell
 stages <- as.character(sort(as.numeric(unique(cluster_3cell[,"stage"]))))
 
+##### Genera - 3 cells, 50km cells, 100km radius: spatial subsampling #####
 ## For each stage, run traybake
 #start = 1
 #for(i in start:length(stages)){
@@ -339,6 +366,7 @@ stages <- as.character(sort(as.numeric(unique(cluster_3cell[,"stage"]))))
 #  }
 #}
 
+##### Genera - 3 cells, 50km cells, 100km radius: richness esimtates from occurrences standardised without replacement #####
 #cluster_3cell <- read.csv("data/analysis_data/genera_3cell_standardised.csv", row.names = 1)
 
 ## Set number of occurrences to be drawn
@@ -408,7 +436,7 @@ for(i in timeData$number){
 ## Export
 write.csv(cluster_3cell_stdOccs_noRepl, file = "data/analysis_data/genera_3cell_stdOccs_noRepl.csv")
 
-##### Genera - 3 cells, 50km cells, 100km radius, standardised occurrences with replacement #####
+##### Genera - 3 cells, 50km cells, 100km radius: richness estimates from occurrences standardised with replacement #####
 ## Set number of occurrences to be drawn as minimum
 nOccs <- 50
 
@@ -476,7 +504,7 @@ for(i in timeData$number){
 ## Export
 write.csv(cluster_3cell_stdOccs_Repl, file = "data/analysis_data/genera_3cell_stdOccs_Repl.csv")
 
-##### Genera - 3 cells, 50km cells, 100km radius, raw #####
+##### Genera - 3 cells, 50km cells, 100km radius: richness estimates from raw occurrences #####
 ## For each stage, load data, summarise across clusters
 start = 1
 for(i in start:length(stages)){
@@ -515,7 +543,31 @@ for(i in start:length(stages)){
   }
 }
 
-##### Genera - 4 cells, 50km cells, 100km radius, standardised occurrences with no replacement #####
+## Add term for pre/post permian and stage midpoints
+timeData <- read.csv("data/metadata/binning_timescale.csv", row.names = 1)
+timeData$number <- seq(1,nrow(timeData),1)
+
+## Add containers
+cluster_3cell_raw$stage_midpoint <- NA
+cluster_3cell_raw$PTME <- NA
+
+## Stage 48 is last pre-PTME
+## for each timeData
+for(i in timeData$number){
+  if(any(cluster_3cell_raw[,"stage"]==i)){
+    cluster_3cell_raw[which(cluster_3cell_raw$stage == i),"stage_midpoint"] <- timeData[i,"midpoint"]
+    if(i <= 48){
+      cluster_3cell_raw[which(cluster_3cell_raw$stage == i),"PTME"] <- "PrePTME"
+    } else {
+      cluster_3cell_raw[which(cluster_3cell_raw$stage == i),"PTME"] <- "PostPTME"
+    }
+  }
+}
+
+## Export
+write.csv(cluster_3cell_raw, file = "data/analysis_data/genera_3cell_raw.csv")
+
+##### Genera - 4 cells, 50km cells, 100km radius: creating frames #####
 ## Read in genera count
 genera_count <- read.csv("data/sensitivity_testing/genera_50_radius_nSite_sensitivity_testing.csv", header = T, row.names = 1)
 
@@ -556,6 +608,7 @@ cluster_4cell_stdOccs_Repl <- cluster_4cell
 ## Get stages from cluster_4cell
 stages <- as.character(sort(as.numeric(unique(cluster_4cell[,"stage"]))))
 
+##### Genera - 4 cells, 50km cells, 100km radius: spatial subsampling #####
 ## For each stage, run traybake
 #start = 1
 #for(i in start:length(stages)){
@@ -572,6 +625,7 @@ stages <- as.character(sort(as.numeric(unique(cluster_4cell[,"stage"]))))
 #  }
 #}
 
+##### Genera - 4 cells, 50km cells, 100km radius: richness estimates from occurrences standardised without replacement #####
 #cluster_4cell <- read.csv("data/analysis_data/genera_4cell_standardised.csv", row.names = 1)
 
 ## Set number of occurrences
@@ -641,7 +695,7 @@ for(i in timeData$number){
 ## Export
 write.csv(cluster_4cell_stdOccs_noRepl, file = "data/analysis_data/genera_4cell_stdOccs_noRepl.csv")
 
-##### Genera - 4 cells, 50km cells, 100km radius, standardised occurrences with replacement #####
+##### Genera - 4 cells, 50km cells, 100km radius: richness estimates from occurrences standardised with replacement #####
 ## Set number of occurrences to be drawn as minimum
 nOccs <- 50
 
@@ -709,7 +763,7 @@ for(i in timeData$number){
 ## Export
 write.csv(cluster_4cell_stdOccs_Repl, file = "data/analysis_data/genera_4cell_stdOccs_Repl.csv")
 
-##### Genera - 4 cells, 50km cells, 100km radius, raw #####
+##### Genera - 4 cells, 50km cells, 100km radius: richness estimates from raw occurrences #####
 ## For each stage, load data, summarise across clusters
 start = 1
 for(i in start:length(stages)){
@@ -747,4 +801,28 @@ for(i in start:length(stages)){
     write.csv(cluster_4cell_raw, file = "data/analysis_data/genera_4cell_raw.csv")
   }
 }
+
+## Add term for pre/post permian and stage midpoints
+timeData <- read.csv("data/metadata/binning_timescale.csv", row.names = 1)
+timeData$number <- seq(1,nrow(timeData),1)
+
+## Add containers
+cluster_4cell_raw$stage_midpoint <- NA
+cluster_4cell_raw$PTME <- NA
+
+## Stage 48 is last pre-PTME
+## for each timeData
+for(i in timeData$number){
+  if(any(cluster_4cell_raw[,"stage"]==i)){
+    cluster_4cell_raw[which(cluster_4cell_raw$stage == i),"stage_midpoint"] <- timeData[i,"midpoint"]
+    if(i <= 48){
+      cluster_4cell_raw[which(cluster_4cell_raw$stage == i),"PTME"] <- "PrePTME"
+    } else {
+      cluster_4cell_raw[which(cluster_4cell_raw$stage == i),"PTME"] <- "PostPTME"
+    }
+  }
+}
+
+## Export
+write.csv(cluster_4cell_raw, file = "data/analysis_data/genera_4cell_raw.csv")
 
