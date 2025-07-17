@@ -39,11 +39,6 @@ radius <- 100000
 nBatch <- 500
 nBites <- 500
 
-#### Let's bake! ####
-## Using 50km grid cells and 100km radius RCR as this yields greatest number of distinct clusters. Also retains over 64% of grid cells (5957) and over 71% of occurrences (111880).
-## Maximum number of 50km grid cells in a 100km-radius RCR is 25.
-## Maximum number of RCRs in cluster is 78.
-## Need 500 batches of 500 cookies.
 ## Change covariates to numeric
 genera$cellBath <- as.numeric(genera$cellBath)
 genera$cellLith <- as.numeric(genera$cellLith)
