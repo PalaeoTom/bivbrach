@@ -55,6 +55,7 @@ richness <- function(data, cellID, nCells, nDraws, nOccs, cov.names, standardise
           }
           ## combine for output
           out <- c(out, covs)
+          return(out)
         })
         ## Now to do mean for covariates and median for richness
         output <- c()
@@ -106,7 +107,8 @@ richness <- function(data, cellID, nCells, nDraws, nOccs, cov.names, standardise
           for(t in 1:length(taxaToTally)){
             out <- c(out, length(str_subset(samp, taxaToTally[t])))
           }
-          return(out, covs)
+          out <- c(out,covs)
+          return(out)
         })
         ## Now to do mean for covariates and median for richness
         output <- c()

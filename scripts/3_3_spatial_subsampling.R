@@ -72,7 +72,7 @@ for(r in 1:nrow(rel)){
 }
 cluster_2cell <- cluster_2cell[-1,]
 
-## Add columns to be populated to finalise template output
+## Add columns to be populated to finalise template output. Make sure absolute latitude is on end and order of everything else matches cov.names
 cluster_2cell$bivalve <- NA
 cluster_2cell$brachiopod <- NA
 cluster_2cell$cookiePalaeoLng <- NA
