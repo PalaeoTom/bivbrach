@@ -719,7 +719,7 @@ for(i in start:length(stages)){
         covs <- apply(covariates[,-1], 2, function(x) mean(x))
         names(covs) <- NULL
         ## richness
-        rich <- richness(data = cluster[[y]], cellID = "cell_50km", nCells, nDraws = nBites, nOccs = nOccs, standardiseOccs = T, standardiseOccsWithReplacement = F, taxonName = "combined_name", taxaToTally = c("Mollusca", "Brachiopoda"), n.cores = 1)
+        rich <- richness(data = cluster[[y]], cellID = "cell_50km", nCells, nDraws = nBites, nOccs = nOccs, standardiseOccs = T, standardiseOccsWithReplacement = T, taxonName = "combined_name", taxaToTally = c("Mollusca", "Brachiopoda"), n.cores = 1)
         ## Combine output
         out <- c(rich, covs[3], covs[4], covs[5], abs(covs[2]), covs[2], covs[1])
       })
