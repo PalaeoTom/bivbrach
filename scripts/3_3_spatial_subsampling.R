@@ -20,13 +20,14 @@ library(parallel)
 library(divvyCompanion)
 
 ## Load data
-setwd("~/GitHub/bivbrach/")
+#setwd("~/GitHub/bivbrach/")
+setwd("/Users/tjs/R_packages/bivbrach")
 genera <- readRDS("data/final/master_50_2_2_uniq.Rds")
 species <- readRDS("data/final/master_50_uniq_species.Rds")
 home <- getwd()
 
 ## Set number of cores
-core.set <- 4
+core.set <- 8
 
 ## Output directory
 #output.dir <- "~/Dropbox/unfinished_projects/bivalve_brachiopod/traybake_output"
@@ -39,6 +40,9 @@ source("functions/richness.R")
 radius <- 100000
 nBatch <- 500
 nBites <- 500
+
+## Define covariate columns using vector
+cov.names <- c("cellx_50km", "celly_50km", "cellLith", "cellBath", "cellReef")
 
 ## Change covariates to numeric
 genera$cellBath <- as.numeric(genera$cellBath)
@@ -122,26 +126,25 @@ for(i in start:length(stages)){
     clusters <- 1:length(tray[[1]])
     ## for each cluster
     for(c in clusters){
-      ## Get row from cluster and stage
+      ## Get row from cluster and stage to populate
       row <- which(cluster_2cell_stdOccs_noRepl$cluster == str_flatten(c(stages[i],c),collapse = "_"))
       ## Isolate clusters
       cluster <- lapply(1:length(tray), function(x) tray[[x]][[c]])
       ## Convert clusters into vectors of data
       values <- mclapply(1:length(cluster), mc.cores = core.set, function(y){
-        ## isolate covariates, remove duplicates
-        covariates <- cluster[[y]][,c(40,41,42,45,46,47)]
-        covariates <- covariates[!duplicated(covariates),]
-        covs <- apply(covariates[,-1], 2, function(x) mean(x))
-        names(covs) <- NULL
-        ## richness
-        rich <- richness(data = cluster[[y]], cellID = "cell_50km", nCells, nDraws = nBites, nOccs = nOccs, standardiseOccs = T, standardiseOccsWithReplacement = F, taxonName = "combined_name", taxaToTally = c("Mollusca", "Brachiopoda"), n.cores = 1)
-        ## Combine output
-        out <- c(rich, covs[3], covs[4], covs[5], abs(covs[2]), covs[2], covs[1])
+        ## richness and covariates
+        rich <- richness(data = cluster[[y]], cellID = "cell_50km", nCells = nCells, cov.names = cov.names, nDraws = nBites, nOccs = nOccs, standardiseOccs = T, standardiseOccsWithReplacement = F, splitTaxa = F, taxonName = "combined_name", taxaToTally = c("Mollusca", "Brachiopoda"), n.cores = 1)
       })
-      ## Get median values
-      medValues <- apply(t(sapply(1:length(values), function(x) values[[x]])), 2, function(z) median(z))
-      ## Populate
-      cluster_2cell_stdOccs_noRepl[row, c(3:ncol(cluster_2cell_stdOccs_noRepl))] <- medValues
+      ## Get median of richness and mean of everything else
+      summary <- c()
+      for(tt in 1:2){
+        summary <- c(summary, median(sapply(1:length(values), function(x) values[[x]][tt])))
+      }
+      for(cc in 3:7){
+        summary <- c(summary, mean(sapply(1:length(values), function(x) values[[x]][cc])))
+      }
+      ## Populate row
+      cluster_2cell_stdOccs_noRepl[row, c(3:ncol(cluster_2cell_stdOccs_noRepl))] <- summary
     }
     ## Save to keep track in between stages
     write.csv(cluster_2cell_stdOccs_noRepl, file = "data/analysis_data/genera_2cell_stdOccs_noRepl.csv")
@@ -190,33 +193,30 @@ for(i in start:length(stages)){
     clusters <- 1:length(tray[[1]])
     ## for each cluster
     for(c in clusters){
-      ## Get row from cluster and stage
-      row <- which(cluster_2cell_stdOccs_Repl$cluster == str_flatten(c(stages[i],c),collapse = "_"))
+      ## Get row from cluster and stage to populate
+      row <- which(cluster_2cell_stdOccs_noRepl$cluster == str_flatten(c(stages[i],c),collapse = "_"))
       ## Isolate clusters
       cluster <- lapply(1:length(tray), function(x) tray[[x]][[c]])
       ## Convert clusters into vectors of data
-      y = 1
       values <- mclapply(1:length(cluster), mc.cores = core.set, function(y){
-        ## isolate covariates, remove duplicates
-        covariates <- cluster[[y]][,c(40,41,42,45,46,47)]
-        covariates <- covariates[!duplicated(covariates),]
-        covs <- apply(covariates[,-1], 2, function(x) mean(x))
-        names(covs) <- NULL
-        ## richness
-        rich <- richness(data = cluster[[y]], cellID = "cell_50km", nCells, nDraws = nBites, nOccs = nOccs, standardiseOccs = T, standardiseOccsWithReplacement = T, taxonName = "combined_name", taxaToTally = c("Mollusca", "Brachiopoda"), splitTaxa = T, n.cores = 1)
-        ## Combine output
-        out <- c(rich, covs[3], covs[4], covs[5], abs(covs[2]), covs[2], covs[1])
+        ## richness and covariates
+        rich <- richness(data = cluster[[y]], cellID = "cell_50km", nCells = nCells, cov.names = cov.names, nDraws = nBites, nOccs = nOccs, standardiseOccs = T, standardiseOccsWithReplacement = T, splitTaxa = T, taxonName = "combined_name", taxaToTally = c("Mollusca", "Brachiopoda"), n.cores = 1)
       })
-      ## Get median values
-      medValues <- apply(t(sapply(1:length(values), function(x) values[[x]])), 2, function(z) median(z))
-      ## Populate
-      cluster_2cell_stdOccs_Repl[row, c(3:ncol(cluster_2cell_stdOccs_Repl))] <- medValues
+      ## Get median of richness and mean of everything else
+      summary <- c()
+      for(tt in 1:2){
+        summary <- c(summary, median(sapply(1:length(values), function(x) values[[x]][tt])))
+      }
+      for(cc in 3:7){
+        summary <- c(summary, mean(sapply(1:length(values), function(x) values[[x]][cc])))
+      }
+      ## Populate row
+      cluster_2cell_stdOccs_noRepl[row, c(3:ncol(cluster_2cell_stdOccs_noRepl))] <- summary
     }
     ## Save to keep track in between stages
     write.csv(cluster_2cell_stdOccs_Repl, file = "data/analysis_data/genera_2cell_stdOccs_Repl.csv")
   }
 }
-
 
 ## Add term for pre/post permian and stage midpoints
 timeData <- read.csv("data/metadata/binning_timescale.csv", row.names = 1)
@@ -255,26 +255,25 @@ for(i in start:length(stages)){
     clusters <- 1:length(tray[[1]])
     ## for each cluster
     for(c in clusters){
-      ## Get row from cluster and stage
-      row <- which(cluster_2cell_raw$cluster == str_flatten(c(stages[i],c),collapse = "_"))
+      ## Get row from cluster and stage to populate
+      row <- which(cluster_2cell_stdOccs_noRepl$cluster == str_flatten(c(stages[i],c),collapse = "_"))
       ## Isolate clusters
       cluster <- lapply(1:length(tray), function(x) tray[[x]][[c]])
       ## Convert clusters into vectors of data
       values <- mclapply(1:length(cluster), mc.cores = core.set, function(y){
-        ## isolate covariates, remove duplicates
-        covariates <- cluster[[y]][,c(40,41,42,45,46,47)]
-        covariates <- covariates[!duplicated(covariates),]
-        covs <- apply(covariates[,-1], 2, function(x) mean(x))
-        names(covs) <- NULL
-        ## richness
-        rich <- richness(data = cluster[[y]], cellID = "cell_50km", nCells, nDraws = nBites, standardiseOccs = F, taxonName = "combined_name", taxaToTally = c("Mollusca", "Brachiopoda"), n.cores = 1)
-        ## Combine output
-        out <- c(rich, covs[3], covs[4], covs[5], abs(covs[2]), covs[2], covs[1])
+        ## richness and covariates
+        rich <- richness(data = cluster[[y]], cellID = "cell_50km", nCells = nCells, cov.names = cov.names, nDraws = nBites, nOccs = nOccs, standardiseOccs = F, standardiseOccsWithReplacement = F, splitTaxa = F, taxonName = "combined_name", taxaToTally = c("Mollusca", "Brachiopoda"), n.cores = 1)
       })
-      ## Get median values
-      medValues <- apply(t(sapply(1:length(values), function(x) values[[x]])), 2, function(z) median(z))
-      ## Populate
-      cluster_2cell_raw[row, c(3:10)] <- medValues
+      ## Get median of richness and mean of everything else
+      summary <- c()
+      for(tt in 1:2){
+        summary <- c(summary, median(sapply(1:length(values), function(x) values[[x]][tt])))
+      }
+      for(cc in 3:7){
+        summary <- c(summary, mean(sapply(1:length(values), function(x) values[[x]][cc])))
+      }
+      ## Populate row
+      cluster_2cell_stdOccs_noRepl[row, c(3:ncol(cluster_2cell_stdOccs_noRepl))] <- summary
     }
     ## Save to keep track in between stages
     write.csv(cluster_2cell_raw, file = "data/analysis_data/genera_2cell_raw.csv")
@@ -305,14 +304,14 @@ for(i in timeData$number){
 ## Export
 write.csv(cluster_2cell_raw, file = "data/analysis_data/genera_2cell_raw.csv")
 
-##### Genera - 3 cells, 50km cells, 100km radius: creating frames #####
+##### Genera - 3 cells, 50km cells, 100km radius: creating frame #####
 ## Read in genera count
 genera_count <- read.csv("data/sensitivity_testing/genera_50_radius_nSite_sensitivity_testing.csv", header = T, row.names = 1)
 
-## Update number of cells
+## Set number of cells
 nCells <- 3
 
-## Isolate relevant data
+## Identify relevant data from results of sensivity analysis
 rel <- genera_count[intersect(which(genera_count$grid_cells == nCells), which(genera_count$radius == radius)),]
 
 ## Inititlise cluster_3cell vector
@@ -328,7 +327,7 @@ for(r in 1:nrow(rel)){
 }
 cluster_3cell <- cluster_3cell[-1,]
 
-## Add columns to be populated to create templates
+## Add columns to be populated to finalise template output
 cluster_3cell$bivalve <- NA
 cluster_3cell$brachiopod <- NA
 cluster_3cell$cookieLith <- NA
@@ -363,10 +362,10 @@ stages <- as.character(sort(as.numeric(unique(cluster_3cell[,"stage"]))))
 #  }
 #}
 
-##### Genera - 3 cells, 50km cells, 100km radius: richness esimtates from occurrences standardised without replacement #####
-#cluster_3cell <- read.csv("data/analysis_data/genera_3cell_standardised.csv", row.names = 1)
+##### Genera - 3 cells, 50km cells, 100km radius: richness estimates from occurrences standardised without replacement #####
+#cluster_3cell <- read.csv("data/analysis_data/genera_3cell_stdOccs_noRepl.csv", row.names = 1)
 
-## Set number of occurrences to be drawn
+## Set number of occurrences to be drawn as minimum
 nOccs <- (nCells*5)
 
 ## Update stages
@@ -382,26 +381,25 @@ for(i in start:length(stages)){
     clusters <- 1:length(tray[[1]])
     ## for each cluster
     for(c in clusters){
-      ## Get row from cluster and stage
+      ## Get row from cluster and stage to populate
       row <- which(cluster_3cell_stdOccs_noRepl$cluster == str_flatten(c(stages[i],c),collapse = "_"))
       ## Isolate clusters
       cluster <- lapply(1:length(tray), function(x) tray[[x]][[c]])
       ## Convert clusters into vectors of data
       values <- mclapply(1:length(cluster), mc.cores = core.set, function(y){
-        ## isolate covariates, remove duplicates
-        covariates <- cluster[[y]][,c(40,41,42,45,46,47)]
-        covariates <- covariates[!duplicated(covariates),]
-        covs <- apply(covariates[,-1], 2, function(x) mean(x))
-        names(covs) <- NULL
-        ## richness
-        rich <- richness(data = cluster[[y]], cellID = "cell_50km", nCells, nDraws = nBites, nOccs = nOccs, standardiseOccs = T, standardiseOccsWithReplacement = F, taxonName = "combined_name", taxaToTally = c("Mollusca", "Brachiopoda"), n.cores = 1)
-        ## Combine output
-        out <- c(rich, covs[3], covs[4], covs[5], abs(covs[2]), covs[2], covs[1])
+        ## richness and covariates
+        rich <- richness(data = cluster[[y]], cellID = "cell_50km", nCells = nCells, cov.names = cov.names, nDraws = nBites, nOccs = nOccs, standardiseOccs = T, standardiseOccsWithReplacement = F, splitTaxa = F, taxonName = "combined_name", taxaToTally = c("Mollusca", "Brachiopoda"), n.cores = 1)
       })
-      ## Get median values
-      medValues <- apply(t(sapply(1:length(values), function(x) values[[x]])), 2, function(z) median(z))
-      ## Populate
-      cluster_3cell_stdOccs_noRepl[row, c(3:ncol(cluster_3cell_stdOccs_noRepl))] <- medValues
+      ## Get median of richness and mean of everything else
+      summary <- c()
+      for(tt in 1:2){
+        summary <- c(summary, median(sapply(1:length(values), function(x) values[[x]][tt])))
+      }
+      for(cc in 3:7){
+        summary <- c(summary, mean(sapply(1:length(values), function(x) values[[x]][cc])))
+      }
+      ## Populate row
+      cluster_3cell_stdOccs_noRepl[row, c(3:ncol(cluster_3cell_stdOccs_noRepl))] <- summary
     }
     ## Save to keep track in between stages
     write.csv(cluster_3cell_stdOccs_noRepl, file = "data/analysis_data/genera_3cell_stdOccs_noRepl.csv")
@@ -450,32 +448,30 @@ for(i in start:length(stages)){
     clusters <- 1:length(tray[[1]])
     ## for each cluster
     for(c in clusters){
-      ## Get row from cluster and stage
-      row <- which(cluster_3cell_stdOccs_Repl$cluster == str_flatten(c(stages[i],c),collapse = "_"))
+      ## Get row from cluster and stage to populate
+      row <- which(cluster_3cell_stdOccs_noRepl$cluster == str_flatten(c(stages[i],c),collapse = "_"))
       ## Isolate clusters
       cluster <- lapply(1:length(tray), function(x) tray[[x]][[c]])
       ## Convert clusters into vectors of data
       values <- mclapply(1:length(cluster), mc.cores = core.set, function(y){
-        ## isolate covariates, remove duplicates
-        covariates <- cluster[[y]][,c(40,41,42,45,46,47)]
-        covariates <- covariates[!duplicated(covariates),]
-        covs <- apply(covariates[,-1], 2, function(x) mean(x))
-        names(covs) <- NULL
-        ## richness
-        rich <- richness(data = cluster[[y]], cellID = "cell_50km", nCells, nDraws = nBites, nOccs = nOccs, standardiseOccs = T, standardiseOccsWithReplacement = T, taxonName = "combined_name", taxaToTally = c("Mollusca", "Brachiopoda"), splitTaxa = T, n.cores = 1)
-        ## Combine output
-        out <- c(rich, covs[3], covs[4], covs[5], abs(covs[2]), covs[2], covs[1])
+        ## richness and covariates
+        rich <- richness(data = cluster[[y]], cellID = "cell_50km", nCells = nCells, cov.names = cov.names, nDraws = nBites, nOccs = nOccs, standardiseOccs = T, standardiseOccsWithReplacement = T, splitTaxa = T, taxonName = "combined_name", taxaToTally = c("Mollusca", "Brachiopoda"), n.cores = 1)
       })
-      ## Get median values
-      medValues <- apply(t(sapply(1:length(values), function(x) values[[x]])), 2, function(z) median(z))
-      ## Populate
-      cluster_3cell_stdOccs_Repl[row, c(3:ncol(cluster_3cell_stdOccs_Repl))] <- medValues
+      ## Get median of richness and mean of everything else
+      summary <- c()
+      for(tt in 1:2){
+        summary <- c(summary, median(sapply(1:length(values), function(x) values[[x]][tt])))
+      }
+      for(cc in 3:7){
+        summary <- c(summary, mean(sapply(1:length(values), function(x) values[[x]][cc])))
+      }
+      ## Populate row
+      cluster_3cell_stdOccs_noRepl[row, c(3:ncol(cluster_3cell_stdOccs_noRepl))] <- summary
     }
     ## Save to keep track in between stages
     write.csv(cluster_3cell_stdOccs_Repl, file = "data/analysis_data/genera_3cell_stdOccs_Repl.csv")
   }
 }
-
 
 ## Add term for pre/post permian and stage midpoints
 timeData <- read.csv("data/metadata/binning_timescale.csv", row.names = 1)
@@ -514,26 +510,25 @@ for(i in start:length(stages)){
     clusters <- 1:length(tray[[1]])
     ## for each cluster
     for(c in clusters){
-      ## Get row from cluster and stage
-      row <- which(cluster_3cell_raw$cluster == str_flatten(c(stages[i],c),collapse = "_"))
+      ## Get row from cluster and stage to populate
+      row <- which(cluster_3cell_stdOccs_noRepl$cluster == str_flatten(c(stages[i],c),collapse = "_"))
       ## Isolate clusters
       cluster <- lapply(1:length(tray), function(x) tray[[x]][[c]])
       ## Convert clusters into vectors of data
       values <- mclapply(1:length(cluster), mc.cores = core.set, function(y){
-        ## isolate covariates, remove duplicates
-        covariates <- cluster[[y]][,c(40,41,42,45,46,47)]
-        covariates <- covariates[!duplicated(covariates),]
-        covs <- apply(covariates[,-1], 2, function(x) mean(x))
-        names(covs) <- NULL
-        ## richness
-        rich <- richness(data = cluster[[y]], cellID = "cell_50km", nCells, nDraws = nBites, standardiseOccs = F, taxonName = "combined_name", taxaToTally = c("Mollusca", "Brachiopoda"), n.cores = 1)
-        ## Combine output
-        out <- c(rich, covs[3], covs[4], covs[5], abs(covs[2]), covs[2], covs[1])
+        ## richness and covariates
+        rich <- richness(data = cluster[[y]], cellID = "cell_50km", nCells = nCells, cov.names = cov.names, nDraws = nBites, nOccs = nOccs, standardiseOccs = F, standardiseOccsWithReplacement = F, splitTaxa = F, taxonName = "combined_name", taxaToTally = c("Mollusca", "Brachiopoda"), n.cores = 1)
       })
-      ## Get median values
-      medValues <- apply(t(sapply(1:length(values), function(x) values[[x]])), 2, function(z) median(z))
-      ## Populate
-      cluster_3cell_raw[row, c(3:10)] <- medValues
+      ## Get median of richness and mean of everything else
+      summary <- c()
+      for(tt in 1:2){
+        summary <- c(summary, median(sapply(1:length(values), function(x) values[[x]][tt])))
+      }
+      for(cc in 3:7){
+        summary <- c(summary, mean(sapply(1:length(values), function(x) values[[x]][cc])))
+      }
+      ## Populate row
+      cluster_3cell_stdOccs_noRepl[row, c(3:ncol(cluster_3cell_stdOccs_noRepl))] <- summary
     }
     ## Save to keep track in between stages
     write.csv(cluster_3cell_raw, file = "data/analysis_data/genera_3cell_raw.csv")
@@ -564,14 +559,14 @@ for(i in timeData$number){
 ## Export
 write.csv(cluster_3cell_raw, file = "data/analysis_data/genera_3cell_raw.csv")
 
-##### Genera - 4 cells, 50km cells, 100km radius: creating frames #####
+##### Genera - 4 cells, 50km cells, 100km radius: creating frame #####
 ## Read in genera count
 genera_count <- read.csv("data/sensitivity_testing/genera_50_radius_nSite_sensitivity_testing.csv", header = T, row.names = 1)
 
 ## Set number of cells
 nCells <- 4
 
-## Isolate relevant data
+## Identify relevant data from results of sensivity analysis
 rel <- genera_count[intersect(which(genera_count$grid_cells == nCells), which(genera_count$radius == radius)),]
 
 ## Inititlise cluster_4cell vector
@@ -587,7 +582,7 @@ for(r in 1:nrow(rel)){
 }
 cluster_4cell <- cluster_4cell[-1,]
 
-## Add columns to be populated to create templates
+## Add columns to be populated to finalise template output
 cluster_4cell$bivalve <- NA
 cluster_4cell$brachiopod <- NA
 cluster_4cell$cookieLith <- NA
@@ -623,9 +618,9 @@ stages <- as.character(sort(as.numeric(unique(cluster_4cell[,"stage"]))))
 #}
 
 ##### Genera - 4 cells, 50km cells, 100km radius: richness estimates from occurrences standardised without replacement #####
-#cluster_4cell <- read.csv("data/analysis_data/genera_4cell_standardised.csv", row.names = 1)
+#cluster_4cell <- read.csv("data/analysis_data/genera_4cell_stdOccs_noRepl.csv", row.names = 1)
 
-## Set number of occurrences
+## Set number of occurrences to be drawn as minimum
 nOccs <- (nCells*5)
 
 ## Update stages
@@ -641,26 +636,25 @@ for(i in start:length(stages)){
     clusters <- 1:length(tray[[1]])
     ## for each cluster
     for(c in clusters){
-      ## Get row from cluster and stage
+      ## Get row from cluster and stage to populate
       row <- which(cluster_4cell_stdOccs_noRepl$cluster == str_flatten(c(stages[i],c),collapse = "_"))
       ## Isolate clusters
       cluster <- lapply(1:length(tray), function(x) tray[[x]][[c]])
       ## Convert clusters into vectors of data
       values <- mclapply(1:length(cluster), mc.cores = core.set, function(y){
-        ## isolate covariates, remove duplicates
-        covariates <- cluster[[y]][,c(40,41,42,45,46,47)]
-        covariates <- covariates[!duplicated(covariates),]
-        covs <- apply(covariates[,-1], 2, function(x) mean(x))
-        names(covs) <- NULL
-        ## richness
-        rich <- richness(data = cluster[[y]], cellID = "cell_50km", nCells, nDraws = nBites, nOccs = nOccs, standardiseOccs = T, standardiseOccsWithReplacement = F, taxonName = "combined_name", taxaToTally = c("Mollusca", "Brachiopoda"), n.cores = 1)
-        ## Combine output
-        out <- c(rich, covs[3], covs[4], covs[5], abs(covs[2]), covs[2], covs[1])
+        ## richness and covariates
+        rich <- richness(data = cluster[[y]], cellID = "cell_50km", nCells = nCells, cov.names = cov.names, nDraws = nBites, nOccs = nOccs, standardiseOccs = T, standardiseOccsWithReplacement = F, splitTaxa = F, taxonName = "combined_name", taxaToTally = c("Mollusca", "Brachiopoda"), n.cores = 1)
       })
-      ## Get median values
-      medValues <- apply(t(sapply(1:length(values), function(x) values[[x]])), 2, function(z) median(z))
-      ## Populate
-      cluster_4cell_stdOccs_noRepl[row, c(3:ncol(cluster_4cell_stdOccs_noRepl))] <- medValues
+      ## Get median of richness and mean of everything else
+      summary <- c()
+      for(tt in 1:2){
+        summary <- c(summary, median(sapply(1:length(values), function(x) values[[x]][tt])))
+      }
+      for(cc in 3:7){
+        summary <- c(summary, mean(sapply(1:length(values), function(x) values[[x]][cc])))
+      }
+      ## Populate row
+      cluster_4cell_stdOccs_noRepl[row, c(3:ncol(cluster_4cell_stdOccs_noRepl))] <- summary
     }
     ## Save to keep track in between stages
     write.csv(cluster_4cell_stdOccs_noRepl, file = "data/analysis_data/genera_4cell_stdOccs_noRepl.csv")
@@ -709,32 +703,30 @@ for(i in start:length(stages)){
     clusters <- 1:length(tray[[1]])
     ## for each cluster
     for(c in clusters){
-      ## Get row from cluster and stage
-      row <- which(cluster_4cell_stdOccs_Repl$cluster == str_flatten(c(stages[i],c),collapse = "_"))
+      ## Get row from cluster and stage to populate
+      row <- which(cluster_4cell_stdOccs_noRepl$cluster == str_flatten(c(stages[i],c),collapse = "_"))
       ## Isolate clusters
       cluster <- lapply(1:length(tray), function(x) tray[[x]][[c]])
       ## Convert clusters into vectors of data
       values <- mclapply(1:length(cluster), mc.cores = core.set, function(y){
-        ## isolate covariates, remove duplicates
-        covariates <- cluster[[y]][,c(40,41,42,45,46,47)]
-        covariates <- covariates[!duplicated(covariates),]
-        covs <- apply(covariates[,-1], 2, function(x) mean(x))
-        names(covs) <- NULL
-        ## richness
-        rich <- richness(data = cluster[[y]], cellID = "cell_50km", nCells, nDraws = nBites, nOccs = nOccs, standardiseOccs = T, standardiseOccsWithReplacement = T, taxonName = "combined_name", taxaToTally = c("Mollusca", "Brachiopoda"), splitTaxa = T, n.cores = 1)
-        ## Combine output
-        out <- c(rich, covs[3], covs[4], covs[5], abs(covs[2]), covs[2], covs[1])
+        ## richness and covariates
+        rich <- richness(data = cluster[[y]], cellID = "cell_50km", nCells = nCells, cov.names = cov.names, nDraws = nBites, nOccs = nOccs, standardiseOccs = T, standardiseOccsWithReplacement = T, splitTaxa = T, taxonName = "combined_name", taxaToTally = c("Mollusca", "Brachiopoda"), n.cores = 1)
       })
-      ## Get median values
-      medValues <- apply(t(sapply(1:length(values), function(x) values[[x]])), 2, function(z) median(z))
-      ## Populate
-      cluster_4cell_stdOccs_Repl[row, c(3:ncol(cluster_4cell_stdOccs_Repl))] <- medValues
+      ## Get median of richness and mean of everything else
+      summary <- c()
+      for(tt in 1:2){
+        summary <- c(summary, median(sapply(1:length(values), function(x) values[[x]][tt])))
+      }
+      for(cc in 3:7){
+        summary <- c(summary, mean(sapply(1:length(values), function(x) values[[x]][cc])))
+      }
+      ## Populate row
+      cluster_4cell_stdOccs_noRepl[row, c(3:ncol(cluster_4cell_stdOccs_noRepl))] <- summary
     }
     ## Save to keep track in between stages
     write.csv(cluster_4cell_stdOccs_Repl, file = "data/analysis_data/genera_4cell_stdOccs_Repl.csv")
   }
 }
-
 
 ## Add term for pre/post permian and stage midpoints
 timeData <- read.csv("data/metadata/binning_timescale.csv", row.names = 1)
@@ -773,26 +765,25 @@ for(i in start:length(stages)){
     clusters <- 1:length(tray[[1]])
     ## for each cluster
     for(c in clusters){
-      ## Get row from cluster and stage
-      row <- which(cluster_4cell_raw$cluster == str_flatten(c(stages[i],c),collapse = "_"))
+      ## Get row from cluster and stage to populate
+      row <- which(cluster_4cell_stdOccs_noRepl$cluster == str_flatten(c(stages[i],c),collapse = "_"))
       ## Isolate clusters
       cluster <- lapply(1:length(tray), function(x) tray[[x]][[c]])
       ## Convert clusters into vectors of data
       values <- mclapply(1:length(cluster), mc.cores = core.set, function(y){
-        ## isolate covariates, remove duplicates
-        covariates <- cluster[[y]][,c(40,41,42,45,46,47)]
-        covariates <- covariates[!duplicated(covariates),]
-        covs <- apply(covariates[,-1], 2, function(x) mean(x))
-        names(covs) <- NULL
-        ## richness
-        rich <- richness(data = cluster[[y]], cellID = "cell_50km", nCells, nDraws = nBites, standardiseOccs = F, taxonName = "combined_name", taxaToTally = c("Mollusca", "Brachiopoda"), n.cores = 1)
-        ## Combine output
-        out <- c(rich, covs[3], covs[4], covs[5], abs(covs[2]), covs[2], covs[1])
+        ## richness and covariates
+        rich <- richness(data = cluster[[y]], cellID = "cell_50km", nCells = nCells, cov.names = cov.names, nDraws = nBites, nOccs = nOccs, standardiseOccs = F, standardiseOccsWithReplacement = F, splitTaxa = F, taxonName = "combined_name", taxaToTally = c("Mollusca", "Brachiopoda"), n.cores = 1)
       })
-      ## Get median values
-      medValues <- apply(t(sapply(1:length(values), function(x) values[[x]])), 2, function(z) median(z))
-      ## Populate
-      cluster_4cell_raw[row, c(3:10)] <- medValues
+      ## Get median of richness and mean of everything else
+      summary <- c()
+      for(tt in 1:2){
+        summary <- c(summary, median(sapply(1:length(values), function(x) values[[x]][tt])))
+      }
+      for(cc in 3:7){
+        summary <- c(summary, mean(sapply(1:length(values), function(x) values[[x]][cc])))
+      }
+      ## Populate row
+      cluster_4cell_stdOccs_noRepl[row, c(3:ncol(cluster_4cell_stdOccs_noRepl))] <- summary
     }
     ## Save to keep track in between stages
     write.csv(cluster_4cell_raw, file = "data/analysis_data/genera_4cell_raw.csv")
@@ -822,4 +813,5 @@ for(i in timeData$number){
 
 ## Export
 write.csv(cluster_4cell_raw, file = "data/analysis_data/genera_4cell_raw.csv")
+
 
