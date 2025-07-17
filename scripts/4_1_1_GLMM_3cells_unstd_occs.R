@@ -97,7 +97,7 @@ model2 <- update(model1, control = glmerControl(optimizer="bobyqa"))
 simulationOutput <- simulateResiduals(model2, refit = F, re.form = NULL)
 ## Check with DHARMa simulation approach
 testDispersion(simulationOutput, type = "DHARMa")
-## Very overdispersed - significant ratio of 4.6 well over 1.
+## Very overdispersed - significant ratio of 2.4 well over 1.
 
 ## Let's try negative binomial with classic paramterisation
 model3 <- glmmTMB(brachiopod ~ bivalve * PTME + bath + reef + lith + AbsLat + (bivalve|stage), data = raw_data, family = nbinom2(link = "log"))
@@ -105,7 +105,7 @@ model3 <- glmmTMB(brachiopod ~ bivalve * PTME + bath + reef + lith + AbsLat + (b
 simulationOutput2 <- simulateResiduals(model3, re.form = NULL)
 ## Test with DHARMa approach again
 testDispersion(simulationOutput2, type = "DHARMa")
-## Now significantly underdispersed!
+## Now significantly underdispersed! Ratio of 0.24
 
 ## Let's try negative binomial with quasi-Poisson parameterisation
 model4 <- glmmTMB(brachiopod ~ bivalve * PTME + bath + reef + lith + AbsLat + (bivalve|stage), data = raw_data, family = nbinom1(link = "log"))
@@ -113,7 +113,7 @@ model4 <- glmmTMB(brachiopod ~ bivalve * PTME + bath + reef + lith + AbsLat + (b
 simulationOutput3 <- simulateResiduals(model4, re.form = NULL)
 ## Test with DHARMa approach again
 testDispersion(simulationOutput3, type = "DHARMa")
-## Now insignificantly underdispersed!
+## Dispersion insignificant. Ratio 0.81. P-value 0.592. Pretty good.
 
 ## Any better with the third binomial model?
 modelMixNB <- glmmTMB(brachiopod ~ bivalve * PTME + bath + reef + lith + AbsLat + (bivalve|stage), data = raw_data, family = nbinom12(link = "log"))
@@ -121,14 +121,13 @@ modelMixNB <- glmmTMB(brachiopod ~ bivalve * PTME + bath + reef + lith + AbsLat 
 simulationOutputMixNB <- simulateResiduals(modelMixNB, re.form = NULL)
 ## Test with DHARMa approach again
 testDispersion(simulationOutputMixNB, type = "DHARMa")
-## Dispersion closer to 1, still insignificant. Rolling with nbinom12
+## nbinom1 marginally better. Sticking with that.
 
 #### Check for multicollinearity using performance package ####
-## Define model without interaction term
-modelMC <- glmmTMB(brachiopod ~ bivalve * PTME + bath + reef + lith + AbsLat + (bivalve|stage), data = raw_data, family = nbinom12(link = "log"))
+modelMC <- glmmTMB(brachiopod ~ bivalve * PTME + bath + reef + lith + AbsLat + (bivalve|stage), data = raw_data, family = nbinom1(link = "log"))
 check_collinearity(modelMC)
 
-## VIF is very low. Bivalve is highest at 2.56, so just above 2.5 threshold. Keeping each.
+## VIF is very low. For all predictors except bivalves (3.2) and bivalve:PTME (2.53). Some covariance surely to be expected. However, still under 5 so retaining all.
 
 #### Testing for spatial autocorrelation using DHARMa ####
 ## First we need to group by location - lets use 50km grid cells, as this is the grain of our analysis
@@ -172,7 +171,7 @@ for(s in stages){
     pvalues <- c(pvalues, NA)
   } else {
     ## fit model
-    modelSA <- glmmTMB(brachiopod ~ bivalve, data = dat, family = nbinom12(link = "log"))
+    modelSA <- glmmTMB(brachiopod ~ bivalve, data = dat, family = nbinom1(link = "log"))
     ## simulate data
     simulationSA <- simulateResiduals(modelSA, re.form = NULL)
     ## do test
@@ -186,14 +185,14 @@ for(s in stages){
 ## Which bivalve richness are spatially autocorrelated
 stages[which(pvalues < 0.05)]
 
-## Some spatial autocorrelation within individual bins. However, not worth overparameterising the model for the sake of this, especially when sample size too small for convergence.
+## Some spatial autocorrelation within individual bins. Less than 2 cell analysis. Similarly not worth parameterising.
 
 #### Dredge to see if we retain everything ####
 ## Clean up model data
 modelData <- raw_data[,c(1,2,5,6,7,8,9,10)]
 
 ## First, re-define model so as to specify na.activity. We include interaction between bivalves and PTME to see if relationship was reset.
-model5 <- glmmTMB(brachiopod ~ bivalve * PTME + bath + reef + lith + AbsLat + (bivalve|stage), data = modelData, family = nbinom12(link = "log"), na.action = "na.fail")
+model5 <- glmmTMB(brachiopod ~ bivalve * PTME + bath + reef + lith + AbsLat + (bivalve|stage), data = modelData, family = nbinom1(link = "log"), na.action = "na.fail")
 
 ## Get summary
 tab_model(model5)
@@ -211,6 +210,8 @@ simulationOutputBest <- simulateResiduals(bestModel, re.form = NULL)
 ## Further tests
 plot(simulationOutputBest)
 
+## Looks good! QQplot actually better. Quantiles look better too!
+
 ## KS test indicates significant deviation but I'm not really concerned about that. More of a sample size effect.
 ## Other test
 # Zero inflation, insignificant
@@ -218,13 +219,13 @@ testZeroInflation(simulationOutputBest)
 
 #### Link functions and model assumptions ####
 ## Trying different link functions with model4 (our best model so far)
-bestModel_log <- glmmTMB(brachiopod ~ bivalve * PTME + bath + lith + (bivalve|stage), data = modelData, family = nbinom12(link = "log"), na.action = "na.fail")
-bestModel_logit <- glmmTMB(brachiopod ~ bivalve * PTME + bath + lith + (bivalve|stage), data = modelData, family = nbinom12(link = "logit"), na.action = "na.fail")
-bestModel_probit <- glmmTMB(brachiopod ~ bivalve * PTME + bath + lith + (bivalve|stage), data = modelData, family = nbinom12(link = "probit"), na.action = "na.fail")
-bestModel_inverse <- glmmTMB(brachiopod ~ bivalve * PTME + bath + lith + (bivalve|stage), data = modelData, family = nbinom12(link = "inverse"), na.action = "na.fail")
-bestModel_cloglog <- glmmTMB(brachiopod ~ bivalve * PTME + bath + lith + (bivalve|stage), data = modelData, family = nbinom12(link = "cloglog"), na.action = "na.fail")
-bestModel_identity <- glmmTMB(brachiopod ~ bivalve * PTME + bath + lith + (bivalve|stage), data = modelData, family = nbinom12(link = "identity"), na.action = "na.fail")
-bestModel_sqrt <- glmmTMB(brachiopod ~ bivalve * PTME + bath + lith + (bivalve|stage), data = modelData, family = nbinom12(link = "sqrt"), na.action = "na.fail")
+bestModel_log <- glmmTMB(brachiopod ~ bivalve * PTME + bath + lith + (bivalve|stage), data = modelData, family = nbinom1(link = "log"), na.action = "na.fail")
+bestModel_logit <- glmmTMB(brachiopod ~ bivalve * PTME + bath + lith + (bivalve|stage), data = modelData, family = nbinom1(link = "logit"), na.action = "na.fail")
+bestModel_probit <- glmmTMB(brachiopod ~ bivalve * PTME + bath + lith + (bivalve|stage), data = modelData, family = nbinom1(link = "probit"), na.action = "na.fail")
+bestModel_inverse <- glmmTMB(brachiopod ~ bivalve * PTME + bath + lith + (bivalve|stage), data = modelData, family = nbinom1(link = "inverse"), na.action = "na.fail")
+bestModel_cloglog <- glmmTMB(brachiopod ~ bivalve * PTME + bath + lith + (bivalve|stage), data = modelData, family = nbinom1(link = "cloglog"), na.action = "na.fail")
+bestModel_identity <- glmmTMB(brachiopod ~ bivalve * PTME + bath + lith + (bivalve|stage), data = modelData, family = nbinom1(link = "identity"), na.action = "na.fail")
+bestModel_sqrt <- glmmTMB(brachiopod ~ bivalve * PTME + bath + lith + (bivalve|stage), data = modelData, family = nbinom1(link = "sqrt"), na.action = "na.fail")
 
 ## Logit, probit, cloglog failed to converge. Inverse and identity failed. Simulate with two four.
 simulated_log <- simulateResiduals(bestModel_log, re.form = NULL)
@@ -233,8 +234,8 @@ simulated_sqrt <- simulateResiduals(bestModel_sqrt, re.form = NULL)
 ## Check dispersion
 testDispersion(simulated_log, type = "DHARMa")
 testDispersion(simulated_sqrt, type = "DHARMa")
-## Sqrt significant underdispersed. Sticking with link = "log"
 
+## Log least significant p-value. Sticking with that.
 ## Check assumptions again.
 plot(simulated_log)
 
@@ -243,7 +244,7 @@ plot(simulated_log)
 modelData_unstd <- raw_data_unstd[,c(1,2,5,6,7,8,9,10)]
 
 ## Fit best model to unstandardised data
-bestModel_raw <- glmmTMB(brachiopod ~ bivalve * PTME + bath + lith + (bivalve|stage), data = modelData_unstd, family = nbinom12(link = "log"), na.action = "na.fail")
+bestModel_raw <- glmmTMB(brachiopod ~ bivalve * PTME + bath + lith + (bivalve|stage), data = modelData_unstd, family = nbinom1(link = "log"), na.action = "na.fail")
 
 #### PTME
 ## Predict response.
@@ -304,9 +305,9 @@ postPTME_data$PTME <- NULL
 prePTME_data <- modelData_unstd[which(modelData_unstd$PTME=="PrePTME"),]
 prePTME_data$PTME <- NULL
 
-## Re-do model - dropping to random intercept for pre model to get it to converge now PTME term has been removed
-postModel <- glmmTMB(brachiopod ~ bivalve + bath + lith + (bivalve|stage), data = postPTME_data, family = nbinom12(link = "log"), na.action = "na.fail")
-preModel <- glmmTMB(brachiopod ~ bivalve + bath + lith + (1|stage), data = prePTME_data, family = nbinom12(link = "log"), na.action = "na.fail")
+## Re-do model - dropping to random intercept due to data insufficiency
+postModel <- glmmTMB(brachiopod ~ bivalve + bath + lith + (1|stage), data = postPTME_data, family = nbinom1(link = "log"), na.action = "na.fail")
+preModel <- glmmTMB(brachiopod ~ bivalve + bath + lith + (1|stage), data = prePTME_data, family = nbinom1(link = "log"), na.action = "na.fail")
 
 ## Predict response.
 pre <- predict_response(preModel, c("bivalve"), type = "fixed", ci_level = 0.95)
@@ -512,7 +513,7 @@ plotting.data$bivalve <- round(plotting.data$bivalve, digits = 0)
 plotting.data$brachiopod <- round(plotting.data$brachiopod, digits = 0)
 
 ## Re-do model
-plotModel <- glmmTMB(brachiopod ~ bivalve, data = plotting.data, family = nbinom12(link = "log"), na.action = "na.fail")
+plotModel <- glmmTMB(brachiopod ~ bivalve, data = plotting.data, family = nbinom1(link = "log"), na.action = "na.fail")
 
 ## Get model data
 line.df <- get_model_data(plotModel, type = "pred", terms = "bivalve")
@@ -546,8 +547,8 @@ scatter <- ggplot() +
   scale_shape_manual(values = point.shape) +
   geom_line(data = line.df, aes(x = x, y = predicted), linetype = "dashed") +
   geom_ribbon(data = line.df, aes(x = x, ymin = conf.low, ymax = conf.high), alpha = 0.3)+
-  scale_x_continuous(expand = c(0,0)) +
-  scale_y_continuous(expand = c(0,0)) +
+  scale_x_continuous(expand = c(0,0), limits = c(0,220)) +
+  scale_y_continuous(expand = c(0,0), limits = c(0,220)) +
   guides(shape = "none",
          color = guide_legend(override.aes = list(shape = legend.shape))) +
   theme(text = element_text(family = "Helvetica"),,
@@ -663,12 +664,12 @@ richness[which(richness$brachiopod_minus1sd<0),"brachiopod_minus1sd"] <- 0
 
 ## Plot
 oldpar <- par(no.readonly = TRUE)
-pdf(file = "figures/final/supplemental/genera_3cell_spatially_standardised_richness.pdf")
+pdf(file = "figures/final/supplemental/genera_3cell_spatially_standardised_richness_raw.pdf")
 par(mar = c(6.1, 4.1, 4.1, 2.1))
-plot(x = richness$stage_midpoint, y = richness$bivalve_mean, main = "Spatially standardised generic richness (mean +/- 1 SD)", axes = FALSE, xlim = c(520, 0), ylim = c(0,50), yaxs="i", xaxs="i",
+plot(x = richness$stage_midpoint, y = richness$bivalve_mean, main = "Spatially standardised generic richness (mean +/- 1 SD)", axes = FALSE, xlim = c(520, 0), ylim = c(0,120), yaxs="i", xaxs="i",
      xlab = NA, ylab = "Generic richness", type = "l", col = rgb(red = 1, green = 0, blue = 0, alpha = 0.75))
 polygon(c(rev(richness$stage_midpoint), richness$stage_midpoint), c(rev(richness$bivalve_plus1sd), richness$bivalve_minus1sd), col = rgb(red = 1, green = 0, blue = 0, alpha = 0.25), border = NA)
-lines(x = richness$stage_midpoint, y = richness$brachiopod_mean, xlim = c(520, 0), ylim = c(0,50),
+lines(x = richness$stage_midpoint, y = richness$brachiopod_mean, xlim = c(520, 0), ylim = c(0,120),
       xlab = NA, ylab = "", type = "l", col = rgb(red = 0, green = 0, blue = 1, alpha = 0.75))
 polygon(c(rev(richness$stage_midpoint), richness$stage_midpoint), c(rev(richness$brachiopod_plus1sd), richness$brachiopod_minus1sd), col = rgb(red = 0, green = 0, blue = 1, alpha = 0.25), border = NA)
 box()

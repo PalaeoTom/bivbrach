@@ -29,7 +29,8 @@ home <- getwd()
 core.set <- 4
 
 ## Output directory
-output.dir <- "~/Dropbox/unfinished_projects/bivalve_brachiopod/traybake_output"
+#output.dir <- "~/Dropbox/unfinished_projects/bivalve_brachiopod/traybake_output"
+output.dir <- "~/Library/CloudStorage/Dropbox/unfinished_projects/bivalve_brachiopod/traybake_output"
 
 ## Read in richness function
 source("functions/richness.R")
@@ -194,6 +195,7 @@ for(i in start:length(stages)){
       ## Isolate clusters
       cluster <- lapply(1:length(tray), function(x) tray[[x]][[c]])
       ## Convert clusters into vectors of data
+      y = 1
       values <- mclapply(1:length(cluster), mc.cores = core.set, function(y){
         ## isolate covariates, remove duplicates
         covariates <- cluster[[y]][,c(40,41,42,45,46,47)]
@@ -201,7 +203,7 @@ for(i in start:length(stages)){
         covs <- apply(covariates[,-1], 2, function(x) mean(x))
         names(covs) <- NULL
         ## richness
-        rich <- richness(data = cluster[[y]], cellID = "cell_50km", nCells, nDraws = nBites, nOccs = nOccs, standardiseOccs = T, standardiseOccsWithReplacement = T, taxonName = "combined_name", taxaToTally = c("Mollusca", "Brachiopoda"), n.cores = 1)
+        rich <- richness(data = cluster[[y]], cellID = "cell_50km", nCells, nDraws = nBites, nOccs = nOccs, standardiseOccs = T, standardiseOccsWithReplacement = T, taxonName = "combined_name", taxaToTally = c("Mollusca", "Brachiopoda"), splitTaxa = T, n.cores = 1)
         ## Combine output
         out <- c(rich, covs[3], covs[4], covs[5], abs(covs[2]), covs[2], covs[1])
       })
@@ -460,7 +462,7 @@ for(i in start:length(stages)){
         covs <- apply(covariates[,-1], 2, function(x) mean(x))
         names(covs) <- NULL
         ## richness
-        rich <- richness(data = cluster[[y]], cellID = "cell_50km", nCells, nDraws = nBites, nOccs = nOccs, standardiseOccs = T, standardiseOccsWithReplacement = T, taxonName = "combined_name", taxaToTally = c("Mollusca", "Brachiopoda"), n.cores = 1)
+        rich <- richness(data = cluster[[y]], cellID = "cell_50km", nCells, nDraws = nBites, nOccs = nOccs, standardiseOccs = T, standardiseOccsWithReplacement = T, taxonName = "combined_name", taxaToTally = c("Mollusca", "Brachiopoda"), splitTaxa = T, n.cores = 1)
         ## Combine output
         out <- c(rich, covs[3], covs[4], covs[5], abs(covs[2]), covs[2], covs[1])
       })
@@ -719,7 +721,7 @@ for(i in start:length(stages)){
         covs <- apply(covariates[,-1], 2, function(x) mean(x))
         names(covs) <- NULL
         ## richness
-        rich <- richness(data = cluster[[y]], cellID = "cell_50km", nCells, nDraws = nBites, nOccs = nOccs, standardiseOccs = T, standardiseOccsWithReplacement = T, taxonName = "combined_name", taxaToTally = c("Mollusca", "Brachiopoda"), n.cores = 1)
+        rich <- richness(data = cluster[[y]], cellID = "cell_50km", nCells, nDraws = nBites, nOccs = nOccs, standardiseOccs = T, standardiseOccsWithReplacement = T, taxonName = "combined_name", taxaToTally = c("Mollusca", "Brachiopoda"), splitTaxa = T, n.cores = 1)
         ## Combine output
         out <- c(rich, covs[3], covs[4], covs[5], abs(covs[2]), covs[2], covs[1])
       })
