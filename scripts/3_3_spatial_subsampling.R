@@ -75,12 +75,12 @@ cluster_2cell <- cluster_2cell[-1,]
 ## Add columns to be populated to finalise template output
 cluster_2cell$bivalve <- NA
 cluster_2cell$brachiopod <- NA
+cluster_2cell$cookiePalaeoLng <- NA
+cluster_2cell$cookiePalaeoLat <- NA
 cluster_2cell$cookieLith <- NA
 cluster_2cell$cookieBath <- NA
 cluster_2cell$cookieReef <- NA
 cluster_2cell$cookieAbsLat <- NA
-cluster_2cell$cookiePalaeoLat <- NA
-cluster_2cell$cookiePalaeoLng <- NA
 
 ## Create three outputs
 cluster_2cell_raw <- cluster_2cell
@@ -143,6 +143,8 @@ for(i in start:length(stages)){
       for(cc in 3:7){
         summary <- c(summary, mean(sapply(1:length(values), function(x) values[[x]][cc])))
       }
+      ## Palaeolat is celly (summary[4]). Add absolute value to end
+      summary <- c(summary, abs(summary[4]))
       ## Populate row
       cluster_2cell_stdOccs_noRepl[row, c(3:ncol(cluster_2cell_stdOccs_noRepl))] <- summary
     }
@@ -210,6 +212,8 @@ for(i in start:length(stages)){
       for(cc in 3:7){
         summary <- c(summary, mean(sapply(1:length(values), function(x) values[[x]][cc])))
       }
+      ## Palaeolat is celly (summary[4]). Add absolute value to end
+      summary <- c(summary, abs(summary[4]))
       ## Populate row
       cluster_2cell_stdOccs_noRepl[row, c(3:ncol(cluster_2cell_stdOccs_noRepl))] <- summary
     }
@@ -272,6 +276,8 @@ for(i in start:length(stages)){
       for(cc in 3:7){
         summary <- c(summary, mean(sapply(1:length(values), function(x) values[[x]][cc])))
       }
+      ## Palaeolat is celly (summary[4]). Add absolute value to end
+      summary <- c(summary, abs(summary[4]))
       ## Populate row
       cluster_2cell_stdOccs_noRepl[row, c(3:ncol(cluster_2cell_stdOccs_noRepl))] <- summary
     }
@@ -330,12 +336,12 @@ cluster_3cell <- cluster_3cell[-1,]
 ## Add columns to be populated to finalise template output
 cluster_3cell$bivalve <- NA
 cluster_3cell$brachiopod <- NA
+cluster_3cell$cookiePalaeoLng <- NA
+cluster_3cell$cookiePalaeoLat <- NA
 cluster_3cell$cookieLith <- NA
 cluster_3cell$cookieBath <- NA
 cluster_3cell$cookieReef <- NA
 cluster_3cell$cookieAbsLat <- NA
-cluster_3cell$cookiePalaeoLat <- NA
-cluster_3cell$cookiePalaeoLng <- NA
 
 ## Create three outputs
 cluster_3cell_raw <- cluster_3cell
@@ -398,6 +404,8 @@ for(i in start:length(stages)){
       for(cc in 3:7){
         summary <- c(summary, mean(sapply(1:length(values), function(x) values[[x]][cc])))
       }
+      ## Palaeolat is celly (summary[4]). Add absolute value to end
+      summary <- c(summary, abs(summary[4]))
       ## Populate row
       cluster_3cell_stdOccs_noRepl[row, c(3:ncol(cluster_3cell_stdOccs_noRepl))] <- summary
     }
@@ -465,6 +473,8 @@ for(i in start:length(stages)){
       for(cc in 3:7){
         summary <- c(summary, mean(sapply(1:length(values), function(x) values[[x]][cc])))
       }
+      ## Palaeolat is celly (summary[4]). Add absolute value to end
+      summary <- c(summary, abs(summary[4]))
       ## Populate row
       cluster_3cell_stdOccs_noRepl[row, c(3:ncol(cluster_3cell_stdOccs_noRepl))] <- summary
     }
@@ -527,6 +537,8 @@ for(i in start:length(stages)){
       for(cc in 3:7){
         summary <- c(summary, mean(sapply(1:length(values), function(x) values[[x]][cc])))
       }
+      ## Palaeolat is celly (summary[4]). Add absolute value to end
+      summary <- c(summary, abs(summary[4]))
       ## Populate row
       cluster_3cell_stdOccs_noRepl[row, c(3:ncol(cluster_3cell_stdOccs_noRepl))] <- summary
     }
@@ -585,12 +597,12 @@ cluster_4cell <- cluster_4cell[-1,]
 ## Add columns to be populated to finalise template output
 cluster_4cell$bivalve <- NA
 cluster_4cell$brachiopod <- NA
+cluster_4cell$cookiePalaeoLng <- NA
+cluster_4cell$cookiePalaeoLat <- NA
 cluster_4cell$cookieLith <- NA
 cluster_4cell$cookieBath <- NA
 cluster_4cell$cookieReef <- NA
 cluster_4cell$cookieAbsLat <- NA
-cluster_4cell$cookiePalaeoLat <- NA
-cluster_4cell$cookiePalaeoLng <- NA
 
 ## Create three outputs
 cluster_4cell_raw <- cluster_4cell
@@ -653,6 +665,8 @@ for(i in start:length(stages)){
       for(cc in 3:7){
         summary <- c(summary, mean(sapply(1:length(values), function(x) values[[x]][cc])))
       }
+      ## Palaeolat is celly (summary[4]). Add absolute value to end
+      summary <- c(summary, abs(summary[4]))
       ## Populate row
       cluster_4cell_stdOccs_noRepl[row, c(3:ncol(cluster_4cell_stdOccs_noRepl))] <- summary
     }
@@ -720,6 +734,8 @@ for(i in start:length(stages)){
       for(cc in 3:7){
         summary <- c(summary, mean(sapply(1:length(values), function(x) values[[x]][cc])))
       }
+      ## Palaeolat is celly (summary[4]). Add absolute value to end
+      summary <- c(summary, abs(summary[4]))
       ## Populate row
       cluster_4cell_stdOccs_noRepl[row, c(3:ncol(cluster_4cell_stdOccs_noRepl))] <- summary
     }
@@ -782,6 +798,8 @@ for(i in start:length(stages)){
       for(cc in 3:7){
         summary <- c(summary, mean(sapply(1:length(values), function(x) values[[x]][cc])))
       }
+      ## Palaeolat is celly (summary[4]). Add absolute value to end
+      summary <- c(summary, abs(summary[4]))
       ## Populate row
       cluster_4cell_stdOccs_noRepl[row, c(3:ncol(cluster_4cell_stdOccs_noRepl))] <- summary
     }
