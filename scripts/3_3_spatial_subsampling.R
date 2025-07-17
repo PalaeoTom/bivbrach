@@ -38,8 +38,8 @@ source("functions/richness.R")
 
 ## Set radius, nBatch and nBites
 radius <- 100000
-nBatch <- 500
-nBites <- 500
+nBatch <- 100
+nBites <- 100
 
 ## Define covariate columns using vector
 cov.names <- c("cellx_50km", "celly_50km", "cellLith", "cellBath", "cellReef")
@@ -129,7 +129,7 @@ for(i in start:length(stages)){
       ## Get row from cluster and stage to populate
       row <- which(cluster_2cell_stdOccs_noRepl$cluster == str_flatten(c(stages[i],c),collapse = "_"))
       ## Isolate clusters
-      cluster <- lapply(1:length(tray), function(x) tray[[x]][[c]])
+      cluster <- lapply(1:nBatch, function(x) tray[[x]][[c]])
       ## Convert clusters into vectors of data
       values <- mclapply(1:length(cluster), mc.cores = core.set, function(y){
         ## richness and covariates
@@ -198,7 +198,7 @@ for(i in start:length(stages)){
       ## Get row from cluster and stage to populate
       row <- which(cluster_2cell_stdOccs_noRepl$cluster == str_flatten(c(stages[i],c),collapse = "_"))
       ## Isolate clusters
-      cluster <- lapply(1:length(tray), function(x) tray[[x]][[c]])
+      cluster <- lapply(1:nBatch, function(x) tray[[x]][[c]])
       ## Convert clusters into vectors of data
       values <- mclapply(1:length(cluster), mc.cores = core.set, function(y){
         ## richness and covariates
@@ -262,7 +262,7 @@ for(i in start:length(stages)){
       ## Get row from cluster and stage to populate
       row <- which(cluster_2cell_stdOccs_noRepl$cluster == str_flatten(c(stages[i],c),collapse = "_"))
       ## Isolate clusters
-      cluster <- lapply(1:length(tray), function(x) tray[[x]][[c]])
+      cluster <- lapply(1:nBatch, function(x) tray[[x]][[c]])
       ## Convert clusters into vectors of data
       values <- mclapply(1:length(cluster), mc.cores = core.set, function(y){
         ## richness and covariates
@@ -390,7 +390,7 @@ for(i in start:length(stages)){
       ## Get row from cluster and stage to populate
       row <- which(cluster_3cell_stdOccs_noRepl$cluster == str_flatten(c(stages[i],c),collapse = "_"))
       ## Isolate clusters
-      cluster <- lapply(1:length(tray), function(x) tray[[x]][[c]])
+      cluster <- lapply(1:nBatch, function(x) tray[[x]][[c]])
       ## Convert clusters into vectors of data
       values <- mclapply(1:length(cluster), mc.cores = core.set, function(y){
         ## richness and covariates
@@ -459,7 +459,7 @@ for(i in start:length(stages)){
       ## Get row from cluster and stage to populate
       row <- which(cluster_3cell_stdOccs_noRepl$cluster == str_flatten(c(stages[i],c),collapse = "_"))
       ## Isolate clusters
-      cluster <- lapply(1:length(tray), function(x) tray[[x]][[c]])
+      cluster <- lapply(1:nBatch, function(x) tray[[x]][[c]])
       ## Convert clusters into vectors of data
       values <- mclapply(1:length(cluster), mc.cores = core.set, function(y){
         ## richness and covariates
@@ -523,7 +523,7 @@ for(i in start:length(stages)){
       ## Get row from cluster and stage to populate
       row <- which(cluster_3cell_stdOccs_noRepl$cluster == str_flatten(c(stages[i],c),collapse = "_"))
       ## Isolate clusters
-      cluster <- lapply(1:length(tray), function(x) tray[[x]][[c]])
+      cluster <- lapply(1:nBatch, function(x) tray[[x]][[c]])
       ## Convert clusters into vectors of data
       values <- mclapply(1:length(cluster), mc.cores = core.set, function(y){
         ## richness and covariates
@@ -651,7 +651,7 @@ for(i in start:length(stages)){
       ## Get row from cluster and stage to populate
       row <- which(cluster_4cell_stdOccs_noRepl$cluster == str_flatten(c(stages[i],c),collapse = "_"))
       ## Isolate clusters
-      cluster <- lapply(1:length(tray), function(x) tray[[x]][[c]])
+      cluster <- lapply(1:nBatch, function(x) tray[[x]][[c]])
       ## Convert clusters into vectors of data
       values <- mclapply(1:length(cluster), mc.cores = core.set, function(y){
         ## richness and covariates
@@ -720,7 +720,7 @@ for(i in start:length(stages)){
       ## Get row from cluster and stage to populate
       row <- which(cluster_4cell_stdOccs_noRepl$cluster == str_flatten(c(stages[i],c),collapse = "_"))
       ## Isolate clusters
-      cluster <- lapply(1:length(tray), function(x) tray[[x]][[c]])
+      cluster <- lapply(1:nBatch, function(x) tray[[x]][[c]])
       ## Convert clusters into vectors of data
       values <- mclapply(1:length(cluster), mc.cores = core.set, function(y){
         ## richness and covariates
@@ -784,7 +784,7 @@ for(i in start:length(stages)){
       ## Get row from cluster and stage to populate
       row <- which(cluster_4cell_stdOccs_noRepl$cluster == str_flatten(c(stages[i],c),collapse = "_"))
       ## Isolate clusters
-      cluster <- lapply(1:length(tray), function(x) tray[[x]][[c]])
+      cluster <- lapply(1:nBatch, function(x) tray[[x]][[c]])
       ## Convert clusters into vectors of data
       values <- mclapply(1:length(cluster), mc.cores = core.set, function(y){
         ## richness and covariates
