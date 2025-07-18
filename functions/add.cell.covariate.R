@@ -20,7 +20,7 @@ add.cell.covariate <- function(data, stage_cell, name, unknown, ref, value){
       data[occs,name] <- length(which(samp[,ref] == value))/n
     } else {
       ## If 0, set as 0.5 (mixed)
-      data[occs,name] <- 0.5
+      data[occs,name] <- NA
     }
   }
   return(data)

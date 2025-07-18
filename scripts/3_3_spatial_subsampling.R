@@ -37,8 +37,10 @@ output.dir <- "~/Library/CloudStorage/Dropbox/unfinished_projects/bivalve_brachi
 source("functions/richness.R")
 
 ## Set radius, nBatch and nBites
+## Maximum number of grid cells in 100km cookie is 25. 100 subsamples of each sampled cookie at this level is more than fine.
+## Maximum number of cookies in a cluster is 78. Want at least twice as many draws of cookies from clusters as max. Try 200 as batch number.
 radius <- 100000
-nBatch <- 100
+nBatch <- 200
 nBites <- 100
 
 ## Define covariate columns using vector
