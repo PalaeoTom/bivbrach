@@ -215,7 +215,7 @@ for(i in start:length(stages)){
       ## Palaeolat is celly (summary[4]). Add absolute value to end
       summary <- c(summary, abs(summary[4]))
       ## Populate row
-      cluster_2cell_stdOccs_noRepl[row, c(3:ncol(cluster_2cell_stdOccs_noRepl))] <- summary
+      cluster_2cell_stdOccs_Repl[row, c(3:ncol(cluster_2cell_stdOccs_Repl))] <- summary
     }
     ## Save to keep track in between stages
     write.csv(cluster_2cell_stdOccs_Repl, file = "data/analysis_data/genera_2cell_stdOccs_Repl.csv")
@@ -279,7 +279,7 @@ for(i in start:length(stages)){
       ## Palaeolat is celly (summary[4]). Add absolute value to end
       summary <- c(summary, abs(summary[4]))
       ## Populate row
-      cluster_2cell_stdOccs_noRepl[row, c(3:ncol(cluster_2cell_stdOccs_noRepl))] <- summary
+      cluster_2cell_raw[row, c(3:ncol(cluster_2cell_raw))] <- summary
     }
     ## Save to keep track in between stages
     write.csv(cluster_2cell_raw, file = "data/analysis_data/genera_2cell_raw.csv")
@@ -476,7 +476,7 @@ for(i in start:length(stages)){
       ## Palaeolat is celly (summary[4]). Add absolute value to end
       summary <- c(summary, abs(summary[4]))
       ## Populate row
-      cluster_3cell_stdOccs_noRepl[row, c(3:ncol(cluster_3cell_stdOccs_noRepl))] <- summary
+      cluster_3cell_stdOccs_Repl[row, c(3:ncol(cluster_3cell_stdOccs_Repl))] <- summary
     }
     ## Save to keep track in between stages
     write.csv(cluster_3cell_stdOccs_Repl, file = "data/analysis_data/genera_3cell_stdOccs_Repl.csv")
@@ -540,7 +540,7 @@ for(i in start:length(stages)){
       ## Palaeolat is celly (summary[4]). Add absolute value to end
       summary <- c(summary, abs(summary[4]))
       ## Populate row
-      cluster_3cell_stdOccs_noRepl[row, c(3:ncol(cluster_3cell_stdOccs_noRepl))] <- summary
+      cluster_3cell_raw[row, c(3:ncol(cluster_3cell_raw))] <- summary
     }
     ## Save to keep track in between stages
     write.csv(cluster_3cell_raw, file = "data/analysis_data/genera_3cell_raw.csv")
@@ -737,7 +737,7 @@ for(i in start:length(stages)){
       ## Palaeolat is celly (summary[4]). Add absolute value to end
       summary <- c(summary, abs(summary[4]))
       ## Populate row
-      cluster_4cell_stdOccs_noRepl[row, c(3:ncol(cluster_4cell_stdOccs_noRepl))] <- summary
+      cluster_4cell_stdOccs_Repl[row, c(3:ncol(cluster_4cell_stdOccs_Repl))] <- summary
     }
     ## Save to keep track in between stages
     write.csv(cluster_4cell_stdOccs_Repl, file = "data/analysis_data/genera_4cell_stdOccs_Repl.csv")
@@ -801,7 +801,7 @@ for(i in start:length(stages)){
       ## Palaeolat is celly (summary[4]). Add absolute value to end
       summary <- c(summary, abs(summary[4]))
       ## Populate row
-      cluster_4cell_stdOccs_noRepl[row, c(3:ncol(cluster_4cell_stdOccs_noRepl))] <- summary
+      cluster_4cell_raw[row, c(3:ncol(cluster_4cell_raw))] <- summary
     }
     ## Save to keep track in between stages
     write.csv(cluster_4cell_raw, file = "data/analysis_data/genera_4cell_raw.csv")
