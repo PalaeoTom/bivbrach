@@ -2,13 +2,14 @@
 ## Started by TJS on 08/01/2024
 
 ## If packages aren't installed, install them, then load them
-packages <- c("divvy", "stringr", "fossilbrush")
+packages <- c("divvy", "stringr", "fossilbrush", "divDyn")
 if(length(packages[!packages %in% installed.packages()[,"Package"]]) > 0){
   install.packages(packages[!packages %in% installed.packages()[,"Package"]])
 }
 library(divvy)
 library(stringr)
 library(fossilbrush)
+library(divDyn)
 
 ## Clean directory
 rm(list = ls())
@@ -124,26 +125,6 @@ master_50 <- add.cell.covariate(master_50, stage_cell = "stage_cell", name = "ce
 ## Export dataset with duplicates
 saveRDS(master_50, "data/final/master_50_2_2.Rds")
 
-## Remove duplicate occurrences from each grid cell-time bin combination
-## Get time bins
-timeBins <- sort(unique(master_50$stage))
-## 50km
-uniq_master_50 <- master_50[NULL,]
-for(i in timeBins){
-  ## Get subset
-  uniq_master_50 <- rbind(uniq_master_50,uniqify(master_50[which(master_50$stage==i),], xy = c("cellx_50km","celly_50km"), taxVar = "combined_name"))
-}
-
-## Standardise uniqified grid cells ##
-source("functions/standardiseCells.R")
-occs.min <- 5
-
-## Run function
-uniq_master_50 <- standardiseCells(data = uniq_master_50, stage_cell = "stage_cell", minOccs = occs.min)
-
-## Export uniqified dataset
-saveRDS(uniq_master_50, "data/final/master_50_2_2_uniq.Rds")
-
 ##### 100km grid cells #####
 ## Combine grid cell number and stage number into single spacetime number
 master_100$stage_cell <- apply(master_100, 1, function(x) str_flatten(c(x[43],x[40]),collapse = "_"))
@@ -163,26 +144,6 @@ master_100 <- add.cell.covariate(master_100, stage_cell = "stage_cell", name = "
 
 ## Export dataset with duplicates
 saveRDS(master_100, "data/final/master_100_2_2.Rds")
-
-## Remove duplicate occurrences from each grid cell-time bin combination
-## Get time bins
-timeBins <- sort(unique(master_100$stage))
-## 100km
-uniq_master_100 <- master_100[NULL,]
-for(i in timeBins){
-  ## Get subset
-  uniq_master_100 <- rbind(uniq_master_100,uniqify(master_100[which(master_100$stage==i),], xy = c("cellx_100km","celly_100km"), taxVar = "combined_name"))
-}
-
-## Standardise uniqified grid cells ##
-source("functions/standardiseCells.R")
-occs.min <- 5
-
-## Run function
-uniq_master_100 <- standardiseCells(data = uniq_master_100, stage_cell = "stage_cell", minOccs = occs.min)
-
-## Export uniqified dataset
-saveRDS(uniq_master_100, "data/final/master_100_2_2_uniq.Rds")
 
 ##### 200km grid cells #####
 ## Combine grid cell number and stage number into single spacetime number
@@ -204,22 +165,154 @@ master_200 <- add.cell.covariate(master_200, stage_cell = "stage_cell", name = "
 ## Export dataset with duplicates
 saveRDS(master_200, "data/final/master_200_2_2.Rds")
 
-## Remove duplicate occurrences from each grid cell-time bin combination
+#### Remove duplicates for sensitivity test ####
+## Read in master_XXX_2_2
+master_50 <- readRDS("data/final/master_50_2_2.Rds")
+master_100 <- readRDS("data/final/master_100_2_2.Rds")
+master_200 <- readRDS("data/final/master_200_2_2.Rds")
+
+## Read in function
+source("functions/standardiseCells.R")
+
+## Set minimum
+occs.min <- 5
+
+## 50km
+## Get time bins
+timeBins <- sort(unique(master_50$stage))
+## Remove duplicates from grid cells
+uniq_master_50 <- master_50[NULL,]
+for(i in timeBins){
+  ## Get subset
+  uniq_master_50 <- rbind(uniq_master_50,uniqify(master_50[which(master_50$stage==i),], xy = c("cellx_50km","celly_50km"), taxVar = "combined_name"))
+}
+
+## Run function
+uniq_master_50 <- standardiseCells(data = uniq_master_50, stage_cell = "stage_cell", minOccs = occs.min)
+
+## Export uniqified dataset
+saveRDS(uniq_master_50, "data/final/master_50_2_2_std_U.Rds")
+
+## 100km
+## Get time bins
+timeBins <- sort(unique(master_100$stage))
+## Remove duplicates from grid cells
+uniq_master_100 <- master_100[NULL,]
+for(i in timeBins){
+  ## Get subset
+  uniq_master_100 <- rbind(uniq_master_100,uniqify(master_100[which(master_100$stage==i),], xy = c("cellx_100km","celly_100km"), taxVar = "combined_name"))
+}
+
+## Run function
+uniq_master_100 <- standardiseCells(data = uniq_master_100, stage_cell = "stage_cell", minOccs = occs.min)
+
+## Export uniqified dataset
+saveRDS(uniq_master_100, "data/final/master_100_2_2_std_U.Rds")
+
+## 200km
 ## Get time bins
 timeBins <- sort(unique(master_200$stage))
-## 200km
+## Remove duplicates from grid cells
 uniq_master_200 <- master_200[NULL,]
 for(i in timeBins){
   ## Get subset
   uniq_master_200 <- rbind(uniq_master_200,uniqify(master_200[which(master_200$stage==i),], xy = c("cellx_200km","celly_200km"), taxVar = "combined_name"))
 }
 
-## Standardise uniqified grid cells ##
-source("functions/standardiseCells.R")
-occs.min <- 5
-
 ## Run function
 uniq_master_200 <- standardiseCells(data = uniq_master_200, stage_cell = "stage_cell", minOccs = occs.min)
 
 ## Export uniqified dataset
-saveRDS(uniq_master_200, "data/final/master_200_2_2_uniq.Rds")
+saveRDS(uniq_master_200, "data/final/master_200_2_2_std_U.Rds")
+
+#### Apply quality criterion for main analyses  ####
+## Read in master_XXX_2_2
+master_50 <- readRDS("data/final/master_50_2_2.Rds")
+master_100 <- readRDS("data/final/master_100_2_2.Rds")
+master_200 <- readRDS("data/final/master_200_2_2.Rds")
+
+## Start by standardising grid cells. Remove all that have fewer than 20 occs.
+source("functions/standardiseCells.R")
+
+## Set minimum
+occs.min <- 20
+
+## Get standardised data
+master_50 <- standardiseCells(master_50, stage_cell = "stage_cell", minOccs = occs.min)
+master_100 <- standardiseCells(master_100, stage_cell = "stage_cell", minOccs = occs.min)
+master_200 <- standardiseCells(master_200, stage_cell = "stage_cell", minOccs = occs.min)
+
+## Export
+saveRDS(master_50, "data/final/master_50_2_2_min20.Rds")
+saveRDS(master_100, "data/final/master_100_2_2_min20.Rds")
+saveRDS(master_200, "data/final/master_200_2_2_min20.Rds")
+
+## Read in standardised data
+master_50 <- readRDS("data/final/master_50_2_2_min20.Rds")
+master_100 <- readRDS("data/final/master_100_2_2_min20.Rds")
+master_200 <- readRDS("data/final/master_200_2_2_min20.Rds")
+
+## Now, for each grid cell, assess sample sizes required for asymptotes.
+## Assign integers to grid cells
+master_50$cell_int <- NA
+cells <- unique(master_50$stage_cell)
+for(i in 1:length(cells)){
+  master_50[which(master_50$stage_cell == cells[i]),"cell_int"] <- i
+}
+
+## Use divDyn to perform classic rarefaction - start with 20 occurrences, go up to 100
+occ.max <- 150
+occ.min <- 1
+
+## First, create container
+crData <- data.frame(matrix(NA, nrow = length(occ.min:occ.max), ncol = length(cells)))
+colnames(crData) <- cells
+rownames(crData) <- occ.min:occ.max
+
+## First row will be 1
+crData[1,] <- 1
+
+## Populate rest of rows
+for(i in (occ.min+1):occ.max){
+  crData[i,] <- subsample(master_50, iter=100, q=i, tax="combined_name", bin="cell_int", type = "cr", output = "arit", useFailed = F)[,"divSIB"]
+}
+
+## Get max
+max(crData[!is.na(crData)])
+
+## Add column
+sampled <- occ.min:occ.max
+crData <- cbind(sampled, crData)
+
+## Plot output when it's finished, then send on to Cooper & Erin.
+pdf("figures/final/supplemental/cell_rarefaction.pdf")
+plot(x = NULL, y = NULL, ylim = c(0,100), xlim = c(0,150), yaxs = "i", xaxs = "i", xlab = "Sampled occurrences", ylab = "Generic richness", main = "Rarefaction curves for all 20+ occurrence cells", xaxt = "n")
+axis(1, at = c(0,25,50,75,100,125,150))
+for(i in 2:ncol(crData)){
+  lines(x = crData$sampled, y = crData[,i], col = adjustcolor("darkgrey", alpha.f = 0.5))
+}
+avg <- data.frame(cbind("sampled" = crData[,1],"mean" = apply(crData[,-1], 1, function(x) mean(x,na.rm = T))))
+lines(x = avg$sampled, y = avg$mean, col = "black", lwd = 1.5)
+abline(v = 20, lty = "dashed")
+abline(v = 25, lty = "dashed")
+abline(v = 50, lty = "dashed")
+abline(v = 75, lty = "dashed")
+abline(v = 100, lty = "dashed")
+abline(v = 125, lty = "dashed")
+dev.off()
+
+## Explore changes in mean richness between potential thresholds to assess asymptote.
+avg[75,"mean"]-avg[50,"mean"]
+avg[75,"mean"]-avg[50,"mean"]
+avg[100,"mean"]-avg[75,"mean"]
+avg[125,"mean"]-avg[100,"mean"]
+avg[150,"mean"]-avg[125,"mean"]
+
+## Once decided, run standardisation function again and export.
+
+
+
+
+
+
+

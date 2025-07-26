@@ -14,7 +14,7 @@ library(fossilbrush)
 rm(list = ls())
 
 #### Loading data ####
-## Download latest version - get all columns
+## Download latest version - get all columns. Latest version: 23/07/2025
 #library(paleobioDB)
 #raw_PBDB_bivalves <- pbdb_occurrences(limit = "all", vocab = "pbdb", base_name = "Bivalvia",
 #                                      show = c("coll", "class", "coords", "paleoloc", "strat", "stratext", "lith", "env", "ident", "refattr"))
@@ -37,14 +37,22 @@ rm(list = ls())
 ## combine
 #PBDB <- rbind(raw_PBDB_bivalves, raw_PBDB_brachiopods)
 
+## Trim out entries from AMNH, GBIF, NMS, Peabody. None from GBIF and NMS.
+#View(data.frame(table(PBDB$collection_name)))
+#droppers <- which(str_detect(PBDB$collection_name, "AMNH"))
+#droppers <- c(droppers, which(str_detect(PBDB$collection_name, "YPM")))
+#droppers <- c(droppers, which(str_detect(PBDB$collection_name, "Peabody")))
+#droppers <- unique(droppers)
+#PBDB <- PBDB[-droppers,]
+
 ## trim down to necessary columns
 #PBDB <- PBDB[,which(colnames(PBDB) %in% coln)]
 
 ## Export
-#saveRDS(PBDB, "data/unclean_data/PBDB_biv_brach_May25.Rds")
+#saveRDS(PBDB, "data/unclean_data/PBDB_biv_brach_July25.Rds")
 
 ## Or, load data that was used for these analyses
-PBDB <- readRDS("data/unclean_data/PBDB_biv_brach_May25.Rds")
+PBDB <- readRDS("data/unclean_data/PBDB_biv_brach_July25.Rds")
 
 #### Taxonomic filtering and cleaning ####
 ## First, check accepted ranks
@@ -305,6 +313,8 @@ PBDB <- PBDB[!PBDB$environment%in%omitEnv,]
 #### Rearrange and export ####
 ## Rearrange
 PBDB <- PBDB[,c(1, 2, 11, 5, 6, 3, 4, 7, 25, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 24, 26, 22, 23, 27:29)]
+
+## Check for AMNH, GBIF, NMS, and Peabody entries, then remove!
 
 ## Export data
 saveRDS(PBDB, "data/PBDB/PBDB.Rds")
