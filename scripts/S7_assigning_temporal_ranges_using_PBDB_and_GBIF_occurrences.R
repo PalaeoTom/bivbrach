@@ -1,4 +1,4 @@
-###### PBDB gap filling ######
+###### S7 - assigning temporal ranges using PBDB and GBIF occurrences ######
 ## Load version
 GBIF <- readRDS("data/GBIF/GBIF_1_6_1.Rds")
 

@@ -15,58 +15,106 @@ rm(list = ls())
 
 ## Read in functions
 source("functions/misspell.R")
-source("functions/standardiseCells.R")
 
-#### Standardised data with abundances ####
-
-
-
-
-
-
-#### Unique species in each cell - setup ###
-## Read in data
-master_50 <- readRDS("data/final/master_50_2_2.Rds")
+#### Rolling with 100km only ####
+## Read in data after time binning and covariate data has been calculated but standardisation has not been conducted
 master_100 <- readRDS("data/final/master_100_2_2.Rds")
-master_200 <- readRDS("data/final/master_200_2_2.Rds")
 
-## Set minimum number of occurrences
-occs.min <- 5
-
-#### 50km ####
+#### Updating combined name to be species based ####
 ## Clean up names
-master_50$species <- clean_name(master_50$species)
+master_100$species <- clean_name(master_100$species)
 
 ## Drop NAs
-master_50 <- master_50[-which(is.na(master_50$species)),]
+master_100 <- master_100[-which(is.na(master_100$species)),]
 
 ## Standardise dipthongs
-master_50$species <- misspell(master_50$species)
+master_100$species <- misspell(master_100$species)
 
 ## Check for punctuation
-any(str_detect(master_50$species, pattern = "[:punct:]"))
+any(str_detect(master_100$species, pattern = "[:punct:]"))
 
 ## Capitalisation
-master_50$species <- str_to_lower(master_50$species)
+master_100$species <- str_to_lower(master_100$species)
 
 ## Now to combine into a single unique name to update combined name
-master_50$combined_name <- apply(master_50, 1, function(x) paste0(x[5], "_", x[9], "_", x[10]))
+master_100$combined_name <- apply(master_100, 1, function(x) paste0(x[5], "_", x[9], "_", x[10]))
 
-## Get time bins
-timeBins <- sort(unique(master_50$stage))
+#### Apply quality criteria ####
+source("functions/standardiseCells.R")
 
-## Create container
-master_50_U <- master_50[NULL,]
+## 3+ species
+sp.min <- 3
+master_100_3sp <- standardiseCells(master_100, cell = "stage_cell", type = "taxa", minOccs = sp.min)
 
-## Populate container
-for(i in timeBins){
-  ## Get subset
-  master_50_U <- rbind(master_50_U,uniqify(master_50[which(master_50$stage==i),], xy = c("cellx_50km","celly_50km"), taxVar = "combined_name"))
-}
+## 20+ occurrences
+occs.min <- 20
+master_100_3sp_20occs <- standardiseCells(data = master_100_3sp, cell = "stage_cell", minOccs = occs.min, type = "occs")
 
-## Run function
-master_50_U <- standardiseCells(data = master_50_U, stage_cell = "stage_cell", minOccs = occs.min)
+## Get rarefaction curves for all cells
+source("functions/rarefaction_curve.R")
+source("functions/rarefaction_curve_all_cells.R")
+master_100_RCs <- rarefaction_curve_all_cells(data = master_100_3sp_20occs, cell = "stage_cell", taxVar = "combined_name", iter = 1000)
 
-#### Export datasets
-saveRDS(master_50_U, "data/final/master_50_2_3_species_std_U.Rds")
+## Wittle down to grid cells that meet asymptote criteria
+asymptote.occs <- 5
+slope.threshold <- 0.24999
+source("functions/test_RC_tail_asymptote.R")
+
+## Get grid cells to retain
+master_100_RCs_bool <- test_RC_tail_asymptote(RCs = master_100_RCs[,-1], n = asymptote.occs, threshold = slope.threshold)
+master_100_GCs <- colnames(master_100_RCs)[-1]
+master_100_GCs <- master_100_GCs[master_100_RCs_bool]
+
+## Wittle down
+master_100_3sp_20occs_RCAsym <- master_100_3sp_20occs[which(master_100_3sp_20occs$stage_cell %in% master_100_GCs),]
+
+## Covariates - prune and interpolate
+source("functions/cov.check.R")
+source("functions/cov.prune.R")
+master_100_3sp_20occs_RCAsym_covPruned <- cov.prune(data = master_100_3sp_20occs_RCAsym, stage_cell = "stage_cell", coords = c("cellx_100km","celly_100km"), covariates = c("cellLith", "cellBath", "cellReef"))
+
+## Get raster for interpolation
+rast100 <- terra::project(x = terra::rast(), y = "EPSG:8857", res = 100000)
+terra::values(rast100) <- 1:terra::ncell(rast100)
+
+## Interpolate:
+source("functions/get_cell_rings.R")
+source("functions/interpolate_covariates.R")
+rings = 5
+master_100_3sp_20occs_RCAsym_covInt <- interpolate_covariates(master_100_3sp_20occs_RCAsym, raster = rast100, covariate = "cellBath", coords = c("cellx_100km", "celly_100km"), stage_cell = "stage_cell", max_ring = rings, n.cores = 8)
+master_100_3sp_20occs_RCAsym_covInt <- interpolate_covariates(master_100_3sp_20occs_RCAsym_covInt, raster = rast100, covariate = "cellLith", coords = c("cellx_100km", "celly_100km"), stage_cell = "stage_cell", max_ring = rings, n.cores = 8)
+master_100_3sp_20occs_RCAsym_covInt <- interpolate_covariates(master_100_3sp_20occs_RCAsym_covInt, raster = rast100, covariate = "cellReef", coords = c("cellx_100km", "celly_100km"), stage_cell = "stage_cell", max_ring = rings, n.cores = 8)
+
+## Now prune out those cells missing data
+master_100_3sp_20occs_RCAsym_covInt <- cov.prune(data = master_100_3sp_20occs_RCAsym_covInt, stage_cell = "stage_cell", coords = c("cellx_100km","celly_100km"), covariates = c("cellLith", "cellBath", "cellReef"))
+
+## Finally, prune out stages with less than 5 cells
+source("functions/stage.check.R")
+source("functions/stage.prune.R")
+
+## Run the functions for each dataset
+cellMin <- 5
+master_100_covP_stageP <- stage.prune(data = master_100_3sp_20occs_RCAsym_covPruned, coords = c("cellx_100km", "celly_100km"), cellMin = cellMin)
+master_100_covI_stageP <- stage.prune(data = master_100_3sp_20occs_RCAsym_covInt, coords = c("cellx_100km", "celly_100km"), cellMin = cellMin)
+
+## Export final datasets
+saveRDS(master_100_covP_stageP, "data/final/final_100_species_covsPruned.Rds")
+saveRDS(master_100_covI_stageP, "data/final/final_100_species_covsInt.Rds")
+
+## Summarise numbers
+gridCells <- rep("100km", 2)
+covariateStatus <-c("original_only", "original_plus_interpolated_within_500km_radius")
+nCells <- rep(NA, length(gridCells))
+nOccs <- rep(NA, length(gridCells))
+nStages <- rep(NA, length(gridCells))
+suma <- data.frame(cbind("gridCellSize" = gridCells, "covariateData" = covariateStatus, "NumberOfCells" = nCells, "NumberOfOccurrences" = nOccs, "NumberOfStages" = nStages))
+
+## Populate cells
+suma[1,"NumberOfCells"] <- length(unique(master_100_covP_stageP$stage_cell))
+suma[1,"NumberOfOccurrences"] <- nrow(master_100_covP_stageP)
+suma[1,"NumberOfStages"] <- length(unique(master_100_covP_stageP$stage))
+suma[2,"NumberOfCells"] <- length(unique(master_100_covI_stageP$stage_cell))
+suma[2,"NumberOfOccurrences"] <- nrow(master_100_covI_stageP)
+suma[2,"NumberOfStages"] <- length(unique(master_100_covI_stageP$stage))
+write.csv(suma, "data/sensitivity_testing/species_final_numbers.csv")
 

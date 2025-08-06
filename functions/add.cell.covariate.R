@@ -1,6 +1,6 @@
-add.cell.covariate <- function(data, stage_cell, name, unknown, ref, value){
+add.cell.covariate <- function(data, cell, name, unknown, ref, value){
   ## Get unique spacetime samples
-  sc <- unique(data[,stage_cell])
+  sc <- unique(data[,cell])
   ## Get colnames
   cn <- colnames(data)
   ## Add empty container to data
@@ -9,7 +9,7 @@ add.cell.covariate <- function(data, stage_cell, name, unknown, ref, value){
   ## for each bin
   for(b in sc){
     ## Get index of occurrences in this spacetime sample
-    occs <- which(data[,stage_cell]==b)
+    occs <- which(data[,cell]==b)
     ## Get spacetime sample
     samp <- data[occs,]
     ## Get number of occurrences with assignments
@@ -19,7 +19,7 @@ add.cell.covariate <- function(data, stage_cell, name, unknown, ref, value){
       ## Assign proportion as value
       data[occs,name] <- length(which(samp[,ref] == value))/n
     } else {
-      ## If 0, set as 0.5 (mixed)
+      ## If 0, set as NA. Can change later
       data[occs,name] <- NA
     }
   }

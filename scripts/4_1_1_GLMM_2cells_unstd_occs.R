@@ -6,7 +6,7 @@
 rm(list = ls())
 
 ## If packages aren't installed, install them, then load them
-packages <- c("lme4", "MuMIn", "sjmisc", "glmmTMB", "DHARMa", "performance", "car", "divDyn", "gstat", "raster", "terra", "xtable", "sjPlot", "ggplot2", "palaeoverse", "ggeffects")
+packages <- c("lme4", "MuMIn", "sjmisc", "glmmTMB", "DHARMa", "performance", "car", "divDyn", "gstat", "raster", "terra", "xtable", "sjPlot", "ggplot2", "palaeoverse", "ggeffects", "stringr")
 if(length(packages[!packages %in% installed.packages()[,"Package"]]) > 0){
   install.packages(packages[!packages %in% installed.packages()[,"Package"]])
 }
@@ -25,6 +25,7 @@ library(sjPlot)
 library(ggplot2)
 library(palaeoverse)
 library(ggeffects)
+library(stringr)
 
 ## Load data
 raw_data <- read.csv("data/analysis_data/genera_2cell_raw.csv", header = T, row.names = 1)
@@ -698,3 +699,40 @@ legend("topleft",legend = c("Bivalves", "Brachiopods"),bg = "white", col = c(rgb
 axis_geo(side = 1, intervals = "international periods")
 dev.off()
 
+#### Sensitivity test - shuflling predictor and response. Can we break negative relationship? ####
+## Shuffle model data
+shuffled_data <- lapply(1:1000, function(x){
+  out <- modelData
+  out$brachiopod <- out$brachiopod[sample(1:length(out$brachiopod),length(out$brachiopod),replace = F)]
+  return(out)
+})
+
+## Rerun best model for all: dropped dispersion model and random effect because stage correlation should be broken
+shuffled_data_models <- lapply(1:length(shuffled_data), function(y){
+  model <- glmmTMB(brachiopod ~ bivalve * PTME + bath + lith, ziformula = ~1, data = shuffled_data[[i]], family = nbinom1(link = "log"))
+})
+
+## Count number of significant terms for each predictor with jumbled responses - hopefully low!
+## Do first model for reference
+coeffs1 <- get_model_data(shuffled_data_models[[1]], type = "est")
+reps = 1000
+tracker_coeff <- data.frame(matrix(NA, ncol = 5, nrow = reps))
+tracker_pstars <- data.frame(matrix(NA, ncol = 5, nrow = reps))
+colnames(tracker_coeff) <- coeffs1[,"term"]
+colnames(tracker_pstars) <- coeffs1[,"term"]
+
+for(i in 1:reps){
+  ## get model data
+  coeffs <- get_model_data(shuffled_data_models[[i]], type = "est")
+  ## add coefficients
+  tracker_coeff[i,which(colnames(tracker_coeff) == coeffs[,"term"])] <- coeffs[,"estimate"]
+  ## Log pstars
+  tracker_pstars[i,which(colnames(tracker_pstars) == coeffs[,"term"])] <- coeffs[,"p.stars"]
+}
+
+## Summarise - find all significant terms
+any(str_detect(tracker_pstars[,"bivalve"], fixed("*")))
+any(str_detect(tracker_pstars[,"PTMEPostPTME"], fixed("*")))
+any(str_detect(tracker_pstars[,"bath"], fixed("*")))
+any(str_detect(tracker_pstars[,"lith"], fixed("*")))
+any(str_detect(tracker_pstars[,"bivalve:PTMEPostPTME"], fixed("*")))
