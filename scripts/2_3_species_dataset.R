@@ -53,11 +53,12 @@ master_100_3sp_20occs <- standardiseCells(data = master_100_3sp, cell = "stage_c
 ## Get rarefaction curves for all cells
 source("functions/rarefaction_curve.R")
 source("functions/rarefaction_curve_all_cells.R")
-master_100_RCs <- rarefaction_curve_all_cells(data = master_100_3sp_20occs, cell = "stage_cell", taxVar = "combined_name", iter = 1000)
+master_100_RCs <- rarefaction_curve_all_cells(data = master_100_3sp_20occs, cell = "stage_cell", taxVar = "combined_name", iter = 10000)
+saveRDS(master_100_RCs, file = "data/sensitivity_testing/master_100_2_2_min3sp_min20occs_RCs.Rds")
 
 ## Wittle down to grid cells that meet asymptote criteria
 asymptote.occs <- 5
-slope.threshold <- 0.24999
+slope.threshold <- 0.25
 source("functions/test_RC_tail_asymptote.R")
 
 ## Get grid cells to retain

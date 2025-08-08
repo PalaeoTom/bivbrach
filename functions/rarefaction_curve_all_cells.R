@@ -1,4 +1,4 @@
-rarefaction_curve_all_cells <- function(data, cell, taxVar, iter){
+rarefaction_curve_all_cells <- function(data, cell, taxVar, iter, n.cores = 1){
   ## Isolate occs
   occs <- data[,taxVar]
   ## Isolate cells
@@ -6,7 +6,7 @@ rarefaction_curve_all_cells <- function(data, cell, taxVar, iter){
   ## Get unique cells
   cells_u <- unique(cells)
   ## Loop for each cell
-  allCells <- sapply(1:length(cells_u), function(c){
+  allCells <- mclapply(1:length(cells_u), mc.cores = n.cores, function(c){
     samp <- occs[which(cells %in% cells_u[c])]
     curve <- rarefaction_curve(samp, iter)
   })

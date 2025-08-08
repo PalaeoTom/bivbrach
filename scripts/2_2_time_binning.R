@@ -236,24 +236,28 @@ saveRDS(master_200, file = "data/final/master_200_2_2_min3gen_min20occs.Rds")
 
 #### Get rarefaction curves to assess sampling ####
 ## 3. Calculate slopes of final 5 occurrences of each grid cell. Drop all cells with slope of 0.25 or greater (i.e., equivalent to a change of 1 genera )
+rm(list=ls())
+
 ## Read it in if starting from scratch
 master_50 <- readRDS("data/final/master_50_2_2_min3gen_min20occs.Rds")
 master_100 <- readRDS("data/final/master_100_2_2_min3gen_min20occs.Rds")
 master_150 <- readRDS("data/final/master_150_2_2_min3gen_min20occs.Rds")
 master_200 <- readRDS("data/final/master_200_2_2_min3gen_min20occs.Rds")
 
-## Draw rarefaction curves again
+## Draw and save rarefaction curves - note, iter = 10000 takes a long while! However, needed to limit variance.
 source("functions/rarefaction_curve.R")
 source("functions/rarefaction_curve_all_cells.R")
-master_50_RCs <- rarefaction_curve_all_cells(data = master_50, cell = "stage_cell", taxVar = "combined_name", iter = 1000)
-master_100_RCs <- rarefaction_curve_all_cells(data = master_100, cell = "stage_cell", taxVar = "combined_name", iter = 1000)
-master_150_RCs <- rarefaction_curve_all_cells(data = master_150, cell = "stage_cell", taxVar = "combined_name", iter = 1000)
-master_200_RCs <- rarefaction_curve_all_cells(data = master_200, cell = "stage_cell", taxVar = "combined_name", iter = 1000)
 
-## Save rarefaction curves
+master_50_RCs <- rarefaction_curve_all_cells(data = master_50, cell = "stage_cell", taxVar = "combined_name", iter = 10000, n.cores = 8)
 saveRDS(master_50_RCs, file = "data/sensitivity_testing//master_50_2_2_min3gen_min20occs_RCs.Rds")
+
+master_100_RCs <- rarefaction_curve_all_cells(data = master_100, cell = "stage_cell", taxVar = "combined_name", iter = 10000, n.cores = 8)
 saveRDS(master_100_RCs, file = "data/sensitivity_testing/master_100_2_2_min3gen_min20occs_RCs.Rds")
+
+master_150_RCs <- rarefaction_curve_all_cells(data = master_150, cell = "stage_cell", taxVar = "combined_name", iter = 10000, n.cores = 8)
 saveRDS(master_150_RCs, file = "data/sensitivity_testing/master_150_2_2_min3gen_min20occs_RCs.Rds")
+
+master_200_RCs <- rarefaction_curve_all_cells(data = master_200, cell = "stage_cell", taxVar = "combined_name", iter = 10000, n.cores = 8)
 saveRDS(master_200_RCs, file = "data/sensitivity_testing/master_200_2_2_min3gen_min20occs_RCs.Rds")
 
 #### Filter out cells with a RC tail slope less than 0.25 across final five occurrences ####
@@ -273,43 +277,18 @@ master_200_RCs <- readRDS("data/sensitivity_testing/master_200_2_2_min3gen_min20
 
 ## Wittle down to grid cells that meet asymptote criteria
 asymptote.occs <- 5
-slope.threshold <- 0.24999
+slope.threshold <- 0.25
 source("functions/test_RC_tail_asymptote.R")
 master_50_RCs_bool <- test_RC_tail_asymptote(RCs = master_50_RCs[,-1], n = asymptote.occs, threshold = slope.threshold)
 master_100_RCs_bool <- test_RC_tail_asymptote(RCs = master_100_RCs[,-1], n = asymptote.occs, threshold = slope.threshold)
 master_150_RCs_bool <- test_RC_tail_asymptote(RCs = master_150_RCs[,-1], n = asymptote.occs, threshold = slope.threshold)
 master_200_RCs_bool <- test_RC_tail_asymptote(RCs = master_200_RCs[,-1], n = asymptote.occs, threshold = slope.threshold)
 
-## Trim grid cells from RCs, count grid cells, and count occurrences
-master_50_GCs <- colnames(master_50_RCs)[-1]
-master_50_GCs <- master_50_GCs[master_50_RCs_bool]
-occs_50 <- length(master_50[which(master_50$stage_cell %in% master_50_GCs),"stage_cell"])
-length(master_50_GCs)
-occs_50
-
-master_100_GCs <- colnames(master_100_RCs)[-1]
-master_100_GCs <- master_100_GCs[master_100_RCs_bool]
-occs_100 <- length(master_100[which(master_100$stage_cell %in% master_100_GCs),"stage_cell"])
-length(master_100_GCs)
-occs_100
-
-master_150_GCs <- colnames(master_150_RCs)[-1]
-master_150_GCs <- master_150_GCs[master_150_RCs_bool]
-occs_150 <- length(master_150[which(master_150$stage_cell %in% master_150_GCs),"stage_cell"])
-length(master_150_GCs)
-occs_150
-
-master_200_GCs <- colnames(master_200_RCs)[-1]
-master_200_GCs <- master_200_GCs[master_200_RCs_bool]
-occs_200 <- length(master_200[which(master_200$stage_cell %in% master_200_GCs),"stage_cell"])
-length(master_200_GCs)
-occs_200
-
 ## Filter out grid cells that don't have asymptote
-master_50_final <- master_50[which(master_50$stage_cell %in% master_50_GCs),]
-master_100_final <- master_100[which(master_100$stage_cell %in% master_100_GCs),]
-master_150_final <- master_150[which(master_150$stage_cell %in% master_150_GCs),]
-master_200_final <- master_200[which(master_200$stage_cell %in% master_200_GCs),]
+master_50_final <- master_50[which(master_50$stage_cell %in% names(which(master_50_RCs_bool))),]
+master_100_final <- master_100[which(master_100$stage_cell %in% names(which(master_100_RCs_bool))),]
+master_150_final <- master_150[which(master_150$stage_cell %in% names(which(master_150_RCs_bool))),]
+master_200_final <- master_200[which(master_200$stage_cell %in% names(which(master_200_RCs_bool))),]
 
 ## Export
 saveRDS(master_50_final, "data/final/master_50_2_2_min3gen_min20occs_slope0.25.Rds")
