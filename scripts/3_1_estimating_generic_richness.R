@@ -88,6 +88,17 @@ COI_raw <- raw_richness(data = genera_covInt)
 gen_CO_raw[,c(4,5)] <- CO_raw[,c(2,3)]
 gen_COI_raw[,c(4,5)] <- COI_raw[,c(2,3)]
 
+## Add sample size for each cell as final column
+source("functions/raw_sample_size.R")
+sample_sizes_CO <- raw_sample_size(genera_covPrun)
+sample_sizes_COI <- raw_sample_size(genera_covInt)
+
+## Match them to grid cells
+gen_CO_raw$n <- NA
+gen_COI_raw$n <- NA
+gen_CO_raw[,"n"] <- as.numeric(sample_sizes_CO[match(sample_sizes_CO[,1],gen_CO_raw[,"stage_cell"]),2])
+gen_COI_raw[,"n"] <- as.numeric(sample_sizes_COI[match(sample_sizes_COI[,1],gen_COI_raw[,"stage_cell"]),2])
+
 ## Export final data tables
 write.csv(gen_CO_raw, file = "data/analysis_data/genera_CO_raw.csv")
 write.csv(gen_COI_raw, file = "data/analysis_data/genera_COI_raw.csv")
@@ -144,6 +155,12 @@ COI_CRV <- CR_richness(data = genera_covInt, n = gen_COI_n, n.cores = 8)
 ## Enter into final data tables
 gen_CO_CRV[,c(4,5)] <- CO_CRV[,c(2,3)]
 gen_COI_CRV[,c(4,5)] <- COI_CRV[,c(2,3)]
+
+## Match them to grid cells
+gen_CO_CRV$n <- NA
+gen_COI_CRV$n <- NA
+gen_CO_CRV[,"n"] <- as.numeric(gen_CO_n[match(names(gen_CO_n),gen_CO_CRV[,"stage_cell"])])
+gen_COI_CRV[,"n"] <- as.numeric(gen_COI_n[match(names(gen_COI_n),gen_COI_CRV[,"stage_cell"])])
 
 ## Export final data tables
 write.csv(gen_CO_CRV, file = "data/analysis_data/genera_CO_CRV.csv")

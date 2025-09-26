@@ -119,15 +119,10 @@ master_50$stage_cell <- str_replace(master_50$stage_cell, " ", "")
 
 ## Determine cell lithology, environment, reef status, and latitudinal centroid from combined dataset
 # Load function
-source("functions/add.cell.covariate.R")
-
-# Run function
-# 0 = all siliciclastic, 1 = all carbonate
-master_50 <- add.cell.covariate(master_50, cell = "stage_cell", name = "cellLith", unknown = "unknown", ref = "lith_category", value = "carbonate")
-# 0 = all shallow, 1 = all deep
-master_50 <- add.cell.covariate(master_50, cell = "stage_cell", name = "cellBath", unknown = "unknown", ref = "bath_category", value = "deep")
-# 0 = no reef, 1 = all reef
-master_50 <- add.cell.covariate(master_50, cell = "stage_cell", name = "cellReef", unknown = "unknown", ref = "reef_category", value = "reef")
+source("functions/get.cell.covariate.R")
+master_50[,"cellLith"] <- get.cell.covariate(master_50, cell = "stage_cell", unknown = "unknown", ref = "lith_category", value = "carbonate")
+master_50[,"cellBath"] <- get.cell.covariate(master_50, cell = "stage_cell", unknown = "unknown", ref = "bath_category", value = "deep")
+master_50[,"cellReef"] <- get.cell.covariate(master_50, cell = "stage_cell", unknown = "unknown", ref = "reef_category", value = "reef")
 
 ## Export dataset with duplicates
 saveRDS(master_50, "data/final/master_50_2_2.Rds")

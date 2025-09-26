@@ -88,6 +88,17 @@ COI_raw <- raw_richness(data = species_covInt)
 sp_CO_raw[,c(4,5)] <- CO_raw[,c(2,3)]
 sp_COI_raw[,c(4,5)] <- COI_raw[,c(2,3)]
 
+## Add sample size for each cell as final column
+source("functions/raw_sample_size.R")
+sample_sizes_CO <- raw_sample_size(species_covPrun)
+sample_sizes_COI <- raw_sample_size(species_covInt)
+
+## Match them to grid cells
+sp_CO_raw$n <- NA
+sp_COI_raw$n <- NA
+sp_CO_raw[,"n"] <- as.numeric(sample_sizes_CO[match(sample_sizes_CO[,1],sp_CO_raw[,"stage_cell"]),2])
+sp_COI_raw[,"n"] <- as.numeric(sample_sizes_COI[match(sample_sizes_COI[,1],sp_COI_raw[,"stage_cell"]),2])
+
 ## Export final data tables
 write.csv(sp_CO_raw, file = "data/analysis_data/species_CO_raw.csv")
 write.csv(sp_COI_raw, file = "data/analysis_data/species_COI_raw.csv")
@@ -144,6 +155,12 @@ COI_CRV <- CR_richness(data = species_covInt, n = sp_COI_n, n.cores = 8)
 ## Enter into final data tables
 sp_CO_CRV[,c(4,5)] <- CO_CRV[,c(2,3)]
 sp_COI_CRV[,c(4,5)] <- COI_CRV[,c(2,3)]
+
+## Match them to grid cells
+sp_CO_CRV$n <- NA
+sp_COI_CRV$n <- NA
+sp_CO_CRV[,"n"] <- as.numeric(sp_CO_n[match(names(sp_CO_n),sp_CO_CRV[,"stage_cell"])])
+sp_COI_CRV[,"n"] <- as.numeric(sp_COI_n[match(names(sp_COI_n),sp_COI_CRV[,"stage_cell"])])
 
 ## Export final data tables
 write.csv(sp_CO_CRV, file = "data/analysis_data/species_CO_CRV.csv")
