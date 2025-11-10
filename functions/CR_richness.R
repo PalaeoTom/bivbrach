@@ -10,7 +10,7 @@ CR_richness <- function(data, n = 20, reps = 1000, cell = "stage_cell", taxon_na
       stop("n does not include values for every cell in data")
     } else {
       ## Rearrange order of n to match order of cells
-      n <- n[match(names(n),cells)]
+      n <- n[match(cells,names(n))]
     }
   }
   ## mclapply time

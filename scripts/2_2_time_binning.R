@@ -634,6 +634,19 @@ master_100_covI <- readRDS("data/final/master_100_2_2_min3gen_min20occs_slope0.2
 master_150_covI <- readRDS("data/final/master_150_2_2_min3gen_min20occs_slope0.25_covsInt.Rds")
 master_200_covI <- readRDS("data/final/master_200_2_2_min3gen_min20occs_slope0.25_covsInt.Rds")
 
+## Also, read in data without covariate data filter
+master_50_noCov <- readRDS("data/final/master_50_2_2_min3gen_min20occs_slope0.25.Rds")
+master_100_noCov <- readRDS("data/final/master_100_2_2_min3gen_min20occs_slope0.25.Rds")
+master_150_noCov <- readRDS("data/final/master_150_2_2_min3gen_min20occs_slope0.25.Rds")
+master_200_noCov <- readRDS("data/final/master_200_2_2_min3gen_min20occs_slope0.25.Rds")
+
+## Drop covariate information from cells
+covsToDrop <- colnames(master_200_noCov)[c(45:47)]
+master_50_noCov[,covsToDrop] <- NULL
+master_100_noCov[,covsToDrop] <- NULL
+master_150_noCov[,covsToDrop] <- NULL
+master_200_noCov[,covsToDrop] <- NULL
+
 ## Read in stage checker and prune functions
 source("functions/stage.check.R")
 source("functions/stage.prune.R")
@@ -642,33 +655,41 @@ source("functions/stage.prune.R")
 cellMin <- 5
 master_50_covP_stageP <- stage.prune(data = master_50_covP, coords = c("cellx_50km", "celly_50km"), cellMin = cellMin)
 master_50_covI_stageP <- stage.prune(data = master_50_covI, coords = c("cellx_50km", "celly_50km"), cellMin = cellMin)
+master_50_noCov_stageP <- stage.prune(data = master_50_noCov, coords = c("cellx_50km", "celly_50km"), cellMin = cellMin)
 
 master_100_covP_stageP <- stage.prune(data = master_100_covP, coords = c("cellx_100km", "celly_100km"), cellMin = cellMin)
 master_100_covI_stageP <- stage.prune(data = master_100_covI, coords = c("cellx_100km", "celly_100km"), cellMin = cellMin)
+master_100_noCov_stageP <- stage.prune(data = master_100_noCov, coords = c("cellx_100km", "celly_100km"), cellMin = cellMin)
 
 master_150_covP_stageP <- stage.prune(data = master_150_covP, coords = c("cellx_150km", "celly_150km"), cellMin = cellMin)
 master_150_covI_stageP <- stage.prune(data = master_150_covI, coords = c("cellx_150km", "celly_150km"), cellMin = cellMin)
+master_150_noCov_stageP <- stage.prune(data = master_150_noCov, coords = c("cellx_150km", "celly_150km"), cellMin = cellMin)
 
 master_200_covP_stageP <- stage.prune(data = master_200_covP, coords = c("cellx_200km", "celly_200km"), cellMin = cellMin)
 master_200_covI_stageP <- stage.prune(data = master_200_covI, coords = c("cellx_200km", "celly_200km"), cellMin = cellMin)
+master_200_noCov_stageP <- stage.prune(data = master_200_noCov, coords = c("cellx_200km", "celly_200km"), cellMin = cellMin)
 
 ## Export each dataset
 saveRDS(master_50_covP_stageP, "data/final/final_50_genera_covsPruned.Rds")
 saveRDS(master_50_covI_stageP, "data/final/final_50_genera_covsInt.Rds")
+saveRDS(master_50_noCov_stageP, "data/final/final_50_genera_noCov.Rds")
 
 saveRDS(master_100_covP_stageP, "data/final/final_100_genera_covsPruned.Rds")
 saveRDS(master_100_covI_stageP, "data/final/final_100_genera_covsInt.Rds")
+saveRDS(master_100_noCov_stageP, "data/final/final_100_genera_noCov.Rds")
 
 saveRDS(master_150_covP_stageP, "data/final/final_150_genera_covsPruned.Rds")
 saveRDS(master_150_covI_stageP, "data/final/final_150_genera_covsInt.Rds")
+saveRDS(master_150_noCov_stageP, "data/final/final_150_genera_noCov.Rds")
 
 saveRDS(master_200_covP_stageP, "data/final/final_200_genera_covsPruned.Rds")
 saveRDS(master_200_covI_stageP, "data/final/final_200_genera_covsInt.Rds")
+saveRDS(master_200_noCov_stageP, "data/final/final_200_genera_noCov.Rds")
 
 ## Create summary
 ## Summarise for comparison
-gridCells <- c(rep("50km", 2), rep("100km", 2), rep("150km", 2), rep("200km", 2))
-covariateStatus <- rep(c("original_only", "original_plus_interpolated_within_500km_radius"), 4)
+gridCells <- c(rep("50km", 3), rep("100km", 3), rep("150km", 3), rep("200km", 3))
+covariateStatus <- rep(c("original_only", "original_plus_interpolated_within_500km_radius", "none"), 4)
 nCells <- rep(NA, length(gridCells))
 nOccs <- rep(NA, length(gridCells))
 nStages <- rep(NA, length(gridCells))
@@ -681,26 +702,38 @@ suma[1,"NumberOfStages"] <- length(unique(master_50_covP_stageP$stage))
 suma[2,"NumberOfCells"] <- length(unique(master_50_covI_stageP$stage_cell))
 suma[2,"NumberOfOccurrences"] <- nrow(master_50_covI_stageP)
 suma[2,"NumberOfStages"] <- length(unique(master_50_covI_stageP$stage))
+suma[3,"NumberOfCells"] <- length(unique(master_50_noCov_stageP$stage_cell))
+suma[3,"NumberOfOccurrences"] <- nrow(master_50_noCov_stageP)
+suma[3,"NumberOfStages"] <- length(unique(master_50_noCov_stageP$stage))
 
-suma[3,"NumberOfCells"] <- length(unique(master_100_covP_stageP$stage_cell))
-suma[3,"NumberOfOccurrences"] <- nrow(master_100_covP_stageP)
-suma[3,"NumberOfStages"] <- length(unique(master_100_covP_stageP$stage))
-suma[4,"NumberOfCells"] <- length(unique(master_100_covI_stageP$stage_cell))
-suma[4,"NumberOfOccurrences"] <- nrow(master_100_covI_stageP)
-suma[4,"NumberOfStages"] <- length(unique(master_100_covI_stageP$stage))
+suma[4,"NumberOfCells"] <- length(unique(master_100_covP_stageP$stage_cell))
+suma[4,"NumberOfOccurrences"] <- nrow(master_100_covP_stageP)
+suma[4,"NumberOfStages"] <- length(unique(master_100_covP_stageP$stage))
+suma[5,"NumberOfCells"] <- length(unique(master_100_covI_stageP$stage_cell))
+suma[5,"NumberOfOccurrences"] <- nrow(master_100_covI_stageP)
+suma[5,"NumberOfStages"] <- length(unique(master_100_covI_stageP$stage))
+suma[6,"NumberOfCells"] <- length(unique(master_100_noCov_stageP$stage_cell))
+suma[6,"NumberOfOccurrences"] <- nrow(master_100_noCov_stageP)
+suma[6,"NumberOfStages"] <- length(unique(master_100_noCov_stageP$stage))
 
-suma[5,"NumberOfCells"] <- length(unique(master_150_covP_stageP$stage_cell))
-suma[5,"NumberOfOccurrences"] <- nrow(master_150_covP_stageP)
-suma[5,"NumberOfStages"] <- length(unique(master_150_covP_stageP$stage))
-suma[6,"NumberOfCells"] <- length(unique(master_150_covI_stageP$stage_cell))
-suma[6,"NumberOfOccurrences"] <- nrow(master_150_covI_stageP)
-suma[6,"NumberOfStages"] <- length(unique(master_150_covI_stageP$stage))
+suma[7,"NumberOfCells"] <- length(unique(master_150_covP_stageP$stage_cell))
+suma[7,"NumberOfOccurrences"] <- nrow(master_150_covP_stageP)
+suma[7,"NumberOfStages"] <- length(unique(master_150_covP_stageP$stage))
+suma[8,"NumberOfCells"] <- length(unique(master_150_covI_stageP$stage_cell))
+suma[8,"NumberOfOccurrences"] <- nrow(master_150_covI_stageP)
+suma[8,"NumberOfStages"] <- length(unique(master_150_covI_stageP$stage))
+suma[9,"NumberOfCells"] <- length(unique(master_150_noCov_stageP$stage_cell))
+suma[9,"NumberOfOccurrences"] <- nrow(master_150_noCov_stageP)
+suma[9,"NumberOfStages"] <- length(unique(master_150_noCov_stageP$stage))
 
-suma[7,"NumberOfCells"] <- length(unique(master_200_covP_stageP$stage_cell))
-suma[7,"NumberOfOccurrences"] <- nrow(master_200_covP_stageP)
-suma[7,"NumberOfStages"] <- length(unique(master_200_covP_stageP$stage))
-suma[8,"NumberOfCells"] <- length(unique(master_200_covI_stageP$stage_cell))
-suma[8,"NumberOfOccurrences"] <- nrow(master_200_covI_stageP)
-suma[8,"NumberOfStages"] <- length(unique(master_200_covI_stageP$stage))
+suma[10,"NumberOfCells"] <- length(unique(master_200_covP_stageP$stage_cell))
+suma[10,"NumberOfOccurrences"] <- nrow(master_200_covP_stageP)
+suma[10,"NumberOfStages"] <- length(unique(master_200_covP_stageP$stage))
+suma[11,"NumberOfCells"] <- length(unique(master_200_covI_stageP$stage_cell))
+suma[11,"NumberOfOccurrences"] <- nrow(master_200_covI_stageP)
+suma[11,"NumberOfStages"] <- length(unique(master_200_covI_stageP$stage))
+suma[12,"NumberOfCells"] <- length(unique(master_200_noCov_stageP$stage_cell))
+suma[12,"NumberOfOccurrences"] <- nrow(master_200_noCov_stageP)
+suma[12,"NumberOfStages"] <- length(unique(master_200_noCov_stageP$stage))
 
 write.csv(suma, "data/sensitivity_testing/genera_final_numbers.csv")

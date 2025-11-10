@@ -8,8 +8,10 @@ isolate.coeffs <- function(models){
   colnames(output) <- cn
   ## populate
   for(i in 1:length(models)){
+    if(!is.na(models[i])){
     output[i,1:length(terms)] <- models[[i]][,"estimate"]
     output[i,(length(terms)+1):(length(terms)*2)] <- models[[i]][,"p.value"]
+    }
   }
   return(output)
 }

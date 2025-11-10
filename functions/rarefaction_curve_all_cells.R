@@ -1,24 +1,19 @@
-rarefaction_curve_all_cells <- function(data, cell, taxVar, iter, n.cores = 1){
-  ## Isolate occs
-  occs <- data[,taxVar]
-  ## Isolate cells
-  cells <- data[,cell]
-  ## Get unique cells
-  cells_u <- unique(cells)
-  ## Loop for each cell
-  allCells <- mclapply(1:length(cells_u), mc.cores = n.cores, function(c){
-    samp <- occs[which(cells %in% cells_u[c])]
-    curve <- rarefaction_curve(samp, iter)
+rarefaction_curve_all_cells2 <- function(data, cell, taxVar, iter, n.cores = 1){
+  occs <- data[[taxVar]]
+  cells <- data[[cell]]
+  occs_by_cell <- split(occs, cells)
+  cells_u <- names(occs_by_cell)
+  n_cells <- length(cells_u)
+  allCells_mean <- mclapply(occs_by_cell, mc.cores = n.cores, function(samp){
+    rarefaction_curve(samp, iter)
   })
-  ## Homogenise lengths
-  max_n <- max(sapply(1:length(allCells), function(z) length(allCells[[z]])))
-  allCells_s <- sapply(1:length(allCells), function(z){
-    out <- allCells[[z]]
-    length(out) <- max_n
-    return(out)
-  })
-  sampleN <- 1:nrow(allCells_s)
-  output <- data.frame(cbind("sampled" = sampleN, allCells_s))
-  colnames(output) <- c("sampled",cells_u)
-  return(output)
+  max_n <- max(vapply(allCells_mean, length, numeric(1)))
+  output_mat <- matrix(NA, nrow = max_n, ncol = n_cells)
+  colnames(output_mat) <- cells_u
+  for(i in seq_along(allCells_mean)){
+    len_i <- length(allCells_mean[[i]])
+    output_mat[1:len_i, i] <- allCells_mean[[i]]
+  }
+  output_df <- data.frame(sampled = seq_len(max_n), output_mat, check.names = FALSE)
+  return(output_df)
 }

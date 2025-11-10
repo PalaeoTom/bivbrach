@@ -1,0 +1,15 @@
+"","term","powerSimTerms","labels","bestModel_1","bestModel_2"
+"1","bath","bath","Bathymetry",97,99
+"2","bivalve","bivalve","Generic
+bivalve
+richness",99,100
+"3","lith","lith","Lithology",99,97
+"4","PTMEPostPTME","PTME","PTME",98,100
+"5","reef","reef","Reefs",99,98
+"6","AbsLat","AbsLat","Absolute
+latitude",99,100
+"7","n","n","n",NA,NA
+"8","bivalve:PTMEPostPTME","bivalve:PTME","Generic
+bivalve
+richness +
+PTME",NA,100

@@ -1,4 +1,4 @@
-shuffle_occurrences <- function(data, reps, stage, cell, cell_abun, occ_covariates, cell_covariates, covariate_values, CR_nOccs = 20, fix_stages = T, n.cores = 1){
+shuffle_occurrences <- function(data, reps, stage, cell, cell_abun, occ_covariates, cell_covariates, covariate_values, CR = TRUE, CR_nOccs = 20, fix_stages = T, n_cores = 1){
   ## break cell_abun into vectors
   cells <- cell_abun[,1]
   abun <- as.numeric(cell_abun[,2])
@@ -9,14 +9,14 @@ shuffle_occurrences <- function(data, reps, stage, cell, cell_abun, occ_covariat
   if(fix_stages){
     stages <- data[,stage]
     uniq_stages <- unique(stages)
-    pooled_occ_n <- mclapply(1:length(uniq_stages), mc.cores = n.cores, function(x){
+    pooled_occ_n <- mclapply(1:length(uniq_stages), mc.cores = n_cores, function(x){
       out <- occ_n[which(stages == uniq_stages[x])]
     })
     stages_of_cells <- str_split_i(cells, "_", 1)
-    pooled_cells <- mclapply(1:length(uniq_stages), mc.cores = n.cores, function(x){
+    pooled_cells <- mclapply(1:length(uniq_stages), mc.cores = n_cores, function(x){
       out <- cells[which(stages_of_cells == uniq_stages[x])]
     })
-    pooled_abun <- mclapply(1:length(uniq_stages), mc.cores = n.cores, function(x){
+    pooled_abun <- mclapply(1:length(uniq_stages), mc.cores = n_cores, function(x){
       out <- abun[which(stages_of_cells == uniq_stages[x])]
     })
   }
@@ -26,7 +26,7 @@ shuffle_occurrences <- function(data, reps, stage, cell, cell_abun, occ_covariat
   ## loop
   if(fix_stages){
     ## Loop through
-    output <- mclapply(1:reps, mc.cores = n.cores, function(all){
+    output <- mclapply(1:reps, mc.cores = n_cores, function(all){
       while(TRUE){
         ## copy list of cells
         out <- new_cell
@@ -60,7 +60,11 @@ shuffle_occurrences <- function(data, reps, stage, cell, cell_abun, occ_covariat
       perm_cell_C <- as.numeric(str_split_i(perm_cell_SCs, "_", 2))
       perm_cell <- data.frame(cbind("stage_cell" = perm_cell_SCs, "stage" = as.numeric(perm_cell_S), "cell" = perm_cell_C))
       ## Get cell richness
-      perm_cell[,c("bivalve","brachiopod")] <- CR_richness(data = perm, n = CR_nOccs, n.cores = 1)[,c(2,3)]
+      if(CR){
+        perm_cell[,c("bivalve","brachiopod")] <- CR_richness(data = perm, n = CR_nOccs, n.cores = 1)[,c(2,3)]
+      } else {
+        perm_cell[,c("bivalve","brachiopod")] <- raw_richness(data = perm, n.cores = 1)[,c(2,3)]
+      }
       ## Get cell covariates
       perm_cell[,"cellPalaeoLng"] <- extract_cell_metaData(perm, target = "cellx_100km", cell)
       perm_cell[,"cellPalaeoLat"] <- extract_cell_metaData(perm, target = "celly_100km", cell)
@@ -76,7 +80,7 @@ shuffle_occurrences <- function(data, reps, stage, cell, cell_abun, occ_covariat
     })
     return(output)
   } else {
-    output <- mclapply(1:reps, mc.cores = n.cores, function(all){
+    output <- mclapply(1:reps, mc.cores = n_cores, function(all){
       while(TRUE){
         ## copy list of cells
         out <- new_cell
@@ -107,7 +111,11 @@ shuffle_occurrences <- function(data, reps, stage, cell, cell_abun, occ_covariat
       perm_cell_C <- as.numeric(str_split_i(perm_cell_SCs, "_", 2))
       perm_cell <- data.frame(cbind("stage_cell" = perm_cell_SCs, "stage" = as.numeric(perm_cell_S), "cell" = perm_cell_C))
       ## Get cell richness
-      perm_cell[,c("bivalve","brachiopod")] <- CR_richness(data = perm, n = CR_nOccs, n.cores = 1)[,c(2,3)]
+      if(CR){
+        perm_cell[,c("bivalve","brachiopod")] <- CR_richness(data = perm, n = CR_nOccs, n.cores = 1)[,c(2,3)]
+      } else {
+        perm_cell[,c("bivalve","brachiopod")] <- raw_richness(data = perm, n.cores = 1)[,c(2,3)]
+      }
       ## Get cell covariates
       perm_cell[,"cellPalaeoLng"] <- extract_cell_metaData(perm, target = "cellx_100km", cell)
       perm_cell[,"cellPalaeoLat"] <- extract_cell_metaData(perm, target = "celly_100km", cell)

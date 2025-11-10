@@ -1,3 +1,4 @@
 "","gridCellSize","covariateData","NumberOfCells","NumberOfOccurrences","NumberOfStages"
 "1","100km","original_only","764","152929","63"
 "2","100km","original_plus_interpolated_within_500km_radius","1126","248913","69"
+"3","100km","none","1367","276686","75"

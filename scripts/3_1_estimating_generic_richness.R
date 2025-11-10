@@ -17,7 +17,10 @@ library(parallel)
 setwd("~/R_packages/bivbrach")
 genera_covInt <- readRDS("data/final/final_100_genera_covsInt.Rds")
 genera_covPrun <- readRDS("data/final/final_100_genera_covsPruned.Rds")
+genera_noCov <- readRDS("data/final/final_100_genera_noCov.Rds")
 home <- getwd()
+
+table(genera_noCov$phylum)
 
 ## Read in function for populating cell metadata
 source("functions/extract_cell_metadata.R")
@@ -74,8 +77,30 @@ gen_covO_template[which(gen_covO_template$stage >48),"PTME"] <- "PostPTME"
 ## Create containers for 3 analyses
 gen_CO_raw <- gen_CO_CR20 <- gen_CO_CRV <- gen_covO_template
 
+## Genera, no covariate data
+gen_noCov_stageCells <- unique(genera_noCov$stage_cell)
+gen_noCov_stages <- as.numeric(str_split_i(gen_noCov_stageCells, "_", 1))
+gen_noCov_cells <- as.numeric(str_split_i(gen_noCov_stageCells, "_", 2))
+gen_noCov_template <- data.frame(cbind("stage_cell" = gen_noCov_stageCells, "stage" = gen_noCov_stages, "cell" = gen_noCov_cells))
+
+## Add empty containers to template
+gen_noCov_template$bivalve <- NA
+gen_noCov_template$brachiopod <- NA
+gen_noCov_template$cellPalaeoLng <- extract_cell_metaData(genera_noCov, target = "cellx_100km", cell = "stage_cell")
+gen_noCov_template$cellPalaeoLat <- extract_cell_metaData(genera_noCov, target = "celly_100km", cell = "stage_cell")
+gen_noCov_template$cellAbsLat <- abs(extract_cell_metaData(genera_noCov, target = "celly_100km", cell = "stage_cell"))
+gen_noCov_template$PTME <- ""
+
+## Add categorisation of PostPTME/PrePTME.
+## Stages 1-48 are PrePTME, 49-92 are PostPTME
+gen_noCov_template[which(gen_noCov_template$stage <49),"PTME"] <- "PrePTME"
+gen_noCov_template[which(gen_noCov_template$stage >48),"PTME"] <- "PostPTME"
+
+## Create containers for 3 analyses
+gen_NC_raw <- gen_NC_CR20 <- gen_NC_CRV <- gen_noCov_template
+
 ## Clean up environment
-rm(list = setdiff(ls(), c("gen_CO_raw", "gen_CO_CR20", "gen_CO_CRV", "gen_COI_raw", "gen_COI_CR20", "gen_COI_CRV", "genera_covInt", "genera_covPrun")))
+rm(list = setdiff(ls(), c("gen_CO_raw", "gen_CO_CR20", "gen_CO_CRV", "gen_COI_raw", "gen_COI_CR20", "gen_COI_CRV", "gen_NC_raw", "gen_NC_CR20", "gen_NC_CRV", "genera_covInt", "genera_covPrun", "genera_noCov")))
 
 #### Calculating raw richness ####
 source("functions/raw_richness.R")
@@ -83,25 +108,31 @@ source("functions/raw_richness.R")
 ## Run
 CO_raw <- raw_richness(data = genera_covPrun)
 COI_raw <- raw_richness(data = genera_covInt)
+noCov_raw <- raw_richness(data = genera_noCov)
 
 ## Enter into final data tables
 gen_CO_raw[,c(4,5)] <- CO_raw[,c(2,3)]
 gen_COI_raw[,c(4,5)] <- COI_raw[,c(2,3)]
+gen_NC_raw[,c(4,5)] <- noCov_raw[,c(2,3)]
 
 ## Add sample size for each cell as final column
 source("functions/raw_sample_size.R")
 sample_sizes_CO <- raw_sample_size(genera_covPrun)
 sample_sizes_COI <- raw_sample_size(genera_covInt)
+sample_sizes_noCov <- raw_sample_size(genera_noCov)
 
 ## Match them to grid cells
 gen_CO_raw$n <- NA
 gen_COI_raw$n <- NA
-gen_CO_raw[,"n"] <- as.numeric(sample_sizes_CO[match(sample_sizes_CO[,1],gen_CO_raw[,"stage_cell"]),2])
-gen_COI_raw[,"n"] <- as.numeric(sample_sizes_COI[match(sample_sizes_COI[,1],gen_COI_raw[,"stage_cell"]),2])
+gen_NC_raw$n <- NA
+gen_CO_raw[,"n"] <- as.numeric(sample_sizes_CO[,"n"])
+gen_COI_raw[,"n"] <- as.numeric(sample_sizes_COI[,"n"])
+gen_NC_raw[,"n"] <- as.numeric(sample_sizes_noCov[,"n"])
 
 ## Export final data tables
 write.csv(gen_CO_raw, file = "data/analysis_data/genera_CO_raw.csv")
 write.csv(gen_COI_raw, file = "data/analysis_data/genera_COI_raw.csv")
+write.csv(gen_NC_raw, file = "data/analysis_data/genera_NC_raw.csv")
 
 #### Calculating richness using classical rarefaction with fixed subsample sizes ####
 source("functions/CR_richness.R")
@@ -112,14 +143,17 @@ nOccs = 20
 ## Run
 CO_CR20 <- CR_richness(data = genera_covPrun, n = nOccs, n.cores = 8)
 COI_CR20 <- CR_richness(data = genera_covInt, n = nOccs, n.cores = 8)
+noCov_CR20 <- CR_richness(data = genera_noCov, n = nOccs, n.cores = 8)
 
 ## Enter into final data tables
 gen_CO_CR20[,c(4,5)] <- CO_CR20[,c(2,3)]
 gen_COI_CR20[,c(4,5)] <- COI_CR20[,c(2,3)]
+gen_NC_CR20[,c(4,5)] <- noCov_CR20[,c(2,3)]
 
 ## Export final data tables
 write.csv(gen_CO_CR20, file = "data/analysis_data/genera_CO_CR20.csv")
 write.csv(gen_COI_CR20, file = "data/analysis_data/genera_COI_CR20.csv")
+write.csv(gen_NC_CR20, file = "data/analysis_data/genera_NC_CR20.csv")
 
 #### Calculating richness using classical rarefaction with variable subsample sizes ####
 source("functions/CR_richness.R")
@@ -132,6 +166,7 @@ RC_GCs <- colnames(gen_RareC)
 ## Split
 gen_COI_RareC <- gen_RareC[,which(RC_GCs %in% unique(genera_covInt$stage_cell))]
 gen_CO_RareC <- gen_RareC[,which(RC_GCs %in% unique(genera_covPrun$stage_cell))]
+gen_NC_RareC <- gen_RareC[,which(RC_GCs %in% unique(genera_noCov$stage_cell))]
 
 ## Test asymptotes of cells present to make sure all have some.
 source("functions/test_RC_tail_asymptote.R")
@@ -139,32 +174,39 @@ asymptote.occs <- 5
 slope.threshold <- 0.25
 gen_COI_RareC_bool <- test_RC_tail_asymptote(RCs = gen_COI_RareC, n = asymptote.occs, threshold = slope.threshold)
 gen_CO_RareC_bool <- test_RC_tail_asymptote(RCs = gen_CO_RareC, n = asymptote.occs, threshold = slope.threshold)
+gen_NC_RareC_bool <- test_RC_tail_asymptote(RCs = gen_NC_RareC, n = asymptote.occs, threshold = slope.threshold)
 names(which(!gen_COI_RareC_bool))
 names(which(!gen_CO_RareC_bool))
+names(which(!gen_NC_RareC_bool))
 
 ## None - that means all have a slope of less than 0.25 at some point.
 ## Now to proceed to find occurrence number capping the first run of 5 occurrences to produce an RC slope below 0.25. Minimum of 20 applied.
 source("functions/find_slope.R")
 gen_COI_n <- find_slope(gen_COI_RareC, n = 5, min.n = 20, threshold = 0.25, n.cores = 8)
 gen_CO_n <- find_slope(gen_CO_RareC, n = 5, min.n = 20, threshold = 0.25, n.cores = 8)
+gen_NC_n <- find_slope(gen_NC_RareC, n = 5, min.n = 20, threshold = 0.25, n.cores = 8)
 
 ## Run
 CO_CRV <- CR_richness(data = genera_covPrun, n = gen_CO_n, n.cores = 8)
 COI_CRV <- CR_richness(data = genera_covInt, n = gen_COI_n, n.cores = 8)
+noCov_CRV <- CR_richness(data = genera_noCov, n = gen_NC_n, n.cores = 8)
 
 ## Enter into final data tables
 gen_CO_CRV[,c(4,5)] <- CO_CRV[,c(2,3)]
 gen_COI_CRV[,c(4,5)] <- COI_CRV[,c(2,3)]
+gen_NC_CRV[,c(4,5)] <- noCov_CRV[,c(2,3)]
 
 ## Match them to grid cells
 gen_CO_CRV$n <- NA
 gen_COI_CRV$n <- NA
-gen_CO_CRV[,"n"] <- as.numeric(gen_CO_n[match(names(gen_CO_n),gen_CO_CRV[,"stage_cell"])])
-gen_COI_CRV[,"n"] <- as.numeric(gen_COI_n[match(names(gen_COI_n),gen_COI_CRV[,"stage_cell"])])
+gen_NC_CRV$n <- NA
+gen_CO_CRV[,"n"] <- as.numeric(gen_CO_n)
+gen_COI_CRV[,"n"] <- as.numeric(gen_COI_n)
+gen_NC_CRV[,"n"] <- as.numeric(gen_NC_n)
 
 ## Export final data tables
 write.csv(gen_CO_CRV, file = "data/analysis_data/genera_CO_CRV.csv")
 write.csv(gen_COI_CRV, file = "data/analysis_data/genera_COI_CRV.csv")
-
+write.csv(gen_NC_CRV, file = "data/analysis_data/genera_NC_CRV.csv")
 
 

@@ -1,17 +1,10 @@
-rarefaction_curve <- function(occs, iter = 1000){
-  ## Get sample size
-  N <- length(occs)
-  ## Get iter samples
-  sampledO <- sapply(1:iter, function(x){
-    sampleX <- sample(occs, N, replace = F)
-    dupes <- duplicated(sampleX)
-    out <- rep(1,N)
-    if(any(dupes)){
-      out[which(dupes)] <- 0
-    }
-    rich <- cumsum(out)
-
-  })
-  ## return mean
-  out <- apply(sampledO, 1, function(x) mean(x))
+rarefaction_curve <- function(occs_samp, iter) {
+  N <- length(occs_samp)
+  occs_f <- as.integer(factor(occs_samp))
+  mean_vec <- numeric(N)
+  for (i in seq_len(iter)) {
+    sampleX <- sample(occs_f, N, replace = FALSE)
+    mean_vec <- mean_vec + cumsum(!duplicated(sampleX))
+  }
+  mean_vec / iter
 }
