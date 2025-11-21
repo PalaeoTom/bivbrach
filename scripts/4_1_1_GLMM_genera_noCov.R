@@ -6,7 +6,7 @@
 rm(list = ls())
 
 ## If packages aren't installed, install them, then load them
-packages <- c("sjmisc", "stringr", "DHARMa", "performance", "glmmTMB", "terra", "lme4", "sjPlot", "paleoverse")
+packages <- c("sjmisc", "stringr", "DHARMa", "performance", "glmmTMB", "terra", "lme4", "sjPlot", "paleoverse", "ggplot2", "cowplot")
 if(length(packages[!packages %in% installed.packages()[,"Package"]]) > 0){
   install.packages(packages[!packages %in% installed.packages()[,"Package"]])
 }
@@ -19,6 +19,8 @@ library(terra)
 library(lme4)
 library(sjPlot)
 library(palaeoverse)
+library(ggplot2)
+library(cowplot)
 
 #### Read in and prepare data ####
 ## Load data
@@ -466,19 +468,24 @@ test.spatial.autocorrelation(bestModels_2, CR20)
 ## Expected -0.00045579, observed = -0.00109, p = 0.6116, insignificant.
 
 #### Plotting coefficients for top models ####
+## Combine best models into single object
+bestModels <- list(NCRm5, rawm5zi, CR20m3zi)
+names(bestModels) <- c("Non-classical rarefaction", "Raw richness", "Classical rarefaction")
+
 ## Define new title
-plot.title2 <- "Model coefficients from 100km grid cells\nClassical rarefaction (sample size = 20), no covariate data required"
+plot.title2 <- "Model coefficients from 100km grid cells\nNo covariate data required"
 
 ## Define axis labels and colours
-axis.labels <- c("Bathymetry", "Generic\nbivalve\nrichness", "Lithology", "PTME", "Reefs", "Generic\nbivalve\nrichness\n+ PTME", "Absolute\nlatitude")
-colours <- c("lightblue", "darkgreen", "purple", "darkgrey", "pink", "orange", "cyan")
-term <- c("bath", "bivalve", "lith", "PTMEPostPTME", "reef", "bivalve:PTMEPostPTME", "AbsLat")
+axis.labels <- c("Generic\nbivalve\nrichness", "PTME", "Generic\nbivalve\nrichness\n+ PTME", "Absolute\nlatitude", "Generic\nbivalve\nrichness\n + absolute\nlatitude")
+colours <- c("lightblue", "darkgrey", "darkblue", "pink", "purple")
+term <- c("bivalve", "PTMEPostPTME", "bivalve:PTMEPostPTME", "AbsLat", "bivalve:AbsLat")
 visualsRef <- data.frame(cbind("term" = term, "labels" = axis.labels, "colour" = colours))
 
 ## Get model data for each of the best models
 coeffs <- lapply(1:length(bestModels), function(x){
   out <- get_model_data(bestModels[[x]], type = "est", transform = NULL)
 })
+names(coeffs) <- names(bestModels)
 
 ## Function to reorgaise visualsRef into right order
 reorganise_visualsRef <- function(visualsRef, coeffData){
@@ -487,6 +494,7 @@ reorganise_visualsRef <- function(visualsRef, coeffData){
 visuals <- lapply(1:length(bestModels), function(x){
   out <- reorganise_visualsRef(visualsRef, coeffs[[x]])
 })
+names(visuals) <- names(coeffs)
 
 ## Generate plots
 plots <- lapply(1:length(bestModels), function(x){
@@ -494,12 +502,13 @@ plots <- lapply(1:length(bestModels), function(x){
     scale_fill_manual(values = visuals[[x]][,"colour"]) +
     scale_color_manual(values = visuals[[x]][,"colour"]) +
     scale_x_discrete(labels = visuals[[x]][,"labels"]) +
-    scale_y_continuous(expand = c(0,0), limits = c(-1.5,1)) +
+    scale_y_continuous(expand = c(0,0), limits = c(-4,1.5)) +
     geom_hline(yintercept = 0, linetype = "dashed", colour = "grey") +
     geom_point(data = coeffs[[x]], (aes(x = term, y = estimate, fill = term, colour = term))) +
     geom_errorbar(data = coeffs[[x]], aes(x = term, ymin = conf.low, ymax = conf.high, colour = term), width=0.01) +
     ylab("Log-Odds") +
     xlab("") +
+    ggtitle(names(visuals)[x]) +
     theme(text = element_text(family = "Helvetica"),
           title = element_text(size = 12),
           axis.text = element_text(size = 11),
@@ -519,9 +528,298 @@ output <- plot_grid(title, grid, ncol=1, rel_heights=c(0.075, 1)) # rel_heights 
 output
 
 ## Export
-pdf("figures/final/main/genera_NC_CR20_coefficients.pdf", width = 13)
+pdf("figures/final/main/genera_coefficients.pdf", width = 13)
 print(output)
 dev.off()
+
+#### Analysing pre/post-PTME separately ####
+## Reload data to prepare it
+NCR_n <- read.csv("data/analysis_data/genera_NC_CRV.csv", header = T, row.names = 1)
+raw_n <- read.csv("data/analysis_data/genera_NC_raw.csv", header = T, row.names = 1)
+CR20_n <- read.csv("data/analysis_data/genera_NC_CR20.csv", header = T, row.names = 1)
+
+## Read in functions for testing assumptions
+source("functions/test.model.assumptions.R")
+source("functions/test.spatial.autocorrelation.R")
+
+## Check numeric entries are numeric
+## NCR_n
+for(i in c(4:8, 10)){
+  if(!is.numeric(NCR_n[,i])){
+    NCR_n[,i] <- as.numeric(NCR_n[,i])
+  }
+}
+
+for(i in c(2,9)){
+  if(!is.factor(NCR_n[,i])){
+    NCR_n[,i] <- as.factor(NCR_n[,i])
+  }
+}
+
+## raw_n
+for(i in c(4:8, 10)){
+  if(!is.numeric(raw_n[,i])){
+    raw_n[,i] <- as.numeric(raw_n[,i])
+  }
+}
+
+for(i in c(2,9)){
+  if(!is.factor(raw_n[,i])){
+    raw_n[,i] <- as.factor(raw_n[,i])
+  }
+}
+
+## CR20_n
+for(i in c(4:8)){
+  if(!is.numeric(CR20_n[,i])){
+    CR20_n[,i] <- as.numeric(CR20_n[,i])
+  }
+}
+
+for(i in c(2,9)){
+  if(!is.factor(CR20_n[,i])){
+    CR20_n[,i] <- as.factor(CR20_n[,i])
+  }
+}
+
+## Relevel PTME factor
+NCR_n[,"PTME"] <- relevel(NCR_n[,"PTME"], ref = "PrePTME")
+raw_n[,"PTME"] <- relevel(raw_n[,"PTME"], ref = "PrePTME")
+CR20_n[,"PTME"] <- relevel(CR20_n[,"PTME"], ref = "PrePTME")
+
+## Rename to simplify next few steps
+colnames(NCR_n) <- c("stage_cell", "stage", "cell", "bivalve", "brachiopod", "long", "lat", "AbsLat", "PTME", "n")
+colnames(raw_n) <- c("stage_cell", "stage", "cell", "bivalve", "brachiopod", "long", "lat", "AbsLat", "PTME", "n")
+colnames(CR20_n) <- c("stage_cell", "stage", "cell", "bivalve", "brachiopod", "long", "lat", "AbsLat", "PTME")
+
+## This is the point to split - will be trying bivalve as response
+NCR_pre <- NCR_n[which(NCR_n$PTME == "PrePTME"),]
+raw_pre <- raw_n[which(raw_n$PTME == "PrePTME"),]
+CR20_pre <- CR20_n[which(CR20_n$PTME == "PrePTME"),]
+
+NCR_post <- NCR_n[which(NCR_n$PTME == "PostPTME"),]
+raw_post <- raw_n[which(raw_n$PTME == "PostPTME"),]
+CR20_post <- CR20_n[which(CR20_n$PTME == "PostPTME"),]
+
+## Some counts are decimal. Round these to discrete values to work with negative binomial models
+# For pre-PTME models, round brachiopods
+NCR_pre$brachiopod <- round(NCR_pre$brachiopod, digits = 0)
+raw_pre$brachiopod <- round(raw_pre$brachiopod, digits = 0)
+CR20_pre$brachiopod <- round(CR20_pre$brachiopod, digits = 0)
+
+# For post-PTME models, round bivalves
+NCR_post$bivalve <- round(NCR_post$bivalve, digits = 0)
+raw_post$bivalve <- round(raw_post$bivalve, digits = 0)
+CR20_post$bivalve <- round(CR20_post$bivalve, digits = 0)
+
+## Standardise predictors - bivalves are predictors pre-PTME, brachiopods are post PTME
+NCR_pre <- std(NCR_pre, NCR_pre[,c(4, 8, 10)])
+raw_pre <- std(raw_pre, raw_pre[,c(4, 8, 10)])
+CR20_pre <- std(CR20_pre, CR20_pre[,c(4, 8)])
+
+NCR_post <- std(NCR_post, NCR_post[,c(5, 8, 10)])
+raw_post <- std(raw_post, raw_post[,c(5, 8, 10)])
+CR20_post <- std(CR20_post, CR20_post[,c(5, 8)])
+
+## Drop non-standardized predictors
+NCR_pre <- NCR_pre[,c(-4, -8, -10)]
+raw_pre <- raw_pre[,c(-4, -8, -10)]
+CR20_pre <- CR20_pre[,c(-4, -8)]
+
+NCR_post <- NCR_post[,c(-5, -8, -10)]
+raw_post <- raw_post[,c(-5, -8, -10)]
+CR20_post <- CR20_post[,c(-5, -8)]
+
+## Re-do names
+colnames(NCR_pre) <- c("stage_cell", "stage", "cell", "brachiopod", "long", "lat", "PTME", "bivalve", "AbsLat", "n")
+colnames(raw_pre) <- c("stage_cell", "stage", "cell", "brachiopod", "long", "lat", "PTME", "bivalve", "AbsLat", "n")
+colnames(CR20_pre) <- c("stage_cell", "stage", "cell", "brachiopod", "long", "lat", "PTME", "bivalve", "AbsLat")
+
+colnames(NCR_post) <- c("stage_cell", "stage", "cell", "bivalve", "long", "lat", "PTME", "brachiopod", "AbsLat", "n")
+colnames(raw_post) <- c("stage_cell", "stage", "cell", "bivalve", "long", "lat", "PTME", "brachiopod", "AbsLat", "n")
+colnames(CR20_post) <- c("stage_cell", "stage", "cell", "bivalve", "long", "lat", "PTME", "brachiopod", "AbsLat")
+
+## Now fit model using original models
+## Poisson. Link = log
+NCR_prem1 <- glmer(brachiopod ~ bivalve + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_pre, family = poisson(link = "log"), control = glmerControl(optimizer="bobyqa"))
+NCR_prem1_diag <- test.model.assumptions(NCR_prem1)
+
+## Poisson. Link = sqrt
+NCR_prem2 <- glmer(brachiopod ~ bivalve + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_pre, family = poisson(link = "sqrt"), control = glmerControl(optimizer="bobyqa"))
+NCR_prem2_diag <- test.model.assumptions(NCR_prem2)
+
+## Poisson. Link = log, zero-inflation
+NCR_prem1zi <- glmmTMB(brachiopod ~ bivalve + AbsLat + bivalve:AbsLat + (bivalve|stage), ziformula = ~1, data = NCR_pre, family = poisson(link = "log"))
+NCR_prem1zi_diag <- test.model.assumptions(NCR_prem1zi)
+
+## Poisson. Link = sqrt, zero-inflation
+NCR_prem2zi <- glmmTMB(brachiopod ~ bivalve + AbsLat + bivalve:AbsLat + (bivalve|stage), ziformula = ~1, data = NCR_pre, family = poisson(link = "sqrt"))
+NCR_prem2zi_diag <- test.model.assumptions(NCR_prem2zi)
+
+## nbinom2. link = sqrt marginally better than log. GOOD
+NCR_prem3 <- glmmTMB(brachiopod ~ bivalve + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_pre, family = nbinom2(link = "sqrt"))
+NCR_prem3_diag <- test.model.assumptions(NCR_prem3)
+
+## nbinom2. Zero-inflation. GOOD
+NCR_prem3zi <- glmmTMB(brachiopod ~ bivalve + AbsLat + bivalve:AbsLat + (bivalve|stage), ziformula = ~1, data = NCR_pre, family = nbinom2(link = "sqrt"))
+NCR_prem3zi_diag <- test.model.assumptions(NCR_prem3zi)
+
+## nbinom1. Link = sqrt marginally better
+NCR_prem4 <- glmmTMB(brachiopod ~ bivalve + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_pre, family = nbinom1(link = "sqrt"))
+NCR_prem4_diag <- test.model.assumptions(NCR_prem4)
+
+## nbinom1. Zero inflation. Convergence issue.
+NCR_prem4zi <- glmmTMB(brachiopod ~ bivalve + AbsLat + bivalve:AbsLat + (bivalve|stage), ziformula = ~1, data = NCR_pre, family = nbinom1(link = "sqrt"))
+NCR_prem4zi_diag <- test.model.assumptions(NCR_prem4zi)
+
+## nbinom12.
+NCR_prem5 <- glmmTMB(brachiopod ~ bivalve + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_pre, family = nbinom12(link = "log"))
+NCR_prem5_diag <- test.model.assumptions(NCR_prem5)
+
+## nbinom12. Zero inflation. GOOD
+NCR_prem5zi <- glmmTMB(brachiopod ~ bivalve + AbsLat + bivalve:AbsLat + (bivalve|stage), ziformula = ~1, data = NCR_pre, family = nbinom12(link = "log"))
+NCR_prem5zi_diag <- test.model.assumptions(NCR_prem5zi)
+
+## Conway-Maxwell Poisson (link = log).
+NCR_prem6 <- glmmTMB(brachiopod ~ bivalve + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_pre, family = compois(link = "log"))
+NCR_prem6_diag <- test.model.assumptions(NCR_prem6)
+
+## Conway-Maxwell Poisson (link = log), zero inflation
+NCR_prem6zi <- glmmTMB(brachiopod ~ bivalve + AbsLat + bivalve:AbsLat + (bivalve|stage), ziformula = ~1, data = NCR_pre, family = compois(link = "log"))
+NCR_prem6zi_diag <- test.model.assumptions(NCR_prem6zi)
+
+## Generalized Poisson model GOOD
+NCR_prem7 <- glmmTMB(brachiopod ~ bivalve + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_pre, family = genpois(link = "sqrt"))
+NCR_prem7_diag <- test.model.assumptions(NCR_prem7)
+
+## Generalized Poisson model with zero inflation. Convergence issue.
+NCR_prem7zi <- glmmTMB(brachiopod ~ bivalve + AbsLat + bivalve:AbsLat + (bivalve|stage), ziformula = ~1, data = NCR_pre, family = genpois(link = "sqrt"))
+NCR_prem7zi_diag <- test.model.assumptions(NCR_prem7zi)
+
+### Best model is generalized Poisson model (NCR_prem7) ###
+
+## Poisson. Link = log
+NCR_postm1 <- glmer(bivalve ~ brachiopod + AbsLat + brachiopod:AbsLat + (brachiopod|stage), data = NCR_post, family = poisson(link = "log"), control = glmerControl(optimizer="bobyqa"))
+NCR_postm1_diag <- test.model.assumptions(NCR_postm1)
+
+## Poisson. Link = sqrt
+NCR_postm2 <- glmer(bivalve ~ brachiopod + AbsLat + brachiopod:AbsLat + (brachiopod|stage), data = NCR_post, family = poisson(link = "sqrt"), control = glmerControl(optimizer="bobyqa"))
+NCR_postm2_diag <- test.model.assumptions(NCR_postm2)
+
+## Poisson. Link = log, zero-inflation. Convergence issue.
+NCR_postm1zi <- glmmTMB(bivalve ~ brachiopod + AbsLat + brachiopod:AbsLat + (brachiopod|stage), ziformula = ~1, data = NCR_post, family = poisson(link = "log"))
+NCR_postm1zi_diag <- test.model.assumptions(NCR_postm1zi)
+
+## Poisson. Link = sqrt, zero-inflation
+NCR_postm2zi <- glmmTMB(bivalve ~ brachiopod + AbsLat + brachiopod:AbsLat + (brachiopod|stage), ziformula = ~1, data = NCR_post, family = poisson(link = "log"))
+NCR_postm2zi_diag <- test.model.assumptions(NCR_postm2zi)
+
+## nbinom2. link = sqrt marginally better than log.
+NCR_postm3 <- glmmTMB(bivalve ~ brachiopod + AbsLat + brachiopod:AbsLat + (brachiopod|stage), data = NCR_post, family = nbinom2(link = "log"))
+NCR_postm3_diag <- test.model.assumptions(NCR_postm3)
+
+## nbinom2. Zero-inflation.
+NCR_postm3zi <- glmmTMB(bivalve ~ brachiopod + AbsLat + brachiopod:AbsLat + (brachiopod|stage), ziformula = ~1, data = NCR_post, family = nbinom2(link = "log"))
+NCR_postm3zi_diag <- test.model.assumptions(NCR_postm3zi)
+
+## nbinom1.
+NCR_postm4 <- glmmTMB(bivalve ~ brachiopod + AbsLat + brachiopod:AbsLat + (brachiopod|stage), data = NCR_post, family = nbinom1(link = "log"))
+NCR_postm4_diag <- test.model.assumptions(NCR_postm4)
+
+## nbinom1. Zero inflation.
+NCR_postm4zi <- glmmTMB(bivalve ~ brachiopod + AbsLat + brachiopod:AbsLat + (brachiopod|stage), ziformula = ~1, data = NCR_post, family = nbinom1(link = "log"))
+NCR_postm4zi_diag <- test.model.assumptions(NCR_postm4zi)
+
+## nbinom12.
+NCR_postm5 <- glmmTMB(bivalve ~ brachiopod + AbsLat + brachiopod:AbsLat + (brachiopod|stage), data = NCR_post, family = nbinom12(link = "sqrt"))
+NCR_postm5_diag <- test.model.assumptions(NCR_postm5)
+
+## nbinom12. Zero inflation.
+NCR_postm5zi <- glmmTMB(bivalve ~ brachiopod + AbsLat + brachiopod:AbsLat + (brachiopod|stage), ziformula = ~1, data = NCR_post, family = nbinom12(link = "log"))
+NCR_postm5zi_diag <- test.model.assumptions(NCR_postm5zi)
+
+## Conway-Maxwell Poisson (link = log).
+NCR_postm6 <- glmmTMB(bivalve ~ brachiopod + AbsLat + brachiopod:AbsLat + (brachiopod|stage), data = NCR_post, family = compois(link = "log"))
+NCR_postm6_diag <- test.model.assumptions(NCR_postm6)
+
+## Conway-Maxwell Poisson (link = log), zero inflation
+NCR_postm6zi <- glmmTMB(bivalve ~ brachiopod + AbsLat + brachiopod:AbsLat + (brachiopod|stage), ziformula = ~1, data = NCR_post, family = compois(link = "log"))
+NCR_postm6zi_diag <- test.model.assumptions(NCR_postm6zi)
+
+## Generalized Poisson model GOOD
+NCR_postm7 <- glmmTMB(bivalve ~ brachiopod + AbsLat + brachiopod:AbsLat + (brachiopod|stage), data = NCR_post, family = genpois(link = "sqrt"))
+NCR_postm7_diag <- test.model.assumptions(NCR_postm7)
+
+## Generalized Poisson model with zero inflation. Convergence issue.
+NCR_postm7zi <- glmmTMB(bivalve ~ brachiopod + AbsLat + brachiopod:AbsLat + (brachiopod|stage), ziformula = ~1, data = NCR_post, family = genpois(link = "sqrt"))
+NCR_postm7zi_diag <- test.model.assumptions(NCR_postm7zi)
+
+### Best model is NCR_postm4zi - not a good fit ###
+
+## Plot coefficients
+bestModelsPREPOST <- list(NCR_prem7, NCR_postm4zi)
+names(bestModelsPREPOST) <- c("Pre-PTME (generalized Poisson,\nbivalves as predictor)", "Post-PTME (zero-inflated negative binomial,\nbrachiopods as predictor)")
+
+## Define new title
+plot.title2 <- "Model coefficients from 100km grid cells\n"
+
+## Define axis labels and colours
+axis.labels <- c("Generic\nbivalve\nrichness", "PTME", "Generic\nbivalve\nrichness\n+ PTME", "Absolute\nlatitude", "Generic\nbivalve\nrichness\n + absolute\nlatitude", "Generic\nbrachiopod\nrichness", "Generic\nbrachiopod\nrichness\n + absolute\nlatitude")
+colours <- c("lightblue", "darkgrey", "darkblue", "pink", "purple", "lightgreen", "brown")
+term <- c("bivalve", "PTMEPostPTME", "bivalve:PTMEPostPTME", "AbsLat", "bivalve:AbsLat", "brachiopod", "brachiopod:AbsLat")
+visualsRef <- data.frame(cbind("term" = term, "labels" = axis.labels, "colour" = colours))
+
+## Get model data for each of the best models
+coeffs <- lapply(1:length(bestModelsPREPOST), function(x){
+  out <- get_model_data(bestModelsPREPOST[[x]], type = "est", transform = NULL)
+})
+names(coeffs) <- names(bestModelsPREPOST)
+
+## Function to reorgaise visualsRef into right order
+reorganise_visualsRef <- function(visualsRef, coeffData){
+  out <- visualsRef[rev(match(coeffData[,"term"], visualsRef[,"term"])),]
+}
+visuals <- lapply(1:length(bestModelsPREPOST), function(x){
+  out <- reorganise_visualsRef(visualsRef, coeffs[[x]])
+})
+names(visuals) <- names(coeffs)
+
+## Generate plots
+plots <- lapply(1:length(bestModelsPREPOST), function(x){
+  p <- ggplot() +
+    scale_fill_manual(values = visuals[[x]][,"colour"]) +
+    scale_color_manual(values = visuals[[x]][,"colour"]) +
+    scale_x_discrete(labels = visuals[[x]][,"labels"]) +
+    scale_y_continuous(expand = c(0,0), limits = c(-1,1)) +
+    geom_hline(yintercept = 0, linetype = "dashed", colour = "grey") +
+    geom_point(data = coeffs[[x]], (aes(x = term, y = estimate, fill = term, colour = term))) +
+    geom_errorbar(data = coeffs[[x]], aes(x = term, ymin = conf.low, ymax = conf.high, colour = term), width=0.01) +
+    ylab("Log-Odds") +
+    xlab("") +
+    ggtitle(names(visuals)[x]) +
+    theme(text = element_text(family = "Helvetica"),
+          title = element_text(size = 12),
+          axis.text = element_text(size = 11),
+          axis.title = element_text(size = 12),
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          panel.background = element_blank(),
+          axis.line = element_line(colour = "black"),
+          legend.position = "none")
+})
+
+## Plot as grid
+grid <- plot_grid(plotlist = plots, labels = LETTERS[1:length(bestModelsPREPOST)])
+title <- ggdraw() + draw_label(plot.title2, fontface='bold')
+output <- plot_grid(title, grid, ncol=1, rel_heights=c(0.075, 1)) # rel_heights values control title margins
+## Check
+output
+
+## Export
+pdf("figures/final/main/genera_coefficients_pre&postPTME.pdf", width = 13)
+print(output)
+dev.off()
+
 
 #### Plotting spatially standardised richness ####
 ## Read in clean data
