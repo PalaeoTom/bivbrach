@@ -1,0 +1,16 @@
+"","term","powerSimTerms","labels","NCR","raw","CR20"
+"1","bivalve","bivalve","Generic
+bivalve
+richness",43,50,96
+"2","PTMEPostPTME","PTME","PTME",32,60,97
+"3","AbsLat","AbsLat","Absolute
+latitude",93,95,97
+"4","bivalve:PTMEPostPTME","bivalve:PTME","Generic
+bivalve
+richness +
+PTME",47,55,97
+"5","bivalve:AbsLat","bivalve:AbsLat","Generic
+bivalve
+richness
+ + absolute
+latitude",42,75,96
