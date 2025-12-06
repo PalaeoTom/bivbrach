@@ -10,9 +10,9 @@ isolate_and_compare_coeffs <- function(simModels, mainModel, coeffs, fig.export.
   ## Get coefficients for original model
   orig_v <- get_model_data(mainModel, type = "est", transform = NULL)
   ## Create output for comparisons
-  output <- data.frame(matrix(NA, nrow = 3, ncol = length(coeffs)))
+  output <- data.frame(matrix(NA, nrow = 5, ncol = length(coeffs)))
   colnames(output) <- coeffs
-  rownames(output) <- c("n.comp", "n.coeffEOG", "n.coeffEOG.pValueEOG")
+  rownames(output) <- c("Number of simulations", "Number of simulations where coefficients met or exceeded empirical", "Number of simulations where coefficients and p-values met or exceeded empirical", "Proportion of simulations where coefficients met or exceeded empirical", "Proportion of simulations wheere coefficients and p-values met or exceeded empirical")
   ## For each coefficient
   for(c in 1:length(coeffs)){
     ## Get number of simulated models with coefficients
@@ -21,6 +21,10 @@ isolate_and_compare_coeffs <- function(simModels, mainModel, coeffs, fig.export.
     output[2,c] <- length(which(compare_coeffs(orig_v, values, coeff = coeffs[c], p_value_and_coeff = F)))
     ## Get number of simulations where coefficients meet/exceed and p-value does as well!
     output[3,c] <- length(which(compare_coeffs(orig_v, values, coeff = coeffs[c], p_value_and_coeff = T)))
+    ## Get proportion of coefficients
+    output[4,c] <- output[2,c]/output[1,c]
+    ## Get proportion of coefficients and p-values
+    output[5,c] <- output[3,c]/output[1,c]
   }
   ## Export output as csv and coefficients
   write.csv(values, paste0(data.export.dir, "/", data.name, "_raw.csv"))

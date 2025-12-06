@@ -15,6 +15,8 @@ library(sjPlot)
 library(cowplot)
 library(ggplot2)
 library(beepr)
+library(DHARMa)
+library(performance)
 
 #### Read in and prepare data ####
 ## Load data
@@ -93,7 +95,7 @@ colnames(NCR) <- c("stage_cell", "stage", "cell", "brachiopod", "long", "lat", "
 colnames(raw) <- c("stage_cell", "stage", "cell", "brachiopod", "long", "lat", "PTME", "bivalve", "AbsLat", "n")
 colnames(CR20) <- c("stage_cell", "stage", "cell", "brachiopod", "long", "lat", "PTME", "bivalve", "AbsLat")
 
-#### Define best models
+## Define best models
 NCRmod <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR, family = nbinom12(link = "sqrt"))
 rawMod<- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), ziformula = ~1, data = raw, family = nbinom12(link = "sqrt"))
 CR20mod <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), ziformula = ~1, data = CR20, family = nbinom2(link = "log"))
@@ -142,7 +144,7 @@ for(m in 1:length(bestModels)){
 saveRDS(type2_results, "data/sensitivity_testing/genera_noCov_power_analyses_raw.Rds")
 write.csv(type2_out, "data/sensitivity_testing/genera_noCov_power_analyses_power.csv")
 
-#### Shuffling occurrences and richness values for type 1 error testing ####
+#### Shuffling occurrences for type 1 error testing ####
 ## Need to read in occurrence data
 occs <- readRDS("data/final/final_100_genera_noCov.Rds")
 
@@ -331,6 +333,8 @@ CR20_btwn_models <- mclapply(1:length(CR20_btwn), mc.cores = 8, function(y){
   }
   return(out)
 })
+saveRDS(CR20_btwn_models, file = "data/sensitivity_testing/genera_noCov_CR20_btwnStgs_simModels.Rds")
+rm(CR20_btwn_models)
 rm(CR20_btwn)
 
 ## CR20, shuffled within stages
@@ -348,8 +352,9 @@ CR20_wthn_models <- mclapply(1:length(CR20_wthn), mc.cores = 8, function(y){
   }
   return(out)
 })
+saveRDS(CR20_wthn_models, file = "data/sensitivity_testing/genera_noCov_CR20_wthnStgs_simModels.Rds")
+rm(CR20_wthn_models)
 rm(CR20_wthn)
-
 
 ## raw, shuffled between stages
 raw_btwn <- readRDS(strings.in[3])
@@ -366,6 +371,8 @@ raw_btwn_models <- mclapply(1:length(raw_btwn), mc.cores = 8, function(y){
   }
   return(out)
 })
+saveRDS(raw_btwn_models, file = "data/sensitivity_testing/genera_noCov_raw_btwnStgs_simModels.Rds")
+rm(raw_btwn_models)
 rm(raw_btwn)
 
 ## raw, shuffled within stages
@@ -383,10 +390,37 @@ raw_wthn_models <- mclapply(1:length(raw_wthn), mc.cores = 8, function(y){
   }
   return(out)
 })
+saveRDS(raw_wthn_models, file = "data/sensitivity_testing/genera_noCov_raw_wthnStgs_simModels.Rds")
+rm(raw_wthn_models)
 rm(raw_wthn)
 
 ## NCR, shuffled between stages
 NCR_btwn <- readRDS(strings.in[5])
+
+## First, we spot check 10
+source("functions/test.model.assumptions.R")
+NCR_spot <- NCR_btwn[sample(seq(1,1000,1), 10, replace = F)]
+m1 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[1]], family = nbinom12(link = "sqrt"))
+m2 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[2]], family = nbinom12(link = "sqrt"))
+m3 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[3]], family = nbinom12(link = "sqrt"))
+m4 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[4]], family = nbinom12(link = "sqrt"))
+m5 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[5]], family = nbinom12(link = "sqrt"))
+m6 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[6]], family = nbinom12(link = "sqrt"))
+m7 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[7]], family = nbinom12(link = "sqrt"))
+m8 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[8]], family = nbinom12(link = "sqrt"))
+m9 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[9]], family = nbinom12(link = "sqrt"))
+m10 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[10]], family = nbinom12(link = "sqrt"))
+test.model.assumptions(m1)
+test.model.assumptions(m2)
+test.model.assumptions(m3)
+test.model.assumptions(m4)
+test.model.assumptions(m5)
+test.model.assumptions(m6)
+test.model.assumptions(m7)
+test.model.assumptions(m8)
+test.model.assumptions(m9)
+test.model.assumptions(m10)
+
 NCR_btwn_models <- mclapply(1:length(NCR_btwn), mc.cores = 8, function(y){
   model <- tryCatch(
     {glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_btwn[[y]], family = nbinom12(link = "sqrt"))},
@@ -400,10 +434,37 @@ NCR_btwn_models <- mclapply(1:length(NCR_btwn), mc.cores = 8, function(y){
   }
   return(out)
 })
+saveRDS(NCR_btwn_models, file = "data/sensitivity_testing/genera_noCov_NCR_btwnStgs_simModels.Rds")
+rm(NCR_btwn_models)
 rm(NCR_btwn)
 
 ## NCR, shuffled within stages
 NCR_wthn <- readRDS(strings.in[6])
+
+## First, we spot check 10
+source("functions/test.model.assumptions.R")
+NCR_spot <- NCR_wthn[sample(seq(1,1000,1), 10, replace = F)]
+m1 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[1]], family = nbinom12(link = "sqrt"))
+m2 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[2]], family = nbinom12(link = "sqrt"))
+m3 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[3]], family = nbinom12(link = "sqrt"))
+m4 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[4]], family = nbinom12(link = "sqrt"))
+m5 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[5]], family = nbinom12(link = "sqrt"))
+m6 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[6]], family = nbinom12(link = "sqrt"))
+m7 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[7]], family = nbinom12(link = "sqrt"))
+m8 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[8]], family = nbinom12(link = "sqrt"))
+m9 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[9]], family = nbinom12(link = "sqrt"))
+m10 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[10]], family = nbinom12(link = "sqrt"))
+test.model.assumptions(m1)
+test.model.assumptions(m2)
+test.model.assumptions(m3)
+test.model.assumptions(m4)
+test.model.assumptions(m5)
+test.model.assumptions(m6)
+test.model.assumptions(m7)
+test.model.assumptions(m8)
+test.model.assumptions(m9)
+test.model.assumptions(m10)
+
 NCR_wthn_models <- mclapply(1:length(NCR_wthn), mc.cores = 8, function(y){
   model <- tryCatch(
     {glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_wthn[[y]], family = nbinom12(link = "sqrt"))},
@@ -417,7 +478,262 @@ NCR_wthn_models <- mclapply(1:length(NCR_wthn), mc.cores = 8, function(y){
   }
   return(out)
 })
+saveRDS(NCR_wthn_models, file = "data/sensitivity_testing/genera_noCov_NCR_wthnStgs_simModels.Rds")
+rm(NCR_wthn_models)
 rm(NCR_wthn)
+
+### Summarise
+## Read in functions
+source("functions/isolate_coeffs.R")
+source("functions/compare_coeffs.R")
+source("functions/isolate_and_compare_coeffs.R")
+
+## Define export directories
+fig.export.dir <- "figures/final/supplemental"
+data.export.dir <- "data/sensitivity_testing"
+
+## Create visualsRef object
+axis.labels <- c("Generic bivalve richness", "PTME", "Generic bivalve richness + PTME", "Absolute latitude", "Generic bivalve richness + absolute latitude")
+colours <- c("lightblue", "darkgrey", "darkblue", "pink", "purple")
+term <- c("bivalve", "PTMEPostPTME", "bivalve:PTMEPostPTME", "AbsLat", "bivalve:AbsLat")
+visualsRef <- data.frame(cbind("term" = term, "labels" = axis.labels, "colour" = colours))
+
+## Run function for each combination
+coeffs <- c("bivalve", "PTMEPostPTME", "bivalve:PTMEPostPTME", "AbsLat", "bivalve:AbsLat")
+
+## Define plotlimits
+CR20.plot.limits <- list("bivalve" = c(-2,0.5),
+                        "PTMEPostPTME" = c(-2,0.5),
+                        "bivalve:PTMEPostPTME" = c(-2,0.5),
+                        "AbsLat" = c(-0.5,0.5),
+                        "bivalve:AbsLat" = c(-0.5,0.5))
+
+## CR20, within stages
+CR20_wthn_models <- readRDS("data/sensitivity_testing/genera_noCov_CR20_wthnStgs_simModels.Rds")
+title = "Comparing simulated and empirical coefficients of best model\nClassical rarefaction (sample size = 20)\n Occurrences shuffled within stages"
+figure.name <- "genera_noCov_CR20_withinStgs_coeffs"
+data.name <- "genera_noCov_CR20_withinStgs_coeffs"
+
+isolate_and_compare_coeffs(simModels = CR20_wthn_models, mainModel = CR20mod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
+                           plot.title = title, plot.limits = CR20.plot.limits, visualsRef = visualsRef)
+rm(CR20_wthn_models)
+
+## CR20, between stages
+CR20_btwn_models <- readRDS("data/sensitivity_testing/genera_noCov_CR20_btwnStgs_simModels.Rds")
+title = "Comparing simulated and empirical coefficients of best model\nClassical rarefaction (sample size = 20)\n Occurrences shuffled between stages"
+figure.name <- "genera_noCov_CR20_betweenStgs_coeffs"
+data.name <- "genera_noCov_CR20_betweenStgs_coeffs"
+
+isolate_and_compare_coeffs(simModels = CR20_btwn_models, mainModel = CR20mod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
+                           plot.title = title, plot.limits = CR20.plot.limits, visualsRef = visualsRef)
+rm(CR20_btwn_models)
+
+## Define plotlimits
+NCR.plot.limits <- list("bivalve" = c(-0.5,8),
+                        "PTMEPostPTME" = c(-8,1),
+                        "bivalve:PTMEPostPTME" = c(-8,1),
+                        "AbsLat" = c(-1,1),
+                        "bivalve:AbsLat" = c(-1,1))
+
+## NCR, within stages
+NCR_wthn_models <- readRDS("data/sensitivity_testing/genera_noCov_NCR_wthnStgs_simModels.Rds")
+title = "Comparing simulated and empirical coefficients of best model\nNon-classical rarefaction\n Occurrences shuffled within stages"
+figure.name <- "genera_noCov_NCR_withinStgs_coeffs"
+data.name <- "genera_noCov_NCR_withinStgs_coeffs"
+
+isolate_and_compare_coeffs(simModels = NCR_wthn_models, mainModel = NCRmod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
+                           plot.title = title, plot.limits = NCR.plot.limits, visualsRef = visualsRef)
+rm(NCR_wthn_models)
+
+## NCR, between stages
+NCR_btwn_models <- readRDS("data/sensitivity_testing/genera_noCov_NCR_btwnStgs_simModels.Rds")
+title = "Comparing simulated and empirical coefficients of best model\nNon-classical rarefaction\n Occurrences shuffled between stages"
+figure.name <- "genera_noCov_NCR_betweenStgs_coeffs"
+data.name <- "genera_noCov_NCR_betweenStgs_coeffs"
+
+isolate_and_compare_coeffs(simModels = NCR_btwn_models, mainModel = NCRmod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
+                           plot.title = title, plot.limits = NCR.plot.limits, visualsRef = visualsRef)
+rm(NCR_btwn_models)
+
+
+## Define plotlimits
+raw.plot.limits <- list("bivalve" = c(-0.5,12),
+                         "PTMEPostPTME" = c(-12,3),
+                         "bivalve:PTMEPostPTME" = c(-12,5),
+                         "AbsLat" = c(-2,2),
+                         "bivalve:AbsLat" = c(-2,5))
+
+## raw, within stages
+raw_wthn_models <- readRDS("data/sensitivity_testing/genera_noCov_raw_wthnStgs_simModels.Rds")
+title = "Comparing simulated and empirical coefficients of best model\nRaw richness\n Occurrences shuffled within stages"
+figure.name <- "genera_noCov_raw_withinStgs_coeffs"
+data.name <- "genera_noCov_raw_withinStgs_coeffs"
+
+isolate_and_compare_coeffs(simModels = raw_wthn_models, mainModel = rawMod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
+                           plot.title = title, plot.limits = raw.plot.limits, visualsRef = visualsRef)
+rm(raw_wthn_models)
+
+## raw, between stages
+raw_btwn_models <- readRDS("data/sensitivity_testing/genera_noCov_raw_btwnStgs_simModels.Rds")
+title = "Comparing simulated and empirical coefficients of best model\nRaw richness\n Occurrences shuffled between stages"
+figure.name <- "genera_noCov_raw_betweenStgs_coeffs"
+data.name <- "genera_noCov_raw_betweenStgs_coeffs"
+
+isolate_and_compare_coeffs(simModels = raw_btwn_models, mainModel = rawMod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
+                           plot.title = title, plot.limits = raw.plot.limits, visualsRef = visualsRef)
+rm(raw_btwn_models)
+
+#### Shuffling richness values for type 1 error testing ####
+## Load data
+NCR_t1 <- read.csv("data/analysis_data/genera_NC_CRV.csv", header = T, row.names = 1)
+raw_t1 <- read.csv("data/analysis_data/genera_NC_raw.csv", header = T, row.names = 1)
+CR20_t1 <- read.csv("data/analysis_data/genera_NC_CR20.csv", header = T, row.names = 1)
+
+## Check numeric entries are numeric
+## NCR_t1
+for(i in c(4:8, 10)){
+  if(!is.numeric(NCR_t1[,i])){
+    NCR_t1[,i] <- as.numeric(NCR_t1[,i])
+  }
+}
+
+for(i in c(2,9)){
+  if(!is.factor(NCR_t1[,i])){
+    NCR_t1[,i] <- as.factor(NCR_t1[,i])
+  }
+}
+
+## raw_t1
+for(i in c(4:8, 10)){
+  if(!is.numeric(raw_t1[,i])){
+    raw_t1[,i] <- as.numeric(raw_t1[,i])
+  }
+}
+
+for(i in c(2,9)){
+  if(!is.factor(raw_t1[,i])){
+    raw_t1[,i] <- as.factor(raw_t1[,i])
+  }
+}
+
+## CR20_t1
+for(i in c(4:8)){
+  if(!is.numeric(CR20_t1[,i])){
+    CR20_t1[,i] <- as.numeric(CR20_t1[,i])
+  }
+}
+
+for(i in c(2,9)){
+  if(!is.factor(CR20_t1[,i])){
+    CR20_t1[,i] <- as.factor(CR20_t1[,i])
+  }
+}
+
+## Relevel PTME factor
+NCR_t1[,"PTME"] <- relevel(NCR_t1[,"PTME"], ref = "PrePTME")
+raw_t1[,"PTME"] <- relevel(raw_t1[,"PTME"], ref = "PrePTME")
+CR20_t1[,"PTME"] <- relevel(CR20_t1[,"PTME"], ref = "PrePTME")
+
+## Rename to simplify next few steps
+colnames(NCR_t1) <- c("stage_cell", "stage", "cell", "bivalve", "brachiopod", "long", "lat", "AbsLat", "PTME", "n")
+colnames(raw_t1) <- c("stage_cell", "stage", "cell", "bivalve", "brachiopod", "long", "lat", "AbsLat", "PTME", "n")
+colnames(CR20_t1) <- c("stage_cell", "stage", "cell", "bivalve", "brachiopod", "long", "lat", "AbsLat", "PTME")
+
+## Set iter
+iter = 100
+
+data = CR20_t1
+reps = iter
+standardise = c(4,8)
+stage = "stage"
+response = "brachiopod"
+predictor = "bivalve"
+shuffle_predictor = F
+fix_stages = T
+n_cores = 8
+
+## Write function to shuffle
+shuffle_responses <- function(data, reps, stage, response, predictor, standardise, shuffle_predictor = F, fix_stages = T, n_cores = 1){
+  ## Empty out templates
+  template <- data
+  ## Clean out response
+  template[,response] <- NA
+  ## Clean out predictor if going to be shuffled
+  if(shuffle_predictor){
+    template[,predictor] <- NA
+  }
+  ## loop
+  if(fix_stages){
+    ## Isolate stages and unique stages
+    stages <- data[,stage]
+    uniq_stages <- sort(unique(stages))
+    ## for each stage, in order, get row numbers in stage
+    pooled_row_n <- mclapply(1:length(uniq_stages), mc.cores = n_cores, function(x){
+      out <- which(stages == uniq_stages[x])
+    })
+    ## Shuffle predictor and response
+    if(shuffle_predictor){
+      output <- mclapply(1:reps, mc.cores = n_cores, function(all){
+        ## Create copy
+        perm <- template
+        ## for each stage
+        for(s in 1:length(pooled_row_n)){
+          perm[pooled_row_n[[s]],c(predictor, response)] <- sample(data[pooled_row_n[[s]], c(predictor,response)])
+        }
+        ## Round response
+        perm[,response] <- round(perm[,response], digits = 0)
+        ## Standardise predictors
+        perm[,standardise] <- std(perm, perm[,standardise])[,seq(ncol(perm)+1, ncol(perm)+length(standardise),1)]
+        ## return perm
+        return(perm)
+      })
+      } else {
+        output <- mclapply(1:reps, mc.cores = n_cores, function(all){
+          ## Create copy
+          perm <- template
+          ## for each stage
+          for(s in 1:length(pooled_row_n)){
+            perm[pooled_row_n[[s]],response] <- sample(data[pooled_row_n[[s]],response])
+          }
+          ## Round response
+          perm[,response] <- round(perm[,response], digits = 0)
+          ## Standardise predictors
+          perm[,standardise] <- std(perm, perm[,standardise])[,seq(ncol(perm)+1, ncol(perm)+length(standardise),1)]
+          ## return perm
+          return(perm)
+        })
+      }
+  } else {
+    if(shuffle_predictor){
+      output <- mclapply(1:reps, mc.cores = n_cores, function(all){
+        ## Create copy
+        perm <- template
+        ## for each stage
+        perm[,c(predictor, response)] <- sample(data[,c(predictor,response)])
+        ## Round response
+        perm[,response] <- round(perm[,response], digits = 0)
+        ## Standardise predictors
+        perm[,standardise] <- std(perm, perm[,standardise])[,seq(ncol(perm)+1, ncol(perm)+length(standardise),1)]
+        ## return perm
+        return(perm)
+      })
+    } else {
+      output <- mclapply(1:reps, mc.cores = n_cores, function(all){
+        ## Create copy
+        perm <- template
+        ## for each stage
+        perm[,response] <- sample(data[,response])
+        ## Round response
+        perm[,response] <- round(perm[,response], digits = 0)
+        ## Standardise predictors
+        perm[,standardise] <- std(perm, perm[,standardise])[,seq(ncol(perm)+1, ncol(perm)+length(standardise),1)]
+        ## return perm
+        return(perm)
+      })
+    }
+  }
+  return(output)
+}
 
 ## Read in functions
 source("functions/isolate_coeffs.R")
@@ -434,75 +750,131 @@ colours <- c("lightblue", "darkgrey", "darkblue", "pink", "purple")
 term <- c("bivalve", "PTMEPostPTME", "bivalve:PTMEPostPTME", "AbsLat", "bivalve:AbsLat")
 visualsRef <- data.frame(cbind("term" = term, "labels" = axis.labels, "colour" = colours))
 
-## Define plotlimits
-CR20.plot.limits <- list("bivalve" = c(-1.5,0.5),
-                    "PTMEPostPTME" = c(-1.5,0.5),
-                    "bivalve:PTMEPostPTME" = c(-1.5,0.5),
-                    "AbsLat" = c(-0.25,0.25),
-                    "bivalve:AbsLat" = c(-0.25,0.25))
-
 ## Run function for each combination
 coeffs <- c("bivalve", "PTMEPostPTME", "bivalve:PTMEPostPTME", "AbsLat", "bivalve:AbsLat")
 
+## CR20
+### Fix stages
+#### Shuffle brachiopods
+CR20_fixed_resp <- shuffle_responses(data = CR20_t1, reps = 200, stage = "stage", response = "brachiopod", predictor = "bivalve", standardise =  c(4, 8), shuffle_predictor = F, fix_stages = T, n_cores = 8)
+
+## Run models and record warnings
+CR20_fixed_resp_M <- list()
+CR20_fixed_resp_W <- list()
+for(i in 1:length(CR20_fixed_resp)){
+  ## Run model
+  warns <- list()
+  withCallingHandlers(CR20_fixed_resp_M <- append(CR20_fixed_resp_M, list(glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), ziformula = ~1, data = CR20_fixed_resp[[i]], family = nbinom2(link = "log")))), warning = function(warn) {warns <<- append(warns, warn)})
+  if(length(warns)==0){
+    CR20_fixed_resp_W <- append(CR20_fixed_resp_W, NA)
+  } else {
+    warns <- warns[which(names(warns)=="message")]
+    CR20_fixed_resp_W <- append(CR20_fixed_resp_W, list(warns))
+  }
+}
+
+## Identify warnings with "model convergence error" strings and convert these to NA.
+drop.ind <- sapply(1:length(CR20_fixed_resp_W), function(w){
+  if(all(!is.na(CR20_fixed_resp_W[[w]]))){
+    if(any(str_detect(unlist(CR20_fixed_resp_W[[w]]), "Model convergence problem"))){
+      out <- F
+    } else {
+      out <- T
+    }
+  } else {
+    out <- T
+  }
+  return(out)
+})
+
+## If length of drop.ind is greater than 1, drop
+if(length(which(!drop.ind)) > 0){
+  CR20_fixed_resp_M <- CR20_fixed_resp_M[drop.ind]
+}
+
+## If length is greater than 100, randomly sample down to 100.
+if(length(CR20_fixed_resp_M)>100){
+  CR20_fixed_resp_M <- CR20_fixed_resp_M[sample(seq(1,length(CR20_fixed_resp_M),1), 100, replace = F)]
+}
+
+## Get coefficients
+CR20_fixed_resp_C <- mclapply(1:length(CR20_fixed_resp_M), mc.cores = 8, function(x){
+  out <- get_model_data(CR20_fixed_resp_M[[x]], type = "est", transform = NULL)
+})
+
+## Define plot limits
+CR20.plot.limits <- list("bivalve" = c(-2,0.5),
+                         "PTMEPostPTME" = c(-2,0.5),
+                         "bivalve:PTMEPostPTME" = c(-2,0.5),
+                         "AbsLat" = c(-0.5,0.5),
+                         "bivalve:AbsLat" = c(-0.5,0.5))
+
 ## CR20, within stages
-title = "Comparing simulated and empirical coefficients of best model\nClassical rarefaction (sample size = 20)\n Occurrences shuffled within stages"
-figure.name <- "genera_noCov_CR20_withinStgs_coeffs"
-data.name <- "genera_noCov_CR20_withinStgs_coeffs"
+title = "Comparing simulated and empirical coefficients of best model\nClassical rarefaction (sample size = 20)\n Brachiopod richness shuffled within stages"
+figure.name <- "genera_noCov_CR20_brach_withinStgs_coeffs"
+data.name <- "genera_noCov_CR20_brach_withinStgs_coeffs"
 
-isolate_and_compare_coeffs(simModels = CR20_wthn_models, mainModel = CR20mod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
+isolate_and_compare_coeffs(simModels = CR20_fixed_resp_C, mainModel = CR20mod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
                            plot.title = title, plot.limits = CR20.plot.limits, visualsRef = visualsRef)
+rm(CR20_fixed_resp)
+rm(CR20_fixed_resp_C)
+rm(CR20_fixed_resp_M)
+rm(CR20_fixed_resp_W)
 
-## CR20, between stages
-title = "Comparing simulated and empirical coefficients of best model\nClassical rarefaction (sample size = 20)\n Occurrences shuffled between stages"
-figure.name <- "genera_noCov_CR20_betweenStgs_coeffs"
-data.name <- "genera_noCov_CR20_betweenStgs_coeffs"
+## Separate model and error
+#### Shuffle both
+CR20_fixed_both <- shuffle_responses(data = CR20, reps = iter, stage = "stage", response = "brachiopod", predictor = "bivalve", c(4, 8), shuffle_predictor = T, fix_stages = T, n_cores = 8)
 
-isolate_and_compare_coeffs(simModels = CR20_btwn_models, mainModel = CR20mod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
-                           plot.title = title, plot.limits = CR20.plot.limits, visualsRef = visualsRef)
+### Fluid stages
+#### Shuffle brachiopods
+CR20_fluid_resp <- shuffle_responses(data = CR20, reps = iter, stage = "stage", response = "brachiopod", predictor = "bivalve", c(4, 8), shuffle_predictor = F, fix_stages = F, n_cores = 8)
 
-## Define plotlimits
-NCR.plot.limits <- list("bivalve" = c(-0.5,8),
-                        "PTMEPostPTME" = c(-8,0.5),
-                        "bivalve:PTMEPostPTME" = c(-8,0.5),
-                        "AbsLat" = c(-1,1),
-                        "bivalve:AbsLat" = c(-1,1))
+#### Shuffle both
+CR20_fluid_both <- shuffle_responses(data = CR20, reps = iter, stage = "stage", response = "brachiopod", predictor = "bivalve", c(4, 8), shuffle_predictor = T, fix_stages = F, n_cores = 8)
 
-## NCR, within stages
-title = "Comparing simulated and empirical coefficients of best model\nNon-classical rarefaction\n Occurrences shuffled within stages"
-figure.name <- "genera_noCov_NCR_withinStgs_coeffs"
-data.name <- "genera_noCov_NCR_withinStgs_coeffs"
 
-isolate_and_compare_coeffs(simModels = NCR_wthn_models, mainModel = NCRmod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
-                           plot.title = title, plot.limits = NCR.plot.limits, visualsRef = visualsRef)
+## NCR
+### Fix stages
 
-## NCR, between stages
-title = "Comparing simulated and empirical coefficients of best model\nNon-classical rarefaction\n Occurrences shuffled between stages"
-figure.name <- "genera_noCov_NCR_betweenStgs_coeffs"
-data.name <- "genera_noCov_NCR_betweenStgs_coeffs"
 
-isolate_and_compare_coeffs(simModels = NCR_btwn_models, mainModel = NCRmod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
-                           plot.title = title, plot.limits = NCR.plot.limits, visualsRef = visualsRef)
+## Raw
+### Fix stages
+#### Shuffle brachiopods
 
-## Define plotlimits
-raw.plot.limits <- list("bivalve" = c(-0.5,12),
-                         "PTMEPostPTME" = c(-12,3),
-                         "bivalve:PTMEPostPTME" = c(-12,5),
-                         "AbsLat" = c(-2,2),
-                         "bivalve:AbsLat" = c(-2,4))
+#### Shuffle bivalves
 
-## raw, within stages
-title = "Comparing simulated and empirical coefficients of best model\nRaw richness\n Occurrences shuffled within stages"
-figure.name <- "genera_noCov_raw_withinStgs_coeffs"
-data.name <- "genera_noCov_raw_withinStgs_coeffs"
+### Fluid stages
+#### Shuffle brachiopods
 
-isolate_and_compare_coeffs(simModels = raw_wthn_models, mainModel = rawMod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
-                           plot.title = title, plot.limits = raw.plot.limits, visualsRef = visualsRef)
+#### Shuffle bivalves
 
-## raw, between stages
-title = "Comparing simulated and empirical coefficients of best model\nRaw richness\n Occurrences shuffled between stages"
-figure.name <- "genera_noCov_raw_betweenStgs_coeffs"
-data.name <- "genera_noCov_raw_betweenStgs_coeffs"
 
-isolate_and_compare_coeffs(simModels = raw_btwn_models, mainModel = rawMod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
-                           plot.title = title, plot.limits = raw.plot.limits, visualsRef = visualsRef)
+
+
+
+
+
+## First, we spot check 10
+source("functions/test.model.assumptions.R")
+NCR_spot <- NCR_btwn[sample(seq(1,1000,1), 10, replace = F)]
+m1 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[1]], family = nbinom12(link = "sqrt"))
+m2 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[2]], family = nbinom12(link = "sqrt"))
+m3 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[3]], family = nbinom12(link = "sqrt"))
+m4 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[4]], family = nbinom12(link = "sqrt"))
+m5 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[5]], family = nbinom12(link = "sqrt"))
+m6 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[6]], family = nbinom12(link = "sqrt"))
+m7 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[7]], family = nbinom12(link = "sqrt"))
+m8 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[8]], family = nbinom12(link = "sqrt"))
+m9 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[9]], family = nbinom12(link = "sqrt"))
+m10 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[10]], family = nbinom12(link = "sqrt"))
+test.model.assumptions(m1)
+test.model.assumptions(m2)
+test.model.assumptions(m3)
+test.model.assumptions(m4)
+test.model.assumptions(m5)
+test.model.assumptions(m6)
+test.model.assumptions(m7)
+test.model.assumptions(m8)
+test.model.assumptions(m9)
+test.model.assumptions(m10)
 
