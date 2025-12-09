@@ -583,7 +583,7 @@ isolate_and_compare_coeffs(simModels = raw_btwn_models, mainModel = rawMod, coef
                            plot.title = title, plot.limits = raw.plot.limits, visualsRef = visualsRef)
 rm(raw_btwn_models)
 
-#### Shuffling richness values for type 1 error testing ####
+#### Shuffling richness values for type 1 error testing - setup ####
 ## Load data
 NCR_t1 <- read.csv("data/analysis_data/genera_NC_CRV.csv", header = T, row.names = 1)
 raw_t1 <- read.csv("data/analysis_data/genera_NC_raw.csv", header = T, row.names = 1)
@@ -639,18 +639,15 @@ colnames(NCR_t1) <- c("stage_cell", "stage", "cell", "bivalve", "brachiopod", "l
 colnames(raw_t1) <- c("stage_cell", "stage", "cell", "bivalve", "brachiopod", "long", "lat", "AbsLat", "PTME", "n")
 colnames(CR20_t1) <- c("stage_cell", "stage", "cell", "bivalve", "brachiopod", "long", "lat", "AbsLat", "PTME")
 
-## Set iter
-iter = 100
-
-data = CR20_t1
-reps = iter
-standardise = c(4,8)
-stage = "stage"
-response = "brachiopod"
-predictor = "bivalve"
-shuffle_predictor = F
-fix_stages = T
-n_cores = 8
+#data = CR20_t1
+#reps = iter
+#standardise = c(4,8)
+#stage = "stage"
+#response = "brachiopod"
+#predictor = "bivalve"
+#shuffle_predictor = F
+#fix_stages = T
+#n_cores = 8
 
 ## Write function to shuffle
 shuffle_responses <- function(data, reps, stage, response, predictor, standardise, shuffle_predictor = F, fix_stages = T, n_cores = 1){
@@ -753,10 +750,13 @@ visualsRef <- data.frame(cbind("term" = term, "labels" = axis.labels, "colour" =
 ## Run function for each combination
 coeffs <- c("bivalve", "PTMEPostPTME", "bivalve:PTMEPostPTME", "AbsLat", "bivalve:AbsLat")
 
-## CR20
+## Define iterations
+iter = 200
+
+#### Shuffling richness values for type 1 error testing - CR20 ####
 ### Fix stages
 #### Shuffle brachiopods
-CR20_fixed_resp <- shuffle_responses(data = CR20_t1, reps = 200, stage = "stage", response = "brachiopod", predictor = "bivalve", standardise =  c(4, 8), shuffle_predictor = F, fix_stages = T, n_cores = 8)
+CR20_fixed_resp <- shuffle_responses(data = CR20_t1, reps = iter, stage = "stage", response = "brachiopod", predictor = "bivalve", standardise =  c(4, 8), shuffle_predictor = F, fix_stages = T, n_cores = 8)
 
 ## Run models and record warnings
 CR20_fixed_resp_M <- list()
@@ -787,8 +787,8 @@ drop.ind <- sapply(1:length(CR20_fixed_resp_W), function(w){
   return(out)
 })
 
-## If length of drop.ind is greater than 1, drop
-if(length(which(!drop.ind)) > 0){
+## If any F in drop.ind, apply
+if(any(!drop.ind)){
   CR20_fixed_resp_M <- CR20_fixed_resp_M[drop.ind]
 }
 
@@ -811,70 +811,750 @@ CR20.plot.limits <- list("bivalve" = c(-2,0.5),
 
 ## CR20, within stages
 title = "Comparing simulated and empirical coefficients of best model\nClassical rarefaction (sample size = 20)\n Brachiopod richness shuffled within stages"
-figure.name <- "genera_noCov_CR20_brach_withinStgs_coeffs"
-data.name <- "genera_noCov_CR20_brach_withinStgs_coeffs"
+figure.name <- "genera_noCov_CR20_brach_wthnStgs_coeffs"
+data.name <- "genera_noCov_CR20_brach_wthnStgs_coeffs"
 
 isolate_and_compare_coeffs(simModels = CR20_fixed_resp_C, mainModel = CR20mod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
                            plot.title = title, plot.limits = CR20.plot.limits, visualsRef = visualsRef)
 rm(CR20_fixed_resp)
 rm(CR20_fixed_resp_C)
-rm(CR20_fixed_resp_M)
 rm(CR20_fixed_resp_W)
 
 ## Separate model and error
 #### Shuffle both
-CR20_fixed_both <- shuffle_responses(data = CR20, reps = iter, stage = "stage", response = "brachiopod", predictor = "bivalve", c(4, 8), shuffle_predictor = T, fix_stages = T, n_cores = 8)
+CR20_fixed_both <- shuffle_responses(data = CR20_t1, reps = iter, stage = "stage", response = "brachiopod", predictor = "bivalve", c(4, 8), shuffle_predictor = T, fix_stages = T, n_cores = 8)
+
+## Run models and record warnings
+CR20_fixed_both_M <- list()
+CR20_fixed_both_W <- list()
+for(i in 1:length(CR20_fixed_both)){
+  ## Run model
+  warns <- list()
+  withCallingHandlers(CR20_fixed_both_M <- append(CR20_fixed_both_M, list(glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), ziformula = ~1, data = CR20_fixed_both[[i]], family = nbinom2(link = "log")))), warning = function(warn) {warns <<- append(warns, warn)})
+  if(length(warns)==0){
+    CR20_fixed_both_W <- append(CR20_fixed_both_W, NA)
+  } else {
+    warns <- warns[which(names(warns)=="message")]
+    CR20_fixed_both_W <- append(CR20_fixed_both_W, list(warns))
+  }
+}
+
+## Identify warnings with "model convergence error" strings and convert these to NA.
+drop.ind <- sapply(1:length(CR20_fixed_both_W), function(w){
+  if(all(!is.na(CR20_fixed_both_W[[w]]))){
+    if(any(str_detect(unlist(CR20_fixed_both_W[[w]]), "Model convergence problem"))){
+      out <- F
+    } else {
+      out <- T
+    }
+  } else {
+    out <- T
+  }
+  return(out)
+})
+
+## If any F in drop.ind, apply
+if(any(!drop.ind)){
+  CR20_fixed_both_M <- CR20_fixed_both_M[drop.ind]
+}
+
+## If length is greater than 100, randomly sample down to 100.
+if(length(CR20_fixed_both_M)>100){
+  CR20_fixed_both_M <- CR20_fixed_both_M[sample(seq(1,length(CR20_fixed_both_M),1), 100, replace = F)]
+}
+
+## Get coefficients
+CR20_fixed_both_C <- mclapply(1:length(CR20_fixed_both_M), mc.cores = 8, function(x){
+  out <- get_model_data(CR20_fixed_both_M[[x]], type = "est", transform = NULL)
+})
+
+## CR20, within stages
+title = "Comparing simulated and empirical coefficients of best model\nClassical rarefaction (sample size = 20)\n Brachiopod and bivalve richness shuffled within stages"
+figure.name <- "genera_noCov_CR20_bivNbrach_wthnStgs_coeffs"
+data.name <- "genera_noCov_CR20_bivNbrach_wthnStgs_coeffs"
+
+isolate_and_compare_coeffs(simModels = CR20_fixed_both_C, mainModel = CR20mod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
+                           plot.title = title, plot.limits = CR20.plot.limits, visualsRef = visualsRef)
+rm(CR20_fixed_both)
+rm(CR20_fixed_both_C)
+rm(CR20_fixed_both_W)
 
 ### Fluid stages
 #### Shuffle brachiopods
-CR20_fluid_resp <- shuffle_responses(data = CR20, reps = iter, stage = "stage", response = "brachiopod", predictor = "bivalve", c(4, 8), shuffle_predictor = F, fix_stages = F, n_cores = 8)
+CR20_fluid_resp <- shuffle_responses(data = CR20_t1, reps = iter, stage = "stage", response = "brachiopod", predictor = "bivalve", c(4, 8), shuffle_predictor = F, fix_stages = F, n_cores = 8)
+
+## Run models and record warnings
+CR20_fluid_resp_M <- list()
+CR20_fluid_resp_W <- list()
+for(i in 1:length(CR20_fluid_resp)){
+  ## Run model
+  warns <- list()
+  withCallingHandlers(CR20_fluid_resp_M <- append(CR20_fluid_resp_M, list(glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), ziformula = ~1, data = CR20_fluid_resp[[i]], family = nbinom2(link = "log")))), warning = function(warn) {warns <<- append(warns, warn)})
+  if(length(warns)==0){
+    CR20_fluid_resp_W <- append(CR20_fluid_resp_W, NA)
+  } else {
+    warns <- warns[which(names(warns)=="message")]
+    CR20_fluid_resp_W <- append(CR20_fluid_resp_W, list(warns))
+  }
+}
+
+## Identify warnings with "model convergence error" strings and convert these to NA.
+drop.ind <- sapply(1:length(CR20_fluid_resp_W), function(w){
+  if(all(!is.na(CR20_fluid_resp_W[[w]]))){
+    if(any(str_detect(unlist(CR20_fluid_resp_W[[w]]), "Model convergence problem"))){
+      out <- F
+    } else {
+      out <- T
+    }
+  } else {
+    out <- T
+  }
+  return(out)
+})
+
+## If any F in drop.ind, apply
+if(any(!drop.ind)){
+  CR20_fluid_resp_M <- CR20_fluid_resp_M[drop.ind]
+}
+
+## If length is greater than 100, randomly sample down to 100.
+if(length(CR20_fluid_resp_M)>100){
+  CR20_fluid_resp_M <- CR20_fluid_resp_M[sample(seq(1,length(CR20_fluid_resp_M),1), 100, replace = F)]
+}
+
+## Get coefficients
+CR20_fluid_resp_C <- mclapply(1:length(CR20_fluid_resp_M), mc.cores = 8, function(x){
+  out <- get_model_data(CR20_fluid_resp_M[[x]], type = "est", transform = NULL)
+})
+
+## CR20, within stages
+title = "Comparing simulated and empirical coefficients of best model\nClassical rarefaction (sample size = 20)\n Brachiopod richness shuffled across stages"
+figure.name <- "genera_noCov_CR20_brach_btwnStgs_coeffs"
+data.name <- "genera_noCov_CR20_brach_btwnStgs_coeffs"
+
+isolate_and_compare_coeffs(simModels = CR20_fluid_resp_C, mainModel = CR20mod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
+                           plot.title = title, plot.limits = CR20.plot.limits, visualsRef = visualsRef)
+rm(CR20_fluid_resp)
+rm(CR20_fluid_resp_C)
+rm(CR20_fluid_resp_W)
 
 #### Shuffle both
-CR20_fluid_both <- shuffle_responses(data = CR20, reps = iter, stage = "stage", response = "brachiopod", predictor = "bivalve", c(4, 8), shuffle_predictor = T, fix_stages = F, n_cores = 8)
+CR20_fluid_both <- shuffle_responses(data = CR20_t1, reps = iter, stage = "stage", response = "brachiopod", predictor = "bivalve", c(4, 8), shuffle_predictor = T, fix_stages = F, n_cores = 8)
 
+## Run models and record warnings
+CR20_fluid_both_M <- list()
+CR20_fluid_both_W <- list()
+for(i in 1:length(CR20_fluid_both)){
+  ## Run model
+  warns <- list()
+  withCallingHandlers(CR20_fluid_both_M <- append(CR20_fluid_both_M, list(glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), ziformula = ~1, data = CR20_fluid_both[[i]], family = nbinom2(link = "log")))), warning = function(warn) {warns <<- append(warns, warn)})
+  if(length(warns)==0){
+    CR20_fluid_both_W <- append(CR20_fluid_both_W, NA)
+  } else {
+    warns <- warns[which(names(warns)=="message")]
+    CR20_fluid_both_W <- append(CR20_fluid_both_W, list(warns))
+  }
+}
 
-## NCR
-### Fix stages
+## Identify warnings with "model convergence error" strings and convert these to NA.
+drop.ind <- sapply(1:length(CR20_fluid_both_W), function(w){
+  if(all(!is.na(CR20_fluid_both_W[[w]]))){
+    if(any(str_detect(unlist(CR20_fluid_both_W[[w]]), "Model convergence problem"))){
+      out <- F
+    } else {
+      out <- T
+    }
+  } else {
+    out <- T
+  }
+  return(out)
+})
 
+## If any F in drop.ind, apply
+if(any(!drop.ind)){
+  CR20_fluid_both_M <- CR20_fluid_both_M[drop.ind]
+}
 
-## Raw
+## If length is greater than 100, randomly sample down to 100.
+if(length(CR20_fluid_both_M)>100){
+  CR20_fluid_both_M <- CR20_fluid_both_M[sample(seq(1,length(CR20_fluid_both_M),1), 100, replace = F)]
+}
+
+## Get coefficients
+CR20_fluid_both_C <- mclapply(1:length(CR20_fluid_both_M), mc.cores = 8, function(x){
+  out <- get_model_data(CR20_fluid_both_M[[x]], type = "est", transform = NULL)
+})
+
+## CR20, within stages
+title = "Comparing simulated and empirical coefficients of best model\nClassical rarefaction (sample size = 20)\n Brachiopod and bivalve richness shuffled across stages"
+figure.name <- "genera_noCov_CR20_bivNbrach_btwnStgs_coeffs"
+data.name <- "genera_noCov_CR20_bivNbrach_btwnStgs_coeffs"
+
+isolate_and_compare_coeffs(simModels = CR20_fluid_both_C, mainModel = CR20mod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
+                           plot.title = title, plot.limits = CR20.plot.limits, visualsRef = visualsRef)
+rm(CR20_fluid_both)
+rm(CR20_fluid_both_C)
+rm(CR20_fluid_both_W)
+
+#### Shuffling richness values for type 1 error testing - NCR ####
 ### Fix stages
 #### Shuffle brachiopods
+NCR_fixed_resp <- shuffle_responses(data = NCR_t1, reps = 200, stage = "stage", response = "brachiopod", predictor = "bivalve", standardise =  c(4, 8, 10), shuffle_predictor = F, fix_stages = T, n_cores = 8)
 
-#### Shuffle bivalves
+## Run models and record warnings
+NCR_fixed_resp_M <- list()
+NCR_fixed_resp_W <- list()
+for(i in 1:length(NCR_fixed_resp)){
+  ## Run model
+  warns <- list()
+  withCallingHandlers(NCR_fixed_resp_M <- append(NCR_fixed_resp_M, list(glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_fixed_resp[[i]], family = nbinom12(link = "sqrt")))), warning = function(warn) {warns <<- append(warns, warn)})
+  if(length(warns)==0){
+    NCR_fixed_resp_W <- append(NCR_fixed_resp_W, NA)
+  } else {
+    warns <- warns[which(names(warns)=="message")]
+    NCR_fixed_resp_W <- append(NCR_fixed_resp_W, list(warns))
+  }
+}
+
+## Identify warnings with "model convergence error" strings and convert these to NA.
+drop.ind <- sapply(1:length(NCR_fixed_resp_W), function(w){
+  if(all(!is.na(NCR_fixed_resp_W[[w]]))){
+    if(any(str_detect(unlist(NCR_fixed_resp_W[[w]]), "Model convergence problem"))){
+      out <- F
+    } else {
+      out <- T
+    }
+  } else {
+    out <- T
+  }
+  return(out)
+})
+
+## If any F in drop.ind, apply
+if(any(!drop.ind)){
+  NCR_fixed_resp_M <- NCR_fixed_resp_M[drop.ind]
+}
+
+## If length is greater than 100, randomly sample down to 100.
+if(length(NCR_fixed_resp_M)>100){
+  NCR_fixed_resp_M <- NCR_fixed_resp_M[sample(seq(1,length(NCR_fixed_resp_M),1), 100, replace = F)]
+}
+
+## Get coefficients
+NCR_fixed_resp_C <- mclapply(1:length(NCR_fixed_resp_M), mc.cores = 8, function(x){
+  out <- get_model_data(NCR_fixed_resp_M[[x]], type = "est", transform = NULL)
+})
+
+## Define plot limits
+NCR.plot.limits <- list("bivalve" = c(-2,2),
+                         "PTMEPostPTME" = c(-4,4),
+                         "bivalve:PTMEPostPTME" = c(-3,3),
+                         "AbsLat" = c(-3,3),
+                         "bivalve:AbsLat" = c(-3,3))
+
+## NCR, within stages
+title = "Comparing simulated and empirical coefficients of best model\nNon-classical rarefaction\n Brachiopod richness shuffled within stages"
+figure.name <- "genera_noCov_NCR_brach_wthnStgs_coeffs"
+data.name <- "genera_noCov_NCR_brach_wthnStgs_coeffs"
+
+isolate_and_compare_coeffs(simModels = NCR_fixed_resp_C, mainModel = NCRmod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
+                           plot.title = title, plot.limits = NCR.plot.limits, visualsRef = visualsRef)
+rm(NCR_fixed_resp)
+rm(NCR_fixed_resp_C)
+rm(NCR_fixed_resp_W)
+
+## Separate model and error
+#### Shuffle both
+NCR_fixed_both <- shuffle_responses(data = NCR_t1, reps = iter, stage = "stage", response = "brachiopod", predictor = "bivalve", c(4, 8, 10), shuffle_predictor = T, fix_stages = T, n_cores = 8)
+
+## Run models and record warnings
+NCR_fixed_both_M <- list()
+NCR_fixed_both_W <- list()
+for(i in 1:length(NCR_fixed_both)){
+  ## Run model
+  warns <- list()
+  withCallingHandlers(NCR_fixed_both_M <- append(NCR_fixed_both_M, list(glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_fixed_both[[i]], family = nbinom12(link = "sqrt")))), warning = function(warn) {warns <<- append(warns, warn)})
+    if(length(warns)==0){
+    NCR_fixed_both_W <- append(NCR_fixed_both_W, NA)
+  } else {
+    warns <- warns[which(names(warns)=="message")]
+    NCR_fixed_both_W <- append(NCR_fixed_both_W, list(warns))
+  }
+}
+
+## Identify warnings with "model convergence error" strings and convert these to NA.
+drop.ind <- sapply(1:length(NCR_fixed_both_W), function(w){
+  if(all(!is.na(NCR_fixed_both_W[[w]]))){
+    if(any(str_detect(unlist(NCR_fixed_both_W[[w]]), "Model convergence problem"))){
+      out <- F
+    } else {
+      out <- T
+    }
+  } else {
+    out <- T
+  }
+  return(out)
+})
+
+## If any F in drop.ind, apply
+if(any(!drop.ind)){
+  NCR_fixed_both_M <- NCR_fixed_both_M[drop.ind]
+}
+
+## If length is greater than 100, randomly sample down to 100.
+if(length(NCR_fixed_both_M)>100){
+  NCR_fixed_both_M <- NCR_fixed_both_M[sample(seq(1,length(NCR_fixed_both_M),1), 100, replace = F)]
+}
+
+## Get coefficients
+NCR_fixed_both_C <- mclapply(1:length(NCR_fixed_both_M), mc.cores = 8, function(x){
+  out <- get_model_data(NCR_fixed_both_M[[x]], type = "est", transform = NULL)
+})
+
+## NCR, within stages
+title = "Comparing simulated and empirical coefficients of best model\nNon-classical rarefaction\n Brachiopod and bivalve richness shuffled within stages"
+figure.name <- "genera_noCov_NCR_bivNbrach_wthnStgs_coeffs"
+data.name <- "genera_noCov_NCR_bivNbrach_wthnStgs_coeffs"
+
+isolate_and_compare_coeffs(simModels = NCR_fixed_both_C, mainModel = NCRmod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
+                           plot.title = title, plot.limits = NCR.plot.limits, visualsRef = visualsRef)
+rm(NCR_fixed_both)
+rm(NCR_fixed_both_C)
+rm(NCR_fixed_both_W)
 
 ### Fluid stages
 #### Shuffle brachiopods
+NCR_fluid_resp <- shuffle_responses(data = NCR_t1, reps = iter, stage = "stage", response = "brachiopod", predictor = "bivalve", c(4, 8, 10), shuffle_predictor = F, fix_stages = F, n_cores = 8)
 
-#### Shuffle bivalves
+## Run models and record warnings
+NCR_fluid_resp_M <- list()
+NCR_fluid_resp_W <- list()
+for(i in 1:length(NCR_fluid_resp)){
+  ## Run model
+  warns <- list()
+  withCallingHandlers(NCR_fluid_resp_M <- append(NCR_fluid_resp_M, list(glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_fluid_resp[[i]], family = nbinom12(link = "sqrt")))), warning = function(warn) {warns <<- append(warns, warn)})
+    if(length(warns)==0){
+    NCR_fluid_resp_W <- append(NCR_fluid_resp_W, NA)
+  } else {
+    warns <- warns[which(names(warns)=="message")]
+    NCR_fluid_resp_W <- append(NCR_fluid_resp_W, list(warns))
+  }
+}
 
+## Identify warnings with "model convergence error" strings and convert these to NA.
+drop.ind <- sapply(1:length(NCR_fluid_resp_W), function(w){
+  if(all(!is.na(NCR_fluid_resp_W[[w]]))){
+    if(any(str_detect(unlist(NCR_fluid_resp_W[[w]]), "Model convergence problem"))){
+      out <- F
+    } else {
+      out <- T
+    }
+  } else {
+    out <- T
+  }
+  return(out)
+})
 
+## If any F in drop.ind, apply
+if(any(!drop.ind)){
+  NCR_fluid_resp_M <- NCR_fluid_resp_M[drop.ind]
+}
 
+## If length is greater than 100, randomly sample down to 100.
+if(length(NCR_fluid_resp_M)>100){
+  NCR_fluid_resp_M <- NCR_fluid_resp_M[sample(seq(1,length(NCR_fluid_resp_M),1), 100, replace = F)]
+}
 
+## Get coefficients
+NCR_fluid_resp_C <- mclapply(1:length(NCR_fluid_resp_M), mc.cores = 8, function(x){
+  out <- get_model_data(NCR_fluid_resp_M[[x]], type = "est", transform = NULL)
+})
 
+## NCR, within stages
+title = "Comparing simulated and empirical coefficients of best model\nNon-classical rarefaction\n Brachiopod richness shuffled across stages"
+figure.name <- "genera_noCov_NCR_brach_btwnStgs_coeffs"
+data.name <- "genera_noCov_NCR_brach_btwnStgs_coeffs"
 
+isolate_and_compare_coeffs(simModels = NCR_fluid_resp_C, mainModel = NCRmod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
+                           plot.title = title, plot.limits = NCR.plot.limits, visualsRef = visualsRef)
+rm(NCR_fluid_resp)
+rm(NCR_fluid_resp_C)
+rm(NCR_fluid_resp_W)
 
-## First, we spot check 10
+#### Shuffle both
+NCR_fluid_both <- shuffle_responses(data = NCR_t1, reps = iter, stage = "stage", response = "brachiopod", predictor = "bivalve", c(4, 8, 10), shuffle_predictor = T, fix_stages = F, n_cores = 8)
+
+## Run models and record warnings
+NCR_fluid_both_M <- list()
+NCR_fluid_both_W <- list()
+for(i in 1:length(NCR_fluid_both)){
+  ## Run model
+  warns <- list()
+  withCallingHandlers(NCR_fluid_both_M <- append(NCR_fluid_both_M, list(glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_fluid_both[[i]], family = nbinom12(link = "sqrt")))), warning = function(warn) {warns <<- append(warns, warn)})
+  if(length(warns)==0){
+    NCR_fluid_both_W <- append(NCR_fluid_both_W, NA)
+  } else {
+    warns <- warns[which(names(warns)=="message")]
+    NCR_fluid_both_W <- append(NCR_fluid_both_W, list(warns))
+  }
+}
+
+## Identify warnings with "model convergence error" strings and convert these to NA.
+drop.ind <- sapply(1:length(NCR_fluid_both_W), function(w){
+  if(all(!is.na(NCR_fluid_both_W[[w]]))){
+    if(any(str_detect(unlist(NCR_fluid_both_W[[w]]), "Model convergence problem"))){
+      out <- F
+    } else {
+      out <- T
+    }
+  } else {
+    out <- T
+  }
+  return(out)
+})
+
+## If any F in drop.ind, apply
+if(any(!drop.ind)){
+  NCR_fluid_both_M <- NCR_fluid_both_M[drop.ind]
+}
+
+## If length is greater than 100, randomly sample down to 100.
+if(length(NCR_fluid_both_M)>100){
+  NCR_fluid_both_M <- NCR_fluid_both_M[sample(seq(1,length(NCR_fluid_both_M),1), 100, replace = F)]
+}
+
+## Get coefficients
+NCR_fluid_both_C <- mclapply(1:length(NCR_fluid_both_M), mc.cores = 8, function(x){
+  out <- get_model_data(NCR_fluid_both_M[[x]], type = "est", transform = NULL)
+})
+
+## NCR, within stages
+title = "Comparing simulated and empirical coefficients of best model\nNon-classical rarefaction\n Brachiopod and bivalve richness shuffled across stages"
+figure.name <- "genera_noCov_NCR_bivNbrach_btwnStgs_coeffs"
+data.name <- "genera_noCov_NCR_bivNbrach_btwnStgs_coeffs"
+
+isolate_and_compare_coeffs(simModels = NCR_fluid_both_C, mainModel = NCRmod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
+                           plot.title = title, plot.limits = NCR.plot.limits, visualsRef = visualsRef)
+rm(NCR_fluid_both)
+rm(NCR_fluid_both_C)
+rm(NCR_fluid_both_W)
+
+#### Shuffling richness values for type 1 error testing - raw ####
+### Fix stages
+#### Shuffle brachiopods
+raw_fixed_resp <- shuffle_responses(data = raw_t1, reps = 200, stage = "stage", response = "brachiopod", predictor = "bivalve", standardise =  c(4, 8, 10), shuffle_predictor = F, fix_stages = T, n_cores = 8)
+
+## Run models and record warnings
+raw_fixed_resp_M <- list()
+raw_fixed_resp_W <- list()
+for(i in 1:length(raw_fixed_resp)){
+  ## Run model
+  warns <- list()
+  withCallingHandlers(raw_fixed_resp_M <- append(raw_fixed_resp_M, list(glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), ziformula = ~1, data = raw_fixed_resp[[i]], family = nbinom12(link = "sqrt")))), warning = function(warn) {warns <<- append(warns, warn)})
+  if(length(warns)==0){
+    raw_fixed_resp_W <- append(raw_fixed_resp_W, NA)
+  } else {
+    warns <- warns[which(names(warns)=="message")]
+    raw_fixed_resp_W <- append(raw_fixed_resp_W, list(warns))
+  }
+}
+
+## Identify warnings with "model convergence error" strings and convert these to NA.
+drop.ind <- sapply(1:length(raw_fixed_resp_W), function(w){
+  if(all(!is.na(raw_fixed_resp_W[[w]]))){
+    if(any(str_detect(unlist(raw_fixed_resp_W[[w]]), "Model convergence problem"))){
+      out <- F
+    } else {
+      out <- T
+    }
+  } else {
+    out <- T
+  }
+  return(out)
+})
+
+## If any F in drop.ind, apply
+if(any(!drop.ind)){
+  raw_fixed_resp_M <- raw_fixed_resp_M[drop.ind]
+}
+
+## If length is greater than 100, randomly sample down to 100.
+if(length(raw_fixed_resp_M)>100){
+  raw_fixed_resp_M <- raw_fixed_resp_M[sample(seq(1,length(raw_fixed_resp_M),1), 100, replace = F)]
+}
+
+## Get coefficients
+raw_fixed_resp_C <- mclapply(1:length(raw_fixed_resp_M), mc.cores = 8, function(x){
+  out <- get_model_data(raw_fixed_resp_M[[x]], type = "est", transform = NULL)
+})
+
+## Define plot limits
+raw.plot.limits <- list("bivalve" = c(-5,5),
+                        "PTMEPostPTME" = c(-5,5),
+                        "bivalve:PTMEPostPTME" = c(-5,5),
+                        "AbsLat" = c(-3,3),
+                        "bivalve:AbsLat" = c(-3,3))
+
+## raw, within stages
+title = "Comparing simulated and empirical coefficients of best model\nRaw richness\n Brachiopod richness shuffled within stages"
+figure.name <- "genera_noCov_raw_brach_wthnStgs_coeffs"
+data.name <- "genera_noCov_raw_brach_wthnStgs_coeffs"
+
+isolate_and_compare_coeffs(simModels = raw_fixed_resp_C, mainModel = rawMod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
+                           plot.title = title, plot.limits = raw.plot.limits, visualsRef = visualsRef)
+rm(raw_fixed_resp)
+rm(raw_fixed_resp_C)
+rm(raw_fixed_resp_W)
+
+## Separate model and error
+#### Shuffle both
+raw_fixed_both <- shuffle_responses(data = raw_t1, reps = iter, stage = "stage", response = "brachiopod", predictor = "bivalve", c(4, 8, 10), shuffle_predictor = T, fix_stages = T, n_cores = 8)
+
+## Run models and record warnings
+raw_fixed_both_M <- list()
+raw_fixed_both_W <- list()
+for(i in 1:length(raw_fixed_both)){
+  ## Run model
+  warns <- list()
+  withCallingHandlers(raw_fixed_both_M <- append(raw_fixed_both_M, list(glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), ziformula = ~1, data = raw_fixed_both[[i]], family = nbinom12(link = "sqrt")))), warning = function(warn) {warns <<- append(warns, warn)})
+  if(length(warns)==0){
+    raw_fixed_both_W <- append(raw_fixed_both_W, NA)
+  } else {
+    warns <- warns[which(names(warns)=="message")]
+    raw_fixed_both_W <- append(raw_fixed_both_W, list(warns))
+  }
+}
+
+## Identify warnings with "model convergence error" strings and convert these to NA.
+drop.ind <- sapply(1:length(raw_fixed_both_W), function(w){
+  if(all(!is.na(raw_fixed_both_W[[w]]))){
+    if(any(str_detect(unlist(raw_fixed_both_W[[w]]), "Model convergence problem"))){
+      out <- F
+    } else {
+      out <- T
+    }
+  } else {
+    out <- T
+  }
+  return(out)
+})
+
+## If any F in drop.ind, apply
+if(any(!drop.ind)){
+  raw_fixed_both_M <- raw_fixed_both_M[drop.ind]
+}
+
+## If length is greater than 100, randomly sample down to 100.
+if(length(raw_fixed_both_M)>100){
+  raw_fixed_both_M <- raw_fixed_both_M[sample(seq(1,length(raw_fixed_both_M),1), 100, replace = F)]
+}
+
+## Get coefficients
+raw_fixed_both_C <- mclapply(1:length(raw_fixed_both_M), mc.cores = 8, function(x){
+  out <- get_model_data(raw_fixed_both_M[[x]], type = "est", transform = NULL)
+})
+
+## raw, within stages
+title = "Comparing simulated and empirical coefficients of best model\nRaw richness\n Brachiopod and bivalve richness shuffled within stages"
+figure.name <- "genera_noCov_raw_bivNbrach_wthnStgs_coeffs"
+data.name <- "genera_noCov_raw_bivNbrach_wthnStgs_coeffs"
+
+isolate_and_compare_coeffs(simModels = raw_fixed_both_C, mainModel = rawMod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
+                           plot.title = title, plot.limits = raw.plot.limits, visualsRef = visualsRef)
+rm(raw_fixed_both)
+rm(raw_fixed_both_C)
+rm(raw_fixed_both_W)
+
+### Fluid stages
+#### Shuffle brachiopods
+raw_fluid_resp <- shuffle_responses(data = raw_t1, reps = iter, stage = "stage", response = "brachiopod", predictor = "bivalve", c(4, 8, 10), shuffle_predictor = F, fix_stages = F, n_cores = 8)
+
+## Run models and record warnings
+raw_fluid_resp_M <- list()
+raw_fluid_resp_W <- list()
+for(i in 1:length(raw_fluid_resp)){
+  ## Run model
+  warns <- list()
+  withCallingHandlers(raw_fluid_resp_M <- append(raw_fluid_resp_M, list(glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), ziformula = ~1, data = raw_fluid_resp[[i]], family = nbinom12(link = "sqrt")))), warning = function(warn) {warns <<- append(warns, warn)})
+  if(length(warns)==0){
+    raw_fluid_resp_W <- append(raw_fluid_resp_W, NA)
+  } else {
+    warns <- warns[which(names(warns)=="message")]
+    raw_fluid_resp_W <- append(raw_fluid_resp_W, list(warns))
+  }
+}
+
+## Identify warnings with "model convergence error" strings and convert these to NA.
+drop.ind <- sapply(1:length(raw_fluid_resp_W), function(w){
+  if(all(!is.na(raw_fluid_resp_W[[w]]))){
+    if(any(str_detect(unlist(raw_fluid_resp_W[[w]]), "Model convergence problem"))){
+      out <- F
+    } else {
+      out <- T
+    }
+  } else {
+    out <- T
+  }
+  return(out)
+})
+
+## If any F in drop.ind, apply
+if(any(!drop.ind)){
+  raw_fluid_resp_M <- raw_fluid_resp_M[drop.ind]
+}
+
+## If length is greater than 100, randomly sample down to 100.
+if(length(raw_fluid_resp_M)>100){
+  raw_fluid_resp_M <- raw_fluid_resp_M[sample(seq(1,length(raw_fluid_resp_M),1), 100, replace = F)]
+}
+
+## Get coefficients
+raw_fluid_resp_C <- mclapply(1:length(raw_fluid_resp_M), mc.cores = 8, function(x){
+  out <- get_model_data(raw_fluid_resp_M[[x]], type = "est", transform = NULL)
+})
+
+## raw, within stages
+title = "Comparing simulated and empirical coefficients of best model\nRaw richness\n Brachiopod richness shuffled across stages"
+figure.name <- "genera_noCov_raw_brach_btwnStgs_coeffs"
+data.name <- "genera_noCov_raw_brach_btwnStgs_coeffs"
+
+isolate_and_compare_coeffs(simModels = raw_fluid_resp_C, mainModel = rawMod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
+                           plot.title = title, plot.limits = raw.plot.limits, visualsRef = visualsRef)
+rm(raw_fluid_resp)
+rm(raw_fluid_resp_C)
+rm(raw_fluid_resp_W)
+
+#### Shuffle both
+raw_fluid_both <- shuffle_responses(data = raw_t1, reps = iter, stage = "stage", response = "brachiopod", predictor = "bivalve", c(4, 8, 10), shuffle_predictor = T, fix_stages = F, n_cores = 8)
+
+## Run models and record warnings
+raw_fluid_both_M <- list()
+raw_fluid_both_W <- list()
+for(i in 1:length(raw_fluid_both)){
+  ## Run model
+  warns <- list()
+  withCallingHandlers(raw_fluid_both_M <- append(raw_fluid_both_M, list(glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), ziformula = ~1, data = raw_fluid_both[[i]], family = nbinom12(link = "sqrt")))), warning = function(warn) {warns <<- append(warns, warn)})
+  if(length(warns)==0){
+    raw_fluid_both_W <- append(raw_fluid_both_W, NA)
+  } else {
+    warns <- warns[which(names(warns)=="message")]
+    raw_fluid_both_W <- append(raw_fluid_both_W, list(warns))
+  }
+}
+
+## Identify warnings with "model convergence error" strings and convert these to NA.
+drop.ind <- sapply(1:length(raw_fluid_both_W), function(w){
+  if(all(!is.na(raw_fluid_both_W[[w]]))){
+    if(any(str_detect(unlist(raw_fluid_both_W[[w]]), "Model convergence problem"))){
+      out <- F
+    } else {
+      out <- T
+    }
+  } else {
+    out <- T
+  }
+  return(out)
+})
+
+## If any F in drop.ind, apply
+if(any(!drop.ind)){
+  raw_fluid_both_M <- raw_fluid_both_M[drop.ind]
+}
+
+## If length is greater than 100, randomly sample down to 100.
+if(length(raw_fluid_both_M)>100){
+  raw_fluid_both_M <- raw_fluid_both_M[sample(seq(1,length(raw_fluid_both_M),1), 100, replace = F)]
+}
+
+## Get coefficients
+raw_fluid_both_C <- mclapply(1:length(raw_fluid_both_M), mc.cores = 8, function(x){
+  out <- get_model_data(raw_fluid_both_M[[x]], type = "est", transform = NULL)
+})
+
+## raw, within stages
+title = "Comparing simulated and empirical coefficients of best model\nRaw richness\n Brachiopod and bivalve richness shuffled across stages"
+figure.name <- "genera_noCov_raw_bivNbrach_btwnStgs_coeffs"
+data.name <- "genera_noCov_raw_bivNbrach_btwnStgs_coeffs"
+
+isolate_and_compare_coeffs(simModels = raw_fluid_both_C, mainModel = rawMod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
+                           plot.title = title, plot.limits = raw.plot.limits, visualsRef = visualsRef)
+rm(raw_fluid_both)
+rm(raw_fluid_both_C)
+rm(raw_fluid_both_W)
+
+#### Spot testing model assumptions ####
+## Spot checking models
 source("functions/test.model.assumptions.R")
-NCR_spot <- NCR_btwn[sample(seq(1,1000,1), 10, replace = F)]
-m1 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[1]], family = nbinom12(link = "sqrt"))
-m2 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[2]], family = nbinom12(link = "sqrt"))
-m3 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[3]], family = nbinom12(link = "sqrt"))
-m4 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[4]], family = nbinom12(link = "sqrt"))
-m5 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[5]], family = nbinom12(link = "sqrt"))
-m6 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[6]], family = nbinom12(link = "sqrt"))
-m7 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[7]], family = nbinom12(link = "sqrt"))
-m8 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[8]], family = nbinom12(link = "sqrt"))
-m9 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[9]], family = nbinom12(link = "sqrt"))
-m10 <- glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = NCR_spot[[10]], family = nbinom12(link = "sqrt"))
-test.model.assumptions(m1)
-test.model.assumptions(m2)
-test.model.assumptions(m3)
-test.model.assumptions(m4)
-test.model.assumptions(m5)
-test.model.assumptions(m6)
-test.model.assumptions(m7)
-test.model.assumptions(m8)
-test.model.assumptions(m9)
-test.model.assumptions(m10)
+
+### Raw
+## Randomly select 10 models
+raw_fixed_resp_S <- raw_fixed_resp_M[sample(seq(1,100,1), size = 10, replace = F)]
+raw_fluid_resp_S <- raw_fluid_resp_M[sample(seq(1,100,1), size = 10, replace = F)]
+raw_fixed_both_S <- raw_fixed_both_M[sample(seq(1,100,1), size = 10, replace = F)]
+raw_fluid_both_S <- raw_fluid_both_M[sample(seq(1,100,1), size = 10, replace = F)]
+## Test model assumptions
+for(i in 1:length(raw_fixed_resp_S)){
+  test.model.assumptions(raw_fixed_resp_S[[i]])
+}
+## Test model assumptions
+for(i in 1:length(raw_fluid_both_S)){
+  test.model.assumptions(raw_fluid_both_S[[i]])
+}
+## Test model assumptions
+for(i in 1:length(raw_fixed_resp_S)){
+  test.model.assumptions(raw_fixed_resp_S[[i]])
+}
+## Test model assumptions
+for(i in 1:length(raw_fluid_both_S)){
+  test.model.assumptions(raw_fluid_both_S[[i]])
+}
+
+### NCR
+## Randomly select 10 models
+NCR_fixed_resp_S <- NCR_fixed_resp_M[sample(seq(1,100,1), size = 10, replace = F)]
+NCR_fluid_resp_S <- NCR_fluid_resp_M[sample(seq(1,100,1), size = 10, replace = F)]
+NCR_fixed_both_S <- NCR_fixed_both_M[sample(seq(1,100,1), size = 10, replace = F)]
+NCR_fluid_both_S <- NCR_fluid_both_M[sample(seq(1,100,1), size = 10, replace = F)]
+## Test model assumptions
+for(i in 1:length(NCR_fixed_resp_S)){
+  test.model.assumptions(NCR_fixed_resp_S[[i]])
+}
+## Test model assumptions
+for(i in 1:length(NCR_fluid_both_S)){
+  test.model.assumptions(NCR_fluid_both_S[[i]])
+}
+## Test model assumptions
+for(i in 1:length(NCR_fixed_resp_S)){
+  test.model.assumptions(NCR_fixed_resp_S[[i]])
+}
+## Test model assumptions
+for(i in 1:length(NCR_fluid_both_S)){
+  test.model.assumptions(NCR_fluid_both_S[[i]])
+}
+
+### CR20
+## Randomly select 10 models
+CR20_fixed_resp_S <- CR20_fixed_resp_M[sample(seq(1,100,1), size = 10, replace = F)]
+CR20_fluid_resp_S <- CR20_fluid_resp_M[sample(seq(1,100,1), size = 10, replace = F)]
+CR20_fixed_both_S <- CR20_fixed_both_M[sample(seq(1,100,1), size = 10, replace = F)]
+CR20_fluid_both_S <- CR20_fluid_both_M[sample(seq(1,100,1), size = 10, replace = F)]
+## Test model assumptions
+for(i in 1:length(CR20_fixed_resp_S)){
+  test.model.assumptions(CR20_fixed_resp_S[[i]])
+}
+## Test model assumptions
+for(i in 1:length(CR20_fluid_both_S)){
+  test.model.assumptions(CR20_fluid_both_S[[i]])
+}
+## Test model assumptions
+for(i in 1:length(CR20_fixed_resp_S)){
+  test.model.assumptions(CR20_fixed_resp_S[[i]])
+}
+## Test model assumptions
+for(i in 1:length(CR20_fluid_both_S)){
+  test.model.assumptions(CR20_fluid_both_S[[i]])
+}
+
+
+
 
