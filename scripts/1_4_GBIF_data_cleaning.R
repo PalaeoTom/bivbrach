@@ -40,19 +40,19 @@ rm(list = ls())
 #occ_download_wait(raw_GBIF_bivalves, status_ping = 5, curlopts = list(), quiet = FALSE)
 
 ## download when complete
-#brachiopod.download.path <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/GBIF/brachiopods"
-#bivalve.download.path <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/GBIF/bivalves"
+#brachiopod.download.path <- "~/Library/CloudStorage/Dropbox/unfinished_projects/bivalve_brachiopod/data/GBIF/brachiopods"
+#bivalve.download.path <- "~/Library/CloudStorage/Dropbox/unfinished_projects/bivalve_brachiopod/data/GBIF/bivalves"
 #occ_download_get(raw_GBIF_bivalves, path = bivalve.download.path)
 #occ_download_get(raw_GBIF_brachiopoda, path = brachiopod.download.path)
 
 ## define complete paths
-#brachiopod.download.path <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/GBIF/brachiopods/Sept_24.zip"
-#bivalve.download.path <- "~/OneDrive - Nexus365/Bivalve_brachiopod/data/GBIF/bivalves/Sept_24.zip"
+brachiopod.download.path <- "~/Library/CloudStorage/Dropbox/unfinished_projects/bivalve_brachiopod/data/GBIF/brachiopods/Sept_24.zip"
+bivalve.download.path <- "~/Library/CloudStorage/Dropbox/unfinished_projects/bivalve_brachiopod/data/GBIF/brachiopods/Sept_24.zip"
 
 ## set columns to be retained - will refine as we go
 #columns.TBR <- c("kingdom", "phylum", "class", "order", "family", "genus", "species", "taxonRank", "taxonomicStatus", "acceptedScientificName",
-#                 "decimalLatitude", "decimalLongitude", "hasGeospatialIssues",
 #                 "occurrenceStatus", "coordinateUncertaintyInMeters", "issue",
+#                 "decimalLatitude", "decimalLongitude", "hasGeospatialIssues",
 #                 "basisOfRecord",
 #                 "institutionCode",
 #                 "countryCode", "stateProvince", "county", "municipality", "higherGeography", "locality", "verbatimLocality",
@@ -61,15 +61,20 @@ rm(list = ls())
 #                 "collectionCode", "gbifID", "bibliographicCitation", "references", "publisher", "verbatimSRS", "footprintSRS")
 
 ## define output directory
-#out.dir <- "/Users/tjs/R_packages/bivbrach/data"
+out.dir <- "/Users/tjs/R_packages/bivbrach/data"
 
 ## Load function
 ## Cleans data, retaining needed rows
-#source("functions/import.raw.GBIF.R")
+source("functions/import.raw.GBIF.R")
 
 ## Run function
-#GBIF_biv <- data.frame(import.raw.GBIF(bivalve.download.path, columns.TBR, out.dir, export = T, export.name = "GBIF_biv_Oct24"))
-#GBIF_brach <- data.frame(import.raw.GBIF(brachiopod.download.path, columns.TBR, out.dir, export = T, export.name = "GBIF_brach_Oct24"))
+GBIF_biv <- data.frame(import.raw.GBIF(bivalve.download.path, NULL, out.dir, export = T, export.name = "GBIF_biv_Oct24"))
+GBIF_brach <- data.frame(import.raw.GBIF(brachiopod.download.path, NULL, out.dir, export = T, export.name = "GBIF_brach_Oct24"))
+
+## Isolate datasetkeys and occurrences counts
+datasetKeys <- c(GBIF_biv$datasetKey, GBIF_brach$datasetKey)
+out <- data.frame(table(datasetKeys))
+write.csv(out, "data/metadata/GBIF_datasetKeys.csv")
 
 ## Load raw GBIF
 GBIF_biv <- readRDS("data/unclean_data/raw_GBIF_biv_18Oct24.Rds")

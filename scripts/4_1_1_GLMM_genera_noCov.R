@@ -27,6 +27,7 @@ library(cowplot)
 NCR <- read.csv("data/analysis_data/genera_NC_CRV.csv", header = T, row.names = 1)
 raw <- read.csv("data/analysis_data/genera_NC_raw.csv", header = T, row.names = 1)
 CR20 <- read.csv("data/analysis_data/genera_NC_CR20.csv", header = T, row.names = 1)
+SQS <- read.csv("data/analysis_data/genera_NC_SQS.csv", header = T, row.names = 1)
 
 ## Read in functions for testing assumptions
 source("functions/test.model.assumptions.R")
@@ -72,10 +73,24 @@ for(i in c(2,9)){
   }
 }
 
+## SQS
+for(i in c(3:5, 7:11)){
+  if(!is.numeric(SQS[,i])){
+    SQS[,i] <- as.numeric(SQS[,i])
+  }
+}
+
+for(i in c(1,6)){
+  if(!is.factor(SQS[,i])){
+    SQS[,i] <- as.factor(SQS[,i])
+  }
+}
+
 ## Relevel PTME factor
 NCR[,"PTME"] <- relevel(NCR[,"PTME"], ref = "PrePTME")
 raw[,"PTME"] <- relevel(raw[,"PTME"], ref = "PrePTME")
 CR20[,"PTME"] <- relevel(CR20[,"PTME"], ref = "PrePTME")
+SQS[,"PTME"] <- relevel(SQS[,"PTME"], ref = "PrePTME")
 
 ## Rename to simplify next few steps
 colnames(NCR) <- c("stage_cell", "stage", "cell", "bivalve", "brachiopod", "long", "lat", "AbsLat", "PTME", "n")
@@ -102,6 +117,9 @@ CR20 <- CR20[,c(-4, -8)]
 colnames(NCR) <- c("stage_cell", "stage", "cell", "brachiopod", "long", "lat", "PTME", "bivalve", "AbsLat", "n")
 colnames(raw) <- c("stage_cell", "stage", "cell", "brachiopod", "long", "lat", "PTME", "bivalve", "AbsLat", "n")
 colnames(CR20) <- c("stage_cell", "stage", "cell", "brachiopod", "long", "lat", "PTME", "bivalve", "AbsLat")
+
+#### SQS model fitting ####
+SQSm1<- glmmTMB(brachiopod ~ bivalve*PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), data = SQS, family = nbinom12(link = "sqrt"))
 
 #### Non-classical rarefaction model fitting ####
 ## Non-classical rarefaction
@@ -469,11 +487,11 @@ test.spatial.autocorrelation(bestModels_2, CR20)
 
 #### Plotting coefficients for top models ####
 ## Combine best models into single object
-bestModels <- list(NCRm5, rawm5zi, CR20m3zi)
-names(bestModels) <- c("Non-classical rarefaction", "Raw richness", "Classical rarefaction")
+bestModels <- list(rawm5zi, SQSm1, CR20m3zi)
+names(bestModels) <- c("Raw richness", "SQS", "Classical rarefaction")
 
 ## Define new title
-plot.title2 <- "Model coefficients from 100km grid cells\nNo covariate data required"
+plot.title2 <- "Model coefficients from 100km grid cells"
 
 ## Define axis labels and colours
 axis.labels <- c("Generic\nbivalve\nrichness", "PTME", "Generic\nbivalve\nrichness\n+ PTME", "Absolute\nlatitude", "Generic\nbivalve\nrichness\n + absolute\nlatitude")
@@ -502,10 +520,10 @@ plots <- lapply(1:length(bestModels), function(x){
     scale_fill_manual(values = visuals[[x]][,"colour"]) +
     scale_color_manual(values = visuals[[x]][,"colour"]) +
     scale_x_discrete(labels = visuals[[x]][,"labels"]) +
-    scale_y_continuous(expand = c(0,0), limits = c(-4,1.5)) +
+    scale_y_continuous(expand = c(0,0), limits = c(-4.5,2)) +
     geom_hline(yintercept = 0, linetype = "dashed", colour = "grey") +
-    geom_point(data = coeffs[[x]], (aes(x = term, y = estimate, fill = term, colour = term))) +
-    geom_errorbar(data = coeffs[[x]], aes(x = term, ymin = conf.low, ymax = conf.high, colour = term), width=0.01) +
+    geom_point(data = coeffs[[x]], (aes(x = term, y = estimate, fill = term, colour = term)), size = 2) +
+    geom_errorbar(data = coeffs[[x]], aes(x = term, ymin = conf.low, ymax = conf.high, colour = term), width=0.1) +
     ylab("Log-Odds") +
     xlab("") +
     ggtitle(names(visuals)[x]) +
@@ -521,16 +539,17 @@ plots <- lapply(1:length(bestModels), function(x){
 })
 
 ## Plot as grid
-grid <- plot_grid(plotlist = plots, labels = LETTERS[1:length(bestModels)])
+grid <- plot_grid(plotlist = plots, labels = LETTERS[1:length(bestModels)], ncol = 3)
 title <- ggdraw() + draw_label(plot.title2, fontface='bold')
 output <- plot_grid(title, grid, ncol=1, rel_heights=c(0.075, 1)) # rel_heights values control title margins
 ## Check
 output
 
 ## Export
-pdf("figures/final/main/genera_coefficients.pdf", width = 13)
+pdf("figures/final/main/genera_coefficients.pdf", width = 19)
 print(output)
 dev.off()
+
 
 #### Analysing pre/post-PTME separately ####
 ## Reload data to prepare it
