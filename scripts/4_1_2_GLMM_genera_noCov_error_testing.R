@@ -1405,6 +1405,375 @@ rm(raw_fluid_both_C)
 rm(raw_fluid_both_W)
 
 #### Shuffling richness values for type 1 error testing - SQS ####
+##### SQS - fix stages - shuffle brachiopods #####
+SQS_fixed_resp <- shuffle_responses(data = SQS_t1, reps = iter, stage = "stage", response = "brachiopod", predictor = "bivalve", standardise =  c(4, 8), shuffle_predictor = F, fix_stages = T, n_cores = 8)
+
+## Run models and record warnings
+SQS_fixed_resp_M <- list()
+SQS_fixed_resp_W <- list()
+for(i in 1:length(SQS_fixed_resp)){
+  ## Run model
+  warns <- list()
+  withCallingHandlers(SQS_fixed_resp_M <- append(SQS_fixed_resp_M, list(glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), ziformula = ~1, data = SQS_fixed_resp[[i]], family = nbinom2(link = "log")))), warning = function(warn) {warns <<- append(warns, warn)})
+  if(length(warns)==0){
+    SQS_fixed_resp_W <- append(SQS_fixed_resp_W, NA)
+  } else {
+    warns <- warns[which(names(warns)=="message")]
+    SQS_fixed_resp_W <- append(SQS_fixed_resp_W, list(warns))
+  }
+}
+
+## Identify warnings with "model convergence error" strings and convert these to NA.
+drop.ind <- sapply(1:length(SQS_fixed_resp_W), function(w){
+  if(all(!is.na(SQS_fixed_resp_W[[w]]))){
+    if(any(str_detect(unlist(SQS_fixed_resp_W[[w]]), "Model convergence problem"))){
+      out <- F
+    } else {
+      out <- T
+    }
+  } else {
+    out <- T
+  }
+  return(out)
+})
+
+## If any F in drop.ind, apply
+if(any(!drop.ind)){
+  SQS_fixed_resp_M <- SQS_fixed_resp_M[drop.ind]
+}
+
+## If length is greater than 100, randomly sample down to 100.
+if(length(SQS_fixed_resp_M)>100){
+  SQS_fixed_resp_M <- SQS_fixed_resp_M[sample(seq(1,length(SQS_fixed_resp_M),1), 100, replace = F)]
+}
+
+## Get coefficients
+SQS_fixed_resp_C <- mclapply(1:length(SQS_fixed_resp_M), mc.cores = 8, function(x){
+  out <- get_model_data(SQS_fixed_resp_M[[x]], type = "est", transform = NULL)
+})
+
+## Define plot limits
+SQS.plot.limits <- list("bivalve" = c(-2,0.5),
+                         "PTMEPostPTME" = c(-2,0.5),
+                         "bivalve:PTMEPostPTME" = c(-2,0.5),
+                         "AbsLat" = c(-0.5,0.5),
+                         "bivalve:AbsLat" = c(-0.5,0.5))
+
+## SQS, within stages
+title = "Comparing simulated and empirical coefficients of best model\nSQS (quorum = 0.7)\n Brachiopod richness shuffled within stages"
+figure.name <- "genera_noCov_SQS_brach_wthnStgs_coeffs"
+data.name <- "genera_noCov_SQS_brach_wthnStgs_coeffs"
+
+isolate_and_compare_coeffs(simModels = SQS_fixed_resp_C, mainModel = SQSmod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
+                           plot.title = title, plot.limits = SQS.plot.limits, visualsRef = visualsRef)
+rm(SQS_fixed_resp)
+rm(SQS_fixed_resp_C)
+rm(SQS_fixed_resp_W)
+
+##### SQS - fix before/after PTME - shuffle brachiopods #####
+SQS_fixedPTME_resp <- shuffle_responses(data = SQS_t1, reps = iter, stage = "PTME", response = "brachiopod", predictor = "bivalve", standardise =  c(4, 8), shuffle_predictor = F, fix_stages = T, n_cores = 8)
+
+## Run models and record warnings
+SQS_fixedPTME_resp_M <- list()
+SQS_fixedPTME_resp_W <- list()
+for(i in 1:length(SQS_fixedPTME_resp)){
+  ## Run model
+  warns <- list()
+  withCallingHandlers(SQS_fixedPTME_resp_M <- append(SQS_fixedPTME_resp_M, list(glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), ziformula = ~1, data = SQS_fixedPTME_resp[[i]], family = nbinom2(link = "log")))), warning = function(warn) {warns <<- append(warns, warn)})
+  if(length(warns)==0){
+    SQS_fixedPTME_resp_W <- append(SQS_fixedPTME_resp_W, NA)
+  } else {
+    warns <- warns[which(names(warns)=="message")]
+    SQS_fixedPTME_resp_W <- append(SQS_fixedPTME_resp_W, list(warns))
+  }
+}
+
+## Identify warnings with "model convergence error" strings and convert these to NA.
+drop.ind <- sapply(1:length(SQS_fixedPTME_resp_W), function(w){
+  if(all(!is.na(SQS_fixedPTME_resp_W[[w]]))){
+    if(any(str_detect(unlist(SQS_fixedPTME_resp_W[[w]]), "Model convergence problem"))){
+      out <- F
+    } else {
+      out <- T
+    }
+  } else {
+    out <- T
+  }
+  return(out)
+})
+
+## If any F in drop.ind, apply
+if(any(!drop.ind)){
+  SQS_fixedPTME_resp_M <- SQS_fixedPTME_resp_M[drop.ind]
+}
+
+## If length is greater than 100, randomly sample down to 100.
+if(length(SQS_fixedPTME_resp_M)>100){
+  SQS_fixedPTME_resp_M <- SQS_fixedPTME_resp_M[sample(seq(1,length(SQS_fixedPTME_resp_M),1), 100, replace = F)]
+}
+
+## Get coefficients
+SQS_fixedPTME_resp_C <- mclapply(1:length(SQS_fixedPTME_resp_M), mc.cores = 8, function(x){
+  out <- get_model_data(SQS_fixedPTME_resp_M[[x]], type = "est", transform = NULL)
+})
+
+## Define plot limits
+SQS.plot.limits <- list("bivalve" = c(-2,0.5),
+                         "PTMEPostPTME" = c(-2,0.5),
+                         "bivalve:PTMEPostPTME" = c(-2,0.5),
+                         "AbsLat" = c(-0.5,0.5),
+                         "bivalve:AbsLat" = c(-0.5,0.5))
+
+## SQS, within stages
+title = "Comparing simulated and empirical coefficients of best model\nSQS (quorum = 0.7)\n Brachiopod richness shuffled across Palaeozoic and Mesozoic-Cenozoic"
+figure.name <- "genera_noCov_SQS_brach_wthnPTME_coeffs"
+data.name <- "genera_noCov_SQS_brach_wthnPTME_coeffs"
+
+isolate_and_compare_coeffs(simModels = SQS_fixedPTME_resp_C, mainModel = SQSmod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
+                           plot.title = title, plot.limits = SQS.plot.limits, visualsRef = visualsRef)
+rm(SQS_fixedPTME_resp)
+rm(SQS_fixedPTME_resp_C)
+rm(SQS_fixedPTME_resp_W)
+
+##### SQS - fix before/after PTME - shuffle brachiopods and bivalves #####
+## Shuffle brachiopods and bivalves across Palaeozoic and Mesozoic-Cenozoic
+SQS_fixedPTME_both <- shuffle_bothonses(data = SQS_t1, reps = iter, stage = "PTME", response = "brachiopod", predictor = "bivalve", standardise =  c(4, 8), shuffle_predictor = T, fix_stages = T, n_cores = 8)
+
+## Run models and record warnings
+SQS_fixedPTME_both_M <- list()
+SQS_fixedPTME_both_W <- list()
+for(i in 1:length(SQS_fixedPTME_both)){
+  ## Run model
+  warns <- list()
+  withCallingHandlers(SQS_fixedPTME_both_M <- append(SQS_fixedPTME_both_M, list(glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), ziformula = ~1, data = SQS_fixedPTME_both[[i]], family = nbinom2(link = "log")))), warning = function(warn) {warns <<- append(warns, warn)})
+  if(length(warns)==0){
+    SQS_fixedPTME_both_W <- append(SQS_fixedPTME_both_W, NA)
+  } else {
+    warns <- warns[which(names(warns)=="message")]
+    SQS_fixedPTME_both_W <- append(SQS_fixedPTME_both_W, list(warns))
+  }
+}
+
+## Identify warnings with "model convergence error" strings and convert these to NA.
+drop.ind <- sapply(1:length(SQS_fixedPTME_both_W), function(w){
+  if(all(!is.na(SQS_fixedPTME_both_W[[w]]))){
+    if(any(str_detect(unlist(SQS_fixedPTME_both_W[[w]]), "Model convergence problem"))){
+      out <- F
+    } else {
+      out <- T
+    }
+  } else {
+    out <- T
+  }
+  return(out)
+})
+
+## If any F in drop.ind, apply
+if(any(!drop.ind)){
+  SQS_fixedPTME_both_M <- SQS_fixedPTME_both_M[drop.ind]
+}
+
+## If length is greater than 100, randomly sample down to 100.
+if(length(SQS_fixedPTME_both_M)>100){
+  SQS_fixedPTME_both_M <- SQS_fixedPTME_both_M[sample(seq(1,length(SQS_fixedPTME_both_M),1), 100, replace = F)]
+}
+
+## Get coefficients
+SQS_fixedPTME_both_C <- mclapply(1:length(SQS_fixedPTME_both_M), mc.cores = 8, function(x){
+  out <- get_model_data(SQS_fixedPTME_both_M[[x]], type = "est", transform = NULL)
+})
+
+## Define plot limits
+SQS.plot.limits <- list("bivalve" = c(-2,0.5),
+                         "PTMEPostPTME" = c(-2,0.5),
+                         "bivalve:PTMEPostPTME" = c(-2,0.5),
+                         "AbsLat" = c(-0.5,0.5),
+                         "bivalve:AbsLat" = c(-0.5,0.5))
+
+## SQS, within stages
+title = "Comparing simulated and empirical coefficients of best model\nSQS (quorum = 0.7)\n Brachiopod and bivalve richness shuffled across Palaeozoic and Mesozoic-Cenozoic"
+figure.name <- "genera_noCov_SQS_bivNbrach_wthnPTME_coeffs"
+data.name <- "genera_noCov_SQS_bivNbrach_wthnPTME_coeffs"
+
+isolate_and_compare_coeffs(simModels = SQS_fixedPTME_both_C, mainModel = SQSmod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
+                           plot.title = title, plot.limits = SQS.plot.limits, visualsRef = visualsRef)
+rm(SQS_fixedPTME_both)
+rm(SQS_fixedPTME_both_C)
+rm(SQS_fixedPTME_both_W)
+
+##### SQS - fix stages - shuffle brachiopods and bivalves #####
+SQS_fixed_both <- shuffle_responses(data = SQS_t1, reps = iter, stage = "stage", response = "brachiopod", predictor = "bivalve", c(4, 8), shuffle_predictor = T, fix_stages = T, n_cores = 8)
+
+## Run models and record warnings
+SQS_fixed_both_M <- list()
+SQS_fixed_both_W <- list()
+for(i in 1:length(SQS_fixed_both)){
+  ## Run model
+  warns <- list()
+  withCallingHandlers(SQS_fixed_both_M <- append(SQS_fixed_both_M, list(glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), ziformula = ~1, data = SQS_fixed_both[[i]], family = nbinom2(link = "log")))), warning = function(warn) {warns <<- append(warns, warn)})
+  if(length(warns)==0){
+    SQS_fixed_both_W <- append(SQS_fixed_both_W, NA)
+  } else {
+    warns <- warns[which(names(warns)=="message")]
+    SQS_fixed_both_W <- append(SQS_fixed_both_W, list(warns))
+  }
+}
+
+## Identify warnings with "model convergence error" strings and convert these to NA.
+drop.ind <- sapply(1:length(SQS_fixed_both_W), function(w){
+  if(all(!is.na(SQS_fixed_both_W[[w]]))){
+    if(any(str_detect(unlist(SQS_fixed_both_W[[w]]), "Model convergence problem"))){
+      out <- F
+    } else {
+      out <- T
+    }
+  } else {
+    out <- T
+  }
+  return(out)
+})
+
+## If any F in drop.ind, apply
+if(any(!drop.ind)){
+  SQS_fixed_both_M <- SQS_fixed_both_M[drop.ind]
+}
+
+## If length is greater than 100, randomly sample down to 100.
+if(length(SQS_fixed_both_M)>100){
+  SQS_fixed_both_M <- SQS_fixed_both_M[sample(seq(1,length(SQS_fixed_both_M),1), 100, replace = F)]
+}
+
+## Get coefficients
+SQS_fixed_both_C <- mclapply(1:length(SQS_fixed_both_M), mc.cores = 8, function(x){
+  out <- get_model_data(SQS_fixed_both_M[[x]], type = "est", transform = NULL)
+})
+
+## SQS, within stages
+title = "Comparing simulated and empirical coefficients of best model\nSQS (quorum = 0.7)\n Brachiopod and bivalve richness shuffled within stages"
+figure.name <- "genera_noCov_SQS_bivNbrach_wthnStgs_coeffs"
+data.name <- "genera_noCov_SQS_bivNbrach_wthnStgs_coeffs"
+
+isolate_and_compare_coeffs(simModels = SQS_fixed_both_C, mainModel = SQSmod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
+                           plot.title = title, plot.limits = SQS.plot.limits, visualsRef = visualsRef)
+rm(SQS_fixed_both)
+rm(SQS_fixed_both_C)
+rm(SQS_fixed_both_W)
+
+##### SQS - fluid stages - shuffle brachiopods #####
+SQS_fluid_resp <- shuffle_responses(data = SQS_t1, reps = iter, stage = "stage", response = "brachiopod", predictor = "bivalve", c(4, 8), shuffle_predictor = F, fix_stages = F, n_cores = 8)
+
+## Run models and record warnings
+SQS_fluid_resp_M <- list()
+SQS_fluid_resp_W <- list()
+for(i in 1:length(SQS_fluid_resp)){
+  ## Run model
+  warns <- list()
+  withCallingHandlers(SQS_fluid_resp_M <- append(SQS_fluid_resp_M, list(glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), ziformula = ~1, data = SQS_fluid_resp[[i]], family = nbinom2(link = "log")))), warning = function(warn) {warns <<- append(warns, warn)})
+  if(length(warns)==0){
+    SQS_fluid_resp_W <- append(SQS_fluid_resp_W, NA)
+  } else {
+    warns <- warns[which(names(warns)=="message")]
+    SQS_fluid_resp_W <- append(SQS_fluid_resp_W, list(warns))
+  }
+}
+
+## Identify warnings with "model convergence error" strings and convert these to NA.
+drop.ind <- sapply(1:length(SQS_fluid_resp_W), function(w){
+  if(all(!is.na(SQS_fluid_resp_W[[w]]))){
+    if(any(str_detect(unlist(SQS_fluid_resp_W[[w]]), "Model convergence problem"))){
+      out <- F
+    } else {
+      out <- T
+    }
+  } else {
+    out <- T
+  }
+  return(out)
+})
+
+## If any F in drop.ind, apply
+if(any(!drop.ind)){
+  SQS_fluid_resp_M <- SQS_fluid_resp_M[drop.ind]
+}
+
+## If length is greater than 100, randomly sample down to 100.
+if(length(SQS_fluid_resp_M)>100){
+  SQS_fluid_resp_M <- SQS_fluid_resp_M[sample(seq(1,length(SQS_fluid_resp_M),1), 100, replace = F)]
+}
+
+## Get coefficients
+SQS_fluid_resp_C <- mclapply(1:length(SQS_fluid_resp_M), mc.cores = 8, function(x){
+  out <- get_model_data(SQS_fluid_resp_M[[x]], type = "est", transform = NULL)
+})
+
+## SQS, within stages
+title = "Comparing simulated and empirical coefficients of best model\nSQS (quorum = 0.7)\n Brachiopod richness shuffled across stages"
+figure.name <- "genera_noCov_SQS_brach_btwnStgs_coeffs"
+data.name <- "genera_noCov_SQS_brach_btwnStgs_coeffs"
+
+isolate_and_compare_coeffs(simModels = SQS_fluid_resp_C, mainModel = SQSmod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
+                           plot.title = title, plot.limits = SQS.plot.limits, visualsRef = visualsRef)
+rm(SQS_fluid_resp)
+rm(SQS_fluid_resp_C)
+rm(SQS_fluid_resp_W)
+
+##### SQS - fluid stages - shuffle brachiopods and bivalves #####
+SQS_fluid_both <- shuffle_responses(data = SQS_t1, reps = iter, stage = "stage", response = "brachiopod", predictor = "bivalve", c(4, 8), shuffle_predictor = T, fix_stages = F, n_cores = 8)
+
+## Run models and record warnings
+SQS_fluid_both_M <- list()
+SQS_fluid_both_W <- list()
+for(i in 1:length(SQS_fluid_both)){
+  ## Run model
+  warns <- list()
+  withCallingHandlers(SQS_fluid_both_M <- append(SQS_fluid_both_M, list(glmmTMB(brachiopod ~ bivalve * PTME + AbsLat + bivalve:AbsLat + (bivalve|stage), ziformula = ~1, data = SQS_fluid_both[[i]], family = nbinom2(link = "log")))), warning = function(warn) {warns <<- append(warns, warn)})
+  if(length(warns)==0){
+    SQS_fluid_both_W <- append(SQS_fluid_both_W, NA)
+  } else {
+    warns <- warns[which(names(warns)=="message")]
+    SQS_fluid_both_W <- append(SQS_fluid_both_W, list(warns))
+  }
+}
+
+## Identify warnings with "model convergence error" strings and convert these to NA.
+drop.ind <- sapply(1:length(SQS_fluid_both_W), function(w){
+  if(all(!is.na(SQS_fluid_both_W[[w]]))){
+    if(any(str_detect(unlist(SQS_fluid_both_W[[w]]), "Model convergence problem"))){
+      out <- F
+    } else {
+      out <- T
+    }
+  } else {
+    out <- T
+  }
+  return(out)
+})
+
+## If any F in drop.ind, apply
+if(any(!drop.ind)){
+  SQS_fluid_both_M <- SQS_fluid_both_M[drop.ind]
+}
+
+## If length is greater than 100, randomly sample down to 100.
+if(length(SQS_fluid_both_M)>100){
+  SQS_fluid_both_M <- SQS_fluid_both_M[sample(seq(1,length(SQS_fluid_both_M),1), 100, replace = F)]
+}
+
+## Get coefficients
+SQS_fluid_both_C <- mclapply(1:length(SQS_fluid_both_M), mc.cores = 8, function(x){
+  out <- get_model_data(SQS_fluid_both_M[[x]], type = "est", transform = NULL)
+})
+
+## SQS, within stages
+title = "Comparing simulated and empirical coefficients of best model\nSQS (quorum = 0.7)\n Brachiopod and bivalve richness shuffled across stages"
+figure.name <- "genera_noCov_SQS_bivNbrach_btwnStgs_coeffs"
+data.name <- "genera_noCov_SQS_bivNbrach_btwnStgs_coeffs"
+
+isolate_and_compare_coeffs(simModels = SQS_fluid_both_C, mainModel = SQSmod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
+                           plot.title = title, plot.limits = SQS.plot.limits, visualsRef = visualsRef)
+rm(SQS_fluid_both)
+rm(SQS_fluid_both_C)
+rm(SQS_fluid_both_W)
 
 
 
@@ -1444,27 +1813,27 @@ for(i in 1:length(raw_fluid_both_S)){
   test.model.assumptions(raw_fluid_both_S[[i]])
 }
 
-### NCR
+### SQS
 ## Randomly select 10 models
-NCR_fixed_resp_S <- NCR_fixed_resp_M[sample(seq(1,100,1), size = 10, replace = F)]
-NCR_fluid_resp_S <- NCR_fluid_resp_M[sample(seq(1,100,1), size = 10, replace = F)]
-NCR_fixed_both_S <- NCR_fixed_both_M[sample(seq(1,100,1), size = 10, replace = F)]
-NCR_fluid_both_S <- NCR_fluid_both_M[sample(seq(1,100,1), size = 10, replace = F)]
+SQS_fixed_resp_S <- SQS_fixed_resp_M[sample(seq(1,100,1), size = 10, replace = F)]
+SQS_fluid_resp_S <- SQS_fluid_resp_M[sample(seq(1,100,1), size = 10, replace = F)]
+SQS_fixed_both_S <- SQS_fixed_both_M[sample(seq(1,100,1), size = 10, replace = F)]
+SQS_fluid_both_S <- SQS_fluid_both_M[sample(seq(1,100,1), size = 10, replace = F)]
 ## Test model assumptions
-for(i in 1:length(NCR_fixed_resp_S)){
-  test.model.assumptions(NCR_fixed_resp_S[[i]])
+for(i in 1:length(SQS_fixed_resp_S)){
+  test.model.assumptions(SQS_fixed_resp_S[[i]])
 }
 ## Test model assumptions
-for(i in 1:length(NCR_fluid_both_S)){
-  test.model.assumptions(NCR_fluid_both_S[[i]])
+for(i in 1:length(SQS_fluid_both_S)){
+  test.model.assumptions(SQS_fluid_both_S[[i]])
 }
 ## Test model assumptions
-for(i in 1:length(NCR_fixed_resp_S)){
-  test.model.assumptions(NCR_fixed_resp_S[[i]])
+for(i in 1:length(SQS_fixed_resp_S)){
+  test.model.assumptions(SQS_fixed_resp_S[[i]])
 }
 ## Test model assumptions
-for(i in 1:length(NCR_fluid_both_S)){
-  test.model.assumptions(NCR_fluid_both_S[[i]])
+for(i in 1:length(SQS_fluid_both_S)){
+  test.model.assumptions(SQS_fluid_both_S[[i]])
 }
 
 ### CR20
