@@ -1,4 +1,4 @@
-isolate_and_compare_coeffs <- function(simModels, mainModel, coeffs, fig.export.dir, data.export.dir, figure.name, data.name, plot.title, plot.limits, visualsRef){
+isolate_and_compare_coeffs <- function(simModels, mainModel, coeffs, fig.export.dir, data.export.dir, figure.name, data.name, plot.title, visualsRef){
   ## Get coefficients for simModels
   values <- isolate.coeffs(simModels)
   ## If any have NA values, find and drop from values and simModels
@@ -36,12 +36,11 @@ isolate_and_compare_coeffs <- function(simModels, mainModel, coeffs, fig.export.
   ## Rearrange visualsRef and orig_v to match order
   visualsRef <- visualsRef[match(coeffs, visualsRef[,"term"]),]
   orig_v <- orig_v[match(coeffs, orig_v[,"term"]),]
-  plot.limits <- plot.limits[match(coeffs, names(plot.limits))]
   ## Generate plots
   plots <- lapply(1:length(coeffs), function(x){
     p <- ggplot(values, aes(x = !!sym(paste0(coeffs[x], "_coefficients")))) +
       geom_histogram(binwidth = 0.01, colour = visualsRef[x,"colour"]) +
-      scale_x_continuous(expand = c(0,0), limits = plot.limits[[x]]) +
+      scale_x_continuous(expand = c(0,0)) +
       scale_y_continuous(expand = c(0,0)) +
       geom_vline(xintercept = orig_v[x,"estimate"], linetype = "dashed", linewidth = 1, colour = "red") +
       geom_vline(xintercept = 0, linetype = "dashed", colour = "black") +

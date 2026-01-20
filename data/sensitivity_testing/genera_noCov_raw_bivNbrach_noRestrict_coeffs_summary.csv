@@ -1,0 +1,6 @@
+"","bivalve","PTMEPostPTME","bivalve:PTMEPostPTME","AbsLat","bivalve:AbsLat"
+"Number of simulations",48,48,48,48,48
+"Number of simulations where coefficients met or exceeded empirical",0,0,0,1,6
+"Number of simulations where coefficients and p-values met or exceeded empirical",0,0,0,1,6
+"Proportion of simulations where coefficients met or exceeded empirical",0,0,0,0.0208333333333333,0.125
+"Proportion of simulations wheere coefficients and p-values met or exceeded empirical",0,0,0,0.0208333333333333,0.125

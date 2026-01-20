@@ -72,7 +72,7 @@
   ## Rename to simplify next few steps
   colnames(SQS) <- colnames(raw) <- colnames(CR20) <- c("stage_cell", "stage", "cell", "bivalve", "brachiopod", "long", "lat", "AbsLat", "PTME")
 
-  ## Some counts are decimal. Round these to discrete values to work with negative binomial models
+  ## Some counts are decimal because they are median counts. Round
   # No need to do this for bivalve counts - will be standardised
   SQS$brachiopod <- round(SQS$brachiopod, digits = 0)
   raw$brachiopod <- round(raw$brachiopod, digits = 0)
@@ -175,8 +175,8 @@ coeffs <- c("bivalve", "PTMEPostPTME", "bivalve:PTMEPostPTME", "AbsLat", "bivalv
 iter = 200
 }
 
-#### Shuffling richness values for type 1 error testing - CR20 ####
-##### CR20 - fix stages - shuffle brachiopods #####
+##### Shuffling richness values for type 1 error testing - CR20 ####
+#### CR20 - fix stages - shuffle brachiopods ####
 {
 CR20_fixed_resp <- shuffle_responses(data = CR20_t1, reps = iter, stage = "stage", response = "brachiopod", predictor = "bivalve", standardise =  c(4, 8), shuffle_predictor = F, fix_stages = T, n_cores = 8)
 
@@ -224,20 +224,13 @@ CR20_fixed_resp_C <- mclapply(1:length(CR20_fixed_resp_M), mc.cores = 8, functio
   out <- get_model_data(CR20_fixed_resp_M[[x]], type = "est", transform = NULL)
 })
 
-## Define plot limits
-CR20.plot.limits <- list("bivalve" = c(-2,0.5),
-                         "PTMEPostPTME" = c(-2,0.5),
-                         "bivalve:PTMEPostPTME" = c(-2,0.5),
-                         "AbsLat" = c(-0.5,0.5),
-                         "bivalve:AbsLat" = c(-0.5,0.5))
-
 ## CR20, within stages
 title = "Comparing simulated and empirical coefficients of best model\nClassical rarefaction (sample size = 20)\n Brachiopod richness shuffled within stages"
 figure.name <- "genera_noCov_CR20_brach_fixedStages_coeffs"
 data.name <- "genera_noCov_CR20_brach_fixedStages_coeffs"
 
 isolate_and_compare_coeffs(simModels = CR20_fixed_resp_C, mainModel = CR20mod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
-                           plot.title = title, plot.limits = CR20.plot.limits, visualsRef = visualsRef)
+                           plot.title = title, visualsRef = visualsRef)
 rm(CR20_fixed_resp)
 rm(CR20_fixed_resp_C)
 rm(CR20_fixed_resp_W)
@@ -289,20 +282,13 @@ CR20_fixedPTME_resp_C <- mclapply(1:length(CR20_fixedPTME_resp_M), mc.cores = 8,
   out <- get_model_data(CR20_fixedPTME_resp_M[[x]], type = "est", transform = NULL)
 })
 
-## Define plot limits
-CR20.plot.limits <- list("bivalve" = c(-2,0.5),
-                         "PTMEPostPTME" = c(-2,0.5),
-                         "bivalve:PTMEPostPTME" = c(-2,0.5),
-                         "AbsLat" = c(-0.5,0.5),
-                         "bivalve:AbsLat" = c(-0.5,0.5))
-
 ## CR20, within stages
 title = "Comparing simulated and empirical coefficients of best model\nClassical rarefaction (sample size = 20)\n Brachiopod richness shuffled across Palaeozoic and Mesozoic-Cenozoic"
 figure.name <- "genera_noCov_CR20_brach_fixedPTME_coeffs"
 data.name <- "genera_noCov_CR20_brach_fixedPTME_coeffs"
 
 isolate_and_compare_coeffs(simModels = CR20_fixedPTME_resp_C, mainModel = CR20mod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
-                           plot.title = title, plot.limits = CR20.plot.limits, visualsRef = visualsRef)
+                           plot.title = title, visualsRef = visualsRef)
 rm(CR20_fixedPTME_resp)
 rm(CR20_fixedPTME_resp_C)
 rm(CR20_fixedPTME_resp_W)
@@ -355,20 +341,13 @@ CR20_fixedPTME_both_C <- mclapply(1:length(CR20_fixedPTME_both_M), mc.cores = 8,
   out <- get_model_data(CR20_fixedPTME_both_M[[x]], type = "est", transform = NULL)
 })
 
-## Define plot limits
-CR20.plot.limits <- list("bivalve" = c(-2,0.5),
-                         "PTMEPostPTME" = c(-2,0.5),
-                         "bivalve:PTMEPostPTME" = c(-2,0.5),
-                         "AbsLat" = c(-0.5,0.5),
-                         "bivalve:AbsLat" = c(-0.5,0.5))
-
 ## CR20, within stages
 title = "Comparing simulated and empirical coefficients of best model\nClassical rarefaction (sample size = 20)\n Brachiopod and bivalve richness shuffled across Palaeozoic and Mesozoic-Cenozoic"
 figure.name <- "genera_noCov_CR20_bivNbrach_fixedPTME_coeffs"
 data.name <- "genera_noCov_CR20_bivNbrach_fixedPTME_coeffs"
 
 isolate_and_compare_coeffs(simModels = CR20_fixedPTME_both_C, mainModel = CR20mod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
-                           plot.title = title, plot.limits = CR20.plot.limits, visualsRef = visualsRef)
+                           plot.title = title, visualsRef = visualsRef)
 rm(CR20_fixedPTME_both)
 rm(CR20_fixedPTME_both_C)
 rm(CR20_fixedPTME_both_W)
@@ -426,7 +405,7 @@ figure.name <- "genera_noCov_CR20_bivNbrach_fixedStages_coeffs"
 data.name <- "genera_noCov_CR20_bivNbrach_fixedStages_coeffs"
 
 isolate_and_compare_coeffs(simModels = CR20_fixed_both_C, mainModel = CR20mod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
-                           plot.title = title, plot.limits = CR20.plot.limits, visualsRef = visualsRef)
+                           plot.title = title, visualsRef = visualsRef)
 rm(CR20_fixed_both)
 rm(CR20_fixed_both_C)
 rm(CR20_fixed_both_W)
@@ -484,7 +463,7 @@ figure.name <- "genera_noCov_CR20_brach_noRestrict_coeffs"
 data.name <- "genera_noCov_CR20_brach_noRestrict_coeffs"
 
 isolate_and_compare_coeffs(simModels = CR20_fluid_resp_C, mainModel = CR20mod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
-                           plot.title = title, plot.limits = CR20.plot.limits, visualsRef = visualsRef)
+                           plot.title = title, visualsRef = visualsRef)
 rm(CR20_fluid_resp)
 rm(CR20_fluid_resp_C)
 rm(CR20_fluid_resp_W)
@@ -542,13 +521,13 @@ figure.name <- "genera_noCov_CR20_bivNbrach_noRestrict_coeffs"
 data.name <- "genera_noCov_CR20_bivNbrach_noRestrict_coeffs"
 
 isolate_and_compare_coeffs(simModels = CR20_fluid_both_C, mainModel = CR20mod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
-                           plot.title = title, plot.limits = CR20.plot.limits, visualsRef = visualsRef)
+                           plot.title = title, visualsRef = visualsRef)
 rm(CR20_fluid_both)
 rm(CR20_fluid_both_C)
 rm(CR20_fluid_both_W)
 }
 #### Shuffling richness values for type 1 error testing - raw ####
-##### raw - fixed befoew/after PTME - shuffle brachiopods #####
+##### raw - fixed before/after PTME - shuffle brachiopods #####
 {
 raw_fixedPTME_resp <- shuffle_responses(data = raw_t1, reps = iter, stage = "PTME", response = "brachiopod", predictor = "bivalve", standardise =  c(4, 8), shuffle_predictor = F, fix_stages = T, n_cores = 8)
 
@@ -596,20 +575,13 @@ raw_fixedPTME_resp_C <- mclapply(1:length(raw_fixedPTME_resp_M), mc.cores = 8, f
   out <- get_model_data(raw_fixedPTME_resp_M[[x]], type = "est", transform = NULL)
 })
 
-## Define plot limits
-raw.plot.limits <- list("bivalve" = c(-5,5),
-                        "PTMEPostPTME" = c(-5,5),
-                        "bivalve:PTMEPostPTME" = c(-5,5),
-                        "AbsLat" = c(-3,3),
-                        "bivalve:AbsLat" = c(-3,3))
-
 ## raw, within stages
 title = "Comparing simulated and empirical coefficients of best model\nRaw richness\n Brachiopod richness shuffled across Palaeozoic and Mesozoic-Cenozoic"
 figure.name <- "genera_noCov_raw_brach_fixedPTME_coeffs"
 data.name <- "genera_noCov_raw_brach_fixedPTME_coeffs"
 
-isolate_and_compare_coeffs(simModels = raw_fixedPTME_resp_C, mainModel = rawmod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
-                           plot.title = title, plot.limits = raw.plot.limits, visualsRef = visualsRef)
+isolate_and_compare_coeffs(simModels = raw_fixedPTME_resp_C, mainModel = rawMod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
+                           plot.title = title, visualsRef = visualsRef)
 rm(raw_fixedPTME_resp)
 rm(raw_fixedPTME_resp_C)
 rm(raw_fixedPTME_resp_W)
@@ -661,20 +633,13 @@ raw_fixedPTME_both_C <- mclapply(1:length(raw_fixedPTME_both_M), mc.cores = 8, f
   out <- get_model_data(raw_fixedPTME_both_M[[x]], type = "est", transform = NULL)
 })
 
-## Define plot limits
-raw.plot.limits <- list("bivalve" = c(-5,5),
-                        "PTMEPostPTME" = c(-5,5),
-                        "bivalve:PTMEPostPTME" = c(-5,5),
-                        "AbsLat" = c(-3,3),
-                        "bivalve:AbsLat" = c(-3,3))
-
 ## raw, within stages
 title = "Comparing simulated and empirical coefficients of best model\nRaw richness\n Brachiopod and bivalve richness shuffled across Palaeozoic and Mesozoic-Cenozoic"
 figure.name <- "genera_noCov_raw_bivNbrach_fixedPTME_coeffs"
 data.name <- "genera_noCov_raw_bivNbrach_fixedPTME_coeffs"
 
-isolate_and_compare_coeffs(simModels = raw_fixedPTME_both_C, mainModel = rawmod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
-                           plot.title = title, plot.limits = raw.plot.limits, visualsRef = visualsRef)
+isolate_and_compare_coeffs(simModels = raw_fixedPTME_both_C, mainModel = rawMod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
+                           plot.title = title, visualsRef = visualsRef)
 rm(raw_fixedPTME_both)
 rm(raw_fixedPTME_both_C)
 rm(raw_fixedPTME_both_W)
@@ -726,20 +691,13 @@ raw_fixed_resp_C <- mclapply(1:length(raw_fixed_resp_M), mc.cores = 8, function(
   out <- get_model_data(raw_fixed_resp_M[[x]], type = "est", transform = NULL)
 })
 
-## Define plot limits
-raw.plot.limits <- list("bivalve" = c(-5,5),
-                        "PTMEPostPTME" = c(-5,5),
-                        "bivalve:PTMEPostPTME" = c(-5,5),
-                        "AbsLat" = c(-3,3),
-                        "bivalve:AbsLat" = c(-3,3))
-
 ## raw, within stages
 title = "Comparing simulated and empirical coefficients of best model\nRaw richness\n Brachiopod richness shuffled within stages"
 figure.name <- "genera_noCov_raw_brach_fixedStages_coeffs"
 data.name <- "genera_noCov_raw_brach_fixedStages_coeffs"
 
 isolate_and_compare_coeffs(simModels = raw_fixed_resp_C, mainModel = rawMod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
-                           plot.title = title, plot.limits = raw.plot.limits, visualsRef = visualsRef)
+                           plot.title = title, visualsRef = visualsRef)
 rm(raw_fixed_resp)
 rm(raw_fixed_resp_C)
 rm(raw_fixed_resp_W)
@@ -797,7 +755,7 @@ figure.name <- "genera_noCov_raw_bivNbrach_fixedStages_coeffs"
 data.name <- "genera_noCov_raw_bivNbrach_fixedStages_coeffs"
 
 isolate_and_compare_coeffs(simModels = raw_fixed_both_C, mainModel = rawMod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
-                           plot.title = title, plot.limits = raw.plot.limits, visualsRef = visualsRef)
+                           plot.title = title, visualsRef = visualsRef)
 rm(raw_fixed_both)
 rm(raw_fixed_both_C)
 rm(raw_fixed_both_W)
@@ -855,7 +813,7 @@ figure.name <- "genera_noCov_raw_brach_noRestrict_coeffs"
 data.name <- "genera_noCov_raw_brach_noRestrict_coeffs"
 
 isolate_and_compare_coeffs(simModels = raw_fluid_resp_C, mainModel = rawMod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
-                           plot.title = title, plot.limits = raw.plot.limits, visualsRef = visualsRef)
+                           plot.title = title, visualsRef = visualsRef)
 rm(raw_fluid_resp)
 rm(raw_fluid_resp_C)
 rm(raw_fluid_resp_W)
@@ -913,7 +871,7 @@ figure.name <- "genera_noCov_raw_bivNbrach_noRestrict_coeffs"
 data.name <- "genera_noCov_raw_bivNbrach_noRestrict_coeffs"
 
 isolate_and_compare_coeffs(simModels = raw_fluid_both_C, mainModel = rawMod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
-                           plot.title = title, plot.limits = raw.plot.limits, visualsRef = visualsRef)
+                           plot.title = title, visualsRef = visualsRef)
 rm(raw_fluid_both)
 rm(raw_fluid_both_C)
 rm(raw_fluid_both_W)
@@ -967,20 +925,13 @@ SQS_fixed_resp_C <- mclapply(1:length(SQS_fixed_resp_M), mc.cores = 8, function(
   out <- get_model_data(SQS_fixed_resp_M[[x]], type = "est", transform = NULL)
 })
 
-## Define plot limits
-SQS.plot.limits <- list("bivalve" = c(-2,0.5),
-                         "PTMEPostPTME" = c(-2,0.5),
-                         "bivalve:PTMEPostPTME" = c(-2,0.5),
-                         "AbsLat" = c(-0.5,0.5),
-                         "bivalve:AbsLat" = c(-0.5,0.5))
-
 ## SQS, within stages
 title = "Comparing simulated and empirical coefficients of best model\nSQS (quorum = 0.7)\n Brachiopod richness shuffled within stages"
 figure.name <- "genera_noCov_SQS_brach_fixedStages_coeffs"
 data.name <- "genera_noCov_SQS_brach_fixedStages_coeffs"
 
 isolate_and_compare_coeffs(simModels = SQS_fixed_resp_C, mainModel = SQSmod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
-                           plot.title = title, plot.limits = SQS.plot.limits, visualsRef = visualsRef)
+                           plot.title = title, visualsRef = visualsRef)
 rm(SQS_fixed_resp)
 rm(SQS_fixed_resp_C)
 rm(SQS_fixed_resp_W)
@@ -1038,7 +989,7 @@ figure.name <- "genera_noCov_SQS_bivNbrach_fixedStages_coeffs"
 data.name <- "genera_noCov_SQS_bivNbrach_fixedStages_coeffs"
 
 isolate_and_compare_coeffs(simModels = SQS_fixed_both_C, mainModel = SQSmod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
-                           plot.title = title, plot.limits = SQS.plot.limits, visualsRef = visualsRef)
+                           plot.title = title, visualsRef = visualsRef)
 rm(SQS_fixed_both)
 rm(SQS_fixed_both_C)
 rm(SQS_fixed_both_W)
@@ -1090,20 +1041,13 @@ SQS_fixedPTME_resp_C <- mclapply(1:length(SQS_fixedPTME_resp_M), mc.cores = 8, f
   out <- get_model_data(SQS_fixedPTME_resp_M[[x]], type = "est", transform = NULL)
 })
 
-## Define plot limits
-SQS.plot.limits <- list("bivalve" = c(-2,0.5),
-                         "PTMEPostPTME" = c(-2,0.5),
-                         "bivalve:PTMEPostPTME" = c(-2,0.5),
-                         "AbsLat" = c(-0.5,0.5),
-                         "bivalve:AbsLat" = c(-0.5,0.5))
-
 ## SQS, within stages
 title = "Comparing simulated and empirical coefficients of best model\nSQS (quorum = 0.7)\n Brachiopod richness shuffled across Palaeozoic and Mesozoic-Cenozoic"
 figure.name <- "genera_noCov_SQS_brach_fixedPTME_coeffs"
 data.name <- "genera_noCov_SQS_brach_fixedPTME_coeffs"
 
 isolate_and_compare_coeffs(simModels = SQS_fixedPTME_resp_C, mainModel = SQSmod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
-                           plot.title = title, plot.limits = SQS.plot.limits, visualsRef = visualsRef)
+                           plot.title = title, visualsRef = visualsRef)
 rm(SQS_fixedPTME_resp)
 rm(SQS_fixedPTME_resp_C)
 rm(SQS_fixedPTME_resp_W)
@@ -1156,20 +1100,13 @@ SQS_fixedPTME_both_C <- mclapply(1:length(SQS_fixedPTME_both_M), mc.cores = 8, f
   out <- get_model_data(SQS_fixedPTME_both_M[[x]], type = "est", transform = NULL)
 })
 
-## Define plot limits
-SQS.plot.limits <- list("bivalve" = c(-2,0.5),
-                         "PTMEPostPTME" = c(-2,0.5),
-                         "bivalve:PTMEPostPTME" = c(-2,0.5),
-                         "AbsLat" = c(-0.5,0.5),
-                         "bivalve:AbsLat" = c(-0.5,0.5))
-
 ## SQS, within stages
 title = "Comparing simulated and empirical coefficients of best model\nSQS (quorum = 0.7)\n Brachiopod and bivalve richness shuffled across Palaeozoic and Mesozoic-Cenozoic"
 figure.name <- "genera_noCov_SQS_bivNbrach_fixedPTME_coeffs"
 data.name <- "genera_noCov_SQS_bivNbrach_fixedPTME_coeffs"
 
 isolate_and_compare_coeffs(simModels = SQS_fixedPTME_both_C, mainModel = SQSmod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
-                           plot.title = title, plot.limits = SQS.plot.limits, visualsRef = visualsRef)
+                           plot.title = title, visualsRef = visualsRef)
 rm(SQS_fixedPTME_both)
 rm(SQS_fixedPTME_both_C)
 rm(SQS_fixedPTME_both_W)
@@ -1227,7 +1164,7 @@ figure.name <- "genera_noCov_SQS_brach_noRestrict_coeffs"
 data.name <- "genera_noCov_SQS_brach_noRestrict_coeffs"
 
 isolate_and_compare_coeffs(simModels = SQS_fluid_resp_C, mainModel = SQSmod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
-                           plot.title = title, plot.limits = SQS.plot.limits, visualsRef = visualsRef)
+                           plot.title = title, visualsRef = visualsRef)
 rm(SQS_fluid_resp)
 rm(SQS_fluid_resp_C)
 rm(SQS_fluid_resp_W)
@@ -1285,7 +1222,7 @@ figure.name <- "genera_noCov_SQS_bivNbrach_noRestrict_coeffs"
 data.name <- "genera_noCov_SQS_bivNbrach_noRestrict_coeffs"
 
 isolate_and_compare_coeffs(simModels = SQS_fluid_both_C, mainModel = SQSmod, coeffs = coeffs, fig.export.dir = fig.export.dir, data.export.dir = data.export.dir, figure.name = figure.name, data.name = data.name,
-                           plot.title = title, plot.limits = SQS.plot.limits, visualsRef = visualsRef)
+                           plot.title = title, visualsRef = visualsRef)
 rm(SQS_fluid_both)
 rm(SQS_fluid_both_C)
 rm(SQS_fluid_both_W)
